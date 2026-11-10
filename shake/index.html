@@ -1,0 +1,1344 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shake</title>
+<meta name="description" content="Dagens shake: rätt mängder i rätt ordning, glas för glas.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Shake">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1D1426">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="preload" href="fonts/sofia-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/sofia-sans-extra-condensed.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Layout: one narrow column for a phone on the kitchen counter. The measuring jug is the one loud thing:
+   it fills as ingredients go in, churns while the mixer runs and drains glass by glass through the day.
+   Amounts are set big and condensed so they read at arm's length. Colour only ever means an ingredient
+   (inside the jug and on the dot beside its name) or, in scale-red, a measurement mark or a limit. */
+@font-face { font-family: "Sofia Sans"; src: url("fonts/sofia-sans.woff2") format("woff2"); font-weight: 1 1000; font-display: swap; }
+@font-face { font-family: "Sofia Sans XC"; src: url("fonts/sofia-sans-extra-condensed.woff2") format("woff2"); font-weight: 1 1000; font-display: swap; }
+
+:root {
+  --bg: #F4F2F6;          /* porcelain with a breath of blueberry in it */
+  --ink: #1D1426;         /* blackcurrant */
+  --muted: #655A74;
+  --line: #DED8E5;        /* hairlines */
+  --edge: #B6ABC4;        /* outlines of things you tap */
+  --field: #FFFFFF;
+  --berry: #5E2B97;       /* the shake itself: main buttons, things that are done */
+  --on-berry: #FFFFFF;
+  --berry-soft: #EAE1F4;
+  --scale: #CF3527;       /* the red print on a measuring jug: ticks, marks, limits */
+  --glass: #8F839E;       /* the jug's outline */
+  --glass-fill: #E9E4EF;
+  --band: #1D1426;        /* behind the phone's clock and battery */
+  --display: "Sofia Sans XC", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --body: "Sofia Sans", "Helvetica Neue", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #150E1C; --ink: #F2EDF8; --muted: #A99DB9; --line: #2D2240; --edge: #54446A; --field: #1E1529;
+    --berry: #B892F2; --on-berry: #1A0F26; --berry-soft: #2C1E40; --scale: #FF6F5B;
+    --glass: #7B6C8E; --glass-fill: #1B1324; --band: #0D0812;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 1.0625rem/1.35 var(--body);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 30;
+  background: var(--band);
+}
+button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+h1, h2, h3, p, dl, dd, ul, ol { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+
+.app {
+  max-width: 30rem;
+  margin-inline: auto;
+  padding: calc(env(safe-area-inset-top, 0px) + 1rem) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 6.25rem) max(20px, env(safe-area-inset-left, 0px));
+}
+
+/* ---------- Type ---------- */
+.title { font: 800 2.75rem/0.92 var(--display); letter-spacing: 0.005em; }
+.sub { color: var(--muted); font-size: 0.9375rem; }
+.h2 { font: 800 1.625rem/1 var(--display); letter-spacing: 0.01em; }
+.label { font-size: 0.9375rem; font-weight: 700; }
+.hint { color: var(--muted); font-size: 0.9375rem; line-height: 1.4; }
+.num { font-family: var(--display); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+
+.top { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; padding-bottom: 1.125rem; }
+.top .sub { padding-bottom: 0.3125rem; text-align: right; }
+
+.view { display: grid; gap: 1.75rem; }
+.block { display: grid; gap: 0.625rem; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  width: 100%; min-height: 3.5rem; padding: 0 1.25rem;
+  border: 2px solid var(--edge); border-radius: 0.875rem;
+  background: transparent; color: var(--ink);
+  font-weight: 700; font-size: 1.0625rem; cursor: pointer;
+}
+.btn.primary { border-color: var(--berry); background: var(--berry); color: var(--on-berry); font-size: 1.1875rem; min-height: 3.75rem; }
+.btn.quiet { width: auto; min-height: 2.75rem; padding: 0 0.25rem; border: 0; color: var(--muted); font-weight: 600; font-size: 0.9375rem; text-decoration: underline; text-underline-offset: 0.2em; }
+.btn:active { transform: translateY(1px); }
+.btnrow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.25rem 1rem; }
+
+/* ---------- The jug ---------- */
+.jug { position: relative; flex: none; width: var(--jw, 7.5rem); height: var(--jh, 12.5rem); margin: 3px 1.875rem 0 2.25rem; }
+.jug::before {            /* the rim, a little wider than the glass, with a pouring lip */
+  content: ""; position: absolute; left: -0.5rem; right: -0.1875rem; top: -3px; height: 3px;
+  border-radius: 3px; background: var(--glass);
+}
+.jug-handle {
+  position: absolute; right: -1.75rem; top: 14%; width: 1.75rem; height: 46%;
+  border: 3px solid var(--glass); border-left: 0; border-radius: 0 1rem 1.375rem 0;
+}
+.jug-glass {
+  position: absolute; inset: 0;
+  border: 3px solid var(--glass); border-top: 0; border-radius: 3px 3px 1.25rem 1.25rem;
+  background: var(--glass-fill); overflow: hidden; isolation: isolate;
+}
+.jug-liquid { position: absolute; inset: 0; display: flex; flex-direction: column-reverse; }
+.jug-liquid i {
+  flex: none; display: block; width: 100%; height: 0;
+  transition: height 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), background-color 2.2s ease;
+}
+.jug-liquid i.crest { box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.42); }
+.jug-liquid.glasses i { box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5); }
+.jug-vortex {             /* the dip a running mixer pulls into the surface */
+  position: absolute; left: 22%; right: 22%; bottom: var(--level, 0%); height: 1.125rem; margin-bottom: -0.5625rem;
+  border-radius: 50%; background: var(--glass-fill); opacity: 0; transform: scale(0.6, 0.2);
+  transition: opacity 0.25s ease, bottom 0.55s ease;
+}
+.jug.is-mixing .jug-vortex { opacity: 1; animation: vortex 0.42s ease-in-out infinite alternate; }
+@keyframes vortex { from { transform: scale(0.86, 0.5); } to { transform: scale(1.08, 1); } }
+.jug-scale { position: absolute; left: -2.25rem; top: 0; bottom: 3px; width: 2.25rem; }
+.jug-scale i { position: absolute; right: 0; width: 0.4375rem; height: 0; border-top: 1.5px solid var(--scale); }
+.jug-scale i.major { width: 0.8125rem; border-top-width: 2px; }
+.jug-scale span {
+  position: absolute; right: 1.0625rem; transform: translateY(50%);
+  font: 700 0.75rem/1 var(--body); font-variant-numeric: tabular-nums; color: var(--scale);
+}
+.jug-unit { position: absolute; left: -2.25rem; top: -1.375rem; width: 1.9375rem; text-align: right; font: 700 0.75rem/1 var(--body); color: var(--scale); }
+
+/* ---------- Today ---------- */
+.hero { display: flex; align-items: flex-start; gap: 0.75rem; padding-top: 1.25rem; }
+.hero-side { flex: 1; min-width: 0; display: grid; gap: 0.875rem; padding-top: 0.125rem; }
+.big { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 0.375rem; }
+.big b { font: 800 4rem/0.82 var(--display); font-variant-numeric: tabular-nums; letter-spacing: 0.005em; }
+.big span { font-weight: 700; font-size: 1.0625rem; }
+.facts { display: grid; gap: 0.375rem; }
+.facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid var(--line); }
+.facts dt { color: var(--muted); font-size: 0.9375rem; }
+.facts dd { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.alert { display: grid; grid-template-columns: auto 1fr; gap: 0.625rem; align-items: start; font-size: 0.9375rem; line-height: 1.4; }
+.alert::before { content: ""; width: 0.8125rem; margin-top: 0.5625rem; border-top: 2.5px solid var(--scale); }
+.alert b { font-weight: 700; }
+
+/* Ingredient rows, shared by Today, the recipe table and the mixing screen */
+.rows { display: grid; }
+.row {
+  display: grid; grid-template-columns: 1.5rem minmax(0, 1fr) auto; align-items: center; gap: 0.75rem;
+  width: 100%; min-height: 3.375rem; padding: 0.375rem 0; border: 0; border-bottom: 1px solid var(--line);
+  background: none; text-align: left;
+}
+.rows .row:first-child { border-top: 1px solid var(--line); }
+.dot { width: 1.25rem; height: 1.25rem; border-radius: 50%; background: var(--c, transparent); box-shadow: inset 0 0 0 1.5px rgba(29, 20, 38, 0.28); }
+@media (prefers-color-scheme: dark) { .dot { box-shadow: inset 0 0 0 1.5px rgba(242, 237, 248, 0.3); } }
+.row-name { min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.row-name small { display: block; margin-top: 0.125rem; color: var(--muted); font-size: 0.8125rem; font-weight: 500; line-height: 1.3; }
+.row-amt { font: 800 1.625rem/1 var(--display); font-variant-numeric: tabular-nums; letter-spacing: 0.01em; white-space: nowrap; text-align: right; }
+.row-amt small { font: 600 0.8125rem/1 var(--body); color: var(--muted); letter-spacing: 0; }
+.row-amt .delta { display: block; margin-top: 0.1875rem; font: 700 0.75rem/1 var(--body); letter-spacing: 0; color: var(--scale); }
+.row.is-out .row-name { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.row.is-out .dot { background: transparent; }
+.row.has-toggle { grid-template-columns: 1.5rem minmax(0, 1fr) auto auto; }
+.out {
+  min-width: 3.25rem; min-height: 2.25rem; padding: 0 0.625rem; border: 1.5px solid var(--edge); border-radius: 999px;
+  background: transparent; color: var(--muted); font-size: 0.8125rem; font-weight: 700; cursor: pointer;
+}
+.out[aria-pressed="true"] { border-color: var(--scale); background: var(--scale); color: #fff; }
+@media (prefers-color-scheme: dark) { .out[aria-pressed="true"] { color: #1A0F26; } }
+
+/* Glasses */
+.glass {
+  display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; align-items: center; gap: 0.75rem;
+  width: 100%; min-height: 4rem; padding: 0.5rem 0; border: 0; border-bottom: 1px solid var(--line);
+  background: none; text-align: left; cursor: pointer;
+}
+.glasses-list .glass:first-child { border-top: 1px solid var(--line); }
+.tick {
+  position: relative; width: 1.875rem; height: 1.875rem; border: 2px solid var(--edge); border-radius: 50%;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.tick::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 0.75rem; height: 0.375rem;
+  border-left: 2.5px solid var(--on-berry); border-bottom: 2.5px solid var(--on-berry);
+  transform: translate(-50%, -68%) rotate(-45deg); opacity: 0;
+}
+[aria-pressed="true"] > .tick, .is-done > .tick { background: var(--berry); border-color: var(--berry); }
+[aria-pressed="true"] > .tick::after, .is-done > .tick::after { opacity: 1; }
+.glass-name { font-weight: 700; }
+.glass-name small { display: block; margin-top: 0.125rem; color: var(--muted); font-size: 0.875rem; font-weight: 500; }
+.glass-time { color: var(--muted); font-size: 0.9375rem; font-variant-numeric: tabular-nums; }
+.glass.is-next .tick { border-color: var(--berry); box-shadow: 0 0 0 4px var(--berry-soft); }
+.glass.is-next .glass-time { color: var(--ink); font-weight: 700; }
+
+/* The last two weeks: one small jug per day, filled by how many glasses were drunk */
+.days { display: grid; grid-template-columns: repeat(14, 1fr); gap: 0.3125rem; align-items: end; }
+.day { display: grid; gap: 0.3125rem; justify-items: center; }
+.day i {
+  position: relative; display: block; width: 100%; max-width: 1.125rem; height: 2.25rem;
+  border: 1.5px solid var(--edge); border-top: 0; border-radius: 1px 1px 0.3125rem 0.3125rem; overflow: hidden;
+}
+.day i::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: var(--f, 0%); background: var(--berry); }
+.day.is-today i { border-color: var(--ink); }
+.day span { font-size: 0.6875rem; font-weight: 600; color: var(--muted); }
+.day.is-today span { color: var(--ink); font-weight: 800; }
+
+/* ---------- Controls ---------- */
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 3px; border: 1.5px solid var(--edge); border-radius: 0.875rem; }
+.seg button {
+  min-height: 2.875rem; padding: 0 0.375rem; border: 0; border-radius: 0.625rem; background: transparent;
+  color: var(--muted); font-weight: 700; font-size: 1rem; cursor: pointer; font-variant-numeric: tabular-nums;
+}
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.switch {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1rem;
+  width: 100%; min-height: 3.5rem; padding: 0.625rem 0; border: 0; border-bottom: 1px solid var(--line);
+  background: none; text-align: left; cursor: pointer;
+}
+.switches .switch:first-child { border-top: 1px solid var(--line); }
+.switch b { display: block; font-weight: 700; }
+.switch small { display: block; margin-top: 0.125rem; color: var(--muted); font-size: 0.875rem; line-height: 1.35; }
+.knob { position: relative; width: 3.125rem; height: 1.875rem; border-radius: 999px; background: var(--edge); transition: background-color 0.15s ease; }
+.knob::after {
+  content: ""; position: absolute; left: 3px; top: 3px; width: 1.5rem; height: 1.5rem; border-radius: 50%;
+  background: var(--field); transition: transform 0.15s ease;
+}
+.switch[aria-pressed="true"] .knob { background: var(--berry); }
+.switch[aria-pressed="true"] .knob::after { transform: translateX(1.25rem); }
+@media (prefers-color-scheme: dark) { .switch[aria-pressed="true"] .knob::after { background: var(--on-berry); } }
+
+.stepper { display: grid; grid-template-columns: 3.5rem 1fr 3.5rem; align-items: center; border: 1.5px solid var(--edge); border-radius: 0.875rem; }
+.stepper button { min-height: 3.25rem; border: 0; background: none; font: 800 1.75rem/1 var(--display); cursor: pointer; }
+.stepper button:disabled { color: var(--edge); }
+.stepper output { text-align: center; font-weight: 700; }
+.stepper output b { font: 800 1.75rem/1 var(--display); font-variant-numeric: tabular-nums; }
+
+.totals { display: flex; justify-content: space-between; gap: 1rem; padding-top: 0.75rem; font-weight: 700; }
+
+/* ---------- Nutrition: laid out like the declaration on a pack ---------- */
+.decl { border: 2px solid var(--ink); border-radius: 0.375rem; padding: 0.875rem 0.875rem 0.5rem; }
+.decl h3 { font: 800 1.625rem/1 var(--display); letter-spacing: 0.01em; padding-bottom: 0.5rem; border-bottom: 6px solid var(--ink); }
+.decl-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4375rem 0; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.decl-row.in { padding-left: 1rem; color: var(--muted); }
+.decl-row b { font-weight: 700; }
+.decl-row:last-child { border-bottom: 0; }
+.cov { display: grid; }
+.cov-head { display: flex; justify-content: space-between; align-items: baseline; padding: 0 0 0.5rem; border-bottom: 3px solid var(--ink); }
+.cov-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 0.75rem; padding: 0.5625rem 0 0.625rem; border-bottom: 1px solid var(--line); }
+.cov-name { font-weight: 600; }
+.cov-name small { color: var(--muted); font-weight: 500; font-size: 0.8125rem; }
+.cov-pct { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.cov-bar { grid-column: 1 / -1; position: relative; height: 0.5rem; border-radius: 2px; background: var(--line); }
+.cov-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--w, 0%); border-radius: 2px; background: var(--ink); }
+.cov-bar i.extra { left: var(--from, 0%); background: var(--berry); border-radius: 0 2px 2px 0; }
+.cov-bar::after { content: ""; position: absolute; left: 66.667%; top: -0.25rem; bottom: -0.25rem; border-left: 2px solid var(--scale); }
+.cov-row.is-low .cov-pct { color: var(--scale); }
+.cov-note { grid-column: 1 / -1; color: var(--scale); font-size: 0.8125rem; font-weight: 600; }
+.key { display: flex; flex-wrap: wrap; gap: 0.375rem 1rem; color: var(--muted); font-size: 0.8125rem; }
+.key span { display: inline-flex; align-items: center; gap: 0.375rem; }
+.key i { display: inline-block; width: 0.875rem; height: 0.5rem; border-radius: 2px; background: var(--ink); }
+.key i.extra { background: var(--berry); }
+.key i.need { width: 0; height: 0.875rem; border-left: 2px solid var(--scale); border-radius: 0; background: none; }
+
+.status { min-height: 1.4em; font-size: 0.9375rem; font-weight: 700; }
+
+/* ---------- Bottom tabs ---------- */
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  display: flex; justify-content: center;
+  padding: 0 max(8px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(8px, env(safe-area-inset-left, 0px));
+  background: var(--bg); border-top: 1px solid var(--line);
+}
+.tabs button {
+  position: relative; flex: 1; max-width: 8rem; min-height: 3.5rem; border: 0; background: none;
+  color: var(--muted); font-weight: 700; font-size: 1rem; cursor: pointer;
+}
+.tabs button[aria-pressed="true"] { color: var(--ink); }
+.tabs button[aria-pressed="true"]::before { content: ""; position: absolute; left: 22%; right: 22%; top: -1px; border-top: 3px solid var(--berry); }
+
+/* ---------- The mixing screen ---------- */
+.mix {
+  position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column;
+  padding: env(safe-area-inset-top, 0px) max(20px, env(safe-area-inset-right, 0px)) 0 max(20px, env(safe-area-inset-left, 0px));
+  background: var(--bg); overflow: hidden;
+}
+.mix::before {            /* the same dark band behind the phone's clock as on the other screens */
+  content: ""; position: absolute; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--band);
+}
+.mix-top { flex: none; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 0.75rem; min-height: 3.25rem; }
+.mix-top .btn.quiet { justify-self: start; }
+.mix-round { justify-self: end; font-weight: 700; font-size: 0.9375rem; }
+.mix-prog { flex: none; display: flex; gap: 4px; }
+.mix-prog i { flex: 1; height: 5px; border-radius: 2px; background: var(--line); }
+.mix-prog i.on { background: var(--berry); }
+.mix-prog i.cur { background: var(--ink); }
+.mix-stage { flex: none; display: flex; justify-content: center; padding: 2.125rem 0 1rem; }
+.mix-stage .jug { --jw: 9rem; --jh: 11.25rem; }
+.mix-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding-bottom: 1rem; }
+html.is-mixing, html.is-mixing body { overflow: hidden; }   /* the page behind stays put */
+.mix-title { font: 800 2.125rem/0.98 var(--display); letter-spacing: 0.005em; text-wrap: balance; }
+.mix-tip { margin-top: 0.4375rem; color: var(--muted); font-size: 1rem; line-height: 1.35; }
+.mix .rows { margin-top: 0.875rem; }
+.mix .row { min-height: 3.75rem; cursor: pointer; }
+.mix .row-amt { font-size: 2.125rem; }
+.mix .row.is-in .row-name, .mix .row.is-in .row-amt { color: var(--muted); }
+.mix .row .tick { width: 1.5rem; height: 1.5rem; background: var(--c); border-color: var(--edge); }
+.mix .row .tick::after { width: 0.625rem; height: 0.3125rem; border-width: 2px; }
+.mix .row.is-in .tick { background: var(--berry); border-color: var(--berry); }
+.mix .row.is-in .tick::after { opacity: 1; }
+.mix-foot {
+  flex: none; display: grid; gap: 0.5rem;
+  padding: 0.75rem 0 calc(env(safe-area-inset-bottom, 0px) + 0.875rem);
+  border-top: 1px solid var(--line); background: var(--bg);
+}
+.timer { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 1rem; }
+.timer-num { font: 800 4.75rem/0.8 var(--display); font-variant-numeric: tabular-nums; }
+.timer-num small { font: 700 1.0625rem/1 var(--body); margin-left: 0.375rem; }
+.timer-track { grid-column: 1 / -1; position: relative; height: 0.625rem; border-radius: 2px; background: var(--line); overflow: hidden; }
+.timer-track i { position: absolute; inset: 0; background: var(--berry); transform-origin: left center; transform: scaleX(var(--left, 1)); }
+
+/* ---------- The smallest phones ---------- */
+@media (max-width: 359px) {
+  .app { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .mix { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .hero { gap: 0.375rem; }
+  .hero .jug { --jw: 5.5rem; --jh: 11rem; margin-right: 1.5rem; }
+  .hero .jug-handle { right: -1.375rem; width: 1.375rem; }
+  .big b { font-size: 3.25rem; }
+  .title { font-size: 2.375rem; }
+  .mix-stage { padding: 1.875rem 0 0.75rem; }
+  .mix-stage .jug { --jh: 8.5rem; }
+  .mix-title { font-size: 1.875rem; }
+  .row-amt { font-size: 1.5rem; }
+  .mix .row-amt { font-size: 1.875rem; }
+  .tabs button { font-size: 0.9375rem; }
+}
+@media (max-height: 620px) {
+  .mix-stage { padding: 1.875rem 0 0.75rem; }
+  .mix-stage .jug { --jh: 8.5rem; }
+  .mix .row { min-height: 3.25rem; }
+}
+
+/* ---------- Focus, motion ---------- */
+:focus-visible { outline: 3px solid var(--berry); outline-offset: 3px; border-radius: 0.375rem; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01s !important; animation: none !important; }
+  .jug.is-mixing .jug-vortex { transform: scale(1, 0.8); }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <h1 class="title" id="title">Shake</h1>
+    <p class="sub" id="date"></p>
+  </header>
+  <main>
+    <section class="view" id="view-today" aria-label="Idag">
+      <div class="hero">
+        <div class="jug" id="dayJug"></div>
+        <div class="hero-side" id="todaySide"></div>
+      </div>
+      <div class="view" id="todayBody"></div>
+    </section>
+    <section class="view" id="view-recipe" aria-label="Recept" hidden></section>
+    <section class="view" id="view-nutrition" aria-label="Näring" hidden></section>
+    <section class="view" id="view-shop" aria-label="Handla" hidden></section>
+  </main>
+  <noscript><p>Appen behöver JavaScript för att räkna.</p></noscript>
+  <nav class="tabs" aria-label="Delar">
+    <button type="button" id="tab-today" data-act="tab" data-v="today" aria-pressed="true">Idag</button>
+    <button type="button" id="tab-recipe" data-act="tab" data-v="recipe" aria-pressed="false">Recept</button>
+    <button type="button" id="tab-nutrition" data-act="tab" data-v="nutrition" aria-pressed="false">Näring</button>
+    <button type="button" id="tab-shop" data-act="tab" data-v="shop" aria-pressed="false">Handla</button>
+  </nav>
+</div>
+
+<div class="mix" id="mix" role="dialog" aria-modal="true" aria-label="Mixa dagens shake" hidden>
+  <div class="mix-top">
+    <button type="button" class="btn quiet" data-act="close">Stäng</button>
+    <p class="mix-round" id="mixRound"></p>
+  </div>
+  <div class="mix-prog" id="mixProg" aria-hidden="true"></div>
+  <div class="mix-stage"><div class="jug" id="mixJug"></div></div>
+  <div class="mix-scroll" id="mixScroll"></div>
+  <div class="mix-foot" id="mixFoot"></div>
+</div>
+
+<script>
+/* ---------- The recipe and the calculator. No screen code in here. ---------- */
+var SHAKE = (function () {
+  "use strict";
+
+  // Nutrients per 100 g. Standard values (Livsmedelsverket / USDA, rounded):
+  // the same table the recipe sheet was calculated from, so energy and protein agree with it.
+  // The milk's carbohydrate follows the pack of a lactose-free milk drink, which is lower than ordinary milk.
+  var KEYS = ["kcal", "prot", "carb", "fat", "fiber", "sugar", "vitA", "vitD", "vitE", "vitK", "vitC",
+    "B1", "B2", "niacin", "B6", "folate", "B12", "Ca", "P", "Mg", "Fe", "Zn", "Cu", "I", "Se", "K", "Na", "Mn",
+    "choline", "EPADHA"];
+  var FOODS = {
+    milk:    { kcal: 51, prot: 3.0, carb: 2.5, fat: 3.0, sugar: 2.4, vitA: 32, vitD: 1.0, vitE: 0.08, vitK: 0.3, vitC: 1, B1: 0.04, B2: 0.16, niacin: 0.1, B6: 0.04, folate: 5, B12: 0.4, Ca: 120, P: 95, Mg: 11, Fe: 0.03, Zn: 0.4, Cu: 0.01, I: 15, Se: 1.5, K: 150, Na: 40, Mn: 0.003, choline: 15 },
+    milk15:  { kcal: 38, prot: 3.0, carb: 2.5, fat: 1.5, sugar: 2.4, vitA: 18, vitD: 1.0, vitE: 0.04, vitK: 0.2, vitC: 1, B1: 0.04, B2: 0.16, niacin: 0.1, B6: 0.04, folate: 5, B12: 0.4, Ca: 120, P: 95, Mg: 11, Fe: 0.03, Zn: 0.4, Cu: 0.01, I: 15, Se: 1.5, K: 150, Na: 40, Mn: 0.003, choline: 15 },
+    smp:     { kcal: 358, prot: 36, carb: 52, fat: 0.8, sugar: 52, vitA: 10, vitK: 0.1, vitC: 3, B1: 0.4, B2: 1.55, niacin: 0.95, B6: 0.36, folate: 50, B12: 4.0, Ca: 1250, P: 970, Mg: 110, Fe: 0.3, Zn: 4.0, Cu: 0.04, I: 140, Se: 15, K: 1700, Na: 535, Mn: 0.02, choline: 169 },
+    yog:     { kcal: 133, prot: 5.0, carb: 4.0, fat: 10, sugar: 4.0, vitA: 95, vitD: 0.1, vitE: 0.2, vitK: 0.5, vitC: 0.5, B1: 0.04, B2: 0.2, niacin: 0.15, B6: 0.05, folate: 10, B12: 0.5, Ca: 110, P: 100, Mg: 11, Fe: 0.1, Zn: 0.5, Cu: 0.02, I: 20, Se: 2, K: 140, Na: 40, Mn: 0.004, choline: 15 },
+    oat:     { kcal: 380, prot: 14, carb: 58, fat: 7, fiber: 10, sugar: 1, vitE: 1.0, vitK: 2, B1: 0.6, B2: 0.1, niacin: 1.0, B6: 0.12, folate: 50, Ca: 54, P: 410, Mg: 140, Fe: 4.3, Zn: 3.6, Cu: 0.4, I: 1, Se: 5, K: 400, Na: 2, Mn: 3.6, choline: 40 },
+    whey:    { kcal: 400, prot: 80, carb: 6, fat: 5, sugar: 4, vitA: 10, B1: 0.1, B2: 0.8, niacin: 0.3, B6: 0.1, folate: 10, B12: 1.0, Ca: 400, P: 300, Mg: 60, Fe: 0.5, Zn: 1.0, Cu: 0.05, I: 30, Se: 15, K: 500, Na: 200, choline: 50 },
+    blue:    { kcal: 53, prot: 0.7, carb: 10, fat: 0.5, fiber: 2.4, sugar: 9, vitA: 3, vitE: 0.6, vitK: 19, vitC: 7, B1: 0.03, B2: 0.04, niacin: 0.4, B6: 0.05, folate: 6, Ca: 10, P: 12, Mg: 6, Fe: 0.3, Zn: 0.1, Cu: 0.06, Se: 0.1, K: 70, Na: 1, Mn: 0.3, choline: 6 },
+    currant: { kcal: 60, prot: 1.4, carb: 8, fat: 0.4, fiber: 5, sugar: 7, vitA: 12, vitE: 1.0, vitK: 5, vitC: 150, B1: 0.05, B2: 0.05, niacin: 0.3, B6: 0.066, folate: 10, Ca: 55, P: 59, Mg: 24, Fe: 1.5, Zn: 0.27, Cu: 0.086, Se: 1, K: 322, Na: 2, Mn: 0.26, choline: 10 },
+    spinach: { kcal: 29, prot: 3.6, carb: 1.3, fat: 0.6, fiber: 2.9, sugar: 0.5, vitA: 580, vitE: 2.0, vitK: 372, vitC: 6, B1: 0.08, B2: 0.17, niacin: 0.5, B6: 0.15, folate: 140, Ca: 129, P: 48, Mg: 72, Fe: 1.9, Zn: 0.6, Cu: 0.14, I: 2, Se: 1.3, K: 346, Na: 74, Mn: 0.85, choline: 20 },
+    banana:  { kcal: 89, prot: 1.1, carb: 20.2, fat: 0.33, fiber: 2.6, sugar: 12.2, vitA: 3, vitE: 0.1, vitK: 0.5, vitC: 8.7, B1: 0.031, B2: 0.073, niacin: 0.665, B6: 0.367, folate: 20, Ca: 5, P: 22, Mg: 27, Fe: 0.26, Zn: 0.15, Cu: 0.078, Se: 1, K: 358, Na: 1, Mn: 0.27, choline: 9.8 },
+    honey:   { kcal: 305, prot: 0.3, carb: 82, sugar: 82, vitC: 0.5, B2: 0.04, B6: 0.02, folate: 2, Ca: 6, P: 4, Mg: 2, Fe: 0.4, Zn: 0.2, Cu: 0.04, K: 52, Na: 4, Mn: 0.08, choline: 2 },
+    salt:    { Na: 39000 },
+    oil:     { kcal: 884, fat: 100, vitE: 14.4, vitK: 60, Fe: 0.56, Ca: 1, Na: 2, choline: 0.3 },
+    water:   {}
+  };
+
+  // One entry per thing that goes in the mixer, in the order it goes in.
+  //   g     grams in one household unit       step  smallest amount that is practical to measure
+  //   vol   how much room one gram takes once mixed, in ml
+  //   tint  how strongly it colours the shake (berries stain far more than milk does)
+  var ING = [
+    { key: "milk",    name: "Laktosfri mjölk 3 %",    short: "mjölk",        buy: "Laktosfri standardmjölk 3 %", unit: "dl",    g: 103,  step: 0.5, vol: 1.0, color: "#F3EFE6", tint: 1 },
+    { key: "water",   name: "Vatten",                 short: "vatten",       buy: "",                            unit: "dl",    g: 100,  step: 0.5, vol: 1.0, color: "#DCE9F0", tint: 0.4 },
+    { key: "smp",     name: "Skummjölkspulver",       short: "mjölkpulver",  buy: "Skummjölkspulver",            unit: "msk",   g: 7.5,  step: 1,   vol: 0.6, color: "#EDE0C0", tint: 1 },
+    { key: "yog",     name: "Grekisk yoghurt 10 %",   short: "yoghurt",      buy: "Grekisk yoghurt 10 %",        unit: "dl",    g: 100,  step: 0.5, vol: 1.0, color: "#FBF8F1", tint: 1 },
+    { key: "oat",     name: "Havremjöl",              short: "havremjöl",    buy: "Havremjöl",                   unit: "dl",    g: 50,   step: 0.5, vol: 1.2, color: "#D6BF94", tint: 1.4 },
+    { key: "whey",    name: "Whey",                   short: "whey",         buy: "Whey",                        unit: "skopa", g: 30,   step: 0.5, vol: 0.8, color: "#E9D79C", tint: 1 },
+    { key: "blue",    name: "Blåbär, frysta",         short: "blåbär",       buy: "Blåbär, frysta",              unit: "dl",    g: 60,   step: 0.5, vol: 1.0, color: "#5A36B8", tint: 120 },
+    { key: "currant", name: "Svarta vinbär, frysta",  short: "vinbär",       buy: "Svarta vinbär, frysta",       unit: "dl",    g: 65,   step: 0.5, vol: 1.0, color: "#6E1F86", tint: 120 },
+    { key: "spinach", name: "Spenat, fryst hackad",   short: "spenat",       buy: "Spenat, fryst hackad",        unit: "dl",    g: 65,   step: 0.5, vol: 1.0, color: "#2F6B3A", tint: 8 },
+    { key: "banana",  name: "Banan",                  short: "banan",        buy: "Bananer",                     unit: "st",    g: 120,  step: 0.5, vol: 1.0, color: "#F0DA78", tint: 1 },
+    { key: "honey",   name: "Honung",                 short: "honung",       buy: "Honung",                      unit: "msk",   g: 21,   step: 0.5, vol: 0.7, color: "#D9981E", tint: 1 },
+    { key: "salt",    name: "Salt",                   short: "salt",         buy: "",                            unit: "krm",   g: 1.2,  step: 1,   vol: 0,   color: "#FFFFFF", tint: 0 },
+    { key: "oil",     name: "Olivolja",               short: "olivolja",     buy: "Olivolja, extra virgin",      unit: "msk",   g: 13.6, step: 0.5, vol: 1.0, color: "#C9B23A", tint: 1 }
+  ];
+  var BY = {};
+  ING.forEach(function (it) { it.stepG = it.g * it.step; BY[it.key] = it; });
+
+  // The three sizes, in household units. 3 000 and 2 000 are the two recipe sheets; 2 500 sits halfway.
+  var SIZES = {
+    3000: { milk: 5,   smp: 8, yog: 4,   oat: 4, whey: 2,   blue: 2,   currant: 1, spinach: 1, banana: 2,   honey: 1, salt: 1, oil: 5 },
+    2500: { milk: 3.5, smp: 8, yog: 3.5, oat: 3, whey: 1.5, blue: 1.5, currant: 1, spinach: 1, banana: 1.5, honey: 1, salt: 1, oil: 5 },
+    2000: { milk: 2,   smp: 8, yog: 3,   oat: 2, whey: 1,   blue: 1,   currant: 1, spinach: 1, banana: 1,   honey: 1, salt: 1, oil: 5 }
+  };
+
+  // What may be turned up or down to get back to the energy target when something is missing,
+  // how far (in steps above the recipe), and how reluctantly (higher = moved less).
+  var FLEX = {
+    oat:    { up: 2, down: 0, w: 0.25 },
+    banana: { up: 2, down: 0, w: 0.30 },
+    yog:    { up: 3, down: 2, w: 0.30 },
+    oil:    { up: 2, down: 0, w: 0.35 },
+    whey:   { up: 2, down: 0, w: 0.50 },
+    milk:   { up: 2, down: 0, w: 0.50 },
+    blue:   { up: 2, down: 0, w: 0.60 },
+    smp:    { up: 0, down: 4, w: 0.80 }
+  };
+  var FLEX_KEYS = Object.keys(FLEX);
+
+  var CA_LIMIT = 2500;   // mg per day from everything eaten, the upper level for adults
+  var LEAVE_ALONE = 75;  // kcal: gaps smaller than this are not worth changing the recipe for
+  var GLASS_MAX = 5.2;   // dl: a glass bigger than this becomes one more glass
+
+  // Daily needs: NNR 2023, men 18–24, at 2 900 kcal (12.1 MJ). `ul` is the upper level where one applies.
+  var MJ = 2900 * 4.184 / 1000;
+  var REF = [
+    { key: "vitC",    name: "C-vitamin",   unit: "mg", ref: 110, dec: 0, group: "vit" },
+    { key: "vitA",    name: "A-vitamin",   unit: "µg", ref: 800, dec: 0, group: "vit" },
+    { key: "vitD",    name: "D-vitamin",   unit: "µg", ref: 10, dec: 1, group: "vit", ul: 100 },
+    { key: "vitE",    name: "E-vitamin",   unit: "mg", ref: 11, dec: 1, group: "vit" },
+    { key: "vitK",    name: "K-vitamin",   unit: "µg", ref: 75, dec: 0, group: "vit" },
+    { key: "B1",      name: "Tiamin (B1)", unit: "mg", ref: Math.round(0.1 * MJ * 100) / 100, dec: 2, group: "vit" },
+    { key: "B2",      name: "Riboflavin (B2)", unit: "mg", ref: 1.6, dec: 2, group: "vit" },
+    { key: "NE",      name: "Niacin",      unit: "mg", ref: Math.round(1.6 * MJ), dec: 0, group: "vit" },
+    { key: "B6",      name: "B6",          unit: "mg", ref: 1.8, dec: 2, group: "vit", ul: 12 },
+    { key: "folate",  name: "Folat",       unit: "µg", ref: 330, dec: 0, group: "vit" },
+    { key: "B12",     name: "B12",         unit: "µg", ref: 4.0, dec: 1, group: "vit" },
+    { key: "Ca",      name: "Kalcium",     unit: "mg", ref: 1000, dec: 0, group: "min", ul: CA_LIMIT },
+    { key: "P",       name: "Fosfor",      unit: "mg", ref: 520, dec: 0, group: "min" },
+    { key: "Mg",      name: "Magnesium",   unit: "mg", ref: 350, dec: 0, group: "min" },
+    { key: "K",       name: "Kalium",      unit: "mg", ref: 3500, dec: 0, group: "min" },
+    { key: "Fe",      name: "Järn",        unit: "mg", ref: 9, dec: 1, group: "min" },
+    { key: "Zn",      name: "Zink",        unit: "mg", ref: 12.7, dec: 1, group: "min", ul: 25 },
+    { key: "Cu",      name: "Koppar",      unit: "mg", ref: 0.9, dec: 2, group: "min", ul: 5 },
+    { key: "I",       name: "Jod",         unit: "µg", ref: 150, dec: 0, group: "min", ul: 600 },
+    { key: "Se",      name: "Selen",       unit: "µg", ref: 90, dec: 0, group: "min", ul: 255 },
+    { key: "Mn",      name: "Mangan",      unit: "mg", ref: 3.0, dec: 1, group: "min" },
+    { key: "choline", name: "Kolin",       unit: "mg", ref: 400, dec: 0, group: "other" },
+    { key: "fiber",   name: "Fiber",       unit: "g",  ref: 35, dec: 0, group: "other" },
+    { key: "EPADHA",  name: "Omega-3 (EPA + DHA)", unit: "g", ref: 0.25, dec: 1, group: "other", ul: 5 }
+  ];
+
+  // The three supplements that ride along with the shake. Amounts as the makers state them.
+  var SUPPS = [
+    { key: "puori",  name: "Puori O3",   amount: "1 tsk",    how: "Flytande fiskolja. Åker i mixern tillsammans med olivoljan.", adds: { EPADHA: 2 } },
+    { key: "selen",  name: "Selen",      amount: "1 kapsel", how: "Öppna kapseln och häll pulvret i mixern. Smakar inget.",     adds: { Se: 100 } },
+    { key: "dpearl", name: "D-pärla",    amount: "1 pärla",  how: "Tuggas till första glaset.",                                adds: { vitD: 38 } }
+  ];
+
+  function toSteps(units) {
+    var n = {};
+    ING.forEach(function (it) { n[it.key] = Math.round((units[it.key] || 0) / it.step); });
+    return n;
+  }
+  function grams(n, key) { return (n[key] || 0) * BY[key].stepG; }
+
+  var milkNow = FOODS.milk;   // which carton the milk comes from; build() sets it from the settings
+  function totals(n) {
+    var t = {}, i, k, g, f;
+    for (i = 0; i < KEYS.length; i++) t[KEYS[i]] = 0;
+    for (k in n) {
+      g = grams(n, k); f = k === "milk" ? milkNow : FOODS[k];
+      if (!g || !f) continue;
+      for (i = 0; i < KEYS.length; i++) if (f[KEYS[i]]) t[KEYS[i]] += f[KEYS[i]] * g / 100;
+    }
+    // Niacin equivalents: niacin itself plus what the body makes from tryptophan (about 1.1 % of protein, 60:1).
+    t.NE = t.niacin + (t.prot * 0.011 * 1000) / 60;
+    t.lactose = (FOODS.smp.sugar * grams(n, "smp") + FOODS.yog.sugar * grams(n, "yog")) / 100;
+    t.addedSugar = FOODS.honey.sugar * grams(n, "honey") / 100;
+    t.saltG = t.Na * 2.5 / 1000;
+    return t;
+  }
+  function volumeDl(n) {
+    var ml = 0, k;
+    for (k in n) ml += grams(n, k) * BY[k].vol;
+    return ml / 100;
+  }
+
+  // Start from the chosen size, take out what is missing, then walk in small measurable steps
+  // towards the energy target. Calcium and lactose never go above what the plain recipe has.
+  function build(s) {
+    var size = SIZES[s.size] ? s.size : 3000;
+    milkNow = s.milk15 ? FOODS.milk15 : FOODS.milk;
+    var plain = toSteps(SIZES[size]);
+    var plainT = totals(plain), plainVol = volumeDl(plain);
+    var target = plainT.kcal;
+    var missing = s.missing || {};
+    var base = {}, k;
+    for (k in plain) base[k] = plain[k];
+    base.water = 0;
+
+    var noSmp = !!s.noSmp || !!missing.smp;
+    if (noSmp) {
+      base.smp = 0;
+      if (!missing.whey) base.whey += 2;           // one more scoop stands in for the powder
+    }
+    if (s.honey === false || missing.honey) base.honey = 0;
+    ING.forEach(function (it) {
+      if (missing[it.key] && it.key !== "water") {
+        if (it.key === "milk") base.water += base.milk;   // still needs the liquid to mix at all
+        base[it.key] = 0;
+      }
+    });
+    var thickSteps = Math.max(2, Math.round(plainVol / 9) * 2);   // about one dl per nine
+    if (s.thick === -1) base.water += thickSteps;
+    if (s.thick === 1) {
+      if (base.milk > 0) base.milk = Math.max(2, base.milk - thickSteps);
+      else base.water = Math.max(2, base.water - thickSteps);
+    }
+
+    var lo = {}, hi = {};
+    FLEX_KEYS.forEach(function (key) {
+      if (missing[key] || (key === "smp" && noSmp)) { lo[key] = hi[key] = 0; return; }
+      lo[key] = Math.max(0, base[key] - FLEX[key].down);
+      hi[key] = base[key] + FLEX[key].up;
+      if (key === "milk" && s.thick === 1) hi[key] = base[key];   // thicker means the milk stays down
+      if (key === "whey" && noSmp) hi[key] = base[key];           // the extra scoop is already in
+    });
+
+    var caCap = Math.max(plainT.Ca, 2300) + 10;
+    var lacCap = plainT.lactose + 3;
+    var protFloor = 0.85 * plainT.prot;
+
+    function ok(n) {
+      var t = totals(n);
+      return t.Ca <= caCap && t.lactose <= lacCap;
+    }
+    function score(n) {
+      var t = totals(n), sc = Math.pow((t.kcal - target) / 50, 2), i, key;
+      for (i = 0; i < FLEX_KEYS.length; i++) {
+        key = FLEX_KEYS[i];
+        sc += FLEX[key].w * Math.pow(n[key] - base[key], 2);
+      }
+      if (t.prot < protFloor) sc += 0.5 * Math.pow((protFloor - t.prot) / 10, 2);
+      return sc;
+    }
+    function tryMove(n, up, down) {
+      var m = {}, key;
+      for (key in n) m[key] = n[key];
+      if (up) { if (m[up] + 1 > hi[up]) return null; m[up] += 1; }
+      if (down) { if (m[down] - 1 < lo[down]) return null; m[down] -= 1; }
+      return ok(m) ? m : null;
+    }
+
+    // A gap of a few percent is left alone: a missing spoon of honey should not change the rest.
+    var cur = base, curScore = score(cur), guard = 0;
+    var improved = Math.abs(totals(base).kcal - target) > LEAVE_ALONE;
+    while (improved && guard++ < 80) {
+      improved = false;
+      var best = null, bestScore = curScore, a, b, cand, sc;
+      for (a = -1; a < FLEX_KEYS.length; a++) {
+        for (b = -1; b < FLEX_KEYS.length; b++) {
+          if (a === -1 && b === -1) continue;
+          if (a === b) continue;
+          cand = tryMove(cur, a === -1 ? null : FLEX_KEYS[a], b === -1 ? null : FLEX_KEYS[b]);
+          if (!cand) continue;
+          sc = score(cand);
+          if (sc < bestScore - 1e-9) { bestScore = sc; best = cand; }
+        }
+      }
+      if (best) { cur = best; curScore = bestScore; improved = true; }
+    }
+
+    var t = totals(cur), vol = volumeDl(cur);
+    var mixerDl = (s.mixer || 1.5) * 10;
+    var rounds = Math.max(1, Math.ceil(vol / (0.75 * mixerDl) - 1e-9));
+    var glasses = size === 2000 ? 3 : 4;
+    while (vol / glasses > GLASS_MAX) glasses++;
+
+    var supps = s.supps || {};
+    var withSupps = {};
+    for (k in t) withSupps[k] = t[k];
+    SUPPS.forEach(function (sp) {
+      if (supps[sp.key] === false) return;
+      for (var nk in sp.adds) withSupps[nk] = (withSupps[nk] || 0) + sp.adds[nk];
+    });
+
+    return {
+      size: size, target: target, steps: cur, plain: plain, totals: t, withSupps: withSupps, plainTotals: plainT,
+      volume: vol, rounds: rounds, glasses: glasses, mixerDl: mixerDl,
+      short: target - t.kcal > LEAVE_ALONE ? Math.round((target - t.kcal) / 10) * 10 : 0
+    };
+  }
+
+  // Split the day's amounts over the rounds so every round can be measured with ordinary spoons and cups.
+  // Honey and salt go in the first round only; it all ends up in the same jug.
+  var ONCE = { honey: 1, salt: 1 };
+  function perRound(recipe) {
+    var out = [], r, R = recipe.rounds;
+    for (r = 0; r < R; r++) out.push({});
+    ING.forEach(function (it) {
+      var n = recipe.steps[it.key] || 0, each, rest;
+      if (!n) return;
+      if (ONCE[it.key]) { out[0][it.key] = n; return; }
+      each = Math.floor(n / R); rest = n % R;
+      for (r = 0; r < R; r++) { var v = each + (r < rest ? 1 : 0); if (v) out[r][it.key] = v; }
+    });
+    return out;
+  }
+
+  // The colour the mixed shake will have: each ingredient's colour weighted by its volume and how hard it stains.
+  function blend(n) {
+    var r = 0, g = 0, b = 0, w = 0, k, it, wt, c;
+    for (k in n) {
+      it = BY[k]; if (!it || !n[k] || !it.tint) continue;
+      wt = grams(n, k) * (it.vol || 0.2) * it.tint;
+      c = parseInt(it.color.slice(1), 16);
+      r += Math.pow(((c >> 16) & 255) / 255, 2.2) * wt;
+      g += Math.pow(((c >> 8) & 255) / 255, 2.2) * wt;
+      b += Math.pow((c & 255) / 255, 2.2) * wt;
+      w += wt;
+    }
+    if (!w) return "#EDE7DA";
+    function ch(v) { var x = Math.round(Math.pow(v / w, 1 / 2.2) * 255); return (x < 16 ? "0" : "") + x.toString(16); }
+    return "#" + ch(r) + ch(g) + ch(b);
+  }
+
+  return { ING: ING, BY: BY, FOODS: FOODS, SIZES: SIZES, REF: REF, SUPPS: SUPPS, CA_LIMIT: CA_LIMIT,
+    build: build, perRound: perRound, totals: totals, volumeDl: volumeDl, grams: grams, blend: blend, toSteps: toSteps };
+})();
+/* ---------- The screens. Everything is kept on the phone only. ---------- */
+(function () {
+  "use strict";
+  var S = SHAKE;
+  var KEY = "shake.v1";
+  var NB = " ";
+  var WEEKDAYS = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
+  var MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
+  var COUNT = ["noll", "en", "två", "tre", "fyra", "fem", "sex"];
+  var SUPP_ROW = {
+    puori:  { name: "Puori O3", amount: "1" + NB + "tsk", note: "Flytande fiskolja" },
+    selen:  { name: "Selen", amount: "1" + NB + "kapsel", note: "Öppna kapseln, häll i pulvret" },
+    dpearl: { name: "D-pärla", amount: "1" + NB + "pärla", note: "Tuggas till första glaset" }
+  };
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+  /* ---------- What is remembered ---------- */
+  function fresh() {
+    return {
+      v: 1, tab: "today", perGlass: false,
+      settings: { size: 3000, thick: 0, honey: true, noSmp: false, milk15: false, mixer: 1.5, grams: false, missing: {}, supps: { puori: true, selen: true, dpearl: true } },
+      day: null, history: [], shop: { days: 7, have: {} }
+    };
+  }
+  function load() {
+    var st = fresh(), raw, k;
+    try { raw = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { raw = null; }
+    if (!raw || raw.v !== 1) return st;
+    for (k in st.settings) if (raw.settings && raw.settings[k] !== undefined) st.settings[k] = raw.settings[k];
+    if (!S.SIZES[st.settings.size]) st.settings.size = 3000;
+    if (!st.settings.missing || typeof st.settings.missing !== "object") st.settings.missing = {};
+    if (!st.settings.supps || typeof st.settings.supps !== "object") st.settings.supps = { puori: true, selen: true, dpearl: true };
+    if (raw.day && raw.day.plan && raw.day.plan.rounds) st.day = raw.day;
+    if (Array.isArray(raw.history)) st.history = raw.history.slice(-90);
+    if (raw.shop) { st.shop.days = Math.min(14, Math.max(1, raw.shop.days | 0)) || 7; st.shop.have = raw.shop.have || {}; }
+    if (["today", "recipe", "nutrition", "shop"].indexOf(raw.tab) >= 0) st.tab = raw.tab;
+    st.perGlass = !!raw.perGlass;
+    return st;
+  }
+  var state = load();
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* works without it, just forgets */ } }
+
+  /* ---------- Words and numbers ---------- */
+  function nf(v, dec) {
+    var p = Math.pow(10, dec || 0), s = (Math.round(v * p) / p).toFixed(dec || 0).split(".");
+    s[0] = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, NB);
+    return s.join(",");
+  }
+  function kc(v) { return nf(Math.round(v / 10) * 10, 0); }
+  function trim1(v) { return nf(v, Math.abs(v - Math.round(v)) < 0.05 ? 0 : 1); }
+  function halves(v) {
+    var whole = Math.floor(v + 1e-9), half = v - whole > 0.25;
+    return (whole ? String(whole) : "") + (half ? "½" : "") || "0";
+  }
+  function unitWord(unit, v) {
+    if (unit === "skopa") return v >= 2 && v % 1 === 0 ? "skopor" : "skopa";
+    return unit;
+  }
+  function amount(key, n) {
+    var it = S.BY[key], v = n * it.step;
+    return halves(v) + NB + unitWord(it.unit, v);
+  }
+  function gramText(key, n) {
+    if (key === "salt") return amount(key, n);
+    return nf(n * S.BY[key].stepG, 0) + NB + "g";
+  }
+  function shown(key, n) { return state.settings.grams ? gramText(key, n) : amount(key, n); }
+  function listOf(words) {
+    if (words.length < 2) return words.join("");
+    return words.slice(0, -1).join(", ") + " och " + words[words.length - 1];
+  }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function clock(ts) { var d = new Date(ts); return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2); }
+  function dayStr(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function today() { return dayStr(new Date()); }
+  function rounds(n) { return n === 1 ? "1 omgång" : n + " omgångar"; }
+  function nameOf(key) { return key === "milk" ? "Laktosfri mjölk " + (state.settings.milk15 ? "1,5" : "3") + NB + "%" : S.BY[key].name; }
+  // The recipe as layers, bottom to top in the order it goes into the mixer.
+  function strata(steps) {
+    return S.ING.filter(function (it) { return steps[it.key] && it.vol; }).map(function (it) {
+      return { id: "s" + it.key, dl: steps[it.key] * it.stepG * it.vol / 100, color: it.color };
+    });
+  }
+
+  /* ---------- Today's batch, written down once when mixing starts ---------- */
+  function makePlan(settings) {
+    var rec = S.build(settings), per = S.perRound(rec), supps = settings.supps || {};
+    var spinach = !!rec.steps.spinach, R = per.length;
+    var plan = {
+      size: rec.size, kcal: rec.totals.kcal, prot: rec.totals.prot, volume: rec.volume, glasses: rec.glasses,
+      mixerDl: rec.mixerDl, color: S.blend(rec.steps), dpearl: supps.dpearl !== false, steps: rec.steps, rounds: []
+    };
+    per.forEach(function (amts, ri) {
+      function rows(keys) {
+        return keys.filter(function (k) { return amts[k]; }).map(function (k) {
+          var it = S.BY[k];
+          return { key: k, n: amts[k], name: nameOf(k), short: it.short, dl: amts[k] * it.stepG * it.vol / 100, color: it.color };
+        });
+      }
+      function supp(key) { return { key: key, supp: true, name: SUPP_ROW[key].name, short: key === "puori" ? "Puori" : "selen", amount: SUPP_ROW[key].amount, note: SUPP_ROW[key].note, dl: 0, color: "transparent" }; }
+      var a = rows(["milk", "water", "smp"]), b = rows(["yog", "oat", "whey"]), c = rows(["blue", "currant", "spinach", "banana"]);
+      var d = rows(["honey", "salt"]), e = rows(["oil"]), steps = [];
+      if (ri === 0 && supps.selen !== false) d.push(supp("selen"));
+      if (ri === 0 && supps.puori !== false) e.push(supp("puori"));
+      var powder = a.some(function (r) { return r.key === "smp"; });
+      var frozen = c.some(function (r) { return r.key !== "banana"; });
+      var honey = d.some(function (r) { return r.key === "honey"; });
+      var berries = c.filter(function (r) { return r.key === "blue" || r.key === "currant"; }).length === 2;
+
+      if (a.length) steps.push({ id: "a", rows: a, timer: powder ? 30 : 0,
+        title: cap(listOf(a.map(function (r) { return r.short; }))),
+        tip: powder ? "Mixa ner pulvret innan något annat åker i, annars klumpar det sig." : "" });
+      if (b.length) steps.push({ id: "b", rows: b, timer: c.length ? 0 : 30, title: cap(listOf(b.map(function (r) { return r.short; }))), tip: "" });
+      if (c.length) steps.push({ id: "c", rows: c, timer: 30,
+        title: berries ? cap(listOf(["bär"].concat(c.filter(function (r) { return r.key === "spinach" || r.key === "banana"; }).map(function (r) { return r.short; })))) : cap(listOf(c.map(function (r) { return r.short; }))),
+        tip: frozen ? "Bär och spenat rakt från frysen." : "" });
+      if (d.length) steps.push({ id: "d", rows: d, timer: 0, title: cap(listOf(d.map(function (r) { return r.short; }))),
+        tip: honey ? "Rör ut honungen i en matsked varmt vatten först." : "" });
+      steps.push({ id: "e", rows: e, timer: 90,
+        title: e.length ? (e[0].key === "oil" ? "Olivoljan sist" : "Puori sist") : "Mixa slätt",
+        tip: spinach ? "Högsta hastighet. Spenaten ska vara helt borta." : "Högsta hastighet tills den är helt slät." });
+      steps.push(ri < R - 1
+        ? { id: "f", rows: [], timer: 0, title: "Häll över i kannan", tip: "En kanna som rymmer minst " + trim1(Math.ceil(rec.volume / 5) * 0.5) + " liter. Mixern behöver inte sköljas emellan." }
+        : { id: "f", rows: [], timer: 0, last: true, title: R > 1 ? "Häll över och ställ i kylen" : "Ställ i kylen",
+            tip: "Dricks i " + COUNT[rec.glasses] + " glas över dagen. Rör om före varje glas och ha vatten bredvid." });
+      plan.rounds.push(steps);
+    });
+    return plan;
+  }
+  function rollDay() {
+    var d = state.day;
+    if (!d || d.date === today()) return;
+    if (d.mixedAt) {
+      state.history = state.history.filter(function (h) { return h.date !== d.date; });
+      state.history.push({ date: d.date, glasses: d.glasses.length, drunk: d.glasses.filter(Boolean).length, kcal: Math.round(d.plan.kcal) });
+      state.history = state.history.slice(-90);
+    }
+    state.day = null; cancelBeep(); stopTick();
+    save();
+  }
+
+  /* ---------- The jug ---------- */
+  function jugBuild(el, capDl) {
+    var major = capDl <= 10 ? 2 : 5, html = '<span class="jug-unit" aria-hidden="true">dl</span><div class="jug-scale" aria-hidden="true">', d, at;
+    for (d = 1; d <= capDl; d++) {
+      at = (d / capDl * 100).toFixed(2);
+      html += '<i' + (d % major === 0 ? ' class="major"' : "") + ' style="bottom:' + at + '%"></i>';
+      if (d % major === 0) html += '<span style="bottom:' + at + '%">' + d + "</span>";
+    }
+    html += '</div><div class="jug-handle" aria-hidden="true"></div><div class="jug-glass"><div class="jug-liquid"></div><div class="jug-vortex"></div></div>';
+    el.innerHTML = html;
+    el.setAttribute("data-cap", capDl);
+  }
+  // layers: [{ id, dl, color }] from the bottom up. Layers that are new rise from nothing, ones that are gone sink away.
+  function jugSet(el, capDl, layers, opt) {
+    opt = opt || {};
+    if (+el.getAttribute("data-cap") !== capDl) jugBuild(el, capDl);
+    var liquid = el.querySelector(".jug-liquid"), glass = el.querySelector(".jug-glass");
+    var have = {}, seen = {}, total = 0, top = null;
+    Array.prototype.forEach.call(liquid.children, function (n) { have[n.getAttribute("data-id")] = n; });
+    layers.forEach(function (L) {
+      var node = have[L.id];
+      if (!node) {
+        node = document.createElement("i");
+        node.setAttribute("data-id", L.id);
+        node.style.backgroundColor = L.color;
+        liquid.appendChild(node);
+        void node.offsetHeight;                      // so the rise is animated
+      }
+      node.removeAttribute("data-gone");
+      node.style.backgroundColor = L.color;
+      node.style.height = (L.dl / capDl * 100).toFixed(3) + "%";
+      node.className = "";
+      seen[L.id] = 1; total += L.dl;
+      if (L.dl > 0) top = node;
+    });
+    Object.keys(have).forEach(function (id) {
+      var n = have[id];
+      if (seen[id] || n.getAttribute("data-gone")) return;
+      n.setAttribute("data-gone", "1"); n.style.height = "0%"; n.className = "";
+      setTimeout(function () { if (n.getAttribute("data-gone") && n.parentNode) n.parentNode.removeChild(n); }, 700);
+    });
+    if (top) top.className = "crest";
+    liquid.className = "jug-liquid" + (opt.glasses ? " glasses" : "");
+    glass.style.setProperty("--level", Math.min(100, total / capDl * 100).toFixed(2) + "%");
+    el.classList.toggle("is-mixing", !!opt.mixing);
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", opt.label || "");
+  }
+
+  /* ---------- Sound, screen ---------- */
+  var audio = null, beeps = [], wake = null;
+  function armBeep(sec) {
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      audio = audio || new AC();
+      if (audio.state === "suspended") audio.resume();
+      cancelBeep();
+      var t0 = audio.currentTime + Math.max(0, sec);
+      [0, 0.26, 0.52].forEach(function (off, i) {
+        var o = audio.createOscillator(), g = audio.createGain();
+        o.type = "sine"; o.frequency.value = i === 2 ? 1320 : 990;
+        g.gain.setValueAtTime(0.0001, t0 + off);
+        g.gain.exponentialRampToValueAtTime(0.4, t0 + off + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + off + 0.22);
+        o.connect(g); g.connect(audio.destination);
+        o.start(t0 + off); o.stop(t0 + off + 0.25);
+        beeps.push(o);
+      });
+    } catch (e) { /* silent timer */ }
+  }
+  function cancelBeep() {
+    beeps.forEach(function (o) { try { o.stop(0); o.disconnect(); } catch (e) { /* already over */ } });
+    beeps = [];
+  }
+  function keepAwake(on) {
+    try {
+      if (on && navigator.wakeLock && !wake) {
+        navigator.wakeLock.request("screen").then(function (w) {
+          wake = w; w.addEventListener("release", function () { wake = null; });
+        }).catch(function () { /* the screen may dim, nothing else changes */ });
+      }
+      if (!on && wake) { wake.release(); wake = null; }
+    } catch (e) { /* not supported */ }
+  }
+
+  /* ---------- Mixing ---------- */
+  var mixOpen = false, tickId = 0;
+  function rid(r, s, key) { return r + "." + s + "." + key; }
+  function curStep(day) { return day.plan.rounds[day.pos.r][day.pos.s]; }
+  function mixLayers(day) {
+    var steps = day.plan.rounds[day.pos.r], layers = [], acc = {}, si;
+    for (si = 0; si <= day.pos.s && si < steps.length; si++) {
+      var step = steps[si], cur = si === day.pos.s, mixedHere = !!step.timer && (!cur || day.phase === "timing");
+      step.rows.forEach(function (row) {
+        if (cur && day.phase === "pour" && !day.checked[rid(day.pos.r, si, row.key)]) return;
+        if (row.dl > 0) layers.push({ id: "r" + day.pos.r + row.key, dl: row.dl, color: row.color });
+        if (!row.supp) acc[row.key] = (acc[row.key] || 0) + row.n;
+      });
+      if (mixedHere) { var col = S.blend(acc); layers.forEach(function (L) { L.color = col; }); }
+    }
+    return layers;
+  }
+  function openMix() {
+    mixOpen = true;
+    $("mix").hidden = false; $("app").setAttribute("aria-hidden", "true"); $("app").inert = true;
+    document.documentElement.classList.add("is-mixing");
+    keepAwake(true);
+    renderMix();
+    if (state.day && state.day.timer) startTick();
+    var t = $("mixTitle"); if (t) t.focus();
+  }
+  function closeMix() {
+    mixOpen = false;
+    $("mix").hidden = true; $("app").removeAttribute("aria-hidden"); $("app").inert = false;
+    document.documentElement.classList.remove("is-mixing");
+    keepAwake(false);
+  }
+  function startMix() {
+    state.day = { date: today(), plan: makePlan(state.settings), pos: { r: 0, s: 0 }, phase: "pour", checked: {}, startedAt: Date.now(), mixedAt: 0, glasses: [], dpearl: false, timer: null };
+    save(); openMix();
+  }
+  function pourAll(day) {
+    curStep(day).rows.forEach(function (row) { day.checked[rid(day.pos.r, day.pos.s, row.key)] = true; });
+  }
+  function nextStep() {
+    var day = state.day, steps = day.plan.rounds[day.pos.r];
+    day.timer = null; day.phase = "pour"; cancelBeep(); stopTick();
+    if (day.pos.s + 1 < steps.length) day.pos.s++;
+    else if (day.pos.r + 1 < day.plan.rounds.length) { day.pos.r++; day.pos.s = 0; }
+    else { finishMix(); return; }
+    save(); renderMix();
+    var sc = $("mixScroll"); if (sc) sc.scrollTop = 0;
+    var t = $("mixTitle"); if (t) t.focus();
+  }
+  function finishMix() {
+    var day = state.day, i;
+    day.mixedAt = Date.now(); day.timer = null; day.phase = "done"; day.glasses = [];
+    for (i = 0; i < day.plan.glasses; i++) day.glasses.push(0);
+    state.tab = "today";
+    save(); closeMix(); render(); window.scrollTo(0, 0);
+  }
+  function go() {
+    var day = state.day, step = curStep(day);
+    pourAll(day);
+    if (step.timer) {
+      day.phase = "timing"; day.timer = { end: Date.now() + step.timer * 1000, total: step.timer };
+      armBeep(step.timer);
+      save(); renderMix(); startTick();
+    } else nextStep();
+  }
+  function startTick() { stopTick(); tickId = setInterval(tick, 200); tick(); }
+  function stopTick() { if (tickId) { clearInterval(tickId); tickId = 0; } }
+  function tick() {
+    var day = state.day;
+    if (!day || !day.timer) { stopTick(); return; }
+    var left = (day.timer.end - Date.now()) / 1000;
+    if (left <= 0) { nextStep(); return; }
+    var num = $("timerNum"), fill = $("timerFill");
+    if (num) num.firstChild.nodeValue = String(Math.ceil(left));
+    if (fill) fill.style.setProperty("--left", Math.max(0, left / day.timer.total).toFixed(4));
+  }
+  function renderMix() {
+    var day = state.day;
+    if (!day || day.mixedAt) { closeMix(); return; }
+    var plan = day.plan, steps = plan.rounds[day.pos.r], step = steps[day.pos.s], R = plan.rounds.length, timing = day.phase === "timing";
+    $("mixRound").textContent = R > 1 ? "Omgång " + (day.pos.r + 1) + " av " + R : "";
+    $("mixProg").innerHTML = steps.map(function (st, i) { return '<i class="' + (i < day.pos.s ? "on" : i === day.pos.s ? "cur" : "") + '"></i>'; }).join("");
+    var html = '<h2 class="mix-title" id="mixTitle" tabindex="-1">' + esc(step.title) + "</h2>";
+    if (step.tip) html += '<p class="mix-tip">' + esc(step.tip) + "</p>";
+    if (step.rows.length) {
+      html += '<div class="rows">' + step.rows.map(function (row) {
+        var isIn = timing || !!day.checked[rid(day.pos.r, day.pos.s, row.key)];
+        return '<button type="button" class="row' + (isIn ? " is-in" : "") + '" data-act="pour" data-k="' + row.key + '" aria-pressed="' + isIn + '"' + (timing ? ' aria-disabled="true"' : "") + ">" +
+          '<span class="tick" style="--c:' + row.color + '"></span>' +
+          '<span class="row-name">' + esc(row.name) + (row.note ? "<small>" + esc(row.note) + "</small>" : "") + "</span>" +
+          '<span class="row-amt">' + (row.supp ? row.amount : shown(row.key, row.n)) + "</span></button>";
+      }).join("") + "</div>";
+    }
+    $("mixScroll").innerHTML = html;
+    var foot;
+    if (timing) {
+      foot = '<div class="timer"><p class="timer-num" id="timerNum" aria-live="off">' + step.timer + "<small>sekunder kvar</small></p>" +
+        '<button type="button" class="btn quiet" data-act="skip">Hoppa över</button>' +
+        '<div class="timer-track"><i id="timerFill"></i></div></div>';
+    } else {
+      var label = step.timer ? "Mixa " + step.timer + " sekunder" : step.last ? "Klar" : step.id === "f" ? "Nästa omgång" : "Vidare";
+      foot = '<button type="button" class="btn primary" data-act="go">' + label + "</button>";
+    }
+    $("mixFoot").innerHTML = foot;
+    var layers = mixLayers(day), dl = layers.reduce(function (a, L) { return a + L.dl; }, 0);
+    jugSet($("mixJug"), plan.mixerDl, layers, { mixing: timing, label: "Mixerkannan: ungefär " + nf(dl, 0) + " dl i." });
+  }
+
+  /* ---------- Today ---------- */
+  var confirming = "", confirmT = 0;
+  function askTwice(what) {
+    if (confirming === what) { confirming = ""; clearTimeout(confirmT); return true; }
+    confirming = what; clearTimeout(confirmT);
+    confirmT = setTimeout(function () { confirming = ""; render(); }, 4000);
+    render();
+    return false;
+  }
+  function historyHtml() {
+    var by = {}, d = new Date(), i, out = "", day = state.day;
+    state.history.forEach(function (h) { by[h.date] = h; });
+    if (day && day.mixedAt) by[day.date] = { glasses: day.glasses.length, drunk: day.glasses.filter(Boolean).length };
+    d.setDate(d.getDate() - 13);
+    for (i = 0; i < 14; i++) {
+      var key = dayStr(d), h = by[key], f = h ? Math.round(h.drunk / Math.max(1, h.glasses) * 100) : 0;
+      var said = WEEKDAYS[d.getDay()] + " " + d.getDate() + ": " + (h ? h.drunk + " av " + h.glasses + " glas" : "ingen shake");
+      out += '<li class="day' + (i === 13 ? " is-today" : "") + '" title="' + said + '"><i style="--f:' + f + '%" role="img" aria-label="' + said + '"></i><span aria-hidden="true">' + WEEKDAYS[d.getDay()].charAt(0).toUpperCase() + "</span></li>";
+      d.setDate(d.getDate() + 1);
+    }
+    return '<div class="block"><h2 class="h2">Två veckor</h2><ol class="days">' + out + '</ol><p class="hint">En liten kanna per dag, fylld efter hur många glas som blev druckna.</p></div>';
+  }
+  function fact(dt, dd) { return "<div><dt>" + dt + "</dt><dd>" + dd + "</dd></div>"; }
+  function takeOutHtml(rec) {
+    var s = state.settings, html = "", shownKeys = S.ING.filter(function (it) { return rec.plain[it.key] || rec.steps[it.key]; });
+    shownKeys.forEach(function (it) {
+      var k = it.key, n = rec.steps[k] || 0, out = !!s.missing[k] || (k === "honey" && s.honey === false) || (k === "smp" && s.noSmp), d = n - (rec.plain[k] || 0);
+      var toggle = k === "salt" || k === "water" ? "<span></span>" : '<button type="button" class="out" data-act="out" data-k="' + k + '" aria-pressed="' + !!s.missing[k] + '" aria-label="' + esc(nameOf(k)) + ' är slut">Slut</button>';
+      var note = k === "water" && s.missing.milk ? "I stället för mjölken" : k === "water" ? "Gör den tunnare" : k === "honey" && s.honey === false && !s.missing[k] ? "Avstängd i receptet" : k === "smp" && s.noSmp && !s.missing[k] ? "Avstängt i receptet" : "";
+      html += '<li class="row has-toggle' + (out ? " is-out" : "") + '"><span class="dot" style="--c:' + it.color + '"></span>' +
+        '<span class="row-name">' + esc(nameOf(k)) + (note ? "<small>" + note + "</small>" : "") + "</span>" +
+        '<span class="row-amt">' + (n ? shown(k, n) : "–") + (n && d && rec.plain[k] ? '<span class="delta">' + (d > 0 ? "+" : "−") + halves(Math.abs(d) * it.step) + NB + it.unit + "</span>" : "") + "</span>" + toggle + "</li>";
+    });
+    S.SUPPS.forEach(function (sp) {
+      var off = s.supps[sp.key] === false, r = SUPP_ROW[sp.key];
+      html += '<li class="row has-toggle' + (off ? " is-out" : "") + '"><span class="dot"></span><span class="row-name">' + r.name + "<small>" + r.note + "</small></span>" +
+        '<span class="row-amt">' + (off ? "–" : r.amount) + '</span><button type="button" class="out" data-act="supp" data-k="' + sp.key + '" aria-pressed="' + off + '" aria-label="' + r.name + ' är slut">Slut</button></li>';
+    });
+    return html;
+  }
+  function renderToday() {
+    var day = state.day, s = state.settings, side, body = "", jug = $("dayJug"), capDl;
+    if (day && day.mixedAt) {
+      var plan = day.plan, G = day.glasses.length, drunk = day.glasses.filter(Boolean).length, left = G - drunk, per = plan.volume / G, next = day.glasses.indexOf(0), layers = [], i;
+      capDl = Math.max(20, Math.ceil(plan.volume / 5) * 5);
+      for (i = 0; i < left; i++) layers.push({ id: "g" + i, dl: per, color: plan.color });
+      jugSet(jug, capDl, layers, { glasses: true, label: "Kannan: " + left + " av " + G + " glas kvar." });
+      side = '<p class="big"><b>' + drunk + "</b><span>av " + G + " glas</span></p><dl class=\"facts\">" +
+        fact("Druckit", kc(plan.kcal * drunk / G) + NB + "kcal") + fact("Protein", nf(plan.prot * drunk / G, 0) + NB + "g") +
+        fact("Kvar", nf(Math.round(plan.kcal / 10) * 10 - Math.round(plan.kcal * drunk / G / 10) * 10, 0) + NB + "kcal") + fact("Mixad", clock(day.mixedAt)) + "</dl>";
+      body += '<div class="block"><div class="glasses-list">';
+      for (i = 0; i < G; i++) {
+        var done = !!day.glasses[i];
+        body += '<button type="button" class="glass' + (done ? " is-done" : i === next ? " is-next" : "") + '" data-act="glass" data-i="' + i + '" aria-pressed="' + done + '">' +
+          '<span class="tick"></span><span class="glass-name">Glas ' + (i + 1) + "<small>" + nf(per, 1) + NB + "dl, " + kc(plan.kcal / G) + NB + "kcal, " + nf(plan.prot / G, 0) + NB + "g protein</small></span>" +
+          '<span class="glass-time">' + (done ? clock(day.glasses[i]) : i === next ? "Nästa" : "") + "</span></button>";
+      }
+      if (plan.dpearl) {
+        body += '<button type="button" class="glass' + (day.dpearl ? " is-done" : "") + '" data-act="dpearl" aria-pressed="' + !!day.dpearl + '"><span class="tick"></span>' +
+          '<span class="glass-name">D-pärla<small>Tuggas till första glaset</small></span><span class="glass-time"></span></button>';
+      }
+      body += "</div>" + (left ? '<p class="hint">Rör om före varje glas och ha vatten bredvid. Kannan tillbaka i kylen.</p>' : '<p class="label">Dagens shake är drucken.</p>') + "</div>";
+      body += '<div class="btnrow"><button type="button" class="btn quiet" data-act="redo">' + (confirming === "redo" ? "Tryck igen för att börja om dagen" : "Mixa en ny sats") + "</button></div>";
+    } else {
+      var live = day && day.startedAt && !day.mixedAt;
+      var rec = live ? null : S.build(s);
+      var kcalNow = live ? day.plan.kcal : rec.totals.kcal, prot = live ? day.plan.prot : rec.totals.prot, vol = live ? day.plan.volume : rec.volume;
+      var R = live ? day.plan.rounds.length : rec.rounds, G2 = live ? day.plan.glasses : rec.glasses;
+      capDl = Math.max(20, Math.ceil(vol / 5) * 5);
+      jugSet(jug, capDl, strata(live ? day.plan.steps || {} : rec.steps), { label: "Dagens recept i lager, ungefär " + nf(vol, 0) + " dl innan det mixas." });
+      side = '<p class="big"><b>' + kc(kcalNow) + "</b><span>kcal</span></p><dl class=\"facts\">" +
+        fact("Protein", nf(prot, 0) + NB + "g") + fact("Blir", "ca " + nf(vol, 0) + NB + "dl") +
+        fact("Omgångar", String(R)) + fact("Glas", String(G2)) + "</dl>";
+      body += '<div class="block">';
+      if (live) {
+        body += '<button type="button" class="btn primary" data-act="resume">Fortsätt mixa</button>' +
+          '<div class="btnrow"><button type="button" class="btn quiet" data-act="restart">' + (confirming === "restart" ? "Tryck igen för att börja om" : "Börja om från början") + "</button></div>";
+      } else {
+        body += '<button type="button" class="btn primary" data-act="start">Börja mixa</button>';
+        var gone = S.ING.filter(function (it) { return s.missing[it.key]; }).map(function (it) { return it.short; });
+        if (rec.short) body += '<p class="alert"><span><b>Når ' + kc(rec.totals.kcal) + " av " + kc(rec.target) + NB + "kcal i dag.</b> Det som är slut gick inte att ersätta helt.</span></p>";
+        else if (gone.length) body += '<p class="alert"><span><b>Slut: ' + esc(listOf(gone)) + ".</b> Resten är omräknat så att kalorierna stämmer.</span></p>";
+      }
+      body += "</div>";
+      if (!live) {
+        body += '<div class="block"><h2 class="h2">Ta fram</h2><p class="hint">Mängder för hela dagen. Tryck Slut på det som saknas, så räknas resten om.</p>' +
+          '<ul class="rows">' + takeOutHtml(rec) + "</ul></div>";
+      }
+    }
+    $("todaySide").innerHTML = side;
+    $("todayBody").innerHTML = body + historyHtml();
+  }
+
+  /* ---------- Recipe ---------- */
+  function seg(act, value, options, label) {
+    return '<div class="seg" role="group" aria-label="' + label + '">' + options.map(function (o) {
+      return '<button type="button" data-act="' + act + '" data-v="' + o[0] + '" aria-pressed="' + (String(o[0]) === String(value)) + '">' + o[1] + "</button>";
+    }).join("") + "</div>";
+  }
+  function changed(s) {
+    var k;
+    for (k in s.missing) if (s.missing[k]) return true;
+    return s.size !== 3000 || s.thick !== 0 || s.honey === false || s.noSmp || s.milk15;
+  }
+  function notesFor(rec, s) {
+    var t = rec.totals, out = [], ca = Math.round(t.Ca / 10) * 10;
+    if (rec.short) out.push("<b>Når " + kc(t.kcal) + " av " + kc(rec.target) + NB + "kcal.</b> Det som är slut gick inte att ersätta helt utan att shaken blir för tjock eller kalciumet för högt.");
+    if (t.Ca >= 0.85 * S.CA_LIMIT) out.push("<b>Kalcium " + nf(ca, 0) + NB + "mg, nära maxgränsen " + nf(S.CA_LIMIT, 0) + ".</b> Inga kalciumtillskott och ingen extra mjölk vid sidan av." + (rec.steps.smp ? " Äter du mycket ost eller annat mejeri till middag: stäng av mjölkpulvret den dagen." : ""));
+    if (t.lactose >= 30 && rec.steps.smp) out.push("<b>Laktos ungefär " + nf(t.lactose, 0) + NB + "g</b>, det mesta från mjölkpulvret. Krånglar magen: stäng av mjölkpulvret.");
+    if (t.prot < 0.8 * rec.plainTotals.prot) out.push("<b>Protein " + nf(t.prot, 0) + NB + "g i dag</b>, mindre än de vanliga " + nf(rec.plainTotals.prot, 0) + ".");
+    if (s.missing.oat) out.push("<b>Havregryn fungerar lika bra.</b> Mixa dem torra till mjöl först och låt havremjölet stå kvar i receptet.");
+    return out;
+  }
+  function renderRecipe() {
+    var s = state.settings, rec = S.build(s), t = rec.totals, html = "", day = state.day;
+    if (day && day.date === today()) html += '<p class="alert"><span>Dagens shake är redan ' + (day.mixedAt ? "mixad" : "påbörjad") + ". Det du ändrar här gäller nästa.</span></p>";
+    var thickSteps = Math.max(2, Math.round(S.volumeDl(rec.plain) / 9) * 2) / 2;
+    html += '<div class="block"><h2 class="h2">Storlek</h2>' + seg("size", s.size, [[2000, "2" + NB + "000"], [2500, "2" + NB + "500"], [3000, "3" + NB + "000"]], "Storlek") +
+      '<p class="hint">' + kc(rec.plainTotals.kcal) + NB + "kcal och " + nf(rec.plainTotals.prot, 0) + NB + "g protein, i " + COUNT[rec.glasses] + " glas." +
+      (s.size === 3000 ? " Går vikten upp mer än ett kilo i veckan: kör 2" + NB + "000 varannan dag." : "") + "</p></div>";
+    html += '<div class="block"><h2 class="h2">Tjocklek</h2>' + seg("thick", s.thick, [[-1, "Tunnare"], [0, "Vanlig"], [1, "Tjockare"]], "Tjocklek") +
+      '<p class="hint">' + (s.thick === -1 ? halves(thickSteps) + NB + "dl vatten till. Samma kalorier." : s.thick === 1 ? halves(thickSteps) + NB + "dl mindre " + (s.missing.milk ? "vatten" : "mjölk") + ". Kalorierna hålls ungefär lika." : "Som i receptet.") + "</p></div>";
+    html += '<div class="block switches">' +
+      '<button type="button" class="switch" data-act="honey" aria-pressed="' + (s.honey !== false && !s.missing.honey) + '"><span><b>Honung</b><small>1 msk ger 17 g tillsatt socker. Av betyder noll.</small></span><span class="knob"></span></button>' +
+      '<button type="button" class="switch" data-act="smp" aria-pressed="' + (!s.noSmp && !s.missing.smp) + '"><span><b>Mjölkpulver</b><small>Av: en skopa whey tar dess plats. Snällare mot magen och mycket mindre kalcium.</small></span><span class="knob"></span></button></div>';
+    html += '<div class="block"><h2 class="h2">Mjölk</h2>' + seg("milk", s.milk15 ? 1 : 0, [[0, "3" + NB + "%, röd"], [1, "1,5" + NB + "%, grön"]], "Vilken mjölk") +
+      '<p class="hint">Laktosfri i båda fallen.' + (rec.steps.milk ? " Den gröna ger ungefär " + kc(S.grams(rec.steps, "milk") * 0.13) + NB + "kcal mindre om dagen." : "") + "</p></div>";
+
+    html += '<div class="block"><h2 class="h2">Dagens recept</h2><ul class="rows">';
+    S.ING.forEach(function (it) {
+      var n = rec.steps[it.key] || 0, d = n - (rec.plain[it.key] || 0);
+      if (!n) return;
+      var one = S.totals((function () { var o = {}; o[it.key] = n; return o; })());
+      html += '<li class="row"><span class="dot" style="--c:' + it.color + '"></span><span class="row-name">' + esc(nameOf(it.key)) +
+        (one.kcal >= 0.5 ? "<small>" + nf(one.kcal, 0) + NB + "kcal" + (one.prot >= 0.5 ? ", " + nf(one.prot, 0) + NB + "g protein" : "") + "</small>" : "") + "</span>" +
+        '<span class="row-amt">' + shown(it.key, n) + (d && rec.plain[it.key] ? '<span class="delta">' + (d > 0 ? "+" : "−") + halves(Math.abs(d) * it.step) + NB + it.unit + "</span>" : "") + "</span></li>";
+    });
+    html += '</ul><p class="totals"><span>' + kc(t.kcal) + NB + "kcal</span><span>" + nf(t.prot, 0) + NB + "g protein</span><span>ca " + nf(rec.volume, 0) + NB + "dl</span></p></div>";
+
+    var notes = notesFor(rec, s);
+    if (notes.length) html += '<div class="block">' + notes.map(function (n) { return '<p class="alert"><span>' + n + "</span></p>"; }).join("") + "</div>";
+
+    html += '<div class="block"><h2 class="h2">Mixer</h2>' + seg("mixer", s.mixer, [[1, "1 liter"], [1.5, "1,5 liter"], [2, "2 liter"]], "Mixerkannans storlek") +
+      '<p class="hint">Kannans storlek avgör omgångarna: ' + rounds(rec.rounds) + " med ungefär " + nf(rec.volume / rec.rounds, 0) + NB + "dl i " + (rec.rounds > 1 ? "varje" : "kannan") + ".</p></div>";
+    html += '<div class="block"><h2 class="h2">Mängder</h2>' + seg("grams", s.grams ? 1 : 0, [[0, "Mått"], [1, "Gram"]], "Visa mängder i") +
+      '<p class="hint">Gram är mest exakt om du har köksvåg: ställ kannan på vågen och nollställ före varje ingrediens.</p></div>';
+    if (changed(s)) html += '<button type="button" class="btn" data-act="reset">Tillbaka till grundreceptet</button>';
+    $("view-recipe").innerHTML = html;
+  }
+
+  /* ---------- Nutrition ---------- */
+  function renderNutrition() {
+    var s = state.settings, rec = S.build(s), div = state.perGlass ? rec.glasses : 1, t = rec.totals, w = rec.withSupps, html = "";
+    function v(x, dec) { return nf(x / div, dec); }
+    html += seg("per", state.perGlass ? 1 : 0, [[0, "Hela shaken"], [1, "Per glas"]], "Visa näring för");
+    html += '<div class="decl"><h3>Näringsvärde</h3>' +
+      '<p class="decl-row"><b>Energi</b><b>' + (div === 1 ? kc(t.kcal) : nf(t.kcal / div, 0)) + NB + "kcal</b></p>" +
+      '<p class="decl-row"><span>Fett</span><span>' + v(t.fat, 0) + NB + "g</span></p>" +
+      '<p class="decl-row"><span>Kolhydrat</span><span>' + v(t.carb, 0) + NB + "g</span></p>" +
+      '<p class="decl-row in"><span>varav sockerarter</span><span>' + v(t.sugar, 0) + NB + "g</span></p>" +
+      '<p class="decl-row in"><span>varav tillsatt socker</span><span>' + v(t.addedSugar, 0) + NB + "g</span></p>" +
+      '<p class="decl-row"><span>Fiber</span><span>' + v(t.fiber, 0) + NB + "g</span></p>" +
+      '<p class="decl-row"><b>Protein</b><b>' + v(t.prot, 0) + NB + "g</b></p>" +
+      '<p class="decl-row"><span>Salt</span><span>' + v(t.saltG, 1) + NB + "g</span></p></div>";
+    [["vit", "Vitaminer"], ["min", "Mineraler"], ["other", "Övrigt"]].forEach(function (g, gi) {
+      html += '<div class="cov"><div class="cov-head"><h2 class="h2">' + g[1] + "</h2>" + (gi === 0 ? '<span class="hint">andel av dagsbehovet</span>' : "") + "</div>";
+      S.REF.filter(function (r) { return r.group === g[0]; }).forEach(function (r) {
+        var own = (t[r.key] || 0) / div, all = (w[r.key] || 0) / div, pOwn = own / r.ref * 100, pAll = all / r.ref * 100;
+        var w1 = Math.min(pOwn, 150) / 1.5, w2 = Math.min(pAll, 150) / 1.5;
+        var near = r.ul && (w[r.key] || 0) >= 0.85 * r.ul;
+        html += '<div class="cov-row' + (pAll < 50 ? " is-low" : "") + '"><span class="cov-name">' + r.name + " <small>" + nf(all, all < 10 ? Math.max(1, r.dec) : 0) + NB + r.unit + "</small></span>" +
+          '<span class="cov-pct">' + nf(pAll, 0) + NB + "%</span>" +
+          '<span class="cov-bar"><i style="--w:' + w1.toFixed(2) + '%"></i>' + (w2 - w1 > 0.3 ? '<i class="extra" style="--from:' + w1.toFixed(2) + "%;--w:" + (w2 - w1).toFixed(2) + '%"></i>' : "") + "</span>" +
+          (near ? '<span class="cov-note">Nära maxgränsen ' + nf(r.ul, 0) + NB + r.unit + " per dag</span>" : "") + "</div>";
+      });
+      html += "</div>";
+    });
+    html += '<p class="key"><span><i></i>shaken</span><span><i class="extra"></i>tillskotten</span><span><i class="need"></i>hela dagsbehovet</span></p>';
+    html += '<p class="hint">Dagsbehov enligt de nordiska näringsrekommendationerna 2023 för män 18–24 år. Värdena är standardvärden; skopor, havremjöl och yoghurt skiljer sig mellan märken.</p>';
+    $("view-nutrition").innerHTML = html;
+  }
+
+  /* ---------- Shopping ---------- */
+  function weight(g) { return g >= 1000 ? trim1(Math.ceil(g / 100 - 1e-9) / 10) + NB + "kg" : nf(Math.ceil(g / 10 - 1e-9) * 10, 0) + NB + "g"; }
+  function shopItems(rec, days) {
+    var out = [];
+    S.ING.forEach(function (it) {
+      var n = rec.steps[it.key] || 0, g = n * it.stepG * days, text;
+      if (!n || !it.buy) return;
+      if (it.key === "milk") text = trim1(Math.ceil(n * it.step * days / 5 - 1e-9) / 2) + NB + "liter";
+      else if (it.key === "banana") text = Math.ceil(n * it.step * days - 1e-9) + NB + "st";
+      else if (it.key === "oil") text = halves(Math.ceil(g / 0.915 / 50 - 1e-9) / 2) + NB + "dl";
+      else if (it.key === "whey") text = weight(g) + " (" + halves(n * it.step * days) + NB + "skopor)";
+      else text = weight(g);
+      out.push({ key: it.key, name: it.key === "milk" && state.settings.milk15 ? "Laktosfri mellanmjölk 1,5 %" : it.buy, text: text, color: it.color });
+    });
+    return out;
+  }
+  function shopText(items, days) {
+    var lines = ["# Shake, " + days + (days === 1 ? " dag" : " dagar")];
+    items.forEach(function (it) { if (!state.shop.have[it.key]) lines.push(it.name + " – " + it.text.replace(/ /g, " ")); });
+    return lines.join("\n");
+  }
+  function renderShop(status) {
+    var rec = S.build(state.settings), days = state.shop.days, items = shopItems(rec, days), html = "";
+    html += '<div class="block"><h2 class="h2">Handla för</h2><div class="stepper"><button type="button" data-act="days" data-v="-1" aria-label="En dag mindre"' + (days <= 1 ? " disabled" : "") + ">−</button>" +
+      "<output><b>" + days + "</b> " + (days === 1 ? "dag" : "dagar") + '</output><button type="button" data-act="days" data-v="1" aria-label="En dag mer"' + (days >= 14 ? " disabled" : "") + ">+</button></div>" +
+      '<p class="hint">Räknat på receptet som det är inställt nu, ' + kc(rec.totals.kcal) + NB + "kcal om dagen.</p></div>";
+    html += '<div class="block"><ul class="rows">' + items.map(function (it) {
+      var have = !!state.shop.have[it.key];
+      return '<li><button type="button" class="row' + (have ? " is-out" : "") + '" data-act="have" data-k="' + it.key + '" aria-pressed="' + have + '" style="cursor:pointer">' +
+        '<span class="dot" style="--c:' + it.color + '"></span><span class="row-name">' + esc(it.name) + (have ? "<small>Har hemma</small>" : "") + "</span>" +
+        '<span class="row-amt">' + (have ? "–" : it.text) + "</span></button></li>";
+    }).join("") + '</ul><p class="hint">Tryck på det du redan har hemma, så kommer det inte med.</p></div>';
+    html += '<div class="block"><button type="button" class="btn primary" data-act="copy">Kopiera listan</button>' +
+      '<p class="status" id="shopStatus" role="status">' + (status || "") + "</p>" +
+      '<p class="hint">Klistra in den under Handla i Dagsschema, eller var du vill.</p></div>';
+    html += '<p class="alert"><span><b>Bananerna:</b> köp dem mogna, skala och frys i halvor. Då håller de hela veckan, och shaken blir tjockare och kallare.</span></p>';
+    $("view-shop").innerHTML = html;
+  }
+  function copy(text, done) {
+    function fallback() {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+        var ok = document.execCommand("copy"); document.body.removeChild(ta); done(ok);
+      } catch (e) { done(false); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+    else fallback();
+  }
+
+  /* ---------- Putting it on screen ---------- */
+  var TABS = ["today", "recipe", "nutrition", "shop"];
+  function render() {
+    var d = new Date();
+    $("date").textContent = WEEKDAYS[d.getDay()] + " " + d.getDate() + " " + MONTHS[d.getMonth()];
+    $("title").textContent = { today: "Shake", recipe: "Recept", nutrition: "Näring", shop: "Handla" }[state.tab];
+    TABS.forEach(function (t) {
+      $("view-" + t).hidden = state.tab !== t;
+      $("tab-" + t).setAttribute("aria-pressed", String(state.tab === t));
+    });
+    if (state.tab === "today") renderToday();
+    else if (state.tab === "recipe") renderRecipe();
+    else if (state.tab === "nutrition") renderNutrition();
+    else renderShop();
+  }
+
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("[data-act]") : null;
+    if (!b || b.disabled) return;
+    var act = b.getAttribute("data-act"), k = b.getAttribute("data-k"), v = b.getAttribute("data-v"), s = state.settings, day = state.day;
+    if (act !== "redo" && act !== "restart") { confirming = ""; clearTimeout(confirmT); }
+    switch (act) {
+      case "tab": state.tab = v; save(); render(); window.scrollTo(0, 0); return;
+      case "start": rollDay(); startMix(); render(); return;
+      case "resume": openMix(); return;
+      case "restart": if (askTwice("restart")) { state.day = null; cancelBeep(); stopTick(); save(); render(); } return;
+      case "redo": if (askTwice("redo")) { state.day = null; save(); render(); window.scrollTo(0, 0); } return;
+      case "close": closeMix(); render(); return;
+      case "pour":
+        if (!day || day.phase !== "pour") return;
+        var id = rid(day.pos.r, day.pos.s, k);
+        if (day.checked[id]) delete day.checked[id]; else day.checked[id] = true;
+        save(); renderMix(); return;
+      case "go": if (day) go(); return;
+      case "skip": if (day) nextStep(); return;
+      case "glass":
+        if (!day || !day.mixedAt) return;
+        day.glasses[+b.getAttribute("data-i")] = day.glasses[+b.getAttribute("data-i")] ? 0 : Date.now();
+        save(); render(); return;
+      case "dpearl": if (day) { day.dpearl = !day.dpearl; save(); render(); } return;
+      case "out":
+        if (s.missing[k]) delete s.missing[k]; else s.missing[k] = true;
+        if (k === "honey" && !s.missing[k]) s.honey = true;      // marking it as back in also switches it on again
+        if (k === "smp" && !s.missing[k]) s.noSmp = false;
+        save(); render(); return;
+      case "supp": s.supps[k] = s.supps[k] === false; save(); render(); return;
+      case "size": s.size = +v; save(); render(); return;
+      case "thick": s.thick = +v; save(); render(); return;
+      case "honey": s.honey = !(s.honey !== false && !s.missing.honey); delete s.missing.honey; save(); render(); return;
+      case "smp": s.noSmp = !s.noSmp && !s.missing.smp; delete s.missing.smp; save(); render(); return;
+      case "mixer": s.mixer = +v; save(); render(); return;
+      case "milk": s.milk15 = v === "1"; save(); render(); return;
+      case "grams": s.grams = v === "1"; save(); render(); return;
+      case "reset": s.size = 3000; s.thick = 0; s.honey = true; s.noSmp = false; s.milk15 = false; s.missing = {}; save(); render(); window.scrollTo(0, 0); return;
+      case "per": state.perGlass = v === "1"; save(); render(); return;
+      case "days": state.shop.days = Math.min(14, Math.max(1, state.shop.days + (+v))); save(); render(); return;
+      case "have": if (state.shop.have[k]) delete state.shop.have[k]; else state.shop.have[k] = true; save(); render(); return;
+      case "copy":
+        copy(shopText(shopItems(S.build(s), state.shop.days), state.shop.days), function (ok) {
+          renderShop(ok ? "Listan är kopierad." : "Det gick inte att kopiera härifrån.");
+        });
+        return;
+    }
+  });
+
+  // A new day, or coming back to the phone in the middle of a timer.
+  function wakeUp() {
+    var was = state.day ? state.day.date : "";
+    rollDay();
+    if (was && !state.day && mixOpen) closeMix();
+    if (state.day && state.day.timer && !state.day.mixedAt) { if (mixOpen) startTick(); else if (Date.now() >= state.day.timer.end) nextStep(); }
+    if (mixOpen) keepAwake(true);
+    if (!mixOpen) render();
+  }
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) wakeUp(); });
+  window.addEventListener("pageshow", wakeUp);
+  setInterval(function () { if (state.day && state.day.date !== today()) wakeUp(); }, 60000);
+
+  rollDay();
+  if (state.day && state.day.timer && !state.day.mixedAt && Date.now() >= state.day.timer.end) { mixOpen = false; nextStep(); }
+  render();
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () { /* online only then */ }); });
+  }
+})();
+</script>
+</body>
+</html>
