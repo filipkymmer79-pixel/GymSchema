@@ -1,7 +1,7 @@
 {
- "name": "Lyftloggen",
- "short_name": "Lyftloggen",
- "description": "Filips lyftlogg – program 2.0",
+ "name": "GymSchema",
+ "short_name": "GymSchema",
+ "description": "Filips gymschema – program 2.0",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",

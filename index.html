@@ -1,13 +1,12 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Lyftloggen</title>
+<title>GymSchema</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Lyftloggen">
+<meta name="apple-mobile-web-app-title" content="GymSchema">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#13161B">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-startup-image" href="icon-512.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -191,8 +190,8 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 
 /* Tabs */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
-.tabs-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
-.tab{border:0;background:transparent;padding:9px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+.tabs-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr)}
+.tab{border:0;background:transparent;padding:9px 2px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em}
 .tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tab[aria-current="page"]{color:var(--ink)}
 
@@ -300,7 +299,39 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .bk input[type=file]{display:none}
 .small{font-size:12.5px;color:var(--muted)}
 .exlink{align-self:flex-start;font-size:12.5px;font-weight:700;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:2px 0}
-@media (max-width:380px){.day{padding:7px 6px;gap:6px}.plate{width:18px;height:18px;border-width:2.5px}.day-s{font-size:15px}.stats{grid-template-columns:repeat(2,1fr)}
+/* Vanor */
+.hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.hnav{display:flex;gap:6px;flex:0 0 auto}
+.hnav button{width:40px;height:40px;border-radius:12px;border:0;background:var(--surface);box-shadow:var(--shadow);font-size:20px;font-weight:800;color:var(--ink)}
+.hnav button:disabled{opacity:.3}
+.hsum{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hbig{font-family:var(--display);font-weight:900;font-size:46px;line-height:1;letter-spacing:.005em}
+.hbig small{font-size:20px;color:var(--muted);font-weight:800}
+.hbig.full{color:var(--good)}
+.hweek{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+.hw{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.hw i{width:30px;height:30px;border-radius:50%;border:2.5px solid var(--line);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.hw i.part{border-color:var(--good);color:var(--good)}
+.hw i.full{background:var(--good);border-color:var(--good);color:#fff}
+.hw.cur span{color:var(--ink)}
+.hw.cur i{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}
+.hlist{display:flex;flex-direction:column;gap:8px}
+.hrow{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:11px 14px 11px 11px;cursor:pointer;transition:background .15s}
+.hrow:focus-visible{outline:2.5px solid var(--blue);outline-offset:2px;border-radius:var(--r)}
+.hchk{width:44px;height:44px;border-radius:14px;border:2px solid var(--line);display:grid;place-items:center;font-size:20px;font-weight:800;color:transparent;background:var(--surface2)}
+.hrow[aria-pressed="true"]{background:var(--good-bg)}
+.hrow[aria-pressed="true"] .hchk{background:var(--good);border-color:var(--good);color:#fff}
+.hrow.auto .hchk{border-style:dashed}
+.ht b{display:block;font-weight:800;font-size:16px;line-height:1.2}
+.ht small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px;line-height:1.35}
+.hdots{display:flex;gap:3px;margin-top:7px;align-items:center}
+.hdots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.hdots i.on{background:var(--good)}
+.hdots i.cur{box-shadow:0 0 0 1.5px var(--ink)}
+.hdots small{display:inline;margin:0 0 0 4px;font-size:10.5px;color:var(--faint);font-weight:700}
+.hrules{display:flex;flex-direction:column;gap:6px}
+.hrules .big{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.05;letter-spacing:.005em}
+@media (max-width:380px){.tab{font-size:10.5px}.hbig{font-size:40px}.logo{font-size:27px}.wk{font-size:11px}.day{padding:7px 6px;gap:6px}.plate{width:18px;height:18px;border-width:2.5px}.day-s{font-size:15px}.stats{grid-template-columns:repeat(2,1fr)}
   .set{gap:6px;grid-template-columns:20px minmax(0,1fr) 54px 42px}.set.one{grid-template-columns:20px minmax(0,1fr) 42px}.fld.r input{width:54px}.step{width:30px}.chk{width:42px;height:42px}.sess-head .h2{font-size:30px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -308,7 +339,7 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 <div class="app">
   <header class="top">
     <div class="brand">
-      <div class="logo" aria-label="Lyftloggen">Lyft<span>loggen</span></div>
+      <div class="logo" aria-label="GymSchema">Gym<span>Schema</span></div>
       <div class="wk num" id="wk">Vecka 1</div>
     </div>
     <div class="strip" id="strip" aria-label="Veckans pass"></div>
@@ -320,12 +351,14 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
     <section class="view" id="v-vikt" aria-label="Kroppsvikt" hidden></section>
     <section class="view" id="v-historik" aria-label="Historik" hidden></section>
     <section class="view" id="v-program" aria-label="Programmet" hidden></section>
+    <section class="view" id="v-vanor" aria-label="Vanor" hidden></section>
   </main>
 </div>
 
 <nav class="tabs" aria-label="Meny">
   <div class="tabs-in">
     <button class="tab" data-v="pass" id="t-pass"><svg viewBox="0 0 24 24"><path d="M6 8v8M18 8v8M3 10v4M21 10v4M6 12h12"/></svg>Pass</button>
+    <button class="tab" data-v="vanor" id="t-vanor"><svg viewBox="0 0 24 24"><path d="M4 6.5l2 2 3.5-4M4 13.5l2 2 3.5-4M4 20.5l2 2 3.5-4" transform="translate(0,-1.5)"/><path d="M13 6h7M13 13h7M13 20h7"/></svg>Vanor</button>
     <button class="tab" data-v="framsteg" id="t-framsteg"><svg viewBox="0 0 24 24"><path d="M4 19h16M5 15l4-4 3 3 6-7"/><path d="M14 7h4v4"/></svg>Framsteg</button>
     <button class="tab" data-v="vikt" id="t-vikt"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9.5a4 4 0 0 1 6 0l-2 2.5"/></svg>Vikt</button>
     <button class="tab" data-v="historik" id="t-historik"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Historik</button>
@@ -1084,7 +1117,7 @@ $("v-historik").addEventListener("click", async e => {
 });
 
 /* ---------- Navigering ---------- */
-const VIEWS = ["pass", "framsteg", "vikt", "historik", "program"];
+const VIEWS = ["pass", "vanor", "framsteg", "vikt", "historik", "program"];
 function go(v){ if (location.hash !== "#" + v) location.hash = v; else show(v); }
 let programSub = null;
 function show(v){
@@ -1096,7 +1129,7 @@ function show(v){
 }
 function render(){
   renderStrip();
-  if (view === "pass") renderPass(); else if (view === "framsteg") renderProg(); else if (view === "vikt") renderVikt(); else if (view === "program") renderProgram(); else renderHist();
+  if (view === "pass") renderPass(); else if (view === "framsteg") renderProg(); else if (view === "vikt") renderVikt(); else if (view === "program") renderProgram(); else if (view === "vanor") renderVanor(); else renderHist();
 }
 document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest("[data-v]"); if (b) go(b.dataset.v); });
 window.addEventListener("hashchange", () => show(location.hash.slice(1)));
@@ -1137,6 +1170,9 @@ class LocalDB {
     let n = 0;
     (data.sessions || []).forEach(sx => { if (!sx || !sx.date || !sx.type) return; if (!sx.id) sx.id = "imp" + (sx.ts || Date.now()) + Math.random().toString(36).slice(2, 6); if (!this.sessions.some(y => y.id === sx.id)){ this.sessions.push(sx); n++; } });
     (data.weights || []).forEach(w => { if (w && w.date && typeof w.kg === "number" && !this.weights[w.date]){ this.weights[w.date] = w; n++; } });
+    const hb = data.habits && typeof data.habits === "object" ? data.habits : {};
+    Object.keys(hb).forEach(date => { if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !hb[date] || typeof hb[date] !== "object") return; const cur = habits[date] || (habits[date] = {}); Object.keys(hb[date]).forEach(k => { if (hb[date][k] === true && !cur[k]){ cur[k] = true; n++; } }); });
+    store("lyftloggen.habits.v1", habits);
     this._save("sessions"); this._save("weights"); return n;
   }
 }
@@ -1153,15 +1189,15 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "Lyftloggen", version: 2, exported: new Date().toISOString(), sessions, weights};
+  const data = {app: "GymSchema", version: 3, exported: new Date().toISOString(), sessions, weights, habits};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
-  const name = "lyftloggen-backup-" + iso(today()) + ".json";
+  const name = "gymschema-backup-" + iso(today()) + ".json";
   const blob = backupBlob();
   try {
     const file = new File([blob], name, {type: "application/json"});
-    if (navigator.canShare && navigator.canShare({files: [file]})){ await navigator.share({files: [file], title: "Lyftloggen backup"}); store("lyftloggen.lastBackup", iso(today())); toast("Backup delad"); renderHist(); return; }
+    if (navigator.canShare && navigator.canShare({files: [file]})){ await navigator.share({files: [file], title: "GymSchema backup"}); store("lyftloggen.lastBackup", iso(today())); toast("Backup delad"); renderHist(); return; }
   } catch(e){ if (e && e.name === "AbortError") return; }
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
   store("lyftloggen.lastBackup", iso(today())); toast("Backup sparad"); renderHist();
@@ -1208,6 +1244,81 @@ function renderProgram(){
   if (programSub){ const t = $("g-" + programSub); if (t) setTimeout(() => t.scrollIntoView({block: "start", behavior: "smooth"}), 50); programSub = null; }
 }
 $("v-program").addEventListener("click", e => { const b = e.target.closest("[data-gsec]"); if (!b) return; gSection = b.dataset.gsec; renderProgram(); window.scrollTo({top: 0}); });
+
+/* ---------- Vanor (dagliga regler, sparas på enheten) ---------- */
+const HABITS = [
+  {k: "somn", n: "Sömn 10 timmar", h: "Helt mörkt och svalt rum, skärmen av en halvtimme innan. Går du upp 07.30 – släck 21.30."},
+  {k: "alk", n: "Ingen alkohol", h: "Noll. Ett enda tillfälle sänker sömnkvaliteten och återhämtningen i flera dygn."},
+  {k: "socker", n: "Inget socker", h: "Godis, läsk, energidryck, bakverk. Frukt, bär, mjölk och havregryn räknas inte – de ska du äta."},
+  {k: "porr", n: "Ingen porr", h: "Din regel. Bocka av ärligt på kvällen."},
+  {k: "pass", n: "Dagens träning", auto: true},
+  {k: "hall", n: "Hållning + fascia · 12 min", h: "Hållningspasset och 2 min fascia-håll per sida. Finns under Program → Hållning."},
+  {k: "shake", n: "Shaken", h: "Mjölk, havregryn, banan, jordnötssmör, proteinpulver – 540 kcal extra. Varje dag, även vilodagar."},
+  {k: "prot", n: "125 g protein", h: "Tre mål med 30 g vardera plus shaken. Kvarg, ägg, kyckling, mjölk."},
+  {k: "tillskott", n: "Tillskott", h: "Kreatin 5 g och D-vitamin varje dag. Magnesium på kvällen om du vill. Kalcium får du av mjölk och yoghurt."},
+  {k: "vatten", n: "Vatten 2–3 liter", h: "En flaska på bordet, en i gymväskan."}
+];
+const RUN_DAYS = {1: "Löpning 20–30 min", 4: "Löpning 30–40 min"};
+let habits = store("lyftloggen.habits.v1") || {};
+let habitDate = iso(today());
+function habitPlan(date){
+  const d = parseIso(date), k = BY_DOW[d.getDay()];
+  if (k) return {kind: "gym", n: "Gym · " + PROGRAM[k].name, h: "Bockas av av sig själv när du sparar passet i Pass-fliken."};
+  if (RUN_DAYS[d.getDay()]) return {kind: "run", n: RUN_DAYS[d.getDay()], h: "Pratfart – du ska kunna prata hela tiden. Inga intervaller."};
+  return {kind: "rest", n: "Vila", h: "Promenad, mat och sömn. Räknas som klar."};
+}
+function habitDone(date, hb){
+  const flag = !!(habits[date] && habits[date][hb.k]);
+  if (hb.k !== "pass") return flag;
+  const plan = habitPlan(date);
+  if (plan.kind === "gym") return flag || sessions.some(s => s.date === date);
+  if (plan.kind === "rest") return true;
+  return flag;
+}
+const dayScore = date => HABITS.reduce((a, hb) => a + (habitDone(date, hb) ? 1 : 0), 0);
+function habitStreak(){
+  let d = today(), n = 0;
+  if (dayScore(iso(d)) < HABITS.length) d = addDays(d, -1); // dagen är inte slut än
+  for (let i = 0; i < 400; i++){ if (dayScore(iso(d)) < HABITS.length) break; n++; d = addDays(d, -1); }
+  return n;
+}
+function renderVanor(){
+  const el = $("v-vanor"), t = iso(today()), min = iso(addDays(today(), -13));
+  if (habitDate > t) habitDate = t; if (habitDate < min) habitDate = min;
+  const score = dayScore(habitDate), total = HABITS.length, streak = habitStreak();
+  const isT = habitDate === t, isY = habitDate === iso(addDays(today(), -1));
+  const title = isT ? "Idag" : isY ? "Igår" : dLong(habitDate);
+  const week = Array.from({length: 7}, (_, i) => iso(addDays(parseIso(habitDate), i - 6))).map(d => {
+    const sc = dayScore(d), pd = parseIso(d), pre = pd < START;
+    return '<div class="hw' + (d === habitDate ? ' cur' : '') + '"><i class="' + (pre ? '' : sc >= total ? 'full' : sc > 0 ? 'part' : '') + '">' + (pre ? '–' : sc >= total ? '✓' : sc) + '</i><span>' + DOW[pd.getDay()] + '</span></div>';
+  }).join("");
+  const rows = HABITS.map(hb => {
+    const done = habitDone(habitDate, hb), plan = hb.auto ? habitPlan(habitDate) : null;
+    const dots = Array.from({length: 7}, (_, i) => iso(addDays(parseIso(habitDate), i - 6))).map(d => '<i class="' + (habitDone(d, hb) ? 'on' : '') + (d === habitDate ? ' cur' : '') + '"></i>').join("");
+    return '<button type="button" class="hrow' + (hb.auto ? ' auto' : '') + '" data-h="' + hb.k + '" aria-pressed="' + done + '"><span class="hchk" aria-hidden="true">✓</span><span class="ht"><b>' + esc(plan ? plan.n : hb.n) + '</b><small>' + esc(plan ? plan.h : hb.h) + '</small><span class="hdots">' + dots + '<small>7 dagar</small></span></span></button>';
+  }).join("");
+  el.innerHTML = '<div class="hhead"><div><div class="lead">' + (isT ? "Bocka av på kvällen" : "Du kan fylla i 14 dagar bakåt") + '</div><h2 class="h2">' + esc(title) + '</h2></div>' +
+    '<div class="hnav"><button type="button" data-hnav="-1" aria-label="Föregående dag"' + (habitDate <= min ? ' disabled' : '') + '>‹</button><button type="button" data-hnav="1" aria-label="Nästa dag"' + (isT ? ' disabled' : '') + '>›</button></div></div>' +
+    '<div class="card"><div class="hsum"><div><div class="stat-l">' + (isT ? "Idag" : "Den dagen") + '</div><div class="hbig num' + (score >= total ? ' full' : '') + '">' + score + '<small>/' + total + '</small></div></div>' +
+    '<div><div class="stat-l">Perfekta dagar i rad</div><div class="hbig num' + (streak > 0 ? ' full' : '') + '">' + streak + '<small> ' + (streak === 1 ? "dag" : "dagar") + '</small></div></div></div>' +
+    '<div class="hweek">' + week + '</div></div>' +
+    '<div class="hlist">' + rows + '</div>' +
+    '<div class="card hrules"><div class="stat-l">Reglerna</div><div class="big">Ingen alkohol. Inget socker. Ingen porr. Tio timmar sömn.</div><div class="small">En perfekt dag är alla ' + total + ' bockade. Serien räknar perfekta dagar i rad – missar du en dag börjar en ny serie dagen efter. Det som avgör mest är sömnen: läggdags samma tid varje kväll, helt mörkt, svalt.</div></div>';
+}
+$("v-vanor").addEventListener("click", e => {
+  const nav = e.target.closest("[data-hnav]"), b = e.target.closest("[data-h]");
+  if (nav){ habitDate = iso(addDays(parseIso(habitDate), +nav.dataset.hnav)); renderVanor(); return; }
+  if (!b) return;
+  const k = b.dataset.h, day = habits[habitDate] || (habits[habitDate] = {});
+  const hb = HABITS.find(x => x.k === k);
+  if (hb.auto && habitPlan(habitDate).kind === "rest") return;
+  const was = habitDone(habitDate, hb);
+  if (was) delete day[k]; else day[k] = true;
+  if (!Object.keys(day).length) delete habits[habitDate];
+  store("lyftloggen.habits.v1", habits);
+  renderVanor();
+  if (!was && dayScore(habitDate) >= HABITS.length) toast("Perfekt dag ✓");
+});
 
 /* ---------- Start ---------- */
 draft = restoreDraft();

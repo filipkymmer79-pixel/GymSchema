@@ -1,5 +1,3 @@
-# Lyftloggen
+# GymSchema
 
-Filips lyftlogg – program 2.0. Öppna sidan på mobilen och välj *Lägg till på hemskärmen*.
-
-Adress: https://filipkymmer79-pixel.github.io/GymSchema/
+Filips gymschema – program 2.0. Öppna https://filipkymmer79-pixel.github.io/GymSchema/ i Safari på mobilen och välj *Dela → Lägg till på hemskärmen*.
