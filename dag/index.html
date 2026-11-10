@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dagsschema</title>
+<meta name="description" content="Dagens lista, en sak i taget.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dagsschema">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0B1226">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=DM+Mono:wght@400;500&amp;family=Instrument+Sans:wght@400..700&amp;display=swap">
+<style>
+/* Layout: one narrow column for a phone. A sticky strip of segments, one per task,
+   sits over a numbered checklist; the task to do now is the single lit row.
+   The list itself is plain text the owner writes or dictates, kept on the phone only. */
+:root {
+  --bg: #F3F5FA;        /* snow with a little blue in it */
+  --ink: #0D1530;       /* night-blue ink */
+  --muted: #5B6584;
+  --line: #D9DEEC;      /* hairlines, empty segments */
+  --edge: #B4BDD6;      /* outlines of things you tap */
+  --done: #7C86A3;      /* crossed-off text */
+  --field: #FFFFFF;     /* the text box */
+  --band: #0B1226;      /* behind the phone's clock and battery */
+  --lamp: #FFB627;      /* the lit window: now, and done marks */
+  --lamp-ink: #1B1300;
+  --lamp-soft: rgba(27, 19, 0, 0.64);
+  --lamp-edge: rgba(27, 19, 0, 0.45);
+  --lamp-line: rgba(27, 19, 0, 0.24);
+  --mark: var(--lamp);
+  --mark-ink: var(--lamp-ink);
+  --font-display: "Bricolage Grotesque", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --font-body: "Instrument Sans", "Helvetica Neue", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0B1226; --ink: #EDF0FA; --muted: #98A2C3; --line: #1F2947;
+    --edge: #3B4878; --done: #6F7A9C; --field: #121A33; --lamp: #FFBE3D;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+body {
+  margin: 0;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--band);
+}
+button, textarea { font: inherit; color: inherit; }
+.page {
+  max-width: 34rem;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 1.375rem 3.5rem;
+}
+
+/* Header */
+.head { display: grid; gap: 0.5rem; padding-bottom: 0.875rem; }
+.eyebrow {
+  margin: 0;
+  font: 500 0.75rem/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+h1 {
+  margin: 0;
+  font: 800 clamp(2.25rem, 10.5vw, 3.25rem)/0.95 var(--font-display);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Buttons */
+.btn {
+  min-height: 3rem;
+  padding: 0 1.125rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn.primary { border-color: var(--lamp); background: var(--lamp); color: var(--lamp-ink); }
+.btn.small { min-height: 2.5rem; padding: 0 0.875rem; font-size: 0.9375rem; }
+
+/* Writing the list */
+.compose { display: grid; gap: 0.75rem; padding-top: 0.25rem; }
+.lede { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.4; }
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 17rem;
+  padding: 0.875rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 1rem;
+  background: var(--field);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  resize: vertical;
+}
+textarea::placeholder { color: var(--done); }
+.hint { margin: 0; font: 400 0.75rem/1.5 var(--font-mono); color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.actions .primary { flex: 1; }
+.msg { margin: 0; min-height: 1.4em; font: 400 0.75rem/1.4 var(--font-mono); color: var(--muted); }
+
+/* A list left over from another day */
+.old {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.875rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 1rem;
+  font-size: 0.9375rem;
+}
+.old .btn { flex: none; }
+
+/* Sticky progress strip */
+.bar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  display: grid;
+  gap: 0.625rem;
+  padding-block: 0.625rem 0.75rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.segs { display: flex; gap: 6px; min-height: 7px; }
+.segs > span { display: flex; gap: 2px; min-width: 0; }
+.segs i {
+  flex: 1 1 0%;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--line);
+  transition: background-color 0.2s ease;
+}
+.segs i.on { background: var(--lamp); }
+.segs i.cur { background: var(--ink); }
+.barrow { display: flex; align-items: center; gap: 0.75rem; }
+.nowbtn {
+  flex: 1;
+  min-width: 0;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.tag {
+  flex: none;
+  padding: 0.3125rem 0.4375rem 0.25rem;
+  border-radius: 0.375rem;
+  background: var(--lamp);
+  color: var(--lamp-ink);
+  font: 500 0.6875rem/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.nowtext { min-width: 0; font: 700 1.0625rem/1.2 var(--font-display); overflow-wrap: anywhere; }
+.count {
+  flex: none;
+  font: 500 0.9375rem/1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.count b { font-weight: 500; color: var(--ink); }
+
+/* Sections */
+main { display: grid; gap: 1.625rem; padding-top: 1.375rem; }
+section.block { display: grid; gap: 0.5rem; }
+.sec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0;
+  padding-inline: 0.75rem;
+  font: 500 0.75rem/1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.sec .num { flex: none; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+
+/* One task */
+.task { position: relative; border-radius: 1rem; transition: background-color 0.2s ease; }
+.chk {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.task > label,
+.ghead {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.125rem;
+  padding: 0.375rem 0.75rem;
+}
+.task > label,
+.opt label {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.dot {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 50%;
+  font: 500 0.75rem/1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.7rem;
+  height: 0.36rem;
+  border-left: 2px solid var(--mark-ink);
+  border-bottom: 2px solid var(--mark-ink);
+  transform: translate(-50%, -68%) rotate(-45deg);
+  opacity: 0;
+}
+.txt { flex: 1; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.note {
+  display: block;
+  margin-top: 0.1875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--muted);
+}
+
+.task.is-done .dot { background: var(--mark); border-color: var(--mark); color: transparent; }
+.task.is-done .dot::after { opacity: 1; }
+.task.is-done .txt {
+  color: var(--done);
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+.task.is-done .note { color: var(--done); }
+
+/* The task to do now: the one lit row. Its children read the lamp tokens. */
+.task.now {
+  background: var(--lamp);
+  color: var(--lamp-ink);
+  --ink: var(--lamp-ink);
+  --muted: var(--lamp-soft);
+  --edge: var(--lamp-edge);
+  --line: var(--lamp-line);
+  --done: var(--lamp-soft);
+  --mark: var(--lamp-ink);
+  --mark-ink: var(--lamp);
+}
+.task.now .dot { border-color: var(--lamp-ink); color: var(--lamp-ink); }
+.task.now .txt { font-weight: 700; }
+.task.now > label::after {
+  content: "Nu";
+  flex: none;
+  font: 500 0.6875rem/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* A task with parts of its own */
+.gcount {
+  flex: none;
+  font: 500 0.8125rem/1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.gbody { padding: 0 0.75rem 0.875rem 3.375rem; }
+.opts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.25rem, 1fr));
+  gap: 0 0.5rem;
+}
+.opt { position: relative; min-width: 0; }
+.opt.wide { grid-column: 1 / -1; }
+.opt label {
+  display: flex;
+  align-items: center;
+  gap: 0.5625rem;
+  min-height: 2.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.opt label::before {
+  content: "";
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 50%;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.opt .chk:checked + label { color: var(--done); text-decoration: line-through; }
+.opt .chk:checked + label::before { background: var(--mark); border-color: var(--mark); }
+
+/* Many notes fold away under their task */
+.more { padding: 0 0.75rem 0.75rem 3.375rem; margin-top: -0.25rem; }
+.more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.25rem;
+  list-style: none;
+  border-radius: 0.5rem;
+  font: 500 0.8125rem/1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.more summary::-webkit-details-marker { display: none; }
+.more summary::before {
+  content: "+";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 50%;
+  line-height: 1;
+}
+.more[open] summary::before { content: "\2212"; }
+.cart { list-style: none; margin: 0.375rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+.cart li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+.cart span { min-width: 0; overflow-wrap: anywhere; }
+.cart b {
+  flex: none;
+  font: 500 0.8125rem/1.3 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.cart .sum { padding-top: 0.5rem; border-top: 1px solid var(--line); font-weight: 700; }
+
+.foot { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+.foot .btn { flex: 1; }
+
+/* Keyboard focus */
+.chk:focus-visible + label,
+.btn:focus-visible,
+.nowbtn:focus-visible,
+textarea:focus-visible,
+.more summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.task > .chk:focus-visible + label { outline-offset: -3px; border-radius: 1rem; }
+
+@keyframes pop { 40% { transform: scale(1.22); } }
+.task.pop .dot { animation: pop 0.28s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .task, .dot, .segs i, .opt label::before { transition: none; }
+  .task.pop .dot { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="head">
+    <p class="eyebrow" id="dayLabel">Dagsschema</p>
+    <h1 id="title">Idag</h1>
+  </header>
+
+  <section class="compose" id="compose" hidden>
+    <label class="lede" id="lede" for="src">Skriv, diktera eller klistra in dagens lista. En sak per rad.</label>
+    <textarea id="src" spellcheck="false" autocapitalize="sentences" placeholder="Äta frukost&#10;Gå med hunden&#10;Betala räkningar"></textarea>
+    <p class="hint">Rad som börjar med - blir en delsak. Rad som börjar med # blir en rubrik.</p>
+    <div class="actions">
+      <button type="button" class="btn" id="pasteBtn">Klistra in</button>
+      <button type="button" class="btn primary" id="makeBtn">Gör schema</button>
+      <button type="button" class="btn" id="cancelBtn" hidden>Avbryt</button>
+    </div>
+    <p class="msg" id="msg" role="status"></p>
+  </section>
+
+  <div id="sched" hidden>
+    <div class="old" id="old" hidden>
+      <span id="oldText"></span>
+      <button type="button" class="btn small" id="oldNew">Ny dag</button>
+    </div>
+    <div class="bar">
+      <div class="segs" id="segs" aria-hidden="true"></div>
+      <div class="barrow">
+        <button type="button" class="nowbtn" id="nowBtn">
+          <span class="tag" id="nowTag">Nu</span><span class="nowtext" id="nowText"></span>
+        </button>
+        <span class="count"><b id="doneN">0</b>/<span id="totalN">0</span></span>
+      </div>
+    </div>
+    <main id="list"></main>
+    <div class="foot">
+      <button type="button" class="btn" id="editBtn">Ändra listan</button>
+      <button type="button" class="btn" id="newBtn">Ny dag</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var KEY = "dagsschema.v1";
+  var WEEKDAYS = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
+  var MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti",
+                "september", "oktober", "november", "december"];
+  var FIRST = "Skriv, diktera eller klistra in dagens lista. En sak per rad.";
+  var LEFT = "Det här blev kvar. Ta bort det du inte vill ha med och fyll på med dagens.";
+  var EDIT = "Ändra, lägg till eller ta bort rader. Det du har bockat av ligger kvar.";
+  var PASTE_HELP = "Håll fingret i rutan och välj Klistra in.";
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  var dayLabel = $("dayLabel"), title = $("title");
+  var compose = $("compose"), lede = $("lede"), src = $("src"), msg = $("msg");
+  var pasteBtn = $("pasteBtn"), makeBtn = $("makeBtn"), cancelBtn = $("cancelBtn");
+  var sched = $("sched"), old = $("old"), oldText = $("oldText");
+  var segsEl = $("segs"), listEl = $("list");
+  var nowBtn = $("nowBtn"), nowTag = $("nowTag"), nowText = $("nowText");
+  var doneN = $("doneN"), totalN = $("totalN");
+
+  // Everything lives on this phone: the list as plain text, its day, and what is ticked.
+  var store = { text: "", day: "", done: {} };
+  try {
+    var raw = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (raw && typeof raw.text === "string") {
+      store.text = raw.text;
+      store.day = typeof raw.day === "string" ? raw.day : "";
+      if (raw.done && typeof raw.done === "object") store.done = raw.done;
+    }
+  } catch (e) { /* storage unavailable: start clean */ }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* fine without it */ }
+  }
+
+  // The day turns over at 04:00, so a late night still counts as today.
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function today() {
+    var t = new Date(Date.now() - 4 * 3600 * 1000);
+    return t.getFullYear() + "-" + pad(t.getMonth() + 1) + "-" + pad(t.getDate());
+  }
+  function asDate(day) { var p = day.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function longDay(day) {
+    var d = asDate(day);
+    return WEEKDAYS[d.getDay()] + " " + d.getDate() + " " + MONTHS[d.getMonth()];
+  }
+  function daysAgo(day) { return Math.round((asDate(today()) - asDate(day)) / 86400000); }
+
+  // Text -> sections of tasks.
+  //   "# Rubrik"  starts a section
+  //   "- delsak"  is a part of the task above, with a box of its own
+  //   "> rad"     is a note under the task above
+  //   "[x] "      in front of a task or part means it is already done
+  function norm(s) { return s.toLowerCase().replace(/\s+/g, " ").trim(); }
+  function parse(text) {
+    var sections = [], sec = null, task = null, seen = {};
+    function key(prefix, t) {
+      var base = prefix + norm(t);
+      seen[base] = (seen[base] || 0) + 1;
+      return base + "#" + seen[base];
+    }
+    function mark(line) {
+      var m = line.match(/^\[([xX ]?)\]\s*/);
+      if (!m) return { text: line.trim(), done: false };
+      return { text: line.slice(m[0].length).trim(), done: /x/i.test(m[1]) };
+    }
+    String(text || "").split(/\r?\n/).forEach(function (rawLine) {
+      var line = rawLine.trim(), m, it;
+      if (!line) return;
+      if ((m = line.match(/^#+\s*(.*)$/))) {
+        sec = { title: m[1].trim(), tasks: [] };
+        sections.push(sec);
+        task = null;
+        return;
+      }
+      if (task && (m = line.match(/^>\s*(.*)$/))) {
+        if (m[1].trim()) task.notes.push(m[1].trim());
+        return;
+      }
+      if (task && (m = line.match(/^[-–•*]\s+(.*)$/))) {
+        it = mark(m[1]);
+        if (it.text) task.subs.push({ text: it.text, done0: it.done, key: key(task.key + ">", it.text) });
+        return;
+      }
+      line = line.replace(/^[-–•*>]\s*/, "").replace(/^\d{1,3}[.)]\s+/, "");
+      it = mark(line);
+      if (!it.text) return;
+      if (!sec) { sec = { title: "", tasks: [] }; sections.push(sec); }
+      task = { text: it.text, done0: it.done, key: key("t:", it.text), subs: [], notes: [] };
+      sec.tasks.push(task);
+    });
+    return sections.filter(function (s) { return s.tasks.length; });
+  }
+  function isDone(t) {
+    if (!t.subs.length) return store.done[t.key] === true;
+    return t.subs.every(function (u) { return store.done[u.key] === true; });
+  }
+  // Sections -> the same plain text. onlyOpen keeps what is still left to do.
+  function toText(sections, onlyOpen) {
+    var out = [];
+    sections.forEach(function (s) {
+      var lines = [];
+      s.tasks.forEach(function (t) {
+        if (onlyOpen && isDone(t)) return;
+        lines.push(t.text);
+        t.subs.forEach(function (u) {
+          if (onlyOpen && store.done[u.key] === true) return;
+          lines.push("- " + u.text);
+        });
+        t.notes.forEach(function (n) { lines.push("> " + n); });
+      });
+      if (!lines.length) return;
+      if (s.title) out.push("# " + s.title);
+      out = out.concat(lines);
+    });
+    return out.join("\n");
+  }
+
+  // Build the list
+  var model = [], tasks = [], groups = [], nowTask = null, idSeq = 0;
+
+  function box(k) {
+    var input = el("input", "chk");
+    input.type = "checkbox";
+    input.id = "c" + (++idSeq);
+    input.setAttribute("data-key", k);
+    return input;
+  }
+  // "Namn – 122 kr" splits into a name and a price column.
+  function noteRow(n) {
+    var li = el("li"), m = n.match(/^(.*\S)\s+[–-]\s+(\d[\d\s  ]*(?:,\d+)?\s*kr)$/);
+    if (m) {
+      li.appendChild(el("span", null, m[1]));
+      li.appendChild(el("b", null, m[2]));
+      if (/^summa$/i.test(m[1])) li.className = "sum";
+    } else {
+      li.appendChild(el("span", null, n));
+    }
+    return li;
+  }
+  function buildTask(t, n) {
+    var li = el("li", "task"), txt = el("span", "txt"), head;
+    var dot = el("span", "dot", String(n));
+    var foldNotes = t.notes.length > 2;
+    txt.appendChild(el("span", "t", t.text));
+    if (!foldNotes) t.notes.forEach(function (note) { txt.appendChild(el("small", "note", note)); });
+
+    var view = { t: t, el: li, boxes: [], counter: null, seg: null, done: false };
+    if (!t.subs.length) {
+      var input = box(t.key);
+      head = el("label");
+      head.htmlFor = input.id;
+      head.appendChild(dot);
+      head.appendChild(txt);
+      li.appendChild(input);
+      li.appendChild(head);
+      view.boxes.push(input);
+    } else {
+      head = el("div", "ghead");
+      view.counter = el("span", "gcount", "0/" + t.subs.length);
+      head.appendChild(dot);
+      head.appendChild(txt);
+      head.appendChild(view.counter);
+      li.appendChild(head);
+      var body = el("div", "gbody"), opts = el("div", "opts");
+      t.subs.forEach(function (u) {
+        var wrap = el("span", u.text.length > 14 ? "opt wide" : "opt");
+        var sub = box(u.key), lab = el("label", null, u.text);
+        lab.htmlFor = sub.id;
+        wrap.appendChild(sub);
+        wrap.appendChild(lab);
+        opts.appendChild(wrap);
+        view.boxes.push(sub);
+      });
+      body.appendChild(opts);
+      li.appendChild(body);
+    }
+    if (foldNotes) {
+      var more = el("details", "more"), cart = el("ul", "cart"), priced = 0, sum = "";
+      t.notes.forEach(function (note) {
+        var row = noteRow(note);
+        if (row.className === "sum") sum = row.lastChild.textContent;
+        else if (row.childNodes.length === 2) priced++;
+        cart.appendChild(row);
+      });
+      more.appendChild(el("summary", null, sum && priced ? priced + " varor · " + sum : t.notes.length + " rader"));
+      more.appendChild(cart);
+      li.appendChild(more);
+    }
+    return view;
+  }
+
+  function render() {
+    model = parse(store.text);
+    tasks = [];
+    groups = [];
+    listEl.textContent = "";
+    segsEl.textContent = "";
+    var n = 0;
+    model.forEach(function (s) {
+      var secEl = el("section", "block"), num = null;
+      if (s.title) {
+        var h = el("h2", "sec");
+        num = el("span", "num");
+        h.appendChild(el("span", null, s.title));
+        h.appendChild(num);
+        secEl.appendChild(h);
+      }
+      var ol = el("ol", "rows"), strip = el("span"), mine = [];
+      ol.start = n + 1;
+      s.tasks.forEach(function (t) {
+        var view = buildTask(t, ++n);
+        view.seg = el("i");
+        strip.appendChild(view.seg);
+        ol.appendChild(view.el);
+        tasks.push(view);
+        mine.push(view);
+      });
+      strip.style.flex = mine.length + " 1 0%";
+      segsEl.appendChild(strip);
+      secEl.appendChild(ol);
+      listEl.appendChild(secEl);
+      groups.push({ num: num, tasks: mine });
+    });
+    totalN.textContent = tasks.length;
+    apply();
+  }
+
+  function apply() {
+    var nDone = 0;
+    nowTask = null;
+    tasks.forEach(function (v) {
+      var c = 0;
+      v.boxes.forEach(function (b) {
+        var on = store.done[b.getAttribute("data-key")] === true;
+        if (b.checked !== on) b.checked = on;
+        if (on) c++;
+      });
+      v.done = c === v.boxes.length;
+      if (v.done) nDone++;
+      else if (!nowTask) nowTask = v;
+      if (v.counter) v.counter.textContent = c + "/" + v.boxes.length;
+    });
+    tasks.forEach(function (v) {
+      var cur = v === nowTask;
+      v.el.classList.toggle("is-done", v.done);
+      v.el.classList.toggle("now", cur);
+      if (cur) v.el.setAttribute("aria-current", "step");
+      else v.el.removeAttribute("aria-current");
+      v.seg.className = v.done ? "on" : cur ? "cur" : "";
+    });
+    groups.forEach(function (g) {
+      if (!g.num) return;
+      var d = g.tasks.filter(function (v) { return v.done; }).length;
+      g.num.textContent = d + "/" + g.tasks.length;
+    });
+    doneN.textContent = nDone;
+    if (nowTask) {
+      nowTag.textContent = "Nu";
+      nowText.textContent = nowTask.t.text;
+    } else {
+      nowTag.textContent = "Klart";
+      nowText.textContent = "Allt avbockat";
+    }
+  }
+
+  // The two screens
+  var mode = "first";   // "first" | "new" | "edit"
+
+  function showSched() {
+    var day = store.day || today(), ago = daysAgo(day);
+    dayLabel.textContent = longDay(day);
+    title.textContent = ago <= 0 ? "Idag" : ago === 1 ? "Igår" : WEEKDAYS[asDate(day).getDay()];
+    old.hidden = ago <= 0;
+    oldText.textContent = "Listan är från " + longDay(day).toLowerCase() + ".";
+    compose.hidden = true;
+    sched.hidden = false;
+    render();
+  }
+
+  function showCompose(next) {
+    mode = next;
+    var text = "";
+    if (mode === "edit") text = toText(model, false);
+    if (mode === "new") text = toText(model, true);
+    src.value = text;
+    msg.textContent = "";
+    lede.textContent = mode === "edit" ? EDIT : (mode === "new" && text) ? LEFT : FIRST;
+    dayLabel.textContent = mode === "edit" ? longDay(store.day || today()) : longDay(today());
+    title.textContent = mode === "edit" ? "Ändra listan" : "Ny dag";
+    makeBtn.textContent = mode === "edit" ? "Spara" : "Gör schema";
+    cancelBtn.hidden = mode === "first";
+    sched.hidden = true;
+    compose.hidden = false;
+    window.scrollTo(0, 0);
+  }
+
+  function commit() {
+    var parsed = parse(src.value);
+    if (!parsed.length) { msg.textContent = "Skriv minst en rad först."; return; }
+    if (mode !== "edit") { store.done = {}; store.day = today(); }
+    if (!store.day) store.day = today();
+    var valid = {};
+    parsed.forEach(function (s) {
+      s.tasks.forEach(function (t) {
+        valid[t.key] = true;
+        if (t.done0 && !t.subs.length) store.done[t.key] = true;
+        t.subs.forEach(function (u) {
+          valid[u.key] = true;
+          if (u.done0 || t.done0) store.done[u.key] = true;
+        });
+      });
+    });
+    Object.keys(store.done).forEach(function (k) { if (!valid[k]) delete store.done[k]; });
+    store.text = toText(parsed, false);
+    save();
+    showSched();
+    window.scrollTo(0, 0);
+  }
+
+  makeBtn.addEventListener("click", commit);
+  cancelBtn.addEventListener("click", showSched);
+  $("editBtn").addEventListener("click", function () { showCompose("edit"); });
+  $("newBtn").addEventListener("click", function () { showCompose("new"); });
+  $("oldNew").addEventListener("click", function () { showCompose("new"); });
+
+  pasteBtn.addEventListener("click", function () {
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+      src.focus();
+      msg.textContent = PASTE_HELP;
+      return;
+    }
+    navigator.clipboard.readText().then(function (t) {
+      if (!t || !t.trim()) { msg.textContent = "Det finns inget kopierat att klistra in."; return; }
+      var have = src.value.replace(/\s+$/, "");
+      src.value = have ? have + "\n" + t : t;
+      msg.textContent = "";
+    }, function () {
+      src.focus();
+      msg.textContent = PASTE_HELP;
+    });
+  });
+
+  listEl.addEventListener("change", function (e) {
+    var b = e.target;
+    if (!b || !b.classList || !b.classList.contains("chk")) return;
+    var k = b.getAttribute("data-key");
+    if (b.checked) store.done[k] = true;
+    else delete store.done[k];
+    save();
+    apply();
+    var li = b.closest(".task");
+    if (li && li.classList.contains("is-done")) {
+      li.classList.add("pop");
+      setTimeout(function () { li.classList.remove("pop"); }, 320);
+    }
+  });
+
+  nowBtn.addEventListener("click", function () {
+    if (!nowTask) return;
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    nowTask.el.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "center" });
+  });
+
+  if (parse(store.text).length) showSched();
+  else showCompose("first");
+
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () { /* works without it */ });
+    });
+  }
+})();
+</script>
+</body>
+</html>
