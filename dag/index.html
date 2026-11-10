@@ -11,8 +11,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0B1226">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="kira-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="kira-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="kira-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=DM+Mono:wght@400;500&amp;family=Instrument+Sans:wght@400..700&amp;display=swap">
@@ -81,7 +82,17 @@ button, textarea { font: inherit; color: inherit; }
 }
 
 /* Header */
-.head { display: grid; gap: 0.5rem; padding-bottom: 0.875rem; }
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; padding-bottom: 0.875rem; }
+.headtext { display: grid; gap: 0.5rem; min-width: 0; }
+.pup {
+  flex: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 4px 4px 0;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--lamp);
+}
 .eyebrow {
   margin: 0;
   font: 500 0.75rem/1 var(--font-mono);
@@ -400,6 +411,9 @@ section.block { display: grid; gap: 0.5rem; }
 }
 .cart .sum { padding-top: 0.5rem; border-top: 1px solid var(--line); font-weight: 700; }
 
+/* Things with no order: no numbers, outside the strip and the count */
+.secnote { margin: 0 0.75rem; font-size: 0.875rem; line-height: 1.35; color: var(--muted); }
+
 .foot { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
 .foot .btn { flex: 1; }
 
@@ -422,14 +436,17 @@ textarea:focus-visible,
 <body>
 <div class="page">
   <header class="head">
-    <p class="eyebrow" id="dayLabel">Dagsschema</p>
-    <h1 id="title">Idag</h1>
+    <div class="headtext">
+      <p class="eyebrow" id="dayLabel">Dagsschema</p>
+      <h1 id="title">Idag</h1>
+    </div>
+    <img class="pup" src="kira-192.png" alt="Kira" width="56" height="56">
   </header>
 
   <section class="compose" id="compose" hidden>
     <label class="lede" id="lede" for="src">Skriv, diktera eller klistra in dagens lista. En sak per rad.</label>
     <textarea id="src" spellcheck="false" autocapitalize="sentences" placeholder="Äta frukost&#10;Gå med hunden&#10;Betala räkningar"></textarea>
-    <p class="hint">Rad som börjar med - blir en delsak. Rad som börjar med # blir en rubrik.</p>
+    <p class="hint">Rad som börjar med - blir en delsak, # en rubrik, ## en rubrik för sånt utan ordning.</p>
     <div class="actions">
       <button type="button" class="btn" id="pasteBtn">Klistra in</button>
       <button type="button" class="btn primary" id="makeBtn">Gör schema</button>
@@ -517,7 +534,7 @@ textarea:focus-visible,
   function daysAgo(day) { return Math.round((asDate(today()) - asDate(day)) / 86400000); }
 
   // Text -> sections of tasks.
-  //   "# Rubrik"  starts a section
+  //   "# Rubrik"  starts a section; "## Rubrik" one whose tasks have no order
   //   "- delsak"  is a part of the task above, with a box of its own
   //   "> rad"     is a note under the task above
   //   "[x] "      in front of a task or part means it is already done
@@ -537,8 +554,9 @@ textarea:focus-visible,
     String(text || "").split(/\r?\n/).forEach(function (rawLine) {
       var line = rawLine.trim(), m, it;
       if (!line) return;
-      if ((m = line.match(/^#+\s*(.*)$/))) {
-        sec = { title: m[1].trim(), tasks: [] };
+      if ((m = line.match(/^(#+)\s*(.*)$/))) {
+        sec = { title: m[2].trim(), loose: m[1].length > 1, tasks: [] };
+        if (sec.loose && !sec.title) sec.title = "Utan ordning";
         sections.push(sec);
         task = null;
         return;
@@ -555,7 +573,7 @@ textarea:focus-visible,
       line = line.replace(/^[-–•*>]\s*/, "").replace(/^\d{1,3}[.)]\s+/, "");
       it = mark(line);
       if (!it.text) return;
-      if (!sec) { sec = { title: "", tasks: [] }; sections.push(sec); }
+      if (!sec) { sec = { title: "", loose: false, tasks: [] }; sections.push(sec); }
       task = { text: it.text, done0: it.done, key: key("t:", it.text), subs: [], notes: [] };
       sec.tasks.push(task);
     });
@@ -580,7 +598,7 @@ textarea:focus-visible,
         t.notes.forEach(function (n) { lines.push("> " + n); });
       });
       if (!lines.length) return;
-      if (s.title) out.push("# " + s.title);
+      if (s.title) out.push((s.loose ? "## " : "# ") + s.title);
       out = out.concat(lines);
     });
     return out.join("\n");
@@ -610,12 +628,15 @@ textarea:focus-visible,
   }
   function buildTask(t, n) {
     var li = el("li", "task"), txt = el("span", "txt"), head;
-    var dot = el("span", "dot", String(n));
-    var foldNotes = t.notes.length > 2;
+    var dot = el("span", "dot", n ? String(n) : "");
+    // A first note that ends with ":" names the folded notes ("Så gör du:").
+    var notes = t.notes.slice(), noteLabel = "";
+    if (notes.length > 1 && /:$/.test(notes[0])) noteLabel = notes.shift().replace(/:$/, "");
+    var foldNotes = !!noteLabel || notes.length > 2;
     txt.appendChild(el("span", "t", t.text));
-    if (!foldNotes) t.notes.forEach(function (note) { txt.appendChild(el("small", "note", note)); });
+    if (!foldNotes) notes.forEach(function (note) { txt.appendChild(el("small", "note", note)); });
 
-    var view = { t: t, el: li, boxes: [], counter: null, seg: null, done: false };
+    var view = { t: t, el: li, boxes: [], counter: null, seg: null, done: false, loose: false };
     if (!t.subs.length) {
       var input = box(t.key);
       head = el("label");
@@ -647,13 +668,13 @@ textarea:focus-visible,
     }
     if (foldNotes) {
       var more = el("details", "more"), cart = el("ul", "cart"), priced = 0, sum = "";
-      t.notes.forEach(function (note) {
+      notes.forEach(function (note) {
         var row = noteRow(note);
         if (row.className === "sum") sum = row.lastChild.textContent;
         else if (row.childNodes.length === 2) priced++;
         cart.appendChild(row);
       });
-      more.appendChild(el("summary", null, sum && priced ? priced + " varor · " + sum : t.notes.length + " rader"));
+      more.appendChild(el("summary", null, noteLabel || (sum && priced ? priced + " varor · " + sum : notes.length + " rader")));
       more.appendChild(cart);
       li.appendChild(more);
     }
@@ -668,7 +689,7 @@ textarea:focus-visible,
     segsEl.textContent = "";
     var n = 0;
     model.forEach(function (s) {
-      var secEl = el("section", "block"), num = null;
+      var secEl = el("section", s.loose ? "block loose" : "block"), num = null;
       if (s.title) {
         var h = el("h2", "sec");
         num = el("span", "num");
@@ -676,23 +697,29 @@ textarea:focus-visible,
         h.appendChild(num);
         secEl.appendChild(h);
       }
-      var ol = el("ol", "rows"), strip = el("span"), mine = [];
-      ol.start = n + 1;
+      if (s.loose) secEl.appendChild(el("p", "secnote", "Ingen ordning. Ta dem när det passar."));
+      var rows = el(s.loose ? "ul" : "ol", "rows"), strip = el("span"), mine = [];
+      if (!s.loose) rows.start = n + 1;
       s.tasks.forEach(function (t) {
-        var view = buildTask(t, ++n);
-        view.seg = el("i");
-        strip.appendChild(view.seg);
-        ol.appendChild(view.el);
+        var view = buildTask(t, s.loose ? 0 : ++n);
+        view.loose = !!s.loose;
+        if (!s.loose) {
+          view.seg = el("i");
+          strip.appendChild(view.seg);
+        }
+        rows.appendChild(view.el);
         tasks.push(view);
         mine.push(view);
       });
-      strip.style.flex = mine.length + " 1 0%";
-      segsEl.appendChild(strip);
-      secEl.appendChild(ol);
+      if (!s.loose) {
+        strip.style.flex = mine.length + " 1 0%";
+        segsEl.appendChild(strip);
+      }
+      secEl.appendChild(rows);
       listEl.appendChild(secEl);
       groups.push({ num: num, tasks: mine });
     });
-    totalN.textContent = tasks.length;
+    totalN.textContent = n;
     apply();
   }
 
@@ -707,8 +734,10 @@ textarea:focus-visible,
         if (on) c++;
       });
       v.done = c === v.boxes.length;
-      if (v.done) nDone++;
-      else if (!nowTask) nowTask = v;
+      if (!v.loose) {
+        if (v.done) nDone++;
+        else if (!nowTask) nowTask = v;
+      }
       if (v.counter) v.counter.textContent = c + "/" + v.boxes.length;
     });
     tasks.forEach(function (v) {
@@ -717,7 +746,7 @@ textarea:focus-visible,
       v.el.classList.toggle("now", cur);
       if (cur) v.el.setAttribute("aria-current", "step");
       else v.el.removeAttribute("aria-current");
-      v.seg.className = v.done ? "on" : cur ? "cur" : "";
+      if (v.seg) v.seg.className = v.done ? "on" : cur ? "cur" : "";
     });
     groups.forEach(function (g) {
       if (!g.num) return;
@@ -728,6 +757,9 @@ textarea:focus-visible,
     if (nowTask) {
       nowTag.textContent = "Nu";
       nowText.textContent = nowTask.t.text;
+    } else if (!tasks.some(function (v) { return !v.loose; })) {
+      nowTag.textContent = "Fritt";
+      nowText.textContent = "Ta dem när det passar";
     } else {
       nowTag.textContent = "Klart";
       nowText.textContent = "Allt avbockat";
@@ -803,8 +835,9 @@ textarea:focus-visible,
     navigator.clipboard.readText().then(function (t) {
       if (!t || !t.trim()) { msg.textContent = "Det finns inget kopierat att klistra in."; return; }
       var have = src.value.replace(/\s+$/, "");
-      src.value = have ? have + "\n" + t : t;
-      msg.textContent = "";
+      var whole = /^\s*#/.test(t);   // a copied list with headings replaces what is in the box
+      src.value = have && !whole ? have + "\n" + t : t;
+      msg.textContent = have && whole ? "Bytte till listan du kopierade." : "";
     }, function () {
       src.focus();
       msg.textContent = PASTE_HELP;
