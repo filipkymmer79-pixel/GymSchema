@@ -141,9 +141,11 @@ textarea {
 }
 textarea::placeholder { color: var(--done); }
 .hint { margin: 0; font: 400 0.75rem/1.5 var(--font-mono); color: var(--muted); }
+.ask { display: grid; gap: 0.5rem; }
+a.btn { display: flex; align-items: center; justify-content: center; text-decoration: none; }
 .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .actions .primary { flex: 1; }
-.msg { margin: 0; min-height: 1.4em; font: 400 0.75rem/1.4 var(--font-mono); color: var(--muted); }
+.msg { margin: 0; min-height: 1.4em; font-size: 0.9375rem; font-weight: 600; line-height: 1.4; color: var(--ink); }
 
 /* A list left over from another day */
 .old {
@@ -444,9 +446,12 @@ textarea:focus-visible,
   </header>
 
   <section class="compose" id="compose" hidden>
-    <label class="lede" id="lede" for="src">Skriv, diktera eller klistra in dagens lista. En sak per rad.</label>
+    <label class="lede" id="lede" for="src">Skriv, diktera eller klistra in allt du ska göra idag. En sak per rad, i vilken ordning som helst.</label>
     <textarea id="src" spellcheck="false" autocapitalize="sentences" placeholder="Äta frukost&#10;Gå med hunden&#10;Betala räkningar"></textarea>
-    <p class="hint">Rad som börjar med - blir en delsak, # en rubrik, ## en rubrik för sånt utan ordning.</p>
+    <div class="ask">
+      <a class="btn" id="askBtn" href="https://claude.ai/new" target="_blank" rel="noopener">Ordna med Claude</a>
+      <p class="hint">Claude lägger listan i bra ordning. Kopiera svaret, kom tillbaka hit och tryck Klistra in.</p>
+    </div>
     <div class="actions">
       <button type="button" class="btn" id="pasteBtn">Klistra in</button>
       <button type="button" class="btn primary" id="makeBtn">Gör schema</button>
@@ -485,10 +490,24 @@ textarea:focus-visible,
   var WEEKDAYS = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
   var MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti",
                 "september", "oktober", "november", "december"];
-  var FIRST = "Skriv, diktera eller klistra in dagens lista. En sak per rad.";
+  var FIRST = "Skriv, diktera eller klistra in allt du ska göra idag. En sak per rad, i vilken ordning som helst.";
   var LEFT = "Det här blev kvar. Ta bort det du inte vill ha med och fyll på med dagens.";
   var EDIT = "Ändra, lägg till eller ta bort rader. Det du har bockat av ligger kvar.";
   var PASTE_HELP = "Håll fingret i rutan och välj Klistra in.";
+  var ASKED = "Listan är kopierad. Klistra in den i Claude och skicka. Kopiera sedan svaret, kom tillbaka hit och tryck Klistra in.";
+  var BACK = "Kopiera Claudes svar och tryck Klistra in.";
+  // What Claude is asked to do with the messy list. The answer comes back in the
+  // plain format parse() reads, so it can be pasted straight in.
+  var ASK_HEAD = "Ordna min lista för idag så att den blir lätt att följa.";
+  var ASK_RULES = [
+    "Svara bara med listan i ett kodblock, ingen annan text. Regler:",
+    "- En sak per rad, i den ordning jag ska göra dem.",
+    "- Använd mina egna ord. Rätta stavfel, men lägg inte till och ta inte bort något.",
+    "- Dela upp listan med rubriker som börjar med \"# \", till exempel \"# Först\", \"# Kvällen\" och \"# Sist\".",
+    "- Sådant som inte har någon ordning eller tid läggs sist under rubriken \"# Bra att ha\".",
+    "- Hör flera småsaker ihop, skriv dem som delsaker under en rad, med \"- \" först på raden."
+  ].join("\n");
+  var UIKEY = "dagsschema.ui";
 
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, text) {
@@ -500,7 +519,7 @@ textarea:focus-visible,
 
   var dayLabel = $("dayLabel"), title = $("title");
   var compose = $("compose"), lede = $("lede"), src = $("src"), msg = $("msg");
-  var pasteBtn = $("pasteBtn"), makeBtn = $("makeBtn"), cancelBtn = $("cancelBtn");
+  var pasteBtn = $("pasteBtn"), makeBtn = $("makeBtn"), cancelBtn = $("cancelBtn"), askBtn = $("askBtn");
   var sched = $("sched"), old = $("old"), oldText = $("oldText");
   var segsEl = $("segs"), listEl = $("list");
   var nowBtn = $("nowBtn"), nowTag = $("nowTag"), nowText = $("nowText");
@@ -520,6 +539,21 @@ textarea:focus-visible,
     try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* fine without it */ }
   }
 
+  // The half-written list and where we are, kept so a trip to Claude and back loses nothing.
+  var ui = { compose: "", draft: "", awaiting: false };
+  try {
+    var rawUi = JSON.parse(localStorage.getItem(UIKEY) || "null");
+    if (rawUi && typeof rawUi === "object") {
+      ui.compose = typeof rawUi.compose === "string" ? rawUi.compose : "";
+      ui.draft = typeof rawUi.draft === "string" ? rawUi.draft : "";
+      ui.awaiting = rawUi.awaiting === true;
+    }
+  } catch (e) { /* start clean */ }
+  function saveUi() {
+    try { localStorage.setItem(UIKEY, JSON.stringify(ui)); } catch (e) { /* fine without it */ }
+  }
+  function clearUi() { ui = { compose: "", draft: "", awaiting: false }; saveUi(); }
+
   // The day turns over at 04:00, so a late night still counts as today.
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function today() {
@@ -533,14 +567,23 @@ textarea:focus-visible,
   }
   function daysAgo(day) { return Math.round((asDate(today()) - asDate(day)) / 86400000); }
 
-  // Text -> sections of tasks.
-  //   "# Rubrik"  starts a section; "## Rubrik" one whose tasks have no order
-  //   "- delsak"  is a part of the task above, with a box of its own
-  //   "> rad"     is a note under the task above
-  //   "[x] "      in front of a task or part means it is already done
+  // Text -> sections of tasks. Written to take a list straight from a chat as well.
+  //   "# Rubrik" or "**Rubrik**"  starts a section. One called "Bra att ha", "Utan ordning"
+  //                               or "När det passar" has no order: no numbers, not in the count.
+  //   "- delsak"                  is a part of the task above, with a box of its own. In a section
+  //                               written as a bullet list the bullets are the tasks themselves,
+  //                               and indented bullets are their parts.
+  //   "> rad"                     is a note under the task above
+  //   "[x] "                      in front of a task or part means it is already done
+  var LOOSE = /bra att ha|utan ordning|när det passar|om jag hinner/i;
   function norm(s) { return s.toLowerCase().replace(/\s+/g, " ").trim(); }
+  function plain(s) {
+    return s.replace(/\*\*(.+?)\*\*/g, "$1").replace(/__(.+?)__/g, "$1").replace(/`([^`]+)`/g, "$1").trim();
+  }
   function parse(text) {
     var sections = [], sec = null, task = null, seen = {};
+    var lines = String(text || "").split(/\r?\n/);
+    var BULLET = /^[-–•*]\s+(.*)$/, NUMBER = /^\d{1,3}[.)]\s+/;
     function key(prefix, t) {
       var base = prefix + norm(t);
       seen[base] = (seen[base] || 0) + 1;
@@ -551,31 +594,52 @@ textarea:focus-visible,
       if (!m) return { text: line.trim(), done: false };
       return { text: line.slice(m[0].length).trim(), done: /x/i.test(m[1]) };
     }
-    String(text || "").split(/\r?\n/).forEach(function (rawLine) {
+    function listAhead(i) {
+      for (var j = i + 1; j < lines.length; j++) {
+        var l = lines[j].trim();
+        if (l) return BULLET.test(l) || NUMBER.test(l);
+      }
+      return false;
+    }
+    function open(title) {
+      sec = { title: title, loose: LOOSE.test(title), bullets: false, tasks: [] };
+      sections.push(sec);
+      task = null;
+    }
+    function addTask(str) {
+      var it = mark(plain(str));
+      if (!it.text) return;
+      if (!sec) open("");
+      task = { text: it.text, done0: it.done, key: key("t:", it.text), subs: [], notes: [] };
+      sec.tasks.push(task);
+    }
+    lines.forEach(function (rawLine, i) {
+      var indented = /^(\s{2,}|\t)/.test(rawLine);
       var line = rawLine.trim(), m, it;
-      if (!line) return;
-      if ((m = line.match(/^(#+)\s*(.*)$/))) {
-        sec = { title: m[2].trim(), loose: m[1].length > 1, tasks: [] };
-        if (sec.loose && !sec.title) sec.title = "Utan ordning";
-        sections.push(sec);
-        task = null;
+      if (!line || /^```/.test(line) || /^([-*_])\1{2,}$/.test(line)) return;
+      if ((m = line.match(/^#+\s*(.*)$/))) { open(plain(m[1]).replace(/:$/, "")); return; }
+      if ((m = line.match(/^(\*\*|__)(.+?)\1:?$/))) { open(m[2].trim().replace(/:$/, "")); return; }
+      if (/:$/.test(line) && line.length <= 40 && !BULLET.test(line) && !NUMBER.test(line) &&
+          line.charAt(0) !== ">" && listAhead(i)) {
+        open(plain(line.replace(/:$/, "")));
         return;
       }
       if (task && (m = line.match(/^>\s*(.*)$/))) {
-        if (m[1].trim()) task.notes.push(m[1].trim());
+        if (m[1].trim()) task.notes.push(plain(m[1]));
         return;
       }
-      if (task && (m = line.match(/^[-–•*]\s+(.*)$/))) {
-        it = mark(m[1]);
-        if (it.text) task.subs.push({ text: it.text, done0: it.done, key: key(task.key + ">", it.text) });
+      if ((m = line.match(BULLET))) {
+        if (task && (indented || !(sec && sec.bullets))) {
+          it = mark(plain(m[1]));
+          if (it.text) task.subs.push({ text: it.text, done0: it.done, key: key(task.key + ">", it.text) });
+        } else {
+          if (!sec) open("");
+          sec.bullets = true;
+          addTask(m[1]);
+        }
         return;
       }
-      line = line.replace(/^[-–•*>]\s*/, "").replace(/^\d{1,3}[.)]\s+/, "");
-      it = mark(line);
-      if (!it.text) return;
-      if (!sec) { sec = { title: "", loose: false, tasks: [] }; sections.push(sec); }
-      task = { text: it.text, done0: it.done, key: key("t:", it.text), subs: [], notes: [] };
-      sec.tasks.push(task);
+      addTask(line.replace(/^>\s*/, "").replace(NUMBER, ""));
     });
     return sections.filter(function (s) { return s.tasks.length; });
   }
@@ -598,7 +662,7 @@ textarea:focus-visible,
         t.notes.forEach(function (n) { lines.push("> " + n); });
       });
       if (!lines.length) return;
-      if (s.title) out.push((s.loose ? "## " : "# ") + s.title);
+      if (s.title) out.push("# " + s.title);
       out = out.concat(lines);
     });
     return out.join("\n");
@@ -780,14 +844,19 @@ textarea:focus-visible,
     render();
   }
 
-  function showCompose(next) {
+  function showCompose(next, restore) {
     mode = next;
     var text = "";
     if (mode === "edit") text = toText(model, false);
     if (mode === "new") text = toText(model, true);
+    var leftovers = mode === "new" && !!text && !restore;
+    if (restore) text = ui.draft;
+    else { ui.draft = text; ui.awaiting = false; }
+    ui.compose = mode;
+    saveUi();
     src.value = text;
-    msg.textContent = "";
-    lede.textContent = mode === "edit" ? EDIT : (mode === "new" && text) ? LEFT : FIRST;
+    msg.textContent = ui.awaiting ? BACK : "";
+    lede.textContent = mode === "edit" ? EDIT : leftovers ? LEFT : FIRST;
     dayLabel.textContent = mode === "edit" ? longDay(store.day || today()) : longDay(today());
     title.textContent = mode === "edit" ? "Ändra listan" : "Ny dag";
     makeBtn.textContent = mode === "edit" ? "Spara" : "Gör schema";
@@ -816,12 +885,70 @@ textarea:focus-visible,
     Object.keys(store.done).forEach(function (k) { if (!valid[k]) delete store.done[k]; });
     store.text = toText(parsed, false);
     save();
+    clearUi();
     showSched();
     window.scrollTo(0, 0);
   }
 
   makeBtn.addEventListener("click", commit);
-  cancelBtn.addEventListener("click", showSched);
+  cancelBtn.addEventListener("click", function () { clearUi(); showSched(); });
+  src.addEventListener("input", function () { ui.draft = src.value; saveUi(); });
+
+  // Hand the messy list to Claude: the request goes on the clipboard and Claude opens.
+  function askText(dump) {
+    var d = new Date();
+    return ASK_HEAD + " Det är " + WEEKDAYS[d.getDay()].toLowerCase() + " klockan " +
+      pad(d.getHours()) + ":" + pad(d.getMinutes()) + ".\n\n" + ASK_RULES + "\n\nMin lista:\n" + dump;
+  }
+  function copyNow(text) {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;font-size:16px";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    } catch (e) { /* the clipboard call below is the other way in */ }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function () { /* already tried above */ });
+    }
+  }
+  askBtn.addEventListener("click", function (e) {
+    var dump = src.value.trim();
+    if (!dump) {
+      e.preventDefault();
+      msg.textContent = "Skriv listan först.";
+      src.focus();
+      return;
+    }
+    copyNow(askText(dump));
+    ui.awaiting = true;
+    ui.draft = src.value;
+    saveUi();
+    msg.textContent = ASKED;
+  });
+  // While Claude's answer is expected, a paste replaces the messy list instead of adding to it.
+  function takeAnswer(t) {
+    src.value = t;
+    ui.awaiting = false;
+    ui.draft = t;
+    saveUi();
+    msg.textContent = "Bytte till listan du kopierade.";
+  }
+  src.addEventListener("paste", function (e) {
+    if (!ui.awaiting) return;
+    var data = e.clipboardData || window.clipboardData;
+    var t = data ? data.getData("text") : "";
+    if (!t || !t.trim() || t.indexOf(ASK_HEAD) === 0) return;
+    e.preventDefault();
+    takeAnswer(t);
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden && ui.awaiting && !compose.hidden) msg.textContent = BACK;
+  });
   $("editBtn").addEventListener("click", function () { showCompose("edit"); });
   $("newBtn").addEventListener("click", function () { showCompose("new"); });
   $("oldNew").addEventListener("click", function () { showCompose("new"); });
@@ -834,10 +961,15 @@ textarea:focus-visible,
     }
     navigator.clipboard.readText().then(function (t) {
       if (!t || !t.trim()) { msg.textContent = "Det finns inget kopierat att klistra in."; return; }
+      if (t.indexOf(ASK_HEAD) === 0) { msg.textContent = "Det där är texten till Claude. Kopiera Claudes svar först."; return; }
       var have = src.value.replace(/\s+$/, "");
-      var whole = /^\s*#/.test(t);   // a copied list with headings replaces what is in the box
-      src.value = have && !whole ? have + "\n" + t : t;
-      msg.textContent = have && whole ? "Bytte till listan du kopierade." : "";
+      // Claude's answer, or any copied list with headings, replaces what is in the box
+      if (have && (ui.awaiting || /^\s*(#|\*\*|```)/.test(t))) { takeAnswer(t); return; }
+      src.value = have ? have + "\n" + t : t;
+      ui.awaiting = false;
+      ui.draft = src.value;
+      saveUi();
+      msg.textContent = "";
     }, function () {
       src.focus();
       msg.textContent = PASTE_HELP;
@@ -865,8 +997,10 @@ textarea:focus-visible,
     nowTask.el.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "center" });
   });
 
-  if (parse(store.text).length) showSched();
-  else showCompose("first");
+  var hasList = parse(store.text).length > 0;
+  if (hasList && (ui.compose === "new" || ui.compose === "edit")) showCompose(ui.compose, true);
+  else if (hasList) showSched();
+  else showCompose("first", ui.compose === "first");
 
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener("load", function () {
