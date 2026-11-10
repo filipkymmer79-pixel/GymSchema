@@ -78,7 +78,7 @@ button, textarea { font: inherit; color: inherit; }
   margin-inline: auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 1.375rem 3.5rem;
+  padding-block: 1.375rem 6.5rem;
 }
 
 /* Header */
@@ -173,6 +173,7 @@ a.btn { display: flex; align-items: center; justify-content: center; text-decora
   border-bottom: 1px solid var(--line);
 }
 .segs { display: flex; gap: 6px; min-height: 7px; }
+.segs:empty { display: none; }
 .segs > span { display: flex; gap: 2px; min-width: 0; }
 .segs i {
   flex: 1 1 0%;
@@ -419,9 +420,56 @@ section.block { display: grid; gap: 0.5rem; }
 .foot { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
 .foot .btn { flex: 1; }
 
+/* Shopping list: add one more thing without opening the editor */
+.add { display: flex; gap: 0.5rem; padding-top: 0.875rem; }
+.add input {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 999px;
+  background: var(--field);
+  color: var(--ink);
+  font: inherit;
+}
+.add input::placeholder { color: var(--done); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* The two lists: the day and the shopping */
+.tabs {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem max(16px, env(safe-area-inset-right, 0px)) calc(0.5rem + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}
+.tab {
+  flex: 1;
+  max-width: 16rem;
+  min-height: 2.75rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.tab[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+
 /* Keyboard focus */
 .chk:focus-visible + label,
 .btn:focus-visible,
+.tab:focus-visible,
+.add input:focus-visible,
 .nowbtn:focus-visible,
 textarea:focus-visible,
 .more summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
@@ -450,7 +498,7 @@ textarea:focus-visible,
     <textarea id="src" spellcheck="false" autocapitalize="sentences" placeholder="Äta frukost&#10;Gå med hunden&#10;Betala räkningar"></textarea>
     <div class="ask">
       <a class="btn" id="askBtn" href="https://claude.ai/new" target="_blank" rel="noopener">Ordna med Claude</a>
-      <p class="hint">Claude lägger listan i bra ordning. Kopiera svaret, kom tillbaka hit och tryck Klistra in.</p>
+      <p class="hint" id="askHint">Claude lägger listan i bra ordning. Kopiera svaret, kom tillbaka hit och tryck Klistra in.</p>
     </div>
     <div class="actions">
       <button type="button" class="btn" id="pasteBtn">Klistra in</button>
@@ -474,19 +522,33 @@ textarea:focus-visible,
         <span class="count"><b id="doneN">0</b>/<span id="totalN">0</span></span>
       </div>
     </div>
+    <form class="add" id="addForm" hidden>
+      <label class="vh" for="addInput">Lägg till vara</label>
+      <input id="addInput" type="text" placeholder="Lägg till vara" autocomplete="off" enterkeyhint="done">
+      <button type="submit" class="btn small">Lägg till</button>
+    </form>
     <main id="list"></main>
     <div class="foot">
       <button type="button" class="btn" id="editBtn">Ändra listan</button>
       <button type="button" class="btn" id="newBtn">Ny dag</button>
+      <button type="button" class="btn" id="clearBtn" hidden>Rensa avbockade</button>
     </div>
   </div>
 </div>
+
+<nav class="tabs" aria-label="Listor">
+  <button type="button" class="tab" id="tabDay" aria-pressed="true">Idag</button>
+  <button type="button" class="tab" id="tabShop" aria-pressed="false">Handla</button>
+</nav>
 
 <script>
 (function () {
   "use strict";
 
-  var KEY = "dagsschema.v1";
+  // Two lists share this screen: the day ("day") and the shopping list ("shop").
+  var KEYS = { day: "dagsschema.v1", shop: "dagsschema.handla.v1" };
+  var UIKEYS = { day: "dagsschema.ui", shop: "dagsschema.handla.ui" };
+  var TABKEY = "dagsschema.tab";
   var WEEKDAYS = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
   var MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti",
                 "september", "oktober", "november", "december"];
@@ -507,7 +569,34 @@ textarea:focus-visible,
     "- Sådant som inte har någon ordning eller tid läggs sist under rubriken \"# Bra att ha\".",
     "- Hör flera småsaker ihop, skriv dem som delsaker under en rad, med \"- \" först på raden."
   ].join("\n");
-  var UIKEY = "dagsschema.ui";
+  var SHOP_HEAD = "Sortera min handlingslista så att den blir lätt att följa i butiken.";
+  var SHOP_RULES = [
+    "Svara bara med listan i ett kodblock, ingen annan text. Regler:",
+    "- En vara per rad. Använd mina egna ord. Rätta stavfel, men lägg inte till och ta inte bort något.",
+    "- Dela upp listan efter var i butiken varorna står, med rubriker som börjar med \"# \", till exempel \"# Frukt och grönt\", \"# Mejeri\", \"# Kött och fisk\", \"# Skafferi\" och \"# Frys\".",
+    "- Sådant som köps någon annanstans, till exempel på apotek, får en egen rubrik."
+  ].join("\n");
+  var WORDS = {
+    day: {
+      first: FIRST,
+      edit: EDIT,
+      sample: "Äta frukost\nGå med hunden\nBetala räkningar",
+      ask: "Ordna med Claude",
+      askHint: "Claude lägger listan i bra ordning. Kopiera svaret, kom tillbaka hit och tryck Klistra in.",
+      make: "Gör schema",
+      fresh: "Ny dag"
+    },
+    shop: {
+      first: "Skriv, diktera eller klistra in det du ska köpa. En vara per rad.",
+      edit: "Ändra, lägg till eller ta bort varor. Det du har bockat av ligger kvar.",
+      sample: "Mjölk\nÄgg\nBananer",
+      ask: "Sortera med Claude",
+      askHint: "Claude sorterar varorna efter var de står i butiken. Kopiera svaret, kom tillbaka hit och tryck Klistra in.",
+      make: "Gör lista",
+      fresh: "Handla"
+    }
+  };
+  function isAsk(t) { return t.indexOf(ASK_HEAD) === 0 || t.indexOf(SHOP_HEAD) === 0; }
 
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, text) {
@@ -524,35 +613,47 @@ textarea:focus-visible,
   var segsEl = $("segs"), listEl = $("list");
   var nowBtn = $("nowBtn"), nowTag = $("nowTag"), nowText = $("nowText");
   var doneN = $("doneN"), totalN = $("totalN");
+  var askHint = $("askHint"), addForm = $("addForm"), addInput = $("addInput");
+  var newBtn = $("newBtn"), clearBtn = $("clearBtn"), tabDay = $("tabDay"), tabShop = $("tabShop");
 
-  // Everything lives on this phone: the list as plain text, its day, and what is ticked.
-  var store = { text: "", day: "", done: {} };
-  try {
-    var raw = JSON.parse(localStorage.getItem(KEY) || "null");
-    if (raw && typeof raw.text === "string") {
-      store.text = raw.text;
-      store.day = typeof raw.day === "string" ? raw.day : "";
-      if (raw.done && typeof raw.done === "object") store.done = raw.done;
-    }
-  } catch (e) { /* storage unavailable: start clean */ }
-  function save() {
-    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* fine without it */ }
+  // Everything lives on this phone: each list as plain text, its day, and what is ticked.
+  function loadStore(k) {
+    var st = { text: "", day: "", done: {} };
+    try {
+      var raw = JSON.parse(localStorage.getItem(k) || "null");
+      if (raw && typeof raw.text === "string") {
+        st.text = raw.text;
+        st.day = typeof raw.day === "string" ? raw.day : "";
+        if (raw.done && typeof raw.done === "object") st.done = raw.done;
+      }
+    } catch (e) { /* storage unavailable: start clean */ }
+    return st;
   }
-
   // The half-written list and where we are, kept so a trip to Claude and back loses nothing.
-  var ui = { compose: "", draft: "", awaiting: false };
-  try {
-    var rawUi = JSON.parse(localStorage.getItem(UIKEY) || "null");
-    if (rawUi && typeof rawUi === "object") {
-      ui.compose = typeof rawUi.compose === "string" ? rawUi.compose : "";
-      ui.draft = typeof rawUi.draft === "string" ? rawUi.draft : "";
-      ui.awaiting = rawUi.awaiting === true;
-    }
-  } catch (e) { /* start clean */ }
-  function saveUi() {
-    try { localStorage.setItem(UIKEY, JSON.stringify(ui)); } catch (e) { /* fine without it */ }
+  function loadUi(k) {
+    var u = { compose: "", draft: "", awaiting: false };
+    try {
+      var raw = JSON.parse(localStorage.getItem(k) || "null");
+      if (raw && typeof raw === "object") {
+        u.compose = typeof raw.compose === "string" ? raw.compose : "";
+        u.draft = typeof raw.draft === "string" ? raw.draft : "";
+        u.awaiting = raw.awaiting === true;
+      }
+    } catch (e) { /* start clean */ }
+    return u;
   }
-  function clearUi() { ui = { compose: "", draft: "", awaiting: false }; saveUi(); }
+  var stores = { day: loadStore(KEYS.day), shop: loadStore(KEYS.shop) };
+  var uis = { day: loadUi(UIKEYS.day), shop: loadUi(UIKEYS.shop) };
+  var tab = "day";
+  try { if (localStorage.getItem(TABKEY) === "shop") tab = "shop"; } catch (e) { /* day it is */ }
+  var store = stores[tab], ui = uis[tab];
+  function save() {
+    try { localStorage.setItem(KEYS[tab], JSON.stringify(store)); } catch (e) { /* fine without it */ }
+  }
+  function saveUi() {
+    try { localStorage.setItem(UIKEYS[tab], JSON.stringify(ui)); } catch (e) { /* fine without it */ }
+  }
+  function clearUi() { ui = uis[tab] = { compose: "", draft: "", awaiting: false }; saveUi(); }
 
   // The day turns over at 04:00, so a late night still counts as today.
   function pad(n) { return (n < 10 ? "0" : "") + n; }
@@ -753,7 +854,8 @@ textarea:focus-visible,
     segsEl.textContent = "";
     var n = 0;
     model.forEach(function (s) {
-      var secEl = el("section", s.loose ? "block loose" : "block"), num = null;
+      var loose = s.loose || tab === "shop";
+      var secEl = el("section", loose ? "block loose" : "block"), num = null;
       if (s.title) {
         var h = el("h2", "sec");
         num = el("span", "num");
@@ -761,13 +863,13 @@ textarea:focus-visible,
         h.appendChild(num);
         secEl.appendChild(h);
       }
-      if (s.loose) secEl.appendChild(el("p", "secnote", "Ingen ordning. Ta dem när det passar."));
-      var rows = el(s.loose ? "ul" : "ol", "rows"), strip = el("span"), mine = [];
-      if (!s.loose) rows.start = n + 1;
+      if (s.loose && tab === "day") secEl.appendChild(el("p", "secnote", "Ingen ordning. Ta dem när det passar."));
+      var rows = el(loose ? "ul" : "ol", "rows"), strip = el("span"), mine = [];
+      if (!loose) rows.start = n + 1;
       s.tasks.forEach(function (t) {
-        var view = buildTask(t, s.loose ? 0 : ++n);
-        view.loose = !!s.loose;
-        if (!s.loose) {
+        var view = buildTask(t, loose ? 0 : ++n);
+        view.loose = loose;
+        if (!loose) {
           view.seg = el("i");
           strip.appendChild(view.seg);
         }
@@ -775,7 +877,7 @@ textarea:focus-visible,
         tasks.push(view);
         mine.push(view);
       });
-      if (!s.loose) {
+      if (!loose) {
         strip.style.flex = mine.length + " 1 0%";
         segsEl.appendChild(strip);
       }
@@ -817,6 +919,14 @@ textarea:focus-visible,
       var d = g.tasks.filter(function (v) { return v.done; }).length;
       g.num.textContent = d + "/" + g.tasks.length;
     });
+    if (tab === "shop") {
+      var got = tasks.filter(function (v) { return v.done; }).length, left = tasks.length - got;
+      doneN.textContent = got;
+      totalN.textContent = tasks.length;
+      nowTag.textContent = left ? "Kvar" : "Klart";
+      nowText.textContent = left ? left + (left === 1 ? " vara" : " varor") : "Allt i korgen";
+      return;
+    }
     doneN.textContent = nDone;
     if (nowTask) {
       nowTag.textContent = "Nu";
@@ -834,11 +944,14 @@ textarea:focus-visible,
   var mode = "first";   // "first" | "new" | "edit"
 
   function showSched() {
-    var day = store.day || today(), ago = daysAgo(day);
-    dayLabel.textContent = longDay(day);
-    title.textContent = ago <= 0 ? "Idag" : ago === 1 ? "Igår" : WEEKDAYS[asDate(day).getDay()];
-    old.hidden = ago <= 0;
+    var day = store.day || today(), ago = daysAgo(day), shop = tab === "shop";
+    dayLabel.textContent = shop ? "Handlingslista" : longDay(day);
+    title.textContent = shop ? "Handla" : ago <= 0 ? "Idag" : ago === 1 ? "Igår" : WEEKDAYS[asDate(day).getDay()];
+    old.hidden = shop || ago <= 0;
     oldText.textContent = "Listan är från " + longDay(day).toLowerCase() + ".";
+    addForm.hidden = !shop;
+    clearBtn.hidden = !shop;
+    newBtn.hidden = shop;
     compose.hidden = true;
     sched.hidden = false;
     render();
@@ -856,10 +969,14 @@ textarea:focus-visible,
     saveUi();
     src.value = text;
     msg.textContent = ui.awaiting ? BACK : "";
-    lede.textContent = mode === "edit" ? EDIT : leftovers ? LEFT : FIRST;
-    dayLabel.textContent = mode === "edit" ? longDay(store.day || today()) : longDay(today());
-    title.textContent = mode === "edit" ? "Ändra listan" : "Ny dag";
-    makeBtn.textContent = mode === "edit" ? "Spara" : "Gör schema";
+    var w = WORDS[tab];
+    lede.textContent = mode === "edit" ? w.edit : leftovers ? LEFT : w.first;
+    dayLabel.textContent = tab === "shop" ? "Handlingslista" : mode === "edit" ? longDay(store.day || today()) : longDay(today());
+    title.textContent = mode === "edit" ? "Ändra listan" : w.fresh;
+    makeBtn.textContent = mode === "edit" ? "Spara" : w.make;
+    src.placeholder = w.sample;
+    askBtn.textContent = w.ask;
+    askHint.textContent = w.askHint;
     cancelBtn.hidden = mode === "first";
     sched.hidden = true;
     compose.hidden = false;
@@ -896,6 +1013,7 @@ textarea:focus-visible,
 
   // Hand the messy list to Claude: the request goes on the clipboard and Claude opens.
   function askText(dump) {
+    if (tab === "shop") return SHOP_HEAD + "\n\n" + SHOP_RULES + "\n\nMin lista:\n" + dump;
     var d = new Date();
     return ASK_HEAD + " Det är " + WEEKDAYS[d.getDay()].toLowerCase() + " klockan " +
       pad(d.getHours()) + ":" + pad(d.getMinutes()) + ".\n\n" + ASK_RULES + "\n\nMin lista:\n" + dump;
@@ -942,7 +1060,7 @@ textarea:focus-visible,
     if (!ui.awaiting) return;
     var data = e.clipboardData || window.clipboardData;
     var t = data ? data.getData("text") : "";
-    if (!t || !t.trim() || t.indexOf(ASK_HEAD) === 0) return;
+    if (!t || !t.trim() || isAsk(t)) return;
     e.preventDefault();
     takeAnswer(t);
   });
@@ -953,6 +1071,31 @@ textarea:focus-visible,
   $("newBtn").addEventListener("click", function () { showCompose("new"); });
   $("oldNew").addEventListener("click", function () { showCompose("new"); });
 
+  // Shopping list: a new item goes on top, above the first heading.
+  addForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var item = addInput.value.replace(/^[#>\-–•*\s]+/, "").trim();
+    if (!item) return;
+    store.text = item + (store.text ? "\n" + store.text : "");
+    save();
+    addInput.value = "";
+    render();
+  });
+  clearBtn.addEventListener("click", function () {
+    var left = toText(model, true), valid = {};
+    parse(left).forEach(function (s) {
+      s.tasks.forEach(function (t) {
+        valid[t.key] = true;
+        t.subs.forEach(function (u) { valid[u.key] = true; });
+      });
+    });
+    Object.keys(store.done).forEach(function (k) { if (!valid[k]) delete store.done[k]; });
+    store.text = left;
+    save();
+    if (left) render();
+    else showCompose("first");
+  });
+
   pasteBtn.addEventListener("click", function () {
     if (!navigator.clipboard || !navigator.clipboard.readText) {
       src.focus();
@@ -961,7 +1104,7 @@ textarea:focus-visible,
     }
     navigator.clipboard.readText().then(function (t) {
       if (!t || !t.trim()) { msg.textContent = "Det finns inget kopierat att klistra in."; return; }
-      if (t.indexOf(ASK_HEAD) === 0) { msg.textContent = "Det där är texten till Claude. Kopiera Claudes svar först."; return; }
+      if (isAsk(t)) { msg.textContent = "Det där är texten till Claude. Kopiera Claudes svar först."; return; }
       var have = src.value.replace(/\s+$/, "");
       // Claude's answer, or any copied list with headings, replaces what is in the box
       if (have && (ui.awaiting || /^\s*(#|\*\*|```)/.test(t))) { takeAnswer(t); return; }
@@ -997,10 +1140,27 @@ textarea:focus-visible,
     nowTask.el.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "center" });
   });
 
-  var hasList = parse(store.text).length > 0;
-  if (hasList && (ui.compose === "new" || ui.compose === "edit")) showCompose(ui.compose, true);
-  else if (hasList) showSched();
-  else showCompose("first", ui.compose === "first");
+  // Open the list in front: its schedule, or the writing screen it was left on.
+  function start() {
+    tabDay.setAttribute("aria-pressed", String(tab === "day"));
+    tabShop.setAttribute("aria-pressed", String(tab === "shop"));
+    var hasList = parse(store.text).length > 0;
+    if (hasList && (ui.compose === "new" || ui.compose === "edit")) showCompose(ui.compose, true);
+    else if (hasList) showSched();
+    else showCompose("first", ui.compose === "first");
+  }
+  function setTab(next) {
+    if (next === tab) return;
+    tab = next;
+    store = stores[tab];
+    ui = uis[tab];
+    try { localStorage.setItem(TABKEY, tab); } catch (e) { /* fine without it */ }
+    start();
+    window.scrollTo(0, 0);
+  }
+  tabDay.addEventListener("click", function () { setTab("day"); });
+  tabShop.addEventListener("click", function () { setTab("shop"); });
+  start();
 
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener("load", function () {
