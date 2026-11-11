@@ -295,6 +295,25 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .glinks{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .ghead{display:flex;flex-direction:column;gap:4px}
 .ghead .lead{font-size:13.5px}
+.gorder-l{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:-4px}
+.gorder{display:grid;gap:6px}
+.go{border:0;background:var(--surface);box-shadow:var(--shadow);border-radius:14px;padding:9px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink);font:inherit;cursor:pointer}
+.go b{width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center}
+.go span{font-size:12.5px;font-weight:800;line-height:1.1;text-align:center}
+.go small{font-size:11px;color:var(--muted);font-weight:700}
+.groutine{border:1.5px dashed var(--c)}
+.gico svg{width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.rsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;counter-reset:rs}
+.rsteps li{counter-increment:rs;position:relative;padding:11px 0 11px 30px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.rsteps li:first-child{border-top:0}
+.rsteps li::before{content:counter(rs);position:absolute;left:0;top:12px;width:20px;height:20px;border-radius:50%;background:var(--c);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}
+.rs-h{display:flex;justify-content:space-between;gap:10px;width:100%;align-items:baseline}
+.rs-h b{font-size:15px;font-weight:800;line-height:1.2}
+.rs-h .dose{font-size:12.5px;color:var(--muted);font-weight:700;text-align:right;max-width:52%}
+.rs-c{font-size:14px;line-height:1.4}
+.rs-t{font-size:12.5px;color:var(--muted);line-height:1.35}
+.gnote{background:var(--surface2);border-radius:12px;padding:9px 12px;font-size:13.5px}
+.gstart{display:flex;flex-direction:column;gap:8px}
 .bk{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .bk input[type=file]{display:none}
 .small{font-size:12.5px;color:var(--muted)}
@@ -483,9 +502,20 @@ const ROUTINES = {
     {n: "Vadstretch mot vägg", t: 30, sides: 2, cue: "Händerna i väggen, bakre benet rakt med hälen i golvet. Luta dig fram.", tip: "Böj sen knät lite – då når du den djupa vaden.", v: "E2UZKuZttW4"},
     {n: "Fjärilen", t: 45, cue: "Sitt med fotsulorna ihop. Tryck knäna mot golvet med armbågarna.", tip: "Rak rygg – luta dig fram från höften.", v: "giwBs8Eqq6M"},
     {n: "Fascia-hållet (osteopaten)", t: 120, sides: 2, cue: "Fingrarna i mjukdelen precis ovanför höftbenet, som osteopaten visade. Tryck in lagom, håll helt stilla och andas långsamt – låt det släppa.", tip: "2 min per sida, varje dag. Sticker det ner i benet: lätta och flytta lite uppåt.", v: null}
+  ]},
+  absOver: {name: "Mage", min: 6, steps: [
+    {n: "Bear hold · varv 1", t: 30, cue: "Knäna 3 cm över golvet, ryggen rak som ett bord. Tryck ifrån golvet och andas lugnt.", tip: "Svankar ryggen – sänk knäna till 1 cm.", v: "NKctgnMFytI"},
+    {n: "Shoulder taps · varv 1", dose: "20 st · 10 per sida", cue: "Plankan på raka armar, fötterna brett. Nudda motsatt axel – höften står helt stilla.", tip: "1 sek per tapp. Vickar höften: bredare fötter.", v: "NV55raYCP0E"},
+    {n: "Suitcases · varv 1", dose: "15 st", cue: "Sitt och luta dig bakåt med rak rygg. Dra knäna mot bröstet och sträck ut benen – fötterna nuddar aldrig golvet.", tip: "Tar ländryggen i: händerna i golvet bakom dig och kortare rörelse.", v: "QMEhYqwKj2k"},
+    {n: "Vila", t: 30, cue: "Andas lugnt. Sen samma tre övningar en gång till.", tip: "", v: null},
+    {n: "Bear hold · varv 2", t: 30, cue: "Knäna 3 cm över golvet, ryggen rak som ett bord. Tryck ifrån golvet och andas lugnt.", tip: "Svankar ryggen – sänk knäna till 1 cm.", v: "NKctgnMFytI"},
+    {n: "Shoulder taps · varv 2", dose: "20 st · 10 per sida", cue: "Plankan på raka armar, fötterna brett. Nudda motsatt axel – höften står helt stilla.", tip: "1 sek per tapp. Vickar höften: bredare fötter.", v: "NV55raYCP0E"},
+    {n: "Suitcases · varv 2", dose: "15 st", cue: "Sitt och luta dig bakåt med rak rygg. Dra knäna mot bröstet och sträck ut benen – fötterna nuddar aldrig golvet.", tip: "Tar ländryggen i: händerna i golvet bakom dig och kortare rörelse.", v: "QMEhYqwKj2k"}
   ]}
 };
-const RFOR = {oA: {w: "warmUp", s: "strUp"}, oB: {w: "warmUp", s: "strUp"}, uA: {w: "warmLow", s: "strLow"}, uB: {w: "warmLow", s: "strLow"}};
+const RFOR = {oA: {w: "warmUp", a: "absOver", s: "strUp"}, oB: {w: "warmUp", a: "absOver", s: "strUp"}, uA: {w: "warmLow", s: "strLow"}, uB: {w: "warmLow", s: "strLow"}};
+const RFLAG = {w: "warm", a: "abs", s: "stretch"};
+const RLABEL = {w: "Före passet", a: "Efter övningarna", s: "Sist"};
 const SHORT = {hantelbank:"Bänkpress", rdl:"RDL", upphopp:"Upphopp", sidohopp:"Sidohopp", ohp:"Axelpress stående", knaboj:"Knäböj", marklyft:"Marklyft", farmers:"Farmers walk", brostpress:"Bröstpress", chins:"Chins", axelpress:"Axelpress", kabelrodd:"Kabelrodd", curls:"Bicepscurls", triceps:"Triceps", benpress:"Benpress", hoftlyft:"Höftlyft", larcurl:"Lårcurl", vadpress:"Vadpress", plankan:"Plankan", latsdrag:"Latsdrag", dips:"Dips", sidolyft:"Sidolyft", facepulls:"Face pulls", utfall:"Utfall", benspark:"Benspark", abduktion:"Abduktion", deadbug:"Dead bug"};
 
 /* ---------- Hjälpare ---------- */
@@ -665,6 +695,7 @@ function renderPass(){
     (loggedToday ? '<span class="pill good">✓ Loggat idag</span>' : '<span class="pill num">' + p.ex.length + ' övningar</span>') + '</div>' +
     rcardHTML("w") +
     p.ex.map(exHTML).join("") +
+    (RFOR[draft.type].a ? rcardHTML("a") : "") +
     rcardHTML("s") +
     '<div class="card note-f"><label for="note">Anteckning</label><textarea id="note" placeholder="Hur kändes det? Ont någonstans?">' + esc(draft.note) + '</textarea></div>' +
     '<div class="card savebar"><div class="sum"><span class="sum-a num" id="sumA"></span><span class="sum-b" id="sumB"></span></div>' +
@@ -737,7 +768,8 @@ function doneHTML(r){
   return '<div class="card donecard"><div class="lead">' + esc(PROGRAM[r.type].name) + ' · ' + dLong(r.date) + '</div><div class="big">Passet är sparat</div>' +
     '<div class="stats"><div class="stat"><div class="stat-l">Set</div><div class="stat-v num">' + r.sets + '</div></div><div class="stat"><div class="stat-l">Volym</div><div class="stat-v num">' + fmt(r.volume, 0) + '</div></div><div class="stat"><div class="stat-l">Rekord</div><div class="stat-v num' + (r.prs.length ? ' good' : '') + '">' + r.prs.length + '</div></div><div class="stat"><div class="stat-l">Veckan</div><div class="stat-v num">' + cnt + '/4</div></div></div>' +
     (r.prs.length ? r.prs.map(t => '<div class="pr"><i>REKORD</i><span>' + esc(t) + '</span></div>').join("") : '<div class="lead">Inga nya rekord idag – vikterna ökar när du klarar toppen av spannet i alla set.</div>') +
-    '<div class="lead">' + (r.warm ? "Uppvärmning ✓" : "Uppvärmning –") + ' · ' + (r.stretch ? "Stretch ✓" : "Stretch kvar") + '</div>' +
+    '<div class="lead">' + (r.warm ? "Uppvärmning ✓" : "Uppvärmning –") + (RFOR[r.type].a ? ' · ' + (r.abs ? "Mage ✓" : "Mage kvar") : '') + ' · ' + (r.stretch ? "Stretch ✓" : "Stretch kvar") + '</div>' +
+    (!RFOR[r.type].a || r.abs || readOnly || !db ? '' : '<button class="btn" type="button" data-rstart="a">▶ Mage nu · ca ' + ROUTINES[RFOR[r.type].a].min + ' min</button>') +
     (r.stretch || readOnly || !db ? '' : '<button class="btn" type="button" data-rstart="s">▶ Stretcha nu · ca ' + ROUTINES[RFOR[r.type].s].min + ' min</button>') +
     '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" data-act="next">Klar</button><button class="btn ghost" type="button" data-act="prog">Se framsteg</button></div></div>';
 }
@@ -747,7 +779,7 @@ $("v-pass").addEventListener("click", e => {
   const rs = e.target.closest("[data-rstart]");
   if (rs){ openGuide(rs.dataset.rstart); return; }
   const rd = e.target.closest("[data-rdone]");
-  if (rd && draft){ if (rd.dataset.rdone === "w") draft.warm = !draft.warm; else draft.stretch = !draft.stretch; persistDraft(); renderPass(); return; }
+  if (rd && draft){ const f = RFLAG[rd.dataset.rdone]; draft[f] = !draft[f]; persistDraft(); renderPass(); return; }
   const rl = e.target.closest("[data-rlist]");
   if (rl && draft){ const key = RFOR[draft.type][rl.dataset.rlist]; openList[key] = !openList[key]; renderPass(); return; }
   const pick = e.target.closest("[data-type]");
@@ -814,13 +846,13 @@ async function saveSession(){
   const p = PROGRAM[draft.type];
   const exercises = p.ex.map(ex => ({k: ex.k, unit: ex.unit, sets: draft.sets[ex.k].filter(x => x.done).map(x => ({w: x.w == null ? null : x.w, r: x.r == null ? null : x.r, s: x.s == null ? null : x.s}))})).filter(e => e.sets.length);
   if (!exercises.length){ toast("Bocka av minst ett set först"); return; }
-  const doc = {date: draft.date, ts: Date.now(), type: draft.type, exercises, note: (draft.note || "").trim(), volume: volumeOf(exercises), warm: !!draft.warm, stretch: !!draft.stretch};
+  const doc = {date: draft.date, ts: Date.now(), type: draft.type, exercises, note: (draft.note || "").trim(), volume: volumeOf(exercises), warm: !!draft.warm, stretch: !!draft.stretch, abs: !!draft.abs};
   const prs = findPRs(doc);
   doc.prs = prs;
   const b = $("saveBtn"); b.disabled = true; b.textContent = "Sparar…";
   try {
     const ref = await db.collection("sessions").add(doc);
-    justSaved = {id: ref && ref.id, type: doc.type, date: doc.date, volume: doc.volume, prs, sets: exercises.reduce((a, e) => a + e.sets.length, 0), warm: doc.warm, stretch: doc.stretch};
+    justSaved = {id: ref && ref.id, type: doc.type, date: doc.date, volume: doc.volume, prs, sets: exercises.reduce((a, e) => a + e.sets.length, 0), warm: doc.warm, stretch: doc.stretch, abs: doc.abs};
     clearTimeout(saveDraftT); draft = null; selType = null; store("lyftloggen.draft.v1", null); releaseAwake(); stopTimer();
     renderPass(); renderStrip(); window.scrollTo({top: 0});
   } catch(err){
@@ -863,9 +895,9 @@ let openList = {};
 const doseText = st => st.dose || ((st.t >= 60 ? Math.round(st.t / 60) + " min" : st.t + " sek") + (st.sides === 2 ? " per sida" : ""));
 function rcardHTML(kind){
   const key = RFOR[draft.type][kind], r = ROUTINES[key];
-  const done = kind === "w" ? !!draft.warm : !!draft.stretch, open = !!openList[key];
+  const done = !!draft[RFLAG[kind]], open = !!openList[key];
   return '<section class="rcard' + (done ? ' done' : '') + '" aria-label="' + esc(r.name) + '">' +
-    '<div class="rc-h"><div><div class="rc-k">' + (kind === "w" ? "Före passet" : "Efter passet") + ' · ca ' + r.min + ' min</div><h3>' + esc(r.name) + '</h3></div>' +
+    '<div class="rc-h"><div><div class="rc-k">' + RLABEL[kind] + ' · ca ' + r.min + ' min</div><h3>' + esc(r.name) + '</h3></div>' +
     '<button class="rc-st" type="button" data-rdone="' + kind + '" aria-pressed="' + done + '">' + (done ? "✓ Klar" : "Markera klar") + '</button></div>' +
     (open ? '<ol class="rc-list">' + r.steps.map(st => '<li><span>' + esc(st.n) + '</span><span class="dose">' + esc(doseText(st)) + '</span>' + (st.v ? '<a class="yt" href="' + YT(st.v) + '" target="_blank" rel="noopener">▶ Video</a>' : '<span></span>') + '</li>').join("") + '</ol>' : '') +
     '<div class="rc-row"><button class="btn" type="button" data-rstart="' + kind + '">▶ ' + (done ? "Kör igen" : "Starta guiden") + '</button>' +
@@ -873,10 +905,11 @@ function rcardHTML(kind){
 }
 let G = null, gT = 0;
 const RING = 326.73;
-function openGuide(kind){
+function openGuide(kind, key){
+  if (!draft && !justSaved) renderPass(); // dagens pass finns även om appen öppnades i en annan flik
   const type = draft ? draft.type : (justSaved ? justSaved.type : null);
-  if (!type) return;
-  G = {kind, key: RFOR[type][kind], i: 0, side: 0, phase: "idle", end: 0, total: 1, paused: false, left: 0, auto: false};
+  if (!key){ if (!type || !RFOR[type][kind]) return; key = RFOR[type][kind]; }
+  G = {kind, key, i: 0, side: 0, phase: "idle", end: 0, total: 1, paused: false, left: 0, auto: false};
   ensureAudio(); keepAwake();
   $("guide").hidden = false; document.body.style.overflow = "hidden";
   renderGuide(); $("gMain").focus();
@@ -929,9 +962,9 @@ function gNextStep(auto){
   if (auto && G.auto && gStep().t) gStartPhase("prep", 5); else renderGuide();
 }
 function gFinish(){
-  const name = ROUTINES[G.key].name, f = G.kind === "w" ? {warm: true} : {stretch: true};
-  if (draft){ Object.assign(draft, f); persistDraft(); }
-  else if (justSaved && justSaved.id && db && !readOnly){ Object.assign(justSaved, f); db.doc("sessions/" + justSaved.id).update(f).catch(() => toast("Kunde inte spara – försök igen")); }
+  const name = ROUTINES[G.key].name, f = {[RFLAG[G.kind]]: true};
+  if (draft){ if (RFOR[draft.type][G.kind] === G.key){ Object.assign(draft, f); persistDraft(); } }
+  else if (justSaved && justSaved.id && db && !readOnly && RFOR[justSaved.type][G.kind] === G.key){ Object.assign(justSaved, f); db.doc("sessions/" + justSaved.id).update(f).catch(() => toast("Kunde inte spara – försök igen")); }
   closeGuide(); renderPass(); toast(name + " klar ✓");
 }
 $("gMain").addEventListener("click", () => {
@@ -1100,7 +1133,7 @@ function renderHist(){
       body = '<div class="hbody">' + (s.exercises || []).map(e => { const ex = EXMAP[e.k]; return ex ? '<div class="hl"><span>' + esc(ex.n) + '</span><span class="num">' + (e.sets || []).map(x => esc(setText(ex, x))).join(", ") + '</span></div>' : ""; }).join("") +
         ((s.prs || []).length ? s.prs.map(t => '<div class="pr"><i>REKORD</i><span>' + esc(t) + '</span></div>').join("") : "") +
         (s.note ? '<div class="hl"><span>Anteckning</span><span>' + esc(s.note) + '</span></div>' : "") +
-        '<div class="hl"><span>Uppvärmning · stretch</span><span>' + (s.warm ? "✓" : "–") + ' · ' + (s.stretch ? "✓" : "–") + '</span></div>' +
+        (RFOR[s.type] && RFOR[s.type].a ? '<div class="hl"><span>Uppvärmning · mage · stretch</span><span>' + (s.warm ? "✓" : "–") + ' · ' + (s.abs ? "✓" : "–") + ' · ' + (s.stretch ? "✓" : "–") + '</span></div>' : '<div class="hl"><span>Uppvärmning · stretch</span><span>' + (s.warm ? "✓" : "–") + ' · ' + (s.stretch ? "✓" : "–") + '</span></div>') +
         '<div style="margin-top:6px">' + (confirmDel === s.id ? '<span class="confirm"><span>Ta bort passet för gott?</span><button class="btn sm" type="button" data-del-yes="' + s.id + '">Ja, ta bort</button><button class="btn sm ghost" type="button" data-del-no="1">Avbryt</button></span>' : (db && !readOnly ? '<button class="btn sm ghost" type="button" data-del="' + s.id + '">Ta bort pass</button>' : "")) + '</div></div>';
     }
     return '<div class="hcard"><button type="button" data-open="' + s.id + '" aria-expanded="' + open + '"><span class="badge" style="' + sessColor(s.type in PROGRAM ? s.type : "oA") + '">' + pAb + '</span><span style="min-width:0"><span class="h-t">' + esc(pName) + '</span><br><span class="h-s">' + dLong(s.date) + ' · ' + nSets + ' set' + ((s.prs || []).length ? ' · ' + s.prs.length + ' rekord' : '') + '</span></span><span class="h-v num">' + fmt(s.volume || 0, 0) + '<small>kg volym</small></span></button>' + body + '</div>';
@@ -1181,7 +1214,7 @@ function initDb(){
   let first = true;
   db.collection("sessions").onSnapshot(snap => {
     sessions = snap.docs.map(d => Object.assign({id: d.id}, d.data())).filter(x => x.date && x.type);
-    if (first){ first = false; if (draft && !draft.started) draft = newDraft(draft.type); return; }
+    if (first){ first = false; if (draft && !draft.started) draft = Object.assign(newDraft(draft.type), {warm: draft.warm, abs: draft.abs, stretch: draft.stretch}); return; }
     onData();
   });
   db.collection("weights").onSnapshot(snap => { weights = snap.docs.map(d => d.data()).filter(w => w && w.date && typeof w.kg === "number"); if (view === "vikt") renderVikt(); });
@@ -1222,9 +1255,24 @@ function renderProgram(){
                  under: ["Pass Under · ons & lör", "Sju övningar. Benpress och hip thrust är huvudövningarna. Rumänska marklyft är nytt – lätt de två första veckorna."],
                  abs: ["Mage · efter Över · 6 min", "Tre övningar, två varv, 30 sek vila. Tränar magen att hålla emot – det som bär hip thrust, marklyft och hållningen."],
                  hall: ["Hållningspasset · varje dag · 12 min", "Samma ordning, samma tid varje dag. Fascia-hållet från osteopaten ligger sist."]};
+  const rs = RSET[gSection] || null, items = GUIDE.filter(g => g.section === gSection);
+  let order = "", pre = "", post = "";
+  if (rs){
+    const steps = [{j: "g-r-" + rs.w, c: RCOL.w, n: "Uppvärmning", m: ROUTINES[rs.w].min + " min"},
+                   {j: "g-" + items[0].key, c: sec[2], n: items.length + " övningar", m: rs.ex},
+                   ...(rs.a ? [{j: "g-r-" + rs.a, c: RCOL.a, n: "Mage", m: ROUTINES[rs.a].min + " min"}] : []),
+                   {j: "g-r-" + rs.s, c: RCOL.s, n: "Stretch", m: ROUTINES[rs.s].min + " min"}];
+    order = '<div class="gorder-l">Passets ordning</div><div class="gorder" style="grid-template-columns:repeat(' + steps.length + ',1fr)">' +
+      steps.map((x, i) => '<button type="button" class="go" data-gjump="' + x.j + '" style="--c:' + x.c + '"><b>' + (i + 1) + '</b><span>' + esc(x.n) + '</span><small>' + esc(x.m) + '</small></button>').join("") + '</div>';
+    pre = routineCardHTML(rs.w, "w");
+    post = (rs.a ? routineCardHTML(rs.a, "a") : "") + routineCardHTML(rs.s, "s");
+  } else if (gSection === "abs"){
+    pre = '<div class="card gstart"><div class="gnote">Två varv av alla tre, 30 sek vila mellan varven. Görs direkt efter sista övningen på Över – sen stretch.</div><button class="btn" type="button" data-gguide="absOver" data-gkind="a">▶ Kör magen med timer · 6 min</button></div>';
+  }
   el.innerHTML = '<div class="seg" role="group" aria-label="Del av programmet">' + GSECTIONS.map(x => '<button type="button" data-gsec="' + x[0] + '" aria-pressed="' + (x[0] === gSection) + '">' + x[1] + '</button>').join("") + '</div>' +
     '<div class="ghead"><h2 class="h2">' + esc(heads[gSection][0]) + '</h2><p class="lead">' + esc(heads[gSection][1]) + '</p></div>' +
-    GUIDE.filter(g => g.section === gSection).map(g => {
+    order + pre +
+    items.map(g => {
       const c = sec[2];
       const mus = g.muscles.map((m, i) => '<div class="gm' + (i >= g.primary_n ? ' s' : '') + '"><i></i>' + esc(m) + '</div>').join("");
       return '<details class="gcard" id="g-' + g.key + '" style="--c:' + c + '"' + (programSub === g.key ? ' open' : '') + '><summary><span class="gnum">' + g.i + '</span><span style="min-width:0"><span class="gname">' + esc(g.name) + '</span><br><span class="gdose">' + esc(g.dose) + '</span></span><span class="gchev">›</span></summary>' +
@@ -1240,10 +1288,36 @@ function renderProgram(){
         (g.progress ? '<div class="gprog"><b>Så ökar du:</b> ' + esc(g.progress) + '</div>' : '') +
         (g.swap.length ? '<div class="gsec">' + (g.section === "abs" || ["plank", "dead_bug"].includes(g.key) ? "Lättare variant" : "Byt om maskinen är upptagen") + '</div><div class="gswap">' + g.swap.map(x => '<span>' + esc(x) + '</span>').join("") + '</div>' : '') +
         '</div></details>';
-    }).join("");
-  if (programSub){ const t = $("g-" + programSub); if (t) setTimeout(() => t.scrollIntoView({block: "start", behavior: "smooth"}), 50); programSub = null; }
+    }).join("") + post;
+  if (programSub){ const t = $("g-" + programSub); if (t) setTimeout(() => jumpTo(t), 50); programSub = null; }
 }
-$("v-program").addEventListener("click", e => { const b = e.target.closest("[data-gsec]"); if (!b) return; gSection = b.dataset.gsec; renderProgram(); window.scrollTo({top: 0}); });
+/* Uppvärmning, mage och stretch som kort i Program-fliken – samma innehåll och timer-guide som i Pass-fliken */
+const RSET = {over: {w: "warmUp", a: "absOver", s: "strUp", ex: "ca 50 min"}, under: {w: "warmLow", s: "strLow", ex: "ca 55 min"}};
+const RCOL = {w: "#F26B1D", a: "#2E6BFF", s: "#0E9F9A"};
+const RICON = {w: '<svg viewBox="0 0 24 24"><path d="M12 3c.6 3.2 4.5 5 4.5 9.6A4.5 4.5 0 0 1 12 17.2a4.5 4.5 0 0 1-4.5-4.6c0-2 1-3.3 2-4.1.2 1.6 1 2.5 2 2.8C11.2 8.6 11.3 5.7 12 3z"/><path d="M8 20.5h8"/></svg>',
+               a: '<svg viewBox="0 0 24 24"><rect x="7.5" y="4" width="9" height="16" rx="3.5"/><path d="M12 4v16M7.5 9.5h9M7.5 14.5h9"/></svg>',
+               s: '<svg viewBox="0 0 24 24"><path d="M3 15c2.5-5 5.5-5 8 0s5.5 5 8 0"/><path d="M3 9c2.5-5 5.5-5 8 0s5.5 5 8 0" opacity=".55"/></svg>'};
+const RWHEN = {w: "Före passet", a: "Efter sista övningen", s: "Sist – varje pass"};
+function routineCardHTML(key, kind){
+  const r = ROUTINES[key];
+  let list = r.steps;
+  if (kind === "a") list = r.steps.filter(st => / · varv 1$/.test(st.n)).map(st => Object.assign({}, st, {n: st.n.replace(/ · varv 1$/, "")}));
+  return '<details class="gcard groutine" id="g-r-' + key + '" style="--c:' + RCOL[kind] + '"><summary><span class="gnum gico">' + RICON[kind] + '</span><span style="min-width:0"><span class="gname">' + esc(r.name) + '</span><br><span class="gdose">' + RWHEN[kind] + ' · ca ' + r.min + ' min · ' + list.length + ' delar</span></span><span class="gchev">›</span></summary>' +
+    '<div class="gbody"><button class="btn" type="button" data-gguide="' + key + '" data-gkind="' + kind + '">▶ Starta guiden med timer</button>' +
+    (kind === "w" ? '<div class="gnote">Varm och lite svettig när du är klar. Sista delen är två lätta set på första övningen – de loggas inte.</div>' : kind === "a" ? '<div class="gnote">Två varv av alla tre, 30 sek vila mellan varven. Bilder och teknik finns under <button type="button" class="linkbtn" data-gsec="abs" style="padding:0">Mage</button>.</div>' : '<div class="gnote">Andas lugnt och sjunk lite djupare för varje utandning. Fascia-hållet från osteopaten ligger sist.</div>') +
+    '<ol class="rsteps">' + list.map(st => '<li><div class="rs-h"><b>' + esc(st.n) + '</b><span class="dose">' + esc(doseText(st)) + '</span></div><div class="rs-c">' + esc(st.cue) + '</div>' + (st.tip ? '<div class="rs-t">' + esc(st.tip) + '</div>' : '') + (st.v ? '<a class="yt" href="' + YT(st.v) + '" target="_blank" rel="noopener">▶ Video</a>' : '') + '</li>').join("") + '</ol></div></details>';
+}
+function jumpTo(t){
+  const top = document.querySelector(".top"), off = top ? top.getBoundingClientRect().height + 10 : 10;
+  window.scrollTo({top: Math.max(0, t.getBoundingClientRect().top + window.scrollY - off), behavior: "smooth"});
+}
+$("v-program").addEventListener("click", e => {
+  const gg = e.target.closest("[data-gguide]");
+  if (gg){ openGuide(gg.dataset.gkind, gg.dataset.gguide); return; }
+  const gj = e.target.closest("[data-gjump]");
+  if (gj){ const t = $(gj.dataset.gjump); if (t){ if (t.tagName === "DETAILS" && t.classList.contains("groutine")) t.open = true; jumpTo(t); } return; }
+  const b = e.target.closest("[data-gsec]"); if (!b) return; e.preventDefault(); gSection = b.dataset.gsec; renderProgram(); window.scrollTo({top: 0});
+});
 
 /* ---------- Vanor (dagliga regler, sparas på enheten) ---------- */
 const HABITS = [
