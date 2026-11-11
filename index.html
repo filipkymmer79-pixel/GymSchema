@@ -390,6 +390,57 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .mchip b{font-variant-numeric:tabular-nums;margin-left:4px}
 .mchip.zero{color:var(--muted)}
 .mhint{font-size:12.5px;color:var(--muted)}
+/* Garmin (via intervals.icu) */
+.gm-sec{display:flex;flex-direction:column;gap:14px}
+.gm-card{display:flex;flex-direction:column;gap:10px}
+.gm-top{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:28px}
+.gm-top > b{font-size:16px}
+.gm-top .stat-l{display:flex;align-items:center;gap:7px}
+.gm-live{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px var(--good-bg);display:inline-block;flex:0 0 auto}
+.gm-live.off{background:var(--faint);box-shadow:none}
+.gm-live.busy{animation:gmPulse 1s ease-in-out infinite}
+@keyframes gmPulse{50%{opacity:.2}}
+.gm-ref{border:0;background:var(--surface2);color:var(--muted);border-radius:999px;padding:6px 11px;font:inherit;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer}
+.gm-x{border:0;background:transparent;color:var(--faint);font-size:24px;line-height:1;padding:0 4px;cursor:pointer}
+.gm-tiles{display:grid;grid-template-columns:1.32fr 1fr 1fr 1.12fr;gap:6px}
+.gm-t{background:var(--surface2);border-radius:12px;padding:8px 8px 7px;min-width:0}
+.gm-t small{display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.gm-t b{display:block;font-family:var(--display);font-weight:800;font-size:22px;line-height:1.1;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gm-t i{display:block;font-style:normal;font-size:11px;font-weight:700;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gm-t b.sm{font-size:19px;line-height:1.26}
+.gm-t b em{font-style:normal;font-family:var(--body);font-size:15px;font-weight:900;margin-left:3px;vertical-align:2px}
+.gm-t em.up{color:var(--good)}
+.gm-t em.dn{color:var(--warn)}
+.gm-v{display:flex;gap:9px;align-items:flex-start;border-radius:12px;padding:9px 11px;font-size:13.5px;font-weight:600;line-height:1.35;background:var(--surface2);color:var(--ink)}
+.gm-v > span:first-child{flex:0 0 auto;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:900;background:var(--ink);color:var(--bg);margin-top:1px}
+.gm-v.good{background:var(--good-bg);color:var(--good)}
+.gm-v.good > span:first-child{background:var(--good);color:#fff}
+.gm-v.warn{background:var(--warn-bg);color:var(--warn)}
+.gm-v.warn > span:first-child{background:var(--warn);color:#fff}
+.gm-line{display:flex;gap:8px;align-items:baseline;font-size:14px;line-height:1.4}
+.gm-line b{font-weight:800}
+.gm-tip{font-size:13.5px;font-weight:700;border-radius:12px;padding:9px 11px;background:var(--surface2)}
+.gm-go{align-self:flex-start;text-decoration:none}
+.gm-err{font-size:13px;font-weight:700;color:var(--bad);line-height:1.35}
+.gm-h{margin:0;font-family:var(--display);font-weight:800;font-size:26px;line-height:1.05;letter-spacing:.005em}
+.gm-how{background:var(--surface2);border-radius:14px;padding:11px 12px}
+.gm-how summary{font-weight:800;font-size:14px;cursor:pointer;list-style:none}
+.gm-how summary::-webkit-details-marker{display:none}
+.gm-how summary::after{content:"  ▾";color:var(--faint);font-size:12px}
+.gm-steps{margin:10px 0 2px;padding:0;list-style:none;counter-reset:gs;display:flex;flex-direction:column;gap:12px}
+.gm-steps li{counter-increment:gs;position:relative;padding-left:31px;font-size:14px;line-height:1.45}
+.gm-steps li::before{content:counter(gs);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:12px;font-weight:800;display:grid;place-items:center}
+.gm-steps .btn{display:inline-flex;margin-top:7px;text-decoration:none}
+.gm-steps .btn.ghost{background:var(--surface);box-shadow:var(--shadow)}
+.gm-form{display:flex;gap:8px}
+.gm-form input{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface2);border-radius:12px;padding:12px;font:inherit;font-size:16px;color:var(--ink)}
+.gm-stats .stat-v{font-size:21px}
+.gm-stats.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.gm-row > span:first-child{display:flex;flex-direction:column;gap:1px;min-width:0}
+.gm-row small{font-size:12.5px;color:var(--muted);font-weight:600}
+.gm-stats .stat-v small{font-family:var(--body);font-size:11.5px;font-weight:700;color:var(--muted);margin-left:2px}
+.stat-s{font-size:11px;font-weight:700;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gm-hn{font-weight:700;color:var(--ink)}
 /* Vanor */
 .hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .hnav{display:flex;gap:6px;flex:0 0 auto}
@@ -780,11 +831,12 @@ function renderPass(){
     const nx = nextScheduled();
     banner += '<div class="banner info"><span>▶</span><span><b>Programmet startar ' + (nx.i === 1 ? "imorgon" : DOW[nx.d.getDay()] + "dag " + nx.d.getDate() + " " + MON[nx.d.getMonth()]) + '</b> med ' + esc(PROGRAM[nx.k].name) + '. Kika igenom övningarna redan nu – vikterna fyller du i på plats.</span></div>';
   } else if (!tk){
-    const nx = nextScheduled();
-    banner += '<div class="banner info"><span>☾</span><span><b>Vilodag enligt schemat.</b> Nästa pass: ' + DOW[nx.d.getDay()] + 'dag – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>';
+    const nx = nextScheduled(), rd = RUN_DAYS[today().getDay()];
+    banner += rd ? '<div class="banner info"><span>🏃</span><span><b>Löpdag: ' + esc(rd.replace(/^Löpning /, "")) + ' i pratfart.</b> Nästa gympass: ' + DOW[nx.d.getDay()] + 'dag – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>'
+      : '<div class="banner info"><span>☾</span><span><b>Vilodag enligt schemat.</b> Nästa pass: ' + DOW[nx.d.getDay()] + 'dag – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>';
   }
   const loggedToday = sessions.some(s => s.date === iso(today()) && s.type === selType);
-  el.innerHTML = banner +
+  el.innerHTML = banner + gmPassHTML() +
     '<div class="picker" role="group" aria-label="Välj pass">' + ORDER.map(k => '<button class="pick" type="button" data-type="' + k + '" aria-pressed="' + (k === selType) + '" style="' + sessColor(k) + '"><span class="ab">' + PROGRAM[k].ab + '</span><span class="dd">' + PROGRAM[k].day + '</span></button>').join("") + '</div>' +
     '<div class="sess-head"><div><div class="lead">' + (preStart ? "Första passet" : tk === selType ? "Dagens pass" : "Valt pass") + '</div><h2 class="h2">' + esc(p.name) + '</h2></div>' +
     '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">' + ("speechSynthesis" in window ? '<button class="pill vtog" type="button" data-voice aria-pressed="' + voiceOn + '" aria-label="Röstcoach ' + (voiceOn ? "på" : "av") + '">' + (voiceOn ? "🔊 Röst" : "🔇 Röst") + '</button>' : '') +
@@ -1252,7 +1304,7 @@ function renderProg(){
   for (let n = nNow - 7; n <= nNow; n++){ if (n < 1){ rows.push({n, v: 0, cur: false}); continue; } const ws = addDays(w0, (n - 1) * 7), we = addDays(ws, 7); let v = 0; sessions.forEach(s => { const d = parseIso(s.date); if (d >= ws && d < we) v += s.volume || 0; }); rows.push({n, v, cur: n === nNow}); }
   const totalSessions = sessions.length;
   el.innerHTML = '<div><div class="lead">Hur du blir starkare</div><h2 class="h2">Framsteg</h2></div>' +
-    (typeof muscleMapHTML === "function" ? muscleMapHTML() : "") +
+    gmProgHTML() + (typeof muscleMapHTML === "function" ? muscleMapHTML() : "") +
     '<div class="chips" role="group" aria-label="Välj övning">' + EXERCISES.filter(e => !e.old || sessions.some(s => setsOf(s, e.k))).map(e => '<button class="chip" type="button" data-ex="' + e.k + '" aria-pressed="' + (e.k === progEx) + '" style="--c:var(--' + e.c + ')"><span class="dot"></span>' + esc(SHORT[e.k] || e.n) + '</button>').join("") + '</div>' +
     body +
     '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><b>Volym per vecka</b><span class="lead num">' + totalSessions + ' pass totalt</span></div>' +
@@ -1705,11 +1757,12 @@ function habitPlan(date){
 }
 function habitDone(date, hb){
   const flag = !!(habits[date] && habits[date][hb.k]);
+  if (hb.k === "somn") return flag || gmAuto(date, hb);
   if (hb.k !== "pass") return flag;
   const plan = habitPlan(date);
   if (plan.kind === "gym") return flag || sessions.some(s => s.date === date);
   if (plan.kind === "rest") return true;
-  return flag;
+  return flag || gmAuto(date, hb);
 }
 const dayScore = date => HABITS.reduce((a, hb) => a + (habitDone(date, hb) ? 1 : 0), 0);
 function habitStreak(){
@@ -1731,7 +1784,8 @@ function renderVanor(){
   const rows = HABITS.map(hb => {
     const done = habitDone(habitDate, hb), plan = hb.auto ? habitPlan(habitDate) : null;
     const dots = Array.from({length: 7}, (_, i) => iso(addDays(parseIso(habitDate), i - 6))).map(d => '<i class="' + (habitDone(d, hb) ? 'on' : '') + (d === habitDate ? ' cur' : '') + '"></i>').join("");
-    return '<button type="button" class="hrow' + (hb.auto ? ' auto' : '') + '" data-h="' + hb.k + '" aria-pressed="' + done + '"><span class="hchk" aria-hidden="true">✓</span><span class="ht"><b>' + esc(plan ? plan.n : hb.n) + '</b><small>' + esc(plan ? plan.h : hb.h) + '</small><span class="hdots">' + dots + '<small>7 dagar</small></span></span></button>';
+    const gn = gmHabitNote(habitDate, hb);
+    return '<button type="button" class="hrow' + (hb.auto ? ' auto' : '') + '" data-h="' + hb.k + '" aria-pressed="' + done + '"><span class="hchk" aria-hidden="true">✓</span><span class="ht"><b>' + esc(plan ? plan.n : hb.n) + '</b><small>' + (gn ? '<span class="gm-hn">' + esc(gn) + '</span>' : esc(plan ? plan.h : hb.h)) + '</small><span class="hdots">' + dots + '<small>7 dagar</small></span></span></button>';
   }).join("");
   el.innerHTML = '<div class="hhead"><div><div class="lead">' + (isT ? "Bocka av på kvällen" : "Du kan fylla i 14 dagar bakåt") + '</div><h2 class="h2">' + esc(title) + '</h2></div>' +
     '<div class="hnav"><button type="button" data-hnav="-1" aria-label="Föregående dag"' + (habitDate <= min ? ' disabled' : '') + '>‹</button><button type="button" data-hnav="1" aria-label="Nästa dag"' + (isT ? ' disabled' : '') + '>›</button></div></div>' +
@@ -1745,9 +1799,10 @@ $("v-vanor").addEventListener("click", e => {
   const nav = e.target.closest("[data-hnav]"), b = e.target.closest("[data-h]");
   if (nav){ habitDate = iso(addDays(parseIso(habitDate), +nav.dataset.hnav)); renderVanor(); return; }
   if (!b) return;
-  const k = b.dataset.h, day = habits[habitDate] || (habits[habitDate] = {});
-  const hb = HABITS.find(x => x.k === k);
+  const k = b.dataset.h, hb = HABITS.find(x => x.k === k);
   if (hb.auto && habitPlan(habitDate).kind === "rest") return;
+  if (!(habits[habitDate] && habits[habitDate][k]) && gmAuto(habitDate, hb)){ toast("Bockad automatiskt från Garmin"); return; }
+  const day = habits[habitDate] || (habits[habitDate] = {});
   const was = habitDone(habitDate, hb);
   if (was) delete day[k]; else day[k] = true;
   if (!Object.keys(day).length) delete habits[habitDate];
@@ -1756,12 +1811,264 @@ $("v-vanor").addEventListener("click", e => {
   if (!was && dayScore(habitDate) >= HABITS.length) toast("Perfekt dag ✓");
 });
 
+
+/* ---------- Garmin via intervals.icu (gratis): sömn, HRV, vilopuls, steg och löpning ---------- */
+// Klockan → Garmin Connect → intervals.icu (gratis, officiellt kopplad till Garmin) → hit.
+// Nyckeln och datan sparas bara på telefonen och följer inte med i backupen.
+const GM_API = "https://intervals.icu/api/v1/athlete/0/";
+const GM_KEY = "gymschema.icu.key", GM_CACHE = "gymschema.garmin.v1", GM_HIDE = "gymschema.garmin.hide", GM_BAD = "gymschema.garmin.bad";
+const GM_WF = "id,ctl,atl,restingHR,hrv,sleepSecs,sleepScore,steps";
+const GM_AF = "id,start_date_local,type,name,distance,moving_time,elapsed_time,average_heartrate,icu_training_load";
+let gm = (() => { const c = store(GM_CACHE); return c && Array.isArray(c.w) && Array.isArray(c.a) ? c : null; })();
+let gmBusy = false, gmErr = store(GM_BAD) ? "auth" : "", gmMsg = "", gmDraft = "", gmOffArm = 0;
+const gmKey = () => { try { return localStorage.getItem(GM_KEY) || ""; } catch(e){ return ""; } };
+const gmOn = () => !!gmKey();
+const gmNum = v => typeof v === "number" && isFinite(v) ? v : null;
+const gmCap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const gmH = sec => { const m = Math.round(sec / 60); return Math.floor(m / 60) + " h " + pad(m % 60); };
+const gmHM = sec => { const m = Math.round(sec / 60); return Math.floor(m / 60) + " h " + (m % 60) + " min"; };
+const gmDur = sec => { if (!sec) return "–"; sec = Math.round(sec); const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), x = sec % 60; return (h ? h + ":" + pad(m) : m) + ":" + pad(x); };
+const gmPace = (sec, km) => { if (!sec || !km) return "–"; const p = Math.round(sec / km); return Math.floor(p / 60) + ":" + pad(p % 60); };
+const gmSteps = n => Math.round(n).toLocaleString("sv-SE");
+const gmDay = d => d === iso(today()) ? "i dag" : d === iso(addDays(today(), -1)) ? "i går" : dLong(d);
+const gmWhen = ts => { const d = new Date(ts), hm = pad(d.getHours()) + "." + pad(d.getMinutes()); return d >= today() ? hm : dLabel(iso(d)) + " " + hm; };
+const gmWeekNo = d => { const x = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())), wd = x.getUTCDay() || 7; x.setUTCDate(x.getUTCDate() + 4 - wd); return Math.ceil(((x - Date.UTC(x.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7); };
+const gmW = d => gm ? gm.w.find(r => r.d === d) || null : null;
+const gmRuns = () => gm ? gm.a.filter(a => /Run$/.test(a.ty) && a.km > 0.3) : [];
+const gmRunOn = d => gmRuns().filter(a => a.d === d);
+function gmStats(k, from, to){
+  if (!gm) return null;
+  const v = gm.w.filter(r => r.d >= from && r.d <= to && r[k] != null && r[k] > 0).map(r => r[k]);
+  if (!v.length) return null;
+  const m = v.reduce((a, b) => a + b, 0) / v.length;
+  return {m, n: v.length, sd: v.length > 1 ? Math.sqrt(v.reduce((a, b) => a + (b - m) * (b - m), 0) / (v.length - 1)) : 0};
+}
+
+async function gmGet(path, key){
+  let r;
+  try { r = await fetch(GM_API + path, {headers: {Authorization: "Basic " + btoa("API_KEY:" + key)}, cache: "no-store"}); }
+  catch(e){ const x = new Error("net"); x.code = "net"; throw x; }
+  if (r.status === 401 || r.status === 403){ const x = new Error("auth"); x.code = "auth"; throw x; }
+  if (r.status === 429){ const x = new Error("rate"); x.code = "rate"; throw x; }
+  if (!r.ok){ const x = new Error("http " + r.status); x.code = "http"; throw x; }
+  return r.json();
+}
+async function gmRefresh(force){
+  const key = gmKey(); if (!key || gmBusy) return;
+  if (!force && gm && Date.now() - gm.ts < 5 * 60e3) return;
+  gmBusy = true; gmErr = ""; gmPaint();
+  try {
+    const t = today();
+    const [w, a] = await Promise.all([
+      gmGet("wellness?oldest=" + iso(addDays(t, -41)) + "&newest=" + iso(t) + "&fields=" + GM_WF, key),
+      gmGet("activities?oldest=" + iso(addDays(weekStart(t), -49)) + "&fields=" + GM_AF, key)
+    ]);
+    let conn = gm ? gm.conn : null, connTs = gm ? gm.connTs || 0 : 0;
+    if (force || conn == null || Date.now() - connTs > 6 * 3600e3){
+      try { const c = await gmGet("connections", key); conn = !!(c && (c.garmin_health_connected || c.garmin_training_connected)); connTs = Date.now(); }
+      catch(e){ /* bara en extra koll – nyckeln är redan godkänd av anropen ovan */ }
+    }
+    gm = {ts: Date.now(), conn, connTs,
+      w: (Array.isArray(w) ? w : []).filter(r => r && /^\d{4}-\d{2}-\d{2}$/.test(r.id || "")).map(r => ({d: r.id, sl: gmNum(r.sleepSecs), ss: gmNum(r.sleepScore), hrv: gmNum(r.hrv), rhr: gmNum(r.restingHR), st: gmNum(r.steps), ctl: gmNum(r.ctl), atl: gmNum(r.atl)})).sort((x, y) => x.d < y.d ? -1 : 1),
+      a: (Array.isArray(a) ? a : []).filter(x => x && x.start_date_local && x.type).map(x => ({id: x.id, d: String(x.start_date_local).slice(0, 10), tm: String(x.start_date_local).slice(11, 16), ty: String(x.type), n: x.name || "", km: gmNum(x.distance) != null ? x.distance / 1000 : 0, s: gmNum(x.moving_time) || gmNum(x.elapsed_time) || 0, hr: gmNum(x.average_heartrate), ld: gmNum(x.icu_training_load)})).sort((x, y) => x.d + x.tm < y.d + y.tm ? 1 : -1)};
+    store(GM_CACHE, gm); store(GM_BAD, null);
+  } catch(e){ gmErr = e.code || "net"; if (gmErr === "auth") store(GM_BAD, 1); }
+  gmBusy = false; gmPaint();
+}
+async function gmConnect(raw){
+  gmDraft = String(raw || "").trim();
+  const key = gmDraft.replace(/^API_KEY\s*:/i, "").replace(/[^A-Za-z0-9_\-]/g, "");
+  if (key.length < 8){ gmMsg = "Klistra in nyckeln från intervals.icu först (steg 4)."; gmPaint(); return; }
+  gmBusy = true; gmMsg = ""; gmErr = ""; gmPaint();
+  try { await gmGet("wellness?oldest=" + iso(today()) + "&newest=" + iso(today()) + "&fields=id", key); }
+  catch(e){
+    gmBusy = false;
+    gmMsg = e.code === "auth" ? "Nyckeln fungerar inte. Kopiera den igen på intervals.icu → Settings → Developer Settings → API Key." : e.code === "rate" ? "intervals.icu ber appen vänta en minut. Försök igen strax." : "Fick ingen kontakt med intervals.icu. Är du uppkopplad?";
+    gmPaint(); return;
+  }
+  try { localStorage.setItem(GM_KEY, key); } catch(e){}
+  store(GM_HIDE, null); store(GM_BAD, null); gmBusy = false; gmDraft = ""; gm = null; toast("Garmin kopplad ✓");
+  await gmRefresh(true);
+}
+function gmOff(){ try { localStorage.removeItem(GM_KEY); } catch(e){} store(GM_CACHE, null); store(GM_BAD, null); gm = null; gmErr = ""; gmMsg = ""; toast("Garmin bortkopplad"); gmPaint(); }
+function gmPaint(){
+  const p = $("gmPass"); if (p) p.innerHTML = gmPassInner();
+  const g = $("gmProg"); if (g) g.innerHTML = gmProgInner();
+  if (view === "vanor") renderVanor();
+}
+function gmInit(){
+  gmRefresh(false);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") gmRefresh(false); });
+  window.addEventListener("online", () => gmRefresh(false));
+  setInterval(() => { if (document.visibilityState === "visible") gmRefresh(false); }, 10 * 60e3);
+}
+
+/* Vanor: sömn och löpdagens pass bockas av från Garmin */
+function gmAuto(date, hb){
+  if (!gmOn() || !gm) return false;
+  if (hb.k === "somn"){ const w = gmW(date); return !!(w && w.sl >= 36000); }
+  if (hb.k === "pass") return habitPlan(date).kind === "run" && gmRunOn(date).length > 0;
+  return false;
+}
+function gmHabitNote(date, hb){
+  if (!gmOn() || !gm) return "";
+  if (hb.k === "somn"){ const w = gmW(date); return w && w.sl ? "Garmin: " + gmHM(w.sl) + (w.sl >= 36000 ? " ✓" : " – målet är 10 h") : ""; }
+  if (hb.k === "pass" && habitPlan(date).kind === "run"){ const r = gmRunOn(date); return r.length ? "Garmin: " + r.map(x => fmt(x.km, 1) + " km på " + gmDur(x.s)).join(" + ") + " ✓" : ""; }
+  return "";
+}
+
+/* Dagens läge: HRV och vilopuls mot dina senaste 4 veckor */
+function gmVerdict(){
+  const t = today(), w = gmW(iso(t));
+  if (!w || (w.sl == null && w.hrv == null && w.rhr == null)) return {c: "", ic: "⌚", txt: "Inget från i natt än. Öppna Garmin Connect-appen så synkar klockan – sen kommer det hit."};
+  const from = iso(addDays(t, -28)), to = iso(addDays(t, -1)), bh = gmStats("hrv", from, to), br = gmStats("rhr", from, to), warn = [];
+  if (w.hrv != null && bh && bh.n >= 7 && w.hrv < bh.m - Math.max(bh.sd, bh.m * .06)) warn.push("HRV lägre än vanligt");
+  if (w.rhr != null && br && br.n >= 7 && w.rhr > br.m + Math.max(br.sd, 2)) warn.push("vilopulsen högre än vanligt");
+  if (w.sl != null && w.sl < 6 * 3600) warn.push("kort sömn");
+  if (warn.length) return {c: "warn", ic: "!", txt: gmCap(warn.join(", ")) + ". Kör lugnare i dag: lättare vikter eller pratfart."};
+  if (!(bh && bh.n >= 7) && !(br && br.n >= 7)) return {c: "", ic: "i", txt: "När det finns en veckas data jämför appen varje morgon med ditt vanliga läge."};
+  return {c: "good", ic: "✓", txt: "HRV och vilopuls som vanligt – kör som planerat."};
+}
+
+/* Pass-fliken: dagens kort */
+function gmPassHTML(){
+  if (!gmOn() && store(GM_HIDE)) return "";
+  return '<div class="card gm-card" id="gmPass">' + gmPassInner() + '</div>';
+}
+function gmTop(label){
+  return '<div class="gm-top"><span class="stat-l"><i class="gm-live' + (gmBusy ? " busy" : gmErr ? " off" : "") + '"></i>' + esc(label) + '</span>' +
+    '<button class="gm-ref" type="button" data-gm="ref" aria-label="Hämta från Garmin nu">' + (gmBusy ? "Hämtar…" : "↻ " + (gm ? gmWhen(gm.ts) : "Hämta")) + '</button></div>' +
+    (gmErr ? '<div class="gm-err">' + esc(gmErrText()) + '</div>' : '');
+}
+function gmErrText(){
+  return gmErr === "auth" ? "Nyckeln till intervals.icu fungerar inte längre – koppla igen under Framsteg." :
+    gmErr === "rate" ? "intervals.icu ber appen vänta en stund. Visar det senaste." :
+    "Ingen kontakt med intervals.icu just nu" + (gm ? " – visar det senaste från " + gmWhen(gm.ts) : "") + ".";
+}
+function gmTile(label, val, sub, tr){ return '<div class="gm-t"><small>' + label + '</small><b class="num' + (String(val).length >= 6 ? ' sm' : '') + '">' + val + (tr && tr.arrow ? '<em class="' + tr.cls + '">' + tr.arrow + '</em>' : '') + '</b><i>' + sub + '</i></div>'; }
+function gmPassInner(){
+  if (!gmOn()) return '<div class="gm-top"><span class="stat-l"><i class="gm-live off"></i>Garmin</span><button class="gm-x" type="button" data-gm="hide" aria-label="Dölj">×</button></div>' +
+    '<div class="gm-line"><span>Se sömn, HRV, vilopuls och löprundor från klockan här. Gratis via intervals.icu.</span></div>' +
+    '<a class="btn sm gm-go" href="#framsteg/garmin">Koppla Garmin →</a>';
+  const t = iso(today()), w = gmW(t) || {}, v = gmVerdict();
+  const avg = k => gmStats(k, iso(addDays(today(), -7)), iso(addDays(today(), -1)));
+  const cmp = (val, a, higherGood) => { if (val == null || !a) return null; const d = (val - a.m) / a.m, up = d > 0, flat = Math.abs(d) < .04; return {txt: "snitt " + Math.round(a.m), arrow: flat ? "" : up ? "↑" : "↓", cls: flat ? "" : up === higherGood ? "up" : "dn"}; };
+  const hc = cmp(w.hrv, avg("hrv"), true), rc = cmp(w.rhr, avg("rhr"), false);
+  let h = gmTop("Garmin · i dag") + '<div class="gm-tiles">' +
+      gmTile("Sömn", w.sl != null ? gmH(w.sl) : "–", w.ss != null ? "poäng " + Math.round(w.ss) : "i natt") +
+      gmTile("HRV", w.hrv != null ? Math.round(w.hrv) : "–", hc ? hc.txt : "ms", hc) +
+      gmTile("Vilopuls", w.rhr != null ? Math.round(w.rhr) : "–", rc ? rc.txt : "slag/min", rc) +
+      gmTile("Steg", w.st != null ? gmSteps(w.st) : "–", "i dag") +
+    '</div><div class="gm-v ' + v.c + '"><span aria-hidden="true">' + v.ic + '</span><span>' + esc(v.txt) + '</span></div>';
+  const lr = gmRuns().find(a => a.d >= iso(addDays(today(), -2)));
+  if (lr) h += '<div class="gm-line"><span aria-hidden="true">🏃</span><span><b>' + gmCap(gmDay(lr.d)) + ': ' + fmt(lr.km, 1) + ' km</b> · ' + gmDur(lr.s) + ' · ' + gmPace(lr.s, lr.km) + ' /km' + (lr.hr ? ' · puls ' + Math.round(lr.hr) : '') + '</span></div>';
+  const kmToday = gmRunOn(t).reduce((x, r) => x + r.km, 0);
+  if (kmToday >= 10) h += '<div class="gm-tip"><span aria-hidden="true">🥤</span> Långpass i dag, ' + fmt(kmToday, 1) + ' km – ta nästa storlek på shaken.</div>';
+  return h + '<a class="exlink" href="#framsteg">Sömn, löpning och trender →</a>';
+}
+
+/* Framsteg-fliken: koppla, löpning, sömn och återhämtning */
+function gmProgHTML(){ return '<div id="gmProg" class="gm-sec">' + gmProgInner() + '</div>'; }
+function gmProgInner(){
+  if (!gmOn() || gmErr === "auth") return gmSetupHTML();
+  if (!gm) return '<div class="card gm-card">' + gmTop("Garmin") + '<div class="small">Hämtar dina värden från intervals.icu…</div></div>';
+  return gmRunCard() + gmSleepCard() + gmStatusCard();
+}
+function gmSetupHTML(){
+  const authFail = gmOn() && gmErr === "auth";
+  return '<div class="card gm-card"><div class="gm-top"><span class="stat-l"><i class="gm-live off"></i>Garmin</span></div>' +
+    '<h3 class="gm-h">' + (authFail ? "Koppla Garmin igen" : "Koppla din Garmin – gratis") + '</h3>' +
+    '<div class="small">Klockan synkar till intervals.icu, en gratis träningssajt som är officiellt kopplad till Garmin. Appen hämtar därifrån varje gång du öppnar den: sömn, HRV, vilopuls, steg och löprundor.</div>' +
+    '<details class="gm-how" open><summary>Så kopplar du · 4 steg, ca 5 min</summary><ol class="gm-steps">' +
+      '<li><b>Skapa ett gratis konto</b> på intervals.icu.<br><a class="btn sm ghost" href="https://intervals.icu" target="_blank" rel="noopener">Öppna intervals.icu ↗</a></li>' +
+      '<li><b>Koppla Garmin:</b> gå till <b>Settings</b>, rutan <b>Garmin Connect</b>, och tryck <b>Connect</b>. Logga in med ditt Garmin-konto och godkänn allt.<br><a class="btn sm ghost" href="https://intervals.icu/settings" target="_blank" rel="noopener">Öppna Settings ↗</a></li>' +
+      '<li><b>Slå på hälsodatan:</b> se till att <b>wellness</b> är ibockat i samma ruta. Annars kommer bara passen – inte sömn, HRV och vilopuls.</li>' +
+      '<li><b>Kopiera nyckeln:</b> längst ner i Settings, under <b>Developer Settings</b>, står <b>API Key</b>. Kopiera den och klistra in här.</li>' +
+    '</ol></details>' +
+    '<form class="gm-form" id="gmForm" autocomplete="off"><input id="gmKeyIn" placeholder="Klistra in API-nyckeln" value="' + esc(gmDraft) + '" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="API-nyckel från intervals.icu"><button class="btn" type="submit"' + (gmBusy ? " disabled" : "") + '>' + (gmBusy ? "Kopplar…" : "Koppla") + '</button></form>' +
+    (gmMsg || authFail ? '<div class="gm-err">' + esc(gmMsg || "Nyckeln fungerar inte längre. Kopiera en ny från intervals.icu och klistra in den.") + '</div>' : '') +
+    '<div class="small">Nyckeln sparas bara i appen på din telefon. Vill du ha historik bakåt: tryck <b>Download old data</b> i Garmin-rutan på intervals.icu.</div></div>';
+}
+function gmStat(l, v, u, sub){ return '<div class="stat"><div class="stat-l">' + esc(l) + '</div><div class="stat-v num">' + v + (u ? '<small>' + u + '</small>' : '') + '</div>' + (sub ? '<div class="stat-s">' + esc(sub) + '</div>' : '') + '</div>'; }
+function gmKmBars(){
+  const ws = weekStart(today()), rows = [];
+  for (let i = 7; i >= 0; i--){ const a = addDays(ws, -7 * i), A = iso(a), B = iso(addDays(a, 7)); rows.push({km: gmRuns().filter(r => r.d >= A && r.d < B).reduce((x, r) => x + r.km, 0), n: gmWeekNo(a), cur: i === 0}); }
+  const W = 340, H = 132, L = 8, R = 8, T = 18, Bm = 22, bw = (W - L - R) / rows.length, max = Math.max(5, Math.max.apply(null, rows.map(r => r.km)));
+  let s = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Löpning, kilometer per vecka"><line class="gl" x1="' + L + '" x2="' + (W - R) + '" y1="' + (H - Bm) + '" y2="' + (H - Bm) + '"/>';
+  rows.forEach((r, i) => {
+    const h = (H - T - Bm) * r.km / max, w = Math.min(bw * .64, 30), x = L + i * bw + (bw - w) / 2, y = H - Bm - h;
+    if (r.km > 0) s += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="4" fill="' + (r.cur ? "var(--ink)" : "var(--faint)") + '" opacity="' + (r.cur ? 1 : .55) + '"/>' +
+      '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (y - 5).toFixed(1) + '" text-anchor="middle"' + (r.cur ? ' class="end"' : '') + '>' + fmt(r.km, r.km >= 100 ? 0 : 1) + '</text>';
+    s += '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (H - 7) + '" text-anchor="middle">v' + r.n + '</text>';
+  });
+  return s + '</svg>';
+}
+function gmSleepBars(){
+  const t = today(), days = Array.from({length: 14}, (_, i) => iso(addDays(t, i - 13)));
+  const W = 340, H = 140, L = 8, R = 8, T = 16, Bm = 22, bw = (W - L - R) / days.length, max = 11 * 3600, Y = v => T + (1 - Math.min(v, max) / max) * (H - T - Bm);
+  let s = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Sömn per natt, två veckor"><line class="gl" x1="' + L + '" x2="' + (W - R) + '" y1="' + (H - Bm) + '" y2="' + (H - Bm) + '"/>';
+  days.forEach((d, i) => {
+    const r = gmW(d), v = r && r.sl, w = Math.min(bw * .62, 16), x = L + i * bw + (bw - w) / 2;
+    if (v){ const y = Y(v); s += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + (H - Bm - y).toFixed(1) + '" rx="3" fill="' + (v >= 36000 ? "var(--good)" : "var(--blue)") + '" opacity="' + (i === days.length - 1 ? 1 : .75) + '"/>'; }
+    s += '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (H - 7) + '" text-anchor="middle"' + (i === days.length - 1 ? ' class="end"' : '') + '>' + parseIso(d).getDate() + '</text>';
+  });
+  const gy = Y(36000).toFixed(1);
+  s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + gy + '" y2="' + gy + '" stroke="var(--good)" stroke-width="1.3" stroke-dasharray="3 4"/><text x="' + (W - R) + '" y="' + (gy - 4) + '" text-anchor="end">mål 10 h</text>';
+  return s + '</svg>';
+}
+function gmRunCard(){
+  const runs = gmRuns(), ws = iso(weekStart(today())), f28 = iso(addDays(today(), -27));
+  const wk = runs.filter(r => r.d >= ws), l4 = runs.filter(r => r.d >= f28);
+  const kmWk = wk.reduce((x, r) => x + r.km, 0), longest = l4.reduce((x, r) => Math.max(x, r.km), 0), km4 = l4.reduce((x, r) => x + r.km, 0), s4 = l4.reduce((x, r) => x + r.s, 0);
+  let h = '<div class="card gm-card"><div class="gm-top"><b>Löpning</b><span class="lead">km per vecka</span></div>';
+  if (!runs.length) return h + '<div class="empty"><span>Inga löprundor från Garmin de senaste 8 veckorna. Springer du med klockan dyker de upp här.</span></div></div>';
+  return h + gmKmBars() + '<div class="stats gm-stats">' +
+      gmStat("Veckan", fmt(kmWk, 1), "km", "hittills") + gmStat("Längsta", fmt(longest, 1), "km", "4 veckor") +
+      gmStat("Fart", km4 ? gmPace(s4, km4) : "–", "/km", "snitt 4 v") + gmStat("Rundor", l4.length, "", "4 veckor") + '</div>' +
+    '<div class="rows">' + runs.slice(0, 5).map(r => '<div class="row gm-row"><span class="num"><b>' + fmt(r.km, 1) + ' km</b><small>' + gmDur(r.s) + ' · ' + gmPace(r.s, r.km) + ' /km' + (r.hr ? ' · puls ' + Math.round(r.hr) : '') + '</small></span><span class="d">' + gmDay(r.d) + '</span></div>').join("") + '</div></div>';
+}
+function gmSleepCard(){
+  const t = today(), to = iso(t), f7 = iso(addDays(t, -6)), p1 = iso(addDays(t, -34)), p2 = iso(addDays(t, -7));
+  const sl7 = gmStats("sl", f7, to), h7 = gmStats("hrv", f7, to), r7 = gmStats("rhr", f7, to), h28 = gmStats("hrv", p1, p2), r28 = gmStats("rhr", p1, p2);
+  const vs = (a, b) => { const d = Math.round(a.m - b.m); return d ? (d > 0 ? "↑ " : "↓ ") + Math.abs(d) + " mot månaden innan" : "som månaden innan"; };
+  const lastFit = gm.w.slice().reverse().find(r => r.ctl != null && r.atl != null && r.d <= to);
+  const form = lastFit ? Math.round(lastFit.ctl - lastFit.atl) : null;
+  const fTxt = form == null ? "kondition minus trötthet" : form > 5 ? "utvilad – redo att köra hårt" : form >= -10 ? "neutral" : form >= -30 ? "bygger form – bra dos" : "hög belastning – vila mer";
+  const fit28 = lastFit ? gm.w.find(r => r.ctl != null && r.d >= iso(addDays(parseIso(lastFit.d), -28))) : null;
+  const fitD = lastFit && fit28 && fit28.d < lastFit.d ? Math.round(lastFit.ctl - fit28.ctl) : null;
+  let h = '<div class="card gm-card"><div class="gm-top"><b>Sömn och återhämtning</b>' + (sl7 ? '<span class="lead num">snitt ' + gmH(sl7.m) + '</span>' : '') + '</div>';
+  if (!gm.w.some(r => r.sl != null || r.hrv != null || r.rhr != null)) return h + '<div class="empty"><span>Ingen sömn eller HRV från Garmin än. Kolla att wellness är ibockat i Garmin-rutan på intervals.icu.</span></div></div>';
+  h += gmSleepBars() + '<div class="stats gm-stats two">' +
+      gmStat("HRV · 7 dagar", h7 ? Math.round(h7.m) : "–", "ms", h7 && h28 ? vs(h7, h28) : "snitt per natt") +
+      gmStat("Vilopuls · 7 dagar", r7 ? Math.round(r7.m) : "–", "slag/min", r7 && r28 ? vs(r7, r28) : "snitt per natt") +
+      gmStat("Kondition", lastFit ? Math.round(lastFit.ctl) : "–", "", fitD == null ? "fitness från passen" : fitD ? (fitD > 0 ? "↑ " : "↓ ") + Math.abs(fitD) + " på 4 veckor" : "samma som för 4 veckor sen") +
+      gmStat("Form", form == null ? "–" : (form > 0 ? "+" : form < 0 ? "−" : "") + Math.abs(form), "", fTxt) + '</div>';
+  const pts = gm.w.filter(r => r.hrv != null && r.d >= iso(addDays(t, -27))).map(r => ({t: parseIso(r.d).getTime(), y: Math.round(r.hrv)}));
+  if (pts.length >= 3) h += '<div style="margin-top:2px">' + lineChart({pts, color: "var(--blue)", unit: "ms", label: "HRV per natt"}) + '</div><div class="lead" style="font-size:13px">HRV per natt, 4 veckor. Över ditt vanliga = utvilad. Under flera dagar i rad = vila mer.</div>';
+  return h + '</div>';
+}
+function gmStatusCard(){
+  return '<div class="card gm-card"><div class="small">Hämtat från Garmin via intervals.icu ' + gmWhen(gm.ts) + '. Uppdateras av sig själv när du öppnar appen.</div>' +
+    (gm.conn === false ? '<div class="gm-err">intervals.icu är inte kopplat till Garmin än. Gå till Settings → Garmin Connect → Connect på intervals.icu.</div>' : '') +
+    (gmErr ? '<div class="gm-err">' + esc(gmErrText()) + '</div>' : '') +
+    '<div class="bk"><button class="btn sm" type="button" data-gm="ref"' + (gmBusy ? " disabled" : "") + '>' + (gmBusy ? "Hämtar…" : "↻ Uppdatera nu") + '</button><button class="btn sm ghost" type="button" data-gm="off">Koppla från</button></div></div>';
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-gm]"); if (!b) return;
+  const a = b.dataset.gm;
+  if (a === "ref") gmRefresh(true);
+  else if (a === "hide"){ store(GM_HIDE, 1); const p = $("gmPass"); if (p) p.remove(); toast("Garmin-kopplingen finns under Framsteg"); }
+  else if (a === "off"){ if (Date.now() - gmOffArm > 3000){ gmOffArm = Date.now(); b.textContent = "Tryck igen för att koppla från"; return; } gmOff(); }
+});
+document.addEventListener("submit", e => { if (e.target && e.target.id === "gmForm"){ e.preventDefault(); const i = $("gmKeyIn"); gmConnect(i ? i.value : ""); } });
+
 /* ---------- Start ---------- */
-const BUILD = "11 nov 23.08", BUILD_NOTE = "Nytt: röstcoach, 🔥 när du slår förra gången, muskelkarta och Boxning";
+const BUILD = "11 nov 23.40", BUILD_NOTE = "Nytt: Garmin – sömn, HRV, vilopuls och löprundor (koppla under Framsteg)";
 draft = restoreDraft();
 if (draft) selType = draft.type;
 initDb();
 show(location.hash.slice(1) || "pass");
+gmInit();
 if ("serviceWorker" in navigator){ window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); }); }
 try { if (localStorage.getItem("gymschema.build") !== BUILD){ localStorage.setItem("gymschema.build", BUILD); setTimeout(() => { toast("Uppdaterad ✓ " + BUILD_NOTE); clearTimeout(toastT); toastT = setTimeout(() => { $("toast").hidden = true; }, 6500); }, 900); } } catch(e){}
 })();
