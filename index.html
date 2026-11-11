@@ -1115,7 +1115,7 @@ function backupCard(){
   const last = store("lyftloggen.lastBackup");
   return '<div class="card"><div class="lead">Datan ligger på den här telefonen</div><h3 style="margin:2px 0 8px;font-size:16px">Backup</h3>' +
     '<div class="bk"><button class="btn sm" type="button" id="bkOut">Spara backup-fil</button><label class="btn sm ghost" for="bkIn">Läs in backup</label><input type="file" id="bkIn" accept=".json,application/json"></div>' +
-    '<div class="small" style="margin-top:8px">' + (last ? 'Senaste backup: ' + dLong(last) + '.' : 'Ingen backup gjord än.') + ' Spara filen i Filer eller iCloud – då följer loggen med om du byter mobil.</div></div>';
+    '<div class="small" style="margin-top:8px">' + (last ? 'Senaste backup: ' + dLong(last) + '.' : 'Ingen backup gjord än.') + ' Spara filen i Filer eller iCloud – då följer loggen med om du byter mobil.</div><div class="small" style="margin-top:6px">Appversion ' + BUILD + '</div></div>';
 }
 function renderHist(){
   const el = $("v-historik");
@@ -1395,11 +1395,13 @@ $("v-vanor").addEventListener("click", e => {
 });
 
 /* ---------- Start ---------- */
+const BUILD = "11 nov 16.30", BUILD_NOTE = "Axelpress i maskin · uppvärmningen syns i Program";
 draft = restoreDraft();
 if (draft) selType = draft.type;
 initDb();
 show(location.hash.slice(1) || "pass");
 if ("serviceWorker" in navigator){ window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); }); }
+try { if (localStorage.getItem("gymschema.build") !== BUILD){ localStorage.setItem("gymschema.build", BUILD); setTimeout(() => { toast("Uppdaterad ✓ " + BUILD_NOTE); clearTimeout(toastT); toastT = setTimeout(() => { $("toast").hidden = true; }, 6500); }, 900); } } catch(e){}
 })();
 </script>
 
