@@ -567,6 +567,7 @@ textarea:focus-visible,
     "- Använd mina egna ord. Rätta stavfel, men lägg inte till och ta inte bort något.",
     "- Dela upp listan med rubriker som börjar med \"# \", till exempel \"# Först\", \"# Kvällen\" och \"# Sist\".",
     "- Sådant som inte har någon ordning eller tid läggs sist under rubriken \"# Bra att ha\".",
+    "- Sådant som ska göras längre fram, inte i dag, läggs allra sist under rubriken \"# Längre fram\".",
     "- Hör flera småsaker ihop, skriv dem som delsaker under en rad, med \"- \" först på raden."
   ].join("\n");
   var SHOP_HEAD = "Sortera min handlingslista så att den blir lätt att följa i butiken.";
@@ -676,7 +677,8 @@ textarea:focus-visible,
   //                               and indented bullets are their parts.
   //   "> rad"                     is a note under the task above
   //   "[x] "                      in front of a task or part means it is already done
-  var LOOSE = /bra att ha|utan ordning|när det passar|om jag hinner/i;
+  var LOOSE = /bra att ha|utan ordning|när det passar|om jag hinner|längre fram/i;
+  var LATER = /längre fram/i;   // plans for later: shown, but not part of today
   function norm(s) { return s.toLowerCase().replace(/\s+/g, " ").trim(); }
   function plain(s) {
     return s.replace(/\*\*(.+?)\*\*/g, "$1").replace(/__(.+?)__/g, "$1").replace(/`([^`]+)`/g, "$1").trim();
@@ -863,7 +865,7 @@ textarea:focus-visible,
         h.appendChild(num);
         secEl.appendChild(h);
       }
-      if (s.loose && tab === "day") secEl.appendChild(el("p", "secnote", "Ingen ordning. Ta dem när det passar."));
+      if (s.loose && tab === "day") secEl.appendChild(el("p", "secnote", LATER.test(s.title) ? "Inte för i dag. Bocka av när det är gjort." : "Ingen ordning. Ta dem när det passar."));
       var rows = el(loose ? "ul" : "ol", "rows"), strip = el("span"), mine = [];
       if (!loose) rows.start = n + 1;
       s.tasks.forEach(function (t) {

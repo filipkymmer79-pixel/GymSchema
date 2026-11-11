@@ -1,7 +1,7 @@
 // Dagsschema: offline shell. Only this app's own caches are ever cleaned up,
 // because the gym app shares the same site and keeps caches of its own.
 const PREFIX = "dagsschema-";
-const CACHE = PREFIX + "v202611101915";
+const CACHE = PREFIX + "v202611111710";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./kira-180.png", "./kira-192.png", "./kira-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith(PREFIX) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
