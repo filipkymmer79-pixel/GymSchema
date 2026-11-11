@@ -102,6 +102,10 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .tag{font-size:11.5px;font-weight:700;letter-spacing:.03em;color:var(--muted);background:var(--surface2);padding:3px 8px;border-radius:999px}
 .count{font-family:var(--display);font-weight:800;font-size:22px;line-height:1;color:var(--faint);white-space:nowrap}
 .count.full{color:var(--good)}
+.ex{transition:background .25s,box-shadow .25s}
+.ex.full{background:var(--good-bg);background:color-mix(in srgb,var(--good) 20%,var(--surface));box-shadow:0 0 0 2.5px var(--good),var(--shadow)}
+.ex.full .ex-n{color:var(--good)}
+.ex.full .set.done{background:color-mix(in srgb,var(--good) 12%,var(--surface))}
 .last{font-size:13px;color:var(--muted)}
 .last b{color:var(--ink);font-weight:600}
 .sugg{align-self:flex-start;font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--surface2);color:var(--muted)}
@@ -708,7 +712,7 @@ function exHTML(ex){
   const lastTxt = last ? 'Förra gången · ' + dLabel(last.s.date) + ': <b class="num">' + last.sets.map(x => esc(setText(ex, x))).join(", ") + '</b>' : 'Första gången – inget att jämföra med än.';
   const target = ex.sets + " × " + (ex.lo === ex.hi ? ex.lo : ex.lo + "–" + ex.hi) + (ex.unit === "sek" ? " s" : ex.m ? " m" : "") + (ex.per ? " " + ex.per : "");
   const done = st.filter(x => x.done).length;
-  return '<article class="ex" data-k="' + ex.k + '">' +
+  return '<article class="ex' + (done === ex.sets ? ' full' : '') + '" data-k="' + ex.k + '">' +
     '<header class="ex-h"><div><h3 class="ex-n">' + esc(ex.n) + '</h3><div class="ex-m"><span class="tag num">' + target + '</span><span class="tag num">Vila ' + mmss(ex.rest) + '</span>' + (ex.unit === "hjalp" ? '<span class="tag">Mindre hjälp = starkare</span>' : '') + '</div></div>' +
     '<span class="count num' + (done === ex.sets ? ' full' : '') + '" data-count="' + ex.k + '">' + done + '/' + ex.sets + '</span></header>' +
     '<div class="last" data-last="' + ex.k + '">' + lastTxt + '</div>' +
@@ -745,7 +749,7 @@ function updateSummary(){
   $("sumB").innerHTML = "Volym " + fmt(volumeOf(exs), 0) + " kg" + (wakeLock ? ' · <span class="awake">Skärmen hålls tänd</span>' : '');
   const b = $("saveBtn");
   b.disabled = done === 0 || !db || readOnly;
-  p.ex.forEach(ex => { const c = document.querySelector('[data-count="' + ex.k + '"]'); if (c){ const d = draft.sets[ex.k].filter(x => x.done).length; c.textContent = d + "/" + ex.sets; c.classList.toggle("full", d === ex.sets); } });
+  p.ex.forEach(ex => { const c = document.querySelector('[data-count="' + ex.k + '"]'); if (c){ const d = draft.sets[ex.k].filter(x => x.done).length; c.textContent = d + "/" + ex.sets; c.classList.toggle("full", d === ex.sets); const card = c.closest(".ex"); if (card) card.classList.toggle("full", d === ex.sets); } });
 }
 function refreshHints(){
   if (!draft || justSaved || view !== "pass") return;
@@ -1395,7 +1399,7 @@ $("v-vanor").addEventListener("click", e => {
 });
 
 /* ---------- Start ---------- */
-const BUILD = "11 nov 16.30", BUILD_NOTE = "Axelpress i maskin · uppvärmningen syns i Program";
+const BUILD = "11 nov 16.45", BUILD_NOTE = "Hela övningskortet blir grönt när alla set är klara";
 draft = restoreDraft();
 if (draft) selType = draft.type;
 initDb();
