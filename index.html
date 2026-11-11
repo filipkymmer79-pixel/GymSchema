@@ -1373,9 +1373,9 @@ const HABITS = [
   {k: "porr", n: "Ingen porr", h: "Din regel. Bocka av ärligt på kvällen."},
   {k: "pass", n: "Dagens träning", auto: true},
   {k: "hall", n: "Hållning + fascia · 12 min", h: "Hållningspasset och 2 min fascia-håll per sida. Finns under Program → Hållning."},
-  {k: "shake", n: "Shaken", h: "Mjölk, havregryn, banan, jordnötssmör, proteinpulver – 540 kcal extra. Varje dag, även vilodagar."},
-  {k: "prot", n: "125 g protein", h: "Tre mål med 30 g vardera plus shaken. Kvarg, ägg, kyckling, mjölk."},
-  {k: "tillskott", n: "Tillskott", h: "Kreatin 5 g och D-vitamin varje dag. Magnesium på kvällen om du vill. Kalcium får du av mjölk och yoghurt."},
+  {k: "shake", n: "Shaken", h: "Dagssatsen i Shake-appen – drick alla glas, även vilodagar. Långpass över 10 km: nästa storlek."},
+  {k: "prot", n: "125 g protein", h: "Shaken plus maten. Kvarg, ägg, kyckling, fisk."},
+  {k: "tillskott", n: "Tillskott", h: "Kreatin, selen och Puori i shaken, D-pärlan till första glaset. Magnesium på kvällen."},
   {k: "vatten", n: "Vatten 2–3 liter", h: "En flaska på bordet, en i gymväskan."}
 ];
 const RUN_DAYS = {1: "Löpning 20–30 min", 4: "Löpning 30–40 min"};
@@ -1441,7 +1441,7 @@ $("v-vanor").addEventListener("click", e => {
 });
 
 /* ---------- Start ---------- */
-const BUILD = "11 nov 22.13", BUILD_NOTE = "Sidolyft i maskin i stället för hantlar";
+const BUILD = "11 nov 22.27", BUILD_NOTE = "Vanor: shaken och tillskotten följer Shake-appen";
 draft = restoreDraft();
 if (draft) selType = draft.type;
 initDb();

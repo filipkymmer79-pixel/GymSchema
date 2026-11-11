@@ -511,7 +511,8 @@ var SHAKE = (function () {
   var SUPPS = [
     { key: "puori",  name: "Puori O3",   amount: "1 tsk",    how: "Flytande fiskolja. Åker i mixern tillsammans med olivoljan.", adds: { EPADHA: 2 } },
     { key: "selen",  name: "Selen",      amount: "1 kapsel", how: "Öppna kapseln och häll pulvret i mixern. Smakar inget.",     adds: { Se: 100 } },
-    { key: "dpearl", name: "D-pärla",    amount: "1 pärla",  how: "Tuggas till första glaset.",                                adds: { vitD: 38 } }
+    { key: "dpearl", name: "D-pärla",    amount: "1 pärla",  how: "Tuggas till första glaset.",                                adds: { vitD: 38 } },
+    { key: "kreatin", name: "Kreatin",   amount: "5 g",      how: "Kreatinmonohydrat, 1 tsk. Rör ner i mixern. Smakar inget. Varje dag, även vilodagar.", adds: {} }
   ];
 
   function toSteps(units) {
@@ -697,7 +698,8 @@ var SHAKE = (function () {
   var SUPP_ROW = {
     puori:  { name: "Puori O3", amount: "1" + NB + "tsk", note: "Flytande fiskolja" },
     selen:  { name: "Selen", amount: "1" + NB + "kapsel", note: "Öppna kapseln, häll i pulvret" },
-    dpearl: { name: "D-pärla", amount: "1" + NB + "pärla", note: "Tuggas till första glaset" }
+    dpearl: { name: "D-pärla", amount: "1" + NB + "pärla", note: "Tuggas till första glaset" },
+    kreatin: { name: "Kreatin", amount: "5" + NB + "g", note: "Monohydrat, 1 tsk. Varje dag, även vilodagar" }
   };
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -706,7 +708,7 @@ var SHAKE = (function () {
   function fresh() {
     return {
       v: 1, tab: "today", perGlass: false,
-      settings: { size: 3000, thick: 0, honey: true, noSmp: false, milk15: false, mixer: 1.5, grams: false, missing: {}, supps: { puori: true, selen: true, dpearl: true } },
+      settings: { size: 3000, thick: 0, honey: true, noSmp: false, milk15: false, mixer: 1.5, grams: false, missing: {}, supps: { puori: true, selen: true, dpearl: true, kreatin: true } },
       day: null, history: [], shop: { days: 7, have: {} }
     };
   }
@@ -717,7 +719,7 @@ var SHAKE = (function () {
     for (k in st.settings) if (raw.settings && raw.settings[k] !== undefined) st.settings[k] = raw.settings[k];
     if (!S.SIZES[st.settings.size]) st.settings.size = 3000;
     if (!st.settings.missing || typeof st.settings.missing !== "object") st.settings.missing = {};
-    if (!st.settings.supps || typeof st.settings.supps !== "object") st.settings.supps = { puori: true, selen: true, dpearl: true };
+    if (!st.settings.supps || typeof st.settings.supps !== "object") st.settings.supps = { puori: true, selen: true, dpearl: true, kreatin: true };
     if (raw.day && raw.day.plan && raw.day.plan.rounds) st.day = raw.day;
     if (Array.isArray(raw.history)) st.history = raw.history.slice(-90);
     if (raw.shop) { st.shop.days = Math.min(14, Math.max(1, raw.shop.days | 0)) || 7; st.shop.have = raw.shop.have || {}; }
@@ -785,10 +787,11 @@ var SHAKE = (function () {
           return { key: k, n: amts[k], name: nameOf(k), short: it.short, dl: amts[k] * it.stepG * it.vol / 100, color: it.color };
         });
       }
-      function supp(key) { return { key: key, supp: true, name: SUPP_ROW[key].name, short: key === "puori" ? "Puori" : "selen", amount: SUPP_ROW[key].amount, note: SUPP_ROW[key].note, dl: 0, color: "transparent" }; }
+      function supp(key) { return { key: key, supp: true, name: SUPP_ROW[key].name, short: ({ puori: "Puori", selen: "selen", kreatin: "kreatin" })[key], amount: SUPP_ROW[key].amount, note: SUPP_ROW[key].note, dl: 0, color: "transparent" }; }
       var a = rows(["milk", "water", "smp"]), b = rows(["yog", "oat", "whey"]), c = rows(["blue", "currant", "spinach", "banana"]);
       var d = rows(["honey", "salt"]), e = rows(["oil"]), steps = [];
       if (ri === 0 && supps.selen !== false) d.push(supp("selen"));
+      if (ri === 0 && supps.kreatin !== false) d.push(supp("kreatin"));
       if (ri === 0 && supps.puori !== false) e.push(supp("puori"));
       var powder = a.some(function (r) { return r.key === "smp"; });
       var frozen = c.some(function (r) { return r.key !== "banana"; });
@@ -1140,7 +1143,8 @@ var SHAKE = (function () {
     var thickSteps = Math.max(2, Math.round(S.volumeDl(rec.plain) / 9) * 2) / 2;
     html += '<div class="block"><h2 class="h2">Storlek</h2>' + seg("size", s.size, [[2000, "2" + NB + "000"], [2500, "2" + NB + "500"], [3000, "3" + NB + "000"]], "Storlek") +
       '<p class="hint">' + kc(rec.plainTotals.kcal) + NB + "kcal och " + nf(rec.plainTotals.prot, 0) + NB + "g protein, i " + COUNT[rec.glasses] + " glas." +
-      (s.size === 3000 ? " Går vikten upp mer än ett kilo i veckan: kör 2" + NB + "000 varannan dag." : "") + "</p></div>";
+      (s.size === 3000 ? " Går vikten upp mer än ett kilo i veckan: kör 2" + NB + "000 varannan dag." : "") +
+      (s.size !== 3000 ? " Långpass (mer än 10" + NB + "km): ta nästa storlek den dagen – löpningen tar annars energin som skulle bli muskler." : "") + "</p></div>";
     html += '<div class="block"><h2 class="h2">Tjocklek</h2>' + seg("thick", s.thick, [[-1, "Tunnare"], [0, "Vanlig"], [1, "Tjockare"]], "Tjocklek") +
       '<p class="hint">' + (s.thick === -1 ? halves(thickSteps) + NB + "dl vatten till. Samma kalorier." : s.thick === 1 ? halves(thickSteps) + NB + "dl mindre " + (s.missing.milk ? "vatten" : "mjölk") + ". Kalorierna hålls ungefär lika." : "Som i receptet.") + "</p></div>";
     html += '<div class="block switches">' +
