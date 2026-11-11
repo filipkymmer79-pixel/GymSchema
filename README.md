@@ -18,6 +18,14 @@ Datan går klockan → Garmin Connect → [intervals.icu](https://intervals.icu)
 - **Prognos** räknar en rak linje genom de senaste åtta veckorna och säger när du når nästa vikt i varje övning, och när kroppsvikten når 70 och 80 kg.
 - **Lätt vecka** föreslås när två av huvudövningarna (chins, bänkpress, benpress, hip thrust) stått still i tre pass, eller när Garmin visar att du är sliten. Tar du den blir det två set per övning och ungefär 10 % lättare den veckan, och lätta pass räknas inte som "förra gången" efteråt.
 
+### Kropp: vikt och mat
+
+Fliken **Kropp** (förut Vikt) har delarna **Vikt** och **Mat**. Under Mat räknas dagens kalorier och protein: shaken med glas (storlek och antal glas går att ställa in), och maten genom att skanna streckkoden på förpackningen – värdena hämtas från [Open Food Facts](https://world.openfoodfacts.org), en öppen och gratis matdatabas – eller skriva in den själv. Det du ätit ofta blir snabbval. Under Vanor bockas *125 g protein* och *Shaken* av av sig själva när siffrorna når målet. Streckkodsläsaren är ZXing (`vendor/zxing.min.js`, Apache-licens i `vendor/zxing-LICENSE.txt`).
+
+### Månadens sammanfattning
+
+Sist i Framsteg: en bild i storyformat med månadens pass, set, ton, rekord, de övningar som gått mest framåt, vikt, löpning, sömn, perfekta dagar och boxning – att spara eller skicka.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.

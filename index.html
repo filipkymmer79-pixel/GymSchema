@@ -461,6 +461,63 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .prog-rows span{font-size:13px;color:var(--muted);font-weight:600;text-align:right}
 .lnk{border:0;background:none;padding:0;font:inherit;font-weight:800;color:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .pill.dl{background:var(--warn-bg);border-color:transparent;color:var(--warn)}
+/* Kropp: segment */
+.kseg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px;background:var(--surface);padding:5px;border-radius:16px;box-shadow:var(--shadow)}
+.kseg button{border:0;background:transparent;border-radius:12px;padding:9px 4px;font:inherit;font-weight:800;font-size:14px;color:var(--muted)}
+.kseg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+/* Mat */
+.fd-sum{display:flex;flex-direction:column;gap:10px}
+.fd-big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fd-big b{display:inline-block;font-family:var(--display);font-weight:900;font-size:44px;line-height:1;margin-top:3px}
+.fd-big b.ok{color:var(--good)}
+.fd-big small{font-size:14px;color:var(--muted);font-weight:800;margin-left:5px}
+.fd-bar{height:9px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.fd-bar i{display:block;height:100%;background:var(--good);border-radius:99px}
+.fd-shake{display:flex;flex-direction:column;gap:10px}
+.fd-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.fd-row > span:first-child{display:flex;flex-direction:column;gap:2px;min-width:0}
+.fd-row small{font-size:12.5px;color:var(--muted);font-weight:600;line-height:1.35}
+.fd-step{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.fd-step button{width:42px;height:42px;border-radius:12px;border:0;background:var(--surface2);color:var(--ink);font-size:22px;font-weight:800}
+.fd-step b{font-family:var(--display);font-size:30px;font-weight:900;min-width:26px;text-align:center}
+.fd-set{display:flex;gap:10px;flex-wrap:wrap}
+.fd-set label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--muted)}
+.fd-set select{border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:10px;padding:6px 8px;font:inherit;font-size:15px;font-weight:700}
+.fd-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.fd-chips .mchip{border:0;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.fd-chips .mchip b{color:var(--muted)}
+.mchip.on{background:var(--ink);color:var(--bg)}
+.fd-man{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.fd-man input{border:1px solid var(--line);background:var(--surface2);border-radius:12px;padding:11px;font:inherit;font-size:16px;color:var(--ink);width:100%;min-width:0}
+.fd-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fd-two label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.fd-man .btn{align-self:flex-start}
+.noscroll,.noscroll body{overflow:hidden}
+/* Skanna + månadsbilden: helskärm */
+.scan{position:fixed;inset:0;z-index:80;background:#0B0D12;color:#fff;display:flex;flex-direction:column;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px calc(env(safe-area-inset-bottom,0px) + 16px);overflow:auto}
+.scan[hidden]{display:none}
+.scan-top{display:flex;justify-content:space-between;align-items:center;font-size:17px}
+.scan-x{border:0;background:rgba(255,255,255,.14);color:#fff;width:40px;height:40px;border-radius:50%;font-size:24px;line-height:1}
+.scan-cam{position:relative;border-radius:20px;overflow:hidden;background:#000;aspect-ratio:3/4;max-height:56vh;width:100%}
+.scan.found .scan-cam{display:none}
+.scan-cam video{width:100%;height:100%;object-fit:cover;display:block}
+.scan-frame{position:absolute;left:12%;right:12%;top:36%;height:28%;border:3px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 0 0 999px rgba(0,0,0,.35)}
+.scan-body{display:flex;flex-direction:column;gap:12px}
+.scan-msg{font-size:15px;line-height:1.4;color:#D8DCE2;text-align:center}
+.scan-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.scan .btn{background:#fff;color:#0B0D12}
+.scan .btn.ghost{background:rgba(255,255,255,.14);color:#fff}
+.scan .gm-form input{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
+.scan-prod{display:flex;flex-direction:column;gap:4px;background:rgba(255,255,255,.08);border-radius:16px;padding:12px 14px}
+.scan-prod b{font-size:18px;line-height:1.25}
+.scan-prod small{font-size:13px;color:#B8BEC8}
+.scan .mchip{background:rgba(255,255,255,.12);color:#fff}
+.scan .mchip.on{background:#fff;color:#0B0D12}
+.scan-g{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#B8BEC8}
+.scan-g input{width:90px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:8px 10px;font:inherit;font-size:16px;font-weight:700}
+.scan-tot{font-family:var(--display);font-weight:900;font-size:30px;text-align:center}
+.wrap-img{display:flex;justify-content:center}
+.wrap-img img{width:min(100%,420px);height:auto;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
 /* Vanor */
 .hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .hnav{display:flex;gap:6px;flex:0 0 auto}
@@ -525,7 +582,7 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
     <button class="tab" data-v="vanor" id="t-vanor"><svg viewBox="0 0 24 24"><path d="M4 6.5l2 2 3.5-4M4 13.5l2 2 3.5-4M4 20.5l2 2 3.5-4" transform="translate(0,-1.5)"/><path d="M13 6h7M13 13h7M13 20h7"/></svg>Vanor</button>
     <button class="tab" data-v="boxning" id="t-boxning"><svg viewBox="0 0 24 24"><path d="M7 11V8.5a4.5 4.5 0 0 1 4.5-4.5h1A4.5 4.5 0 0 1 17 8.5V13a5 5 0 0 1-5 5h-1.5A3.5 3.5 0 0 1 7 14.5z"/><path d="M7 11.5h4.5a1.75 1.75 0 0 1 0 3.5H9"/><path d="M8.5 18v2.5h7V18"/></svg>Boxning</button>
     <button class="tab" data-v="framsteg" id="t-framsteg"><svg viewBox="0 0 24 24"><path d="M4 19h16M5 15l4-4 3 3 6-7"/><path d="M14 7h4v4"/></svg>Framsteg</button>
-    <button class="tab" data-v="vikt" id="t-vikt"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9.5a4 4 0 0 1 6 0l-2 2.5"/></svg>Vikt</button>
+    <button class="tab" data-v="vikt" id="t-vikt"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9.5a4 4 0 0 1 6 0l-2 2.5"/></svg>Kropp</button>
     <button class="tab" data-v="historik" id="t-historik"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Historik</button>
     <button class="tab" data-v="program" id="t-program"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>Program</button>
   </div>
@@ -1329,7 +1386,7 @@ function renderProg(){
     '<div class="chips" role="group" aria-label="Välj övning">' + EXERCISES.filter(e => !e.old || sessions.some(s => setsOf(s, e.k))).map(e => '<button class="chip" type="button" data-ex="' + e.k + '" aria-pressed="' + (e.k === progEx) + '" style="--c:var(--' + e.c + ')"><span class="dot"></span>' + esc(SHORT[e.k] || e.n) + '</button>').join("") + '</div>' +
     body +
     '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><b>Volym per vecka</b><span class="lead num">' + totalSessions + ' pass totalt</span></div>' +
-    (totalSessions ? barChart(rows) : '<div class="empty"><span>Staplarna fylls på när du sparar pass. Volym = vikt × reps, i ton.</span></div>') + '</div>';
+    (totalSessions ? barChart(rows) : '<div class="empty"><span>Staplarna fylls på när du sparar pass. Volym = vikt × reps, i ton.</span></div>') + '</div>' + wrapHTML();
 }
 $("v-framsteg").addEventListener("click", e => { const b = e.target.closest("[data-ex]"); if (!b) return; progEx = b.dataset.ex; renderProg(); });
 
@@ -1364,6 +1421,8 @@ function shakeAdvice(pts){
 }
 function renderVikt(){
   const el = $("v-vikt");
+  if (programSub && KSEGS.some(x => x[0] === programSub)){ kroppSeg = programSub; programSub = null; }
+  if (kroppSeg !== "vikt"){ renderKropp(el); return; }
   const pts = weights.map(w => ({t: parseIso(w.date).getTime(), y: w.kg, date: w.date}));
   let stats = "", chart = "", list = "";
   if (pts.length){
@@ -1385,12 +1444,13 @@ function renderVikt(){
     list = '<div class="card rows">' + pts.slice().reverse().slice(0, 12).map(p => '<div class="row"><span class="num"><b>' + fmt(p.y) + ' kg</b></span><span style="display:flex;align-items:center;gap:6px">' +
       (confirmW === p.date ? '<span class="confirm"><span>Ta bort?</span><button class="btn sm" type="button" data-wdel-yes="' + p.date + '">Ja</button><button class="btn sm ghost" type="button" data-wdel-no="1">Nej</button></span>' : '<span class="d">' + dLong(p.date) + '</span><button class="x" type="button" data-wdel="' + p.date + '" aria-label="Ta bort ' + dLabel(p.date) + '">×</button>') + '</span></div>').join("") + '</div>';
   }
-  el.innerHTML = '<div><div class="lead">Mot ' + GOAL_KG + ' kg</div><h2 class="h2">Kroppsvikt</h2></div>' +
+  el.innerHTML = kroppSegHTML() + '<div><div class="lead">Mot ' + GOAL_KG + ' kg</div><h2 class="h2">Kroppsvikt</h2></div>' +
     '<form class="card wform" id="wForm" novalidate><label for="wKg">Vikt (kg)<input id="wKg" inputmode="decimal" placeholder="63,0" autocomplete="off"></label><label for="wDate">Datum<input id="wDate" type="date" value="' + iso(today()) + '"></label><button class="btn" type="submit"' + (!db || readOnly ? " disabled" : "") + '>Spara</button></form>' +
     (pts.length ? '<div class="card">' + stats + '<div style="margin-top:12px">' + chart + '</div></div>' + weightProgHTML(pts) + shakeAdvice(pts) + list
       : '<div class="card empty"><b>Ingen vikt loggad än</b><span>Väg dig 2–3 gånger i veckan, på morgonen innan frukost. Då räknas takten ut och jämförs med planen: ungefär +1 kg i månaden.</span></div>');
 }
 $("v-vikt").addEventListener("submit", async e => {
+  if (!e.target || e.target.id !== "wForm") return;
   e.preventDefault();
   if (!db || readOnly) return;
   const kg = num($("wKg").value), date = $("wDate").value || iso(today());
@@ -1503,6 +1563,12 @@ class LocalDB {
     const hb = data.habits && typeof data.habits === "object" ? data.habits : {};
     Object.keys(hb).forEach(date => { if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !hb[date] || typeof hb[date] !== "object") return; const cur = habits[date] || (habits[date] = {}); Object.keys(hb[date]).forEach(k => { if (hb[date][k] === true && !cur[k]){ cur[k] = true; n++; } }); });
     store("lyftloggen.habits.v1", habits);
+    const fl = data.food && typeof data.food === "object" ? data.food : {};
+    Object.keys(fl).forEach(date => { if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Array.isArray(fl[date])) return; const cur = foodLog[date] || (foodLog[date] = []); fl[date].forEach(x => { if (x && x.id && !cur.some(y => y.id === x.id)){ cur.push(x); n++; } }); });
+    const sg = data.shakeGlasses && typeof data.shakeGlasses === "object" ? data.shakeGlasses : {};
+    Object.keys(sg).forEach(date => { if (/^\d{4}-\d{2}-\d{2}$/.test(date) && typeof sg[date] === "number" && !shakeGl[date]){ shakeGl[date] = sg[date]; n++; } });
+    if (data.foodSettings && data.foodSettings.size) foodSet = Object.assign(foodSet, data.foodSettings);
+    foodSave();
     this._save("sessions"); this._save("weights"); return n;
   }
 }
@@ -1519,7 +1585,7 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "GymSchema", version: 4, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog};
+  const data = {app: "GymSchema", version: 5, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
@@ -1779,6 +1845,7 @@ function habitPlan(date){
 function habitDone(date, hb){
   const flag = !!(habits[date] && habits[date][hb.k]);
   if (hb.k === "somn") return flag || gmAuto(date, hb);
+  if (hb.k === "prot" || hb.k === "shake") return flag || foodAuto(date, hb);
   if (hb.k !== "pass") return flag;
   const plan = habitPlan(date);
   if (plan.kind === "gym") return flag || sessions.some(s => s.date === date);
@@ -1805,7 +1872,7 @@ function renderVanor(){
   const rows = HABITS.map(hb => {
     const done = habitDone(habitDate, hb), plan = hb.auto ? habitPlan(habitDate) : null;
     const dots = Array.from({length: 7}, (_, i) => iso(addDays(parseIso(habitDate), i - 6))).map(d => '<i class="' + (habitDone(d, hb) ? 'on' : '') + (d === habitDate ? ' cur' : '') + '"></i>').join("");
-    const gn = gmHabitNote(habitDate, hb);
+    const gn = gmHabitNote(habitDate, hb) || foodHabitNote(habitDate, hb);
     return '<button type="button" class="hrow' + (hb.auto ? ' auto' : '') + '" data-h="' + hb.k + '" aria-pressed="' + done + '"><span class="hchk" aria-hidden="true">✓</span><span class="ht"><b>' + esc(plan ? plan.n : hb.n) + '</b><small>' + (gn ? '<span class="gm-hn">' + esc(gn) + '</span>' : esc(plan ? plan.h : hb.h)) + '</small><span class="hdots">' + dots + '<small>7 dagar</small></span></span></button>';
   }).join("");
   el.innerHTML = '<div class="hhead"><div><div class="lead">' + (isT ? "Bocka av på kvällen" : "Du kan fylla i 14 dagar bakåt") + '</div><h2 class="h2">' + esc(title) + '</h2></div>' +
@@ -1823,6 +1890,7 @@ $("v-vanor").addEventListener("click", e => {
   const k = b.dataset.h, hb = HABITS.find(x => x.k === k);
   if (hb.auto && habitPlan(habitDate).kind === "rest") return;
   if (!(habits[habitDate] && habits[habitDate][k]) && gmAuto(habitDate, hb)){ toast("Bockad automatiskt från Garmin"); return; }
+  if (!(habits[habitDate] && habits[habitDate][k]) && foodAuto(habitDate, hb)){ toast("Bockad automatiskt från Mat"); return; }
   const day = habits[habitDate] || (habits[habitDate] = {});
   const was = habitDone(habitDate, hb);
   if (was) delete day[k]; else day[k] = true;
@@ -2325,8 +2393,290 @@ document.addEventListener("click", e => {
   else if (a === "snooze"){ store(DL_SNOOZE, iso(addDays(today(), 6))); renderPass(); toast("Appen frågar igen tidigast om en vecka"); }
 });
 
+
+/* ---------- Kropp-fliken: Vikt · Mat (· Bilder · Hållning kommer i omgång 3) ---------- */
+const KSEGS = [["vikt", "Vikt"], ["mat", "Mat"]];
+let kroppSeg = (() => { try { const v = localStorage.getItem("gymschema.kropp.seg"); return KSEGS.some(x => x[0] === v) ? v : "vikt"; } catch(e){ return "vikt"; } })();
+function kroppSegHTML(){
+  return '<div class="kseg" role="group" aria-label="Välj del">' + KSEGS.map(x => '<button type="button" data-kseg="' + x[0] + '" aria-pressed="' + (kroppSeg === x[0]) + '">' + x[1] + '</button>').join("") + '</div>';
+}
+function renderKropp(el){
+  if (kroppSeg === "mat") el.innerHTML = kroppSegHTML() + foodHTML();
+  else if (typeof kroppExtra === "function") el.innerHTML = kroppSegHTML() + kroppExtra(kroppSeg);
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-kseg]"); if (!b) return;
+  kroppSeg = b.dataset.kseg; try { localStorage.setItem("gymschema.kropp.seg", kroppSeg); } catch(x){}
+  renderVikt(); window.scrollTo({top: 0});
+});
+
+/* ---------- Mat: streckkod → Open Food Facts → kalorier och protein. Shaken räknas med glas. ---------- */
+const FOOD_KEY = "gymschema.food.v1", FOOD_SET = "gymschema.foodset.v1", SHAKE_GL = "gymschema.shakegl.v1", PROT_GOAL = 125;
+let foodLog = store(FOOD_KEY) || {}, shakeGl = store(SHAKE_GL) || {};
+let foodSet = Object.assign({size: 2500, glasses: 3}, store(FOOD_SET) || {});
+let foodDate = iso(today()), foodPick = null, foodMsg = "", foodManual = false;
+const shakePer = () => { const kcal = foodSet.size / foodSet.glasses, p = 140 * foodSet.size / 3000 / foodSet.glasses; return {kcal: Math.round(kcal), p: Math.round(p)}; };
+function foodTotals(date){
+  const items = foodLog[date] || [], g = shakeGl[date] || 0, sp = shakePer();
+  const fk = items.reduce((a, x) => a + (x.kcal || 0), 0), fp = items.reduce((a, x) => a + (x.p || 0), 0);
+  return {kcal: Math.round(fk + g * sp.kcal), p: Math.round(fp + g * sp.p), fk: Math.round(fk), fp: Math.round(fp), sk: g * sp.kcal, sp: g * sp.p, glasses: g, n: items.length};
+}
+function foodSave(){ store(FOOD_KEY, foodLog); store(SHAKE_GL, shakeGl); store(FOOD_SET, foodSet); }
+function foodAuto(date, hb){
+  const t = foodTotals(date);
+  if (hb.k === "prot") return t.p >= PROT_GOAL;
+  if (hb.k === "shake") return t.glasses >= foodSet.glasses;
+  return false;
+}
+function foodHabitNote(date, hb){
+  const t = foodTotals(date);
+  if (!t.n && !t.glasses) return "";
+  if (hb.k === "prot") return "Mat och shake: " + t.p + " av " + PROT_GOAL + " g" + (t.p >= PROT_GOAL ? " ✓" : "");
+  if (hb.k === "shake") return t.glasses ? "Shake: " + t.glasses + " av " + foodSet.glasses + " glas" + (t.glasses >= foodSet.glasses ? " ✓" : "") : "";
+  return "";
+}
+function foodRecent(){
+  const cnt = {}, since = iso(addDays(today(), -30));
+  Object.keys(foodLog).filter(d => d >= since).forEach(d => (foodLog[d] || []).forEach(x => { const k = x.n + "|" + (x.g || "") + "|" + x.kcal; if (!cnt[k]) cnt[k] = {x, c: 0}; cnt[k].c++; }));
+  return Object.values(cnt).sort((a, b) => b.c - a.c).slice(0, 8).map(o => o.x);
+}
+const gStr = x => x.g ? (x.g >= 1000 ? fmt(x.g / 1000, 1) + " kg" : Math.round(x.g) + " g") : "";
+function foodHTML(){
+  const t = foodTotals(foodDate), isT = foodDate === iso(today()), min = iso(addDays(today(), -13)), sp = shakePer(), items = foodLog[foodDate] || [];
+  const pct = Math.min(100, Math.round(t.p / PROT_GOAL * 100));
+  return '<div class="hhead"><div><div class="lead">' + (isT ? "Det du äter i dag" : "Det du åt") + '</div><h2 class="h2">' + (isT ? "Mat i dag" : esc(gmCap(dLong(foodDate)))) + '</h2></div>' +
+    '<div class="hnav"><button type="button" data-fnav="-1" aria-label="Föregående dag"' + (foodDate <= min ? " disabled" : "") + '>‹</button><button type="button" data-fnav="1" aria-label="Nästa dag"' + (isT ? " disabled" : "") + '>›</button></div></div>' +
+    '<div class="card fd-sum"><div class="fd-big"><div><div class="stat-l">Kalorier</div><b class="num">' + gmSteps(t.kcal) + '</b><small>kcal</small></div><div><div class="stat-l">Protein</div><b class="num' + (t.p >= PROT_GOAL ? " ok" : "") + '">' + t.p + '</b><small>av ' + PROT_GOAL + ' g</small></div></div>' +
+      '<div class="fd-bar"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="small">Shake ' + gmSteps(Math.round(t.sk)) + ' kcal · mat ' + gmSteps(t.fk) + ' kcal. Kalorierna från maten är ungefärliga – vågen i Vikt visar om det räcker.</div></div>' +
+    '<div class="card fd-shake"><div class="fd-row"><span><b>Shake</b><small>' + gmSteps(foodSet.size) + '-shaken i ' + foodSet.glasses + ' glas · ' + sp.kcal + ' kcal och ' + sp.p + ' g protein per glas</small></span>' +
+      '<span class="fd-step"><button type="button" data-fgl="-1" aria-label="Ett glas mindre">−</button><b class="num">' + t.glasses + '</b><button type="button" data-fgl="1" aria-label="Ett glas till">+</button></span></div>' +
+      '<div class="fd-set"><label>Storlek <select id="fdSize">' + [2000, 2500, 3000].map(v => '<option value="' + v + '"' + (v === foodSet.size ? " selected" : "") + '>' + gmSteps(v) + '</option>').join("") + '</select></label><label>Glas per dag <select id="fdGlasses">' + [2, 3, 4, 5].map(v => '<option value="' + v + '"' + (v === foodSet.glasses ? " selected" : "") + '>' + v + '</option>').join("") + '</select></label></div></div>' +
+    '<div class="card fd-add"><div class="bk"><button class="btn" type="button" data-food="scan">▦ Skanna streckkod</button><button class="btn sm ghost" type="button" data-food="manual">Skriv själv</button></div>' +
+      (foodManual ? foodManualHTML() : '') +
+      (foodRecent().length ? '<div class="stat-l" style="margin-top:12px">Snabbval – en tryckning</div><div class="fd-chips">' + foodRecent().map((x, i) => '<button type="button" class="mchip" data-fquick="' + i + '">' + esc(x.n) + (x.g ? ' · ' + gStr(x) : '') + '<b>' + x.kcal + '</b></button>').join("") + '</div>' : '') +
+      (foodMsg ? '<div class="small" style="margin-top:8px">' + esc(foodMsg) + '</div>' : '') + '</div>' +
+    '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b>' + (isT ? "Ätit i dag" : "Ätit") + '</b><span class="lead num">' + items.length + (items.length === 1 ? " sak" : " saker") + '</span></div>' +
+      (items.length ? '<div class="rows" style="margin-top:6px">' + items.map(x => '<div class="row"><span><b>' + esc(x.n) + '</b>' + (x.g ? ' <span class="d">' + gStr(x) + '</span>' : '') + '<br><span class="small">' + x.kcal + ' kcal · ' + fmt(x.p, 0) + ' g protein</span></span><button class="x" type="button" data-fdel="' + x.id + '" aria-label="Ta bort ' + esc(x.n) + '">×</button></div>').join("") + '</div>'
+        : '<div class="small" style="margin-top:6px">Skanna förpackningen på det du äter, eller skriv in det själv. Det du lagt till kommer sen upp som snabbval.</div>') + '</div>' +
+    '<div class="small" style="padding:0 4px">Varorna hämtas från Open Food Facts, en öppen och gratis matdatabas. Stämmer inte värdena med förpackningen kan du skriva in dem själv.</div>';
+}
+function foodManualHTML(pre){
+  const p = pre || {};
+  return '<form class="fd-man" id="fdMan" autocomplete="off"><input id="fdN" placeholder="Vad åt du?" value="' + esc(p.n || "") + '"><div class="fd-two"><label>kcal<input id="fdK" inputmode="numeric" placeholder="300" value="' + (p.kcal || "") + '"></label><label>Protein (g)<input id="fdP" inputmode="decimal" placeholder="20" value="' + (p.p || "") + '"></label></div><button class="btn sm" type="submit">Lägg till</button></form>';
+}
+function foodAdd(x){
+  const it = {id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), n: String(x.n || "Mat").slice(0, 60), g: x.g ? Math.round(x.g) : null, kcal: Math.max(0, Math.round(x.kcal || 0)), p: Math.max(0, Math.round((x.p || 0) * 10) / 10), code: x.code || null, ts: Date.now()};
+  (foodLog[foodDate] || (foodLog[foodDate] = [])).push(it); foodSave();
+  toast("+" + it.kcal + " kcal · " + fmt(it.p, 0) + " g protein");
+}
+function foodRender(){ if (view === "vikt" && kroppSeg === "mat") renderVikt(); }
+document.addEventListener("click", e => {
+  const nav = e.target.closest("[data-fnav]"), gl = e.target.closest("[data-fgl]"), act = e.target.closest("[data-food]"), q = e.target.closest("[data-fquick]"), del = e.target.closest("[data-fdel]");
+  if (nav){ foodDate = iso(addDays(parseIso(foodDate), +nav.dataset.fnav)); foodManual = false; foodMsg = ""; foodRender(); return; }
+  if (gl){ shakeGl[foodDate] = Math.max(0, Math.min(8, (shakeGl[foodDate] || 0) + +gl.dataset.fgl)); if (!shakeGl[foodDate]) delete shakeGl[foodDate]; foodSave(); foodRender(); return; }
+  if (q){ const x = foodRecent()[+q.dataset.fquick]; if (x) foodAdd(x); foodRender(); return; }
+  if (del){ foodLog[foodDate] = (foodLog[foodDate] || []).filter(x => x.id !== del.dataset.fdel); if (!foodLog[foodDate].length) delete foodLog[foodDate]; foodSave(); foodRender(); return; }
+  if (act){ if (act.dataset.food === "manual"){ foodManual = !foodManual; foodRender(); if (foodManual) setTimeout(() => { const i = $("fdN"); if (i) i.focus(); }, 50); } else scanOpen(); }
+});
+document.addEventListener("change", e => {
+  if (e.target && (e.target.id === "fdSize" || e.target.id === "fdGlasses")){ foodSet[e.target.id === "fdSize" ? "size" : "glasses"] = +e.target.value; foodSave(); foodRender(); }
+});
+document.addEventListener("submit", e => {
+  if (!e.target || e.target.id !== "fdMan") return;
+  e.preventDefault();
+  const n = ($("fdN").value || "").trim(), k = num($("fdK").value), p = num($("fdP").value);
+  if (!n || k == null){ toast("Skriv vad du åt och hur många kcal"); return; }
+  foodAdd({n, kcal: k, p: p || 0}); foodManual = false; foodRender();
+});
+
+/* Skanna: kameran läser streckkoden (ZXing, laddas först när du skannar), sen frågas Open Food Facts */
+let scanReader = null, scanBusy = false;
+function zxingLoad(){
+  if (window.ZXing) return Promise.resolve(window.ZXing);
+  return new Promise((res, rej) => { const s = document.createElement("script"); s.src = "vendor/zxing.min.js"; s.onload = () => res(window.ZXing); s.onerror = () => rej(new Error("lib")); document.head.appendChild(s); });
+}
+function scanEl(){
+  let o = $("scanOv"); if (o) return o;
+  o = document.createElement("div"); o.id = "scanOv"; o.className = "scan"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Skanna streckkod");
+  o.innerHTML = '<div class="scan-top"><b>Skanna streckkoden</b><button type="button" class="scan-x" data-scan="close" aria-label="Stäng">×</button></div>' +
+    '<div class="scan-cam"><video id="scanVid" playsinline muted autoplay></video><div class="scan-frame"></div></div>' +
+    '<div class="scan-body" id="scanBody"></div>' +
+    '<input type="file" accept="image/*" capture="environment" id="scanFile" hidden>';
+  document.body.appendChild(o);
+  o.addEventListener("click", e => {
+    const b = e.target.closest("[data-scan]"); if (!b) return;
+    const a = b.dataset.scan;
+    if (a === "close") scanClose();
+    else if (a === "photo") $("scanFile").click();
+    else if (a === "type") scanBodyType();
+    else if (a === "again") scanStart();
+    else if (a === "add") scanAdd();
+    else if (a === "manual"){ const pre = scanProduct ? {n: scanProduct.name, kcal: "", p: ""} : {}; scanClose(); foodManual = true; foodRender(); if (pre.n) setTimeout(() => { const i = $("fdN"); if (i) i.value = pre.n; }, 30); }
+    else if (a === "amt"){ scanAmt = +b.dataset.g; scanSheet(); }
+  });
+  o.addEventListener("input", e => { if (e.target && e.target.id === "scanG"){ const v = num(e.target.value); scanAmt = v && v > 0 ? v : null; scanSheetTotals(); } });
+  o.addEventListener("submit", e => { e.preventDefault(); if (e.target.id === "scanCode"){ const c = ($("scanCodeIn").value || "").replace(/\D/g, ""); if (c.length >= 8) scanLookup(c); } });
+  $("scanFile").addEventListener("change", async e => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    scanMsg("Läser bilden…");
+    try { const Z = await zxingLoad(); const url = URL.createObjectURL(f); const r = await new Z.BrowserMultiFormatReader().decodeFromImageUrl(url); URL.revokeObjectURL(url); scanLookup(r.getText()); }
+    catch(err){ scanMsg("Hittade ingen streckkod i bilden. Ta en ny, närmare och rakt framifrån – eller skriv siffrorna.", true); }
+    e.target.value = "";
+  });
+  return o;
+}
+function scanMsg(t, withBtns){
+  $("scanBody").innerHTML = '<div class="scan-msg">' + esc(t) + '</div>' + (withBtns === false ? '' : '<div class="scan-btns"><button type="button" class="btn sm ghost" data-scan="photo">📷 Ta bild i stället</button><button type="button" class="btn sm ghost" data-scan="type">Skriv siffrorna</button></div>');
+}
+function scanBodyType(){
+  scanStop();
+  $("scanBody").innerHTML = '<form id="scanCode" class="gm-form"><input id="scanCodeIn" inputmode="numeric" placeholder="Siffrorna under streckkoden" autocomplete="off"><button class="btn" type="submit">Sök</button></form><div class="scan-btns"><button type="button" class="btn sm ghost" data-scan="again">Tillbaka till kameran</button></div>';
+  setTimeout(() => { const i = $("scanCodeIn"); if (i) i.focus(); }, 50);
+}
+async function scanOpen(){ scanEl().hidden = false; document.documentElement.classList.add("noscroll"); scanStart(); }
+async function scanStart(){
+  scanProduct = null; scanAmt = null; $("scanOv").classList.remove("found");
+  scanMsg("Rikta kameran mot streckkoden. Den läses av sig själv.");
+  try {
+    const Z = await zxingLoad();
+    scanStop(); scanReader = new Z.BrowserMultiFormatReader();
+    await scanReader.decodeFromConstraints({video: {facingMode: "environment"}}, $("scanVid"), (res, err) => { if (res && !scanBusy){ scanBusy = true; try { navigator.vibrate && navigator.vibrate(60); } catch(x){} scanLookup(res.getText()); } });
+  } catch(err){ scanMsg(err && err.message === "lib" ? "Kunde inte ladda skannern. Är du uppkopplad?" : "Kameran gick inte att starta. Ta en bild på streckkoden i stället, eller skriv siffrorna.", true); }
+}
+function scanStop(){ try { if (scanReader) scanReader.reset(); } catch(e){} scanReader = null; const v = $("scanVid"); if (v && v.srcObject){ try { v.srcObject.getTracks().forEach(t => t.stop()); } catch(e){} v.srcObject = null; } }
+function scanClose(){ scanStop(); scanBusy = false; const o = $("scanOv"); if (o) o.hidden = true; document.documentElement.classList.remove("noscroll"); foodRender(); }
+let scanProduct = null, scanAmt = null;
+async function scanLookup(code){
+  scanStop(); $("scanOv").classList.add("found");
+  scanMsg("Söker " + code + " i Open Food Facts…", false);
+  let j = null;
+  try { const r = await fetch("https://world.openfoodfacts.org/api/v2/product/" + encodeURIComponent(code) + ".json?fields=product_name,product_name_sv,brands,nutriments,serving_size,serving_quantity,quantity", {cache: "no-store"}); j = await r.json(); }
+  catch(e){ scanBusy = false; scanMsg("Fick ingen kontakt med Open Food Facts. Är du uppkopplad?", true); return; }
+  scanBusy = false;
+  const pr = j && j.status === 1 && j.product, nu = pr && pr.nutriments || {};
+  let kcal = nu["energy-kcal_100g"]; if (kcal == null && nu["energy_100g"] != null) kcal = nu["energy_100g"] / 4.184;
+  if (!pr || kcal == null){
+    $("scanBody").innerHTML = '<div class="scan-msg">' + (pr ? "Varan finns men saknar näringsvärden." : "Hittade inte varan (" + esc(code) + ").") + ' Skriv in den själv – det tar tio sekunder.</div><div class="scan-btns"><button type="button" class="btn sm" data-scan="manual">Skriv själv</button><button type="button" class="btn sm ghost" data-scan="again">Skanna igen</button></div>';
+    scanProduct = pr ? {name: pr.product_name_sv || pr.product_name || ""} : null; return;
+  }
+  const name = (pr.product_name_sv || pr.product_name || "Okänd vara").trim(), brand = (pr.brands || "").split(",")[0].trim();
+  scanProduct = {code, name: name + (brand && name.toLowerCase().indexOf(brand.toLowerCase()) < 0 ? " · " + brand : ""), kcal: kcal, p: +(nu["proteins_100g"] || 0), sq: +pr.serving_quantity || null, ss: pr.serving_size || "", q: pr.quantity || ""};
+  scanAmt = scanProduct.sq || 100; scanSheet();
+}
+function scanSheet(){
+  const p = scanProduct, opts = [];
+  if (p.sq) opts.push([p.sq, "1 portion (" + Math.round(p.sq) + " g)"]);
+  [100, 200, 250].forEach(g => { if (!opts.some(o => o[0] === g)) opts.push([g, g + " g"]); });
+  $("scanBody").innerHTML = '<div class="scan-prod"><b>' + esc(p.name) + '</b><small>Per 100 g: ' + Math.round(p.kcal) + ' kcal · ' + fmt(p.p, 1) + ' g protein' + (p.q ? ' · förpackning ' + esc(p.q) : '') + '</small></div>' +
+    '<div class="fd-chips">' + opts.map(o => '<button type="button" class="mchip' + (scanAmt === o[0] ? ' on' : '') + '" data-scan="amt" data-g="' + o[0] + '">' + esc(o[1]) + '</button>').join("") + '</div>' +
+    '<label class="scan-g">Eller gram <input id="scanG" inputmode="decimal" value="' + (scanAmt ? Math.round(scanAmt) : "") + '"></label>' +
+    '<div class="scan-tot" id="scanTot"></div>' +
+    '<div class="scan-btns"><button type="button" class="btn" data-scan="add">Lägg till</button><button type="button" class="btn sm ghost" data-scan="again">Skanna en till</button></div>';
+  scanSheetTotals();
+}
+function scanSheetTotals(){ const t = $("scanTot"); if (!t || !scanProduct) return; t.textContent = scanAmt ? Math.round(scanProduct.kcal * scanAmt / 100) + " kcal · " + fmt(scanProduct.p * scanAmt / 100, 1) + " g protein" : "Välj hur mycket du åt"; }
+function scanAdd(){
+  if (!scanProduct || !scanAmt){ toast("Välj hur mycket du åt"); return; }
+  foodAdd({n: scanProduct.name, g: scanAmt, kcal: scanProduct.kcal * scanAmt / 100, p: scanProduct.p * scanAmt / 100, code: scanProduct.code});
+  scanClose();
+}
+
+/* ---------- Månadens sammanfattning: en bild att spara eller skicka ---------- */
+let wrapMonth = (() => { const t = today(); return t.getDate() <= 3 ? -1 : 0; })(), wrapBlob = null;
+const MONL = ["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"];
+function wrapData(off){
+  const t = today(), m0 = new Date(t.getFullYear(), t.getMonth() + off, 1), m1 = new Date(m0.getFullYear(), m0.getMonth() + 1, 1), A = iso(m0), B = iso(m1), end = off === 0 ? iso(addDays(t, 1)) : B;
+  const ss = sessions.filter(s => s.date >= A && s.date < B), D = {label: MONL[m0.getMonth()], year: m0.getFullYear(), sessions: ss.length};
+  D.sets = ss.reduce((a, s) => a + (s.exercises || []).reduce((b, e) => b + (e.sets || []).length, 0), 0);
+  D.ton = ss.reduce((a, s) => a + (s.volume || 0), 0) / 1000;
+  D.prs = ss.reduce((a, s) => a + (s.prs || []).length, 0);
+  const up = [];
+  EXERCISES.filter(e => !e.old && (e.unit === "kg" || e.unit === "hjalp")).forEach(ex => {
+    const v = ss.slice().reverse().map(s => chartVal(ex, setsOf(s, ex.k))).filter(x => x != null);
+    if (v.length < 2) return;
+    const a = v[0], b = v[v.length - 1], gain = ex.unit === "hjalp" ? a - b : b - a;
+    if (gain > 0) up.push({n: (SHORT[ex.k] || ex.n).replace(/\s*\(.*?\)/g, ""), a, b, rel: gain / Math.max(1, a), hj: ex.unit === "hjalp"});
+  });
+  D.up = up.sort((x, y) => y.rel - x.rel).slice(0, 4);
+  const ws = weights.filter(w => w.date >= A && w.date < B);
+  D.w = ws.length >= 2 ? {a: ws[0].kg, b: ws[ws.length - 1].kg} : ws.length ? {a: ws[0].kg, b: ws[0].kg} : null;
+  let pd = 0; for (let d = new Date(m0); iso(d) < end; d = addDays(d, 1)){ if (d < START) continue; if (dayScore(iso(d)) >= HABITS.length) pd++; }
+  D.perfect = pd;
+  D.box = boxLog.filter(b => b.date >= A && b.date < B).reduce((a, b) => a + b.rounds, 0);
+  if (typeof gmOn === "function" && gmOn() && gm){
+    const runs = gmRuns().filter(r => r.d >= A && r.d < B);
+    D.run = runs.length ? {km: runs.reduce((a, r) => a + r.km, 0), n: runs.length, max: runs.reduce((a, r) => Math.max(a, r.km), 0)} : null;
+    const sl = gm.w.filter(r => r.d >= A && r.d < B && r.sl);
+    D.sleep = sl.length ? {avg: sl.reduce((a, r) => a + r.sl, 0) / sl.length, ten: sl.filter(r => r.sl >= 36000).length} : null;
+  }
+  return D;
+}
+async function wrapDraw(D){
+  const W = 1080, H = 1920, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
+  if (!x.roundRect) x.roundRect = function(a, b, w, h){ this.rect(a, b, w, h); };
+  try { await Promise.all([document.fonts.load('900 120px "Big Shoulders Display"'), document.fonts.load('700 40px "Archivo"'), document.fonts.load('800 40px "Archivo"')]); } catch(e){}
+  const DISP = '"Big Shoulders Display", "Arial Narrow", Impact, sans-serif', BODY = '"Archivo", "Helvetica Neue", Arial, sans-serif';
+  const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#151925"); g.addColorStop(1, "#0B0D12"); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  [["#FF5B52", 980, 120, 420], ["#6B95FF", 80, 1500, 520]].forEach(([col, cx, cy, r]) => { const rg = x.createRadialGradient(cx, cy, 0, cx, cy, r); rg.addColorStop(0, col + "55"); rg.addColorStop(1, col + "00"); x.fillStyle = rg; x.fillRect(0, 0, W, H); });
+  x.fillStyle = "#A0A8B3"; x.font = '800 34px ' + BODY; x.letterSpacing = "8px"; x.fillText("GYMSCHEMA", 80, 140); x.letterSpacing = "0px";
+  let fs = 190; x.font = '900 ' + fs + 'px ' + DISP;
+  while (x.measureText(D.label.toUpperCase()).width > W - 150 && fs > 90){ fs -= 6; x.font = '900 ' + fs + 'px ' + DISP; }
+  x.fillStyle = "#FFFFFF"; x.fillText(D.label.toUpperCase(), 72, 330);
+  x.fillStyle = "#6E7782"; x.font = '800 54px ' + DISP; x.fillText(String(D.year), 80, 400);
+  const tiles = [[D.sessions, "pass", "#FF5B52"], [D.sets, "set", "#6B95FF"], [fmt(D.ton, 1), "ton lyft", "#FFC93A"], [D.prs, D.prs === 1 ? "rekord" : "rekord", "#3CCB7C"]];
+  tiles.forEach((tt, i) => {
+    const tx = 80 + (i % 2) * 470, ty = 460 + Math.floor(i / 2) * 250;
+    x.fillStyle = "rgba(255,255,255,.06)"; x.beginPath(); x.roundRect(tx, ty, 440, 220, 36); x.fill();
+    x.fillStyle = tt[2]; x.font = '900 120px ' + DISP; x.fillText(String(tt[0]), tx + 36, ty + 140);
+    x.fillStyle = "#C9CED6"; x.font = '700 36px ' + BODY; x.fillText(tt[1], tx + 40, ty + 192);
+  });
+  let y = 1020;
+  const head = t => { x.fillStyle = "#A0A8B3"; x.font = '800 30px ' + BODY; x.letterSpacing = "5px"; x.fillText(t, 80, y); x.letterSpacing = "0px"; y += 60; };
+  const line = (l, r, col) => { x.fillStyle = "#FFFFFF"; x.font = '700 42px ' + BODY; x.fillText(l, 80, y); x.fillStyle = col || "#3CCB7C"; x.font = '800 46px ' + DISP; const w = x.measureText(r).width; x.fillText(r, W - 80 - w, y); y += 66; };
+  if (D.up.length){ head("STARKARE"); D.up.forEach(u => line(u.n, u.hj ? fmt(u.a) + " → " + fmt(u.b) + " kg hjälp" : fmt(u.a) + " → " + fmt(u.b) + " kg")); y += 24; }
+  head("KROPPEN");
+  if (D.w) line("Vikt", fmt(D.w.a) + " → " + fmt(D.w.b) + " kg", D.w.b >= D.w.a ? "#3CCB7C" : "#FFC93A");
+  if (D.run) line("Löpning", fmt(D.run.km, 0) + " km · " + D.run.n + " rundor", "#6B95FF");
+  if (D.sleep) line("Sömn", gmH(D.sleep.avg) + " snitt · " + D.sleep.ten + " × 10 h", "#B9A3FF");
+  line("Perfekta dagar", String(D.perfect), "#FFC93A");
+  if (D.box) line("Boxning", D.box + " ronder", "#FF5B52");
+  x.fillStyle = "#6E7782"; x.font = '700 30px ' + BODY; x.fillText("Tränat med GymSchema · program 2.0", 80, H - 90);
+  return new Promise(res => c.toBlob(b => res(b), "image/png"));
+}
+function wrapHTML(){
+  const D = wrapData(wrapMonth);
+  return '<div class="card coach" id="wrapCard"><div class="gm-top"><b>Månadens sammanfattning</b><span class="lead">' + esc(D.label) + '</span></div>' +
+    '<div class="small">En snygg bild med månadens pass, rekord, vikt, löpning, sömn och perfekta dagar – att spara eller skicka.</div>' +
+    '<div class="bxseg"><button type="button" data-wrapm="-1" aria-pressed="' + (wrapMonth === -1) + '">Förra månaden</button><button type="button" data-wrapm="0" aria-pressed="' + (wrapMonth === 0) + '">Den här månaden</button></div>' +
+    '<button class="btn" type="button" data-wrap="make">Skapa bilden</button></div>';
+}
+async function wrapOpen(){
+  const D = wrapData(wrapMonth);
+  let o = $("wrapOv");
+  if (!o){ o = document.createElement("div"); o.id = "wrapOv"; o.className = "scan wrap"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Månadens sammanfattning"); document.body.appendChild(o);
+    o.addEventListener("click", async e => { const b = e.target.closest("[data-wrap]"); if (!b) return; if (b.dataset.wrap === "close"){ o.hidden = true; document.documentElement.classList.remove("noscroll"); } else if (b.dataset.wrap === "share") wrapShare(); }); }
+  o.innerHTML = '<div class="scan-top"><b>' + esc(gmCap(D.label)) + ' ' + D.year + '</b><button type="button" class="scan-x" data-wrap="close" aria-label="Stäng">×</button></div><div class="wrap-img"><div class="scan-msg">Ritar bilden…</div></div>';
+  o.hidden = false; document.documentElement.classList.add("noscroll");
+  wrapBlob = await wrapDraw(D);
+  const url = URL.createObjectURL(wrapBlob);
+  o.querySelector(".wrap-img").innerHTML = '<img src="' + url + '" alt="Månadens sammanfattning för ' + esc(D.label) + '">';
+  o.insertAdjacentHTML("beforeend", '<div class="scan-btns"><button type="button" class="btn" data-wrap="share">Spara eller skicka</button></div><div class="scan-msg" style="font-size:13px">Du kan också hålla fingret på bilden och välja Spara bild.</div>');
+}
+async function wrapShare(){
+  if (!wrapBlob) return;
+  const f = new File([wrapBlob], "gymschema-" + wrapData(wrapMonth).label + ".png", {type: "image/png"});
+  try { if (navigator.canShare && navigator.canShare({files: [f]})){ await navigator.share({files: [f], title: "Min månad"}); return; } } catch(e){ if (e && e.name === "AbortError") return; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(wrapBlob); a.download = f.name; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 1000);
+}
+document.addEventListener("click", e => {
+  const m = e.target.closest("[data-wrapm]"), b = e.target.closest("#wrapCard [data-wrap]");
+  if (m){ wrapMonth = +m.dataset.wrapm; const c = $("wrapCard"); if (c) c.outerHTML = wrapHTML(); return; }
+  if (b && b.dataset.wrap === "make") wrapOpen();
+});
+
 /* ---------- Start ---------- */
-const BUILD = "12 nov 00.41", BUILD_NOTE = "Nytt: löppassen på klockan, läggdags, coachen, prognos och lätt vecka";
+const BUILD = "12 nov 00.50", BUILD_NOTE = "Nytt: Mat med streckkodsläsare under Kropp, och månadens bild i Framsteg";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
