@@ -102,6 +102,10 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .tag{font-size:11.5px;font-weight:700;letter-spacing:.03em;color:var(--muted);background:var(--surface2);padding:3px 8px;border-radius:999px}
 .count{font-family:var(--display);font-weight:800;font-size:22px;line-height:1;color:var(--faint);white-space:nowrap}
 .count.full{color:var(--good)}
+.shakeadv{display:flex;flex-direction:column;gap:4px}
+.shakeadv .big{font-family:var(--display);font-weight:800;font-size:26px;line-height:1.05;letter-spacing:.005em}
+.shakeadv.up .big{color:var(--good)}
+.shakeadv.down .big{color:var(--bad)}
 .ex{transition:background .25s,box-shadow .25s}
 .ex.full{background:var(--good-bg);background:color-mix(in srgb,var(--good) 20%,var(--surface));box-shadow:0 0 0 2.5px var(--good),var(--shadow)}
 .ex.full .ex-n{color:var(--good)}
@@ -1113,6 +1117,34 @@ function renderProg(){
 $("v-framsteg").addEventListener("click", e => { const b = e.target.closest("[data-ex]"); if (!b) return; progEx = b.dataset.ex; renderProg(); });
 
 /* ---------- Vy: Vikt ---------- */
+// Vilken shake-storlek: planen är +1 kg i månaden, 0,5–2 är okej. Storleken läses från Shake-appen om den delar lagring med den här (annars allmänt råd).
+function shakeAdvice(pts){
+  const cur = pts[pts.length - 1], recent = pts.filter(p => p.t >= cur.t - 28 * 864e5);
+  const span = recent.length >= 2 ? (cur.t - recent[0].t) / 864e5 : 0;
+  let size = null;
+  try { const sh = JSON.parse(localStorage.getItem("shake.v1") || "null"); if (sh && sh.settings && [2000, 2500, 3000].indexOf(sh.settings.size) >= 0) size = sh.settings.size; } catch(e){}
+  const nice = n => String(n).replace(/(\d)(\d{3})$/, "$1 $2");
+  const where = " Ändra i Shake-appen: Recept → Storlek.";
+  let tone = "", big, small;
+  if (span < 14){
+    big = "För tidigt att säga";
+    small = "Väg dig 2–3 morgnar i veckan i två veckor, så säger appen vilken shake du ska köra. De första veckorna går det alltid fortast – det är mest vätska och mat i magen.";
+  } else {
+    const rate = (cur.y - recent[0].y) / span * 30, r = (rate < 0 ? "Du går ner " : "Du går upp ") + fmt(Math.abs(rate)) + " kg i månaden";
+    if (rate < 0.5){
+      tone = "up";
+      if (size === 3000){ big = "Ät ett mål mer om dagen"; small = r + " och kör redan största shaken. Planen är +1 kg i månaden."; }
+      else { big = size ? "Byt till " + nice(size + 500) : "Ett steg större shake"; small = r + ". Planen är +1 kg i månaden." + (size ? "" : " 2 000 → 2 500 → 3 000.") + where; }
+    } else if (rate > 2){
+      tone = "down";
+      if (size === 2000){ big = "Ett glas mindre om dagen"; small = r + " – mer än 2 kg blir mest fett. Du kör redan minsta shaken."; }
+      else { big = size ? "Byt till " + nice(size - 500) : "Ett steg mindre shake"; small = r + " – mer än 2 kg blir mest fett." + (size ? "" : " 3 000 → 2 500 → 2 000.") + where; }
+    } else {
+      tone = "ok"; big = "Behåll storleken" + (size ? " (" + nice(size) + ")" : ""); small = r + ". 0,5–2 kg i månaden är rätt takt – det blir muskler, inte fett.";
+    }
+  }
+  return '<div class="card shakeadv ' + tone + '"><div class="stat-l">Shake-storlek</div><div class="big">' + esc(big) + '</div><div class="small">' + esc(small) + '</div></div>';
+}
 function renderVikt(){
   const el = $("v-vikt");
   const pts = weights.map(w => ({t: parseIso(w.date).getTime(), y: w.kg, date: w.date}));
@@ -1138,7 +1170,7 @@ function renderVikt(){
   }
   el.innerHTML = '<div><div class="lead">Mot ' + GOAL_KG + ' kg</div><h2 class="h2">Kroppsvikt</h2></div>' +
     '<form class="card wform" id="wForm" novalidate><label for="wKg">Vikt (kg)<input id="wKg" inputmode="decimal" placeholder="63,0" autocomplete="off"></label><label for="wDate">Datum<input id="wDate" type="date" value="' + iso(today()) + '"></label><button class="btn" type="submit"' + (!db || readOnly ? " disabled" : "") + '>Spara</button></form>' +
-    (pts.length ? '<div class="card">' + stats + '<div style="margin-top:12px">' + chart + '</div></div>' + list
+    (pts.length ? '<div class="card">' + stats + '<div style="margin-top:12px">' + chart + '</div></div>' + shakeAdvice(pts) + list
       : '<div class="card empty"><b>Ingen vikt loggad än</b><span>Väg dig 2–3 gånger i veckan, på morgonen innan frukost. Då räknas takten ut och jämförs med planen: ungefär +1 kg i månaden.</span></div>');
 }
 $("v-vikt").addEventListener("submit", async e => {
@@ -1441,7 +1473,7 @@ $("v-vanor").addEventListener("click", e => {
 });
 
 /* ---------- Start ---------- */
-const BUILD = "11 nov 22.27", BUILD_NOTE = "Vanor: shaken och tillskotten följer Shake-appen";
+const BUILD = "11 nov 22.49", BUILD_NOTE = "Vikt-fliken säger vilken shake-storlek du ska köra";
 draft = restoreDraft();
 if (draft) selType = draft.type;
 initDb();
