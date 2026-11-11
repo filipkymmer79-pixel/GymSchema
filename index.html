@@ -102,6 +102,16 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .tag{font-size:11.5px;font-weight:700;letter-spacing:.03em;color:var(--muted);background:var(--surface2);padding:3px 8px;border-radius:999px}
 .count{font-family:var(--display);font-weight:800;font-size:22px;line-height:1;color:var(--faint);white-space:nowrap}
 .count.full{color:var(--good)}
+.vtog{border:0;font:inherit;cursor:pointer}
+.vtog[aria-pressed="false"]{opacity:.55}
+.set{position:relative}
+.fire{position:absolute;left:2px;top:-9px;font-size:15px;line-height:1;pointer-events:none;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.fire.pop{animation:firepop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes firepop{0%{transform:scale(0) rotate(-30deg)}100%{transform:scale(1) rotate(0)}}
+.beatline{display:flex;align-items:center;gap:8px;font-weight:700;background:var(--surface2);border-radius:12px;padding:10px 12px}
+.beatline b{font-family:var(--display);font-size:22px;font-weight:900}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:9999}
+@media (prefers-reduced-motion: reduce){.fire.pop{animation:none}}
 .shakeadv{display:flex;flex-direction:column;gap:4px}
 .shakeadv .big{font-family:var(--display);font-weight:800;font-size:26px;line-height:1.05;letter-spacing:.005em}
 .shakeadv.up .big{color:var(--good)}
@@ -202,7 +212,7 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 
 /* Tabs */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
-.tabs-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr)}
+.tabs-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(7,1fr)}
 .tab{border:0;background:transparent;padding:9px 2px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em}
 .tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tab[aria-current="page"]{color:var(--ink)}
@@ -331,6 +341,55 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .bk input[type=file]{display:none}
 .small{font-size:12.5px;color:var(--muted)}
 .exlink{align-self:flex-start;font-size:12.5px;font-weight:700;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:2px 0}
+/* Boxning */
+.bxseg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
+.bxseg button{border:0;border-radius:12px;padding:10px 4px;background:var(--surface2);color:var(--ink);font:inherit;font-weight:800;font-size:14px}
+.bxseg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.bxrow{display:flex;flex-direction:column;gap:6px}
+.bxrow > span{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.bxstep{display:flex;align-items:center;gap:10px}
+.bxstep button{width:44px;height:44px;border-radius:12px;border:0;background:var(--surface2);color:var(--ink);font-size:22px;font-weight:800}
+.bxstep b{font-family:var(--display);font-size:34px;font-weight:900;min-width:44px;text-align:center}
+.bxgo{font-size:18px;padding:16px;width:100%}
+.bxnums{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.bxnums div{display:flex;gap:8px;align-items:baseline;background:var(--surface2);border-radius:12px;padding:8px 10px}
+.bxnums b{font-family:var(--display);font-size:22px;font-weight:900;color:var(--red);min-width:18px}
+.bxnums span{font-size:13px;font-weight:700}
+.bxnums small{display:block;font-size:11.5px;color:var(--muted);font-weight:600}
+.boxrun{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;color:#fff;background:#1C1F26;
+  padding:calc(env(safe-area-inset-top,0px) + 18px) 18px calc(env(safe-area-inset-bottom,0px) + 18px);transition:background .4s}
+.boxrun.round{background:linear-gradient(180deg,#C62828,#7F1414)}
+.boxrun.round.end10{background:linear-gradient(180deg,#E08600,#9A4D00)}
+.boxrun.rest{background:linear-gradient(180deg,#1E4FD1,#0F2C7A)}
+.boxrun.done{background:linear-gradient(180deg,#1B8A4C,#0E4F2B)}
+.bx-top{width:100%;display:flex;justify-content:space-between;align-items:center;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:13px;opacity:.92}
+.bx-mid{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%}
+.bx-phase{font-family:var(--display);font-weight:900;font-size:clamp(34px,11vw,56px);letter-spacing:.03em;line-height:1}
+.bx-time{font-family:var(--display);font-weight:900;font-size:clamp(84px,30vw,150px);line-height:.9;font-variant-numeric:tabular-nums}
+.bx-bar{width:min(420px,86vw);height:8px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden}
+.bx-bar i{display:block;height:100%;width:0;background:#fff;border-radius:99px}
+.bx-combo{min-height:120px;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.bx-n{font-family:var(--display);font-weight:900;font-size:clamp(46px,16vw,84px);line-height:1;letter-spacing:.04em}
+.bx-w{font-weight:800;font-size:clamp(16px,5vw,22px);opacity:.95}
+.bx-n.pop{animation:bxpop .35s cubic-bezier(.2,1.5,.4,1)}
+@keyframes bxpop{0%{transform:scale(.6);opacity:.2}100%{transform:scale(1);opacity:1}}
+.bx-btns{display:flex;gap:10px;width:100%;max-width:420px}
+.bx-btns button{flex:1;border:0;border-radius:16px;padding:16px;font:inherit;font-weight:800;font-size:17px;background:rgba(255,255,255,.18);color:#fff}
+.bx-btns button.solid{background:#fff;color:#14161B}
+@media (prefers-reduced-motion: reduce){.bx-n.pop{animation:none}}
+/* Veckans muskelkarta */
+:root{--mbody:#DCD8D0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--mbody:#343A46}}
+:root[data-theme="dark"]{--mbody:#343A46}
+.mmap{display:block;width:100%;max-width:330px;margin:4px auto 0}
+.mmap text{font-family:var(--body);font-size:6.5px;font-weight:800;letter-spacing:1px;fill:var(--faint)}
+.mleg{display:flex;justify-content:center;gap:12px;font-size:11.5px;font-weight:700;color:var(--muted);flex-wrap:wrap}
+.mleg i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--blue);margin-right:5px;vertical-align:-1px}
+.mchips{display:flex;flex-wrap:wrap;gap:6px}
+.mchip{font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--surface2);color:var(--ink)}
+.mchip b{font-variant-numeric:tabular-nums;margin-left:4px}
+.mchip.zero{color:var(--muted)}
+.mhint{font-size:12.5px;color:var(--muted)}
 /* Vanor */
 .hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .hnav{display:flex;gap:6px;flex:0 0 auto}
@@ -363,7 +422,8 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .hdots small{display:inline;margin:0 0 0 4px;font-size:10.5px;color:var(--faint);font-weight:700}
 .hrules{display:flex;flex-direction:column;gap:6px}
 .hrules .big{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.05;letter-spacing:.005em}
-@media (max-width:380px){.tab{font-size:10.5px}.hbig{font-size:40px}.logo{font-size:27px}.wk{font-size:11px}.day{padding:7px 6px;gap:6px}.plate{width:18px;height:18px;border-width:2.5px}.day-s{font-size:15px}.stats{grid-template-columns:repeat(2,1fr)}
+@media (max-width:420px){.tab{font-size:10px;letter-spacing:0}}
+@media (max-width:380px){.tab{font-size:9.5px}.hbig{font-size:40px}.logo{font-size:27px}.wk{font-size:11px}.day{padding:7px 6px;gap:6px}.plate{width:18px;height:18px;border-width:2.5px}.day-s{font-size:15px}.stats{grid-template-columns:repeat(2,1fr)}
   .set{gap:6px;grid-template-columns:20px minmax(0,1fr) 54px 42px}.set.one{grid-template-columns:20px minmax(0,1fr) 42px}.fld.r input{width:54px}.step{width:30px}.chk{width:42px;height:42px}.sess-head .h2{font-size:30px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -384,6 +444,7 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
     <section class="view" id="v-historik" aria-label="Historik" hidden></section>
     <section class="view" id="v-program" aria-label="Programmet" hidden></section>
     <section class="view" id="v-vanor" aria-label="Vanor" hidden></section>
+    <section class="view" id="v-boxning" aria-label="Boxning" hidden></section>
   </main>
 </div>
 
@@ -391,6 +452,7 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
   <div class="tabs-in">
     <button class="tab" data-v="pass" id="t-pass"><svg viewBox="0 0 24 24"><path d="M6 8v8M18 8v8M3 10v4M21 10v4M6 12h12"/></svg>Pass</button>
     <button class="tab" data-v="vanor" id="t-vanor"><svg viewBox="0 0 24 24"><path d="M4 6.5l2 2 3.5-4M4 13.5l2 2 3.5-4M4 20.5l2 2 3.5-4" transform="translate(0,-1.5)"/><path d="M13 6h7M13 13h7M13 20h7"/></svg>Vanor</button>
+    <button class="tab" data-v="boxning" id="t-boxning"><svg viewBox="0 0 24 24"><path d="M7 11V8.5a4.5 4.5 0 0 1 4.5-4.5h1A4.5 4.5 0 0 1 17 8.5V13a5 5 0 0 1-5 5h-1.5A3.5 3.5 0 0 1 7 14.5z"/><path d="M7 11.5h4.5a1.75 1.75 0 0 1 0 3.5H9"/><path d="M8.5 18v2.5h7V18"/></svg>Boxning</button>
     <button class="tab" data-v="framsteg" id="t-framsteg"><svg viewBox="0 0 24 24"><path d="M4 19h16M5 15l4-4 3 3 6-7"/><path d="M14 7h4v4"/></svg>Framsteg</button>
     <button class="tab" data-v="vikt" id="t-vikt"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9.5a4 4 0 0 1 6 0l-2 2.5"/></svg>Vikt</button>
     <button class="tab" data-v="historik" id="t-historik"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Historik</button>
@@ -725,7 +787,8 @@ function renderPass(){
   el.innerHTML = banner +
     '<div class="picker" role="group" aria-label="Välj pass">' + ORDER.map(k => '<button class="pick" type="button" data-type="' + k + '" aria-pressed="' + (k === selType) + '" style="' + sessColor(k) + '"><span class="ab">' + PROGRAM[k].ab + '</span><span class="dd">' + PROGRAM[k].day + '</span></button>').join("") + '</div>' +
     '<div class="sess-head"><div><div class="lead">' + (preStart ? "Första passet" : tk === selType ? "Dagens pass" : "Valt pass") + '</div><h2 class="h2">' + esc(p.name) + '</h2></div>' +
-    (loggedToday ? '<span class="pill good">✓ Loggat idag</span>' : '<span class="pill num">' + p.ex.length + ' övningar</span>') + '</div>' +
+    '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">' + ("speechSynthesis" in window ? '<button class="pill vtog" type="button" data-voice aria-pressed="' + voiceOn + '" aria-label="Röstcoach ' + (voiceOn ? "på" : "av") + '">' + (voiceOn ? "🔊 Röst" : "🔇 Röst") + '</button>' : '') +
+    (loggedToday ? '<span class="pill good">✓ Loggat idag</span>' : '<span class="pill num">' + p.ex.length + ' övningar</span>') + '</div></div>' +
     rcardHTML("w") +
     p.ex.map(exHTML).join("") +
     (RFOR[draft.type].a ? rcardHTML("a") : "") +
@@ -760,7 +823,7 @@ function setHTML(ex, x, i){
     const arm = (wk, rk, lab, name, R) => '<div class="lrrow"><span class="side" aria-hidden="true">' + lab + '</span>' +
       '<div class="fld w"><button class="step" type="button" data-step="-1"' + R + ' aria-label="Minska vikt ' + name + '">−</button><input id="' + wk + '-' + id + '" data-f="' + wk + '" inputmode="decimal" value="' + (x[wk] == null ? "" : String(x[wk]).replace(".", ",")) + '" placeholder="–" aria-label="Vikt ' + name + ' arm set ' + (i+1) + '"><button class="step" type="button" data-step="1"' + R + ' aria-label="Öka vikt ' + name + '">+</button></div>' +
       '<div class="fld r"><input id="' + rk + '-' + id + '" data-f="' + rk + '" inputmode="numeric" value="' + (x[rk] == null ? "" : x[rk]) + '" placeholder="' + (ex.lo === ex.hi ? ex.lo : ex.lo + "–" + ex.hi) + '" aria-label="Reps ' + name + ' arm set ' + (i+1) + '"></div></div>';
-    return '<div class="set lr' + (x.done ? ' done' : '') + '" data-i="' + i + '"><span class="sn">' + (i+1) + '</span><div class="lrrows">' +
+    return '<div class="set lr' + (x.done ? ' done' : '') + '" data-i="' + i + '">' + (x.done && beatVerdict(ex, x, i) === "beat" ? '<span class="fire" aria-label="Slog förra gången">🔥</span>' : '') + '<span class="sn">' + (i+1) + '</span><div class="lrrows">' +
       arm("wR", "rR", "H", "höger", ' data-side="R"') + arm("w", "r", "V", "vänster", '') + '</div>' +
       '<button class="chk" type="button" data-chk="1" aria-pressed="' + x.done + '" aria-label="Klart set ' + (i+1) + '">✓</button></div>';
   }
@@ -773,8 +836,8 @@ function setHTML(ex, x, i){
     fields = '<div class="fld w"><button class="step" type="button" data-step="-1" aria-label="Minska vikt">−</button><input id="w-' + id + '" data-f="w" inputmode="decimal" value="' + (x.w == null ? "" : String(x.w).replace(".", ",")) + '" placeholder="–" aria-label="' + (ex.unit === "hjalp" ? "Hjälp i kg" : "Vikt i kg") + ' set ' + (i+1) + '"><button class="step" type="button" data-step="1" aria-label="Öka vikt">+</button></div>' +
       '<div class="fld r"><input id="r-' + id + '" data-f="r" inputmode="numeric" value="' + (x.r == null ? "" : x.r) + '" placeholder="' + (ex.lo === ex.hi ? ex.lo : ex.lo + "–" + ex.hi) + '" aria-label="' + (ex.m ? "Meter" : "Reps") + ' set ' + (i+1) + '"></div>';
   }
-  const one = ex.unit === "sek" || ex.unit === "reps";
-  return '<div class="set' + (one ? ' one' : '') + (x.done ? ' done' : '') + '" data-i="' + i + '"><span class="sn">' + (i+1) + '</span>' + fields +
+  const one = ex.unit === "sek" || ex.unit === "reps", fire = x.done && beatVerdict(ex, x, i) === "beat";
+  return '<div class="set' + (one ? ' one' : '') + (x.done ? ' done' : '') + '" data-i="' + i + '">' + (fire ? '<span class="fire" aria-label="Slog förra gången">🔥</span>' : '') + '<span class="sn">' + (i+1) + '</span>' + fields +
     '<button class="chk" type="button" data-chk="1" aria-pressed="' + x.done + '" aria-label="Klart set ' + (i+1) + '">✓</button></div>';
 }
 function updateSummary(){
@@ -810,6 +873,7 @@ function doneHTML(r){
   const w = weekInfo(), cnt = Object.keys(w.doneTypes).length;
   return '<div class="card donecard"><div class="lead">' + esc(PROGRAM[r.type].name) + ' · ' + dLong(r.date) + '</div><div class="big">Passet är sparat</div>' +
     '<div class="stats"><div class="stat"><div class="stat-l">Set</div><div class="stat-v num">' + r.sets + '</div></div><div class="stat"><div class="stat-l">Volym</div><div class="stat-v num">' + fmt(r.volume, 0) + '</div></div><div class="stat"><div class="stat-l">Rekord</div><div class="stat-v num' + (r.prs.length ? ' good' : '') + '">' + r.prs.length + '</div></div><div class="stat"><div class="stat-l">Veckan</div><div class="stat-v num">' + cnt + '/4</div></div></div>' +
+    (r.beatOf ? '<div class="beatline"><span>🔥</span><span>Du slog förra gången i <b>' + r.beatN + '</b> av ' + r.beatOf + ' set</span></div>' : '') +
     (r.prs.length ? r.prs.map(t => '<div class="pr"><i>REKORD</i><span>' + esc(t) + '</span></div>').join("") : '<div class="lead">Inga nya rekord idag – vikterna ökar när du klarar toppen av spannet i alla set.</div>') +
     '<div class="lead">' + (r.warm ? "Uppvärmning ✓" : "Uppvärmning –") + (RFOR[r.type].a ? ' · ' + (r.abs ? "Mage ✓" : "Mage kvar") : '') + ' · ' + (r.stretch ? "Stretch ✓" : "Stretch kvar") + '</div>' +
     (!RFOR[r.type].a || r.abs || readOnly || !db ? '' : '<button class="btn" type="button" data-rstart="a">▶ Mage nu · ca ' + ROUTINES[RFOR[r.type].a].min + ' min</button>') +
@@ -819,6 +883,8 @@ function doneHTML(r){
 
 /* ---------- Interaktion: Pass ---------- */
 $("v-pass").addEventListener("click", e => {
+  const vt = e.target.closest("[data-voice]");
+  if (vt){ voiceOn = !voiceOn; try { localStorage.setItem("gymschema.voice", voiceOn ? "1" : "0"); } catch(err){} if (voiceOn){ voicePrimed = false; primeVoice(); say("Röstcoachen är på."); } else { try { speechSynthesis.cancel(); } catch(err){} } vt.setAttribute("aria-pressed", voiceOn); vt.textContent = voiceOn ? "🔊 Röst" : "🔇 Röst"; return; }
   const rs = e.target.closest("[data-rstart]");
   if (rs){ openGuide(rs.dataset.rstart); return; }
   const rd = e.target.closest("[data-rdone]");
@@ -866,9 +932,15 @@ $("v-pass").addEventListener("click", e => {
       // Samma vikt i nästa set, om du inte redan ändrat den själv
       const nx = draft.sets[ex.k][i+1];
       if (nx && !nx.done && !nx.edited){ if ((ex.unit === "kg" || ex.unit === "hjalp") && st.w != null){ nx.w = st.w; const inp = $("w-" + ex.k + "-" + (i+1)); if (inp) inp.value = String(st.w).replace(".", ","); } if (ex.unit === "sek" && st.s != null){ nx.s = st.s; const inp = $("s-" + ex.k + "-" + (i+1)); if (inp) inp.value = st.s; } if (ex.lr && st.wR != null){ nx.wR = st.wR; const inp = $("wR-" + ex.k + "-" + (i+1)); if (inp) inp.value = String(st.wR).replace(".", ","); } }
+      const verdict = beatVerdict(ex, st, i);
+      if (verdict === "beat"){
+        if (!row.querySelector(".fire")){ const f = document.createElement("span"); f.className = "fire pop"; f.textContent = "🔥"; f.setAttribute("aria-label", "Slog förra gången"); row.prepend(f); }
+        const r = row.querySelector("[data-chk]").getBoundingClientRect(); confetti(r.left + r.width / 2, r.top + r.height / 2, 26, false);
+        say("Bättre än förra gången!");
+      }
       const nextIdx = draft.sets[ex.k].findIndex(x => !x.done);
-      startTimer(ex.rest, nextIdx < 0 ? "Nästa övning" : ex.n + " · set " + (nextIdx + 1));
-    } else { st.done = false; row.classList.remove("done"); }
+      startTimer(ex.rest, nextIdx < 0 ? "Nästa övning" : ex.n + " · set " + (nextIdx + 1), nextIdx < 0 ? nextExPhrase(ex) : setPhrase(ex, nextIdx));
+    } else { st.done = false; row.classList.remove("done"); const f = row.querySelector(".fire"); if (f) f.remove(); }
     row.querySelector("[data-chk]").setAttribute("aria-pressed", st.done);
     persistDraft(); updateSummary();
   }
@@ -894,10 +966,14 @@ async function saveSession(){
   const doc = {date: draft.date, ts: Date.now(), type: draft.type, exercises, note: (draft.note || "").trim(), volume: volumeOf(exercises), warm: !!draft.warm, stretch: !!draft.stretch, abs: !!draft.abs};
   const prs = findPRs(doc);
   doc.prs = prs;
+  let beatN = 0, beatOf = 0;
+  p.ex.forEach(ex => draft.sets[ex.k].forEach((x, i) => { if (!x.done) return; const v = beatVerdict(ex, x, i); if (v){ beatOf++; if (v === "beat") beatN++; } }));
   const b = $("saveBtn"); b.disabled = true; b.textContent = "Sparar…";
   try {
     const ref = await db.collection("sessions").add(doc);
-    justSaved = {id: ref && ref.id, type: doc.type, date: doc.date, volume: doc.volume, prs, sets: exercises.reduce((a, e) => a + e.sets.length, 0), warm: doc.warm, stretch: doc.stretch, abs: doc.abs};
+    justSaved = {id: ref && ref.id, type: doc.type, date: doc.date, volume: doc.volume, prs, sets: exercises.reduce((a, e) => a + e.sets.length, 0), warm: doc.warm, stretch: doc.stretch, abs: doc.abs, beatN, beatOf};
+    if (prs.length){ setTimeout(() => confetti(0, 0, 160, true), 250); say("Nytt rekord! " + prs.map(t => t.split(":")[0].replace(/\s*\(.*?\)/g, "")).slice(0, 2).join(" och ") + "."); }
+    else if (beatN) say("Passet är sparat. Du slog förra gången i " + beatN + " set.");
     clearTimeout(saveDraftT); draft = null; selType = null; store("lyftloggen.draft.v1", null); releaseAwake(); stopTimer();
     renderPass(); renderStrip(); window.scrollTo({top: 0});
   } catch(err){
@@ -907,11 +983,77 @@ async function saveSession(){
 }
 
 /* ---------- Vilotimer ---------- */
-let tEnd = 0, tTotal = 0, tTimer = 0, audio = null, wakeLock = null;
-function ensureAudio(){ try { if (!audio){ const A = window.AudioContext || window.webkitAudioContext; if (A) audio = new A(); } if (audio && audio.state === "suspended") audio.resume(); } catch(e){} }
+let tEnd = 0, tTotal = 0, tTimer = 0, audio = null, wakeLock = null, tSay = "", tSaid10 = false;
+/* Röstcoach: säger "tio sekunder" och nästa set högt (svensk röst om telefonen har en) */
+let voiceOn = (() => { try { return localStorage.getItem("gymschema.voice") !== "0"; } catch(e){ return true; } })();
+let svVoice = null, voicePrimed = false;
+function pickVoice(){ try { const vs = speechSynthesis.getVoices(); svVoice = vs.find(v => /^sv/i.test(v.lang) && /alva/i.test(v.name)) || vs.find(v => /^sv/i.test(v.lang)) || null; } catch(e){} }
+if ("speechSynthesis" in window){ pickVoice(); try { speechSynthesis.addEventListener("voiceschanged", pickVoice); } catch(e){} }
+function say(text){
+  if (!voiceOn || !text || !("speechSynthesis" in window)) return;
+  try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = "sv-SE"; if (svVoice) u.voice = svVoice; u.rate = 1.02; speechSynthesis.speak(u); } catch(e){}
+}
+function primeVoice(){ if (voicePrimed || !voiceOn || !("speechSynthesis" in window)) return; voicePrimed = true; try { const u = new SpeechSynthesisUtterance(" "); u.volume = 0; u.lang = "sv-SE"; speechSynthesis.speak(u); } catch(e){} }
+const spokenName = ex => (SHORT[ex.k] || ex.n).replace(/\s*\(.*?\)/g, "");
+const kgSay = v => v == null ? "" : String(v).replace(".", ",") + " kilo";
+const repsSay = ex => ex.unit === "sek" ? "" : ex.m ? ex.hi + " meter" : (ex.lo === ex.hi ? ex.lo : ex.lo + " till " + ex.hi) + " reps";
+function loadSay(ex, st){
+  if (ex.lr) return "höger " + kgSay(st.wR) + ", vänster " + kgSay(st.w);
+  if (ex.unit === "hjalp") return st.w == null ? "" : kgSay(st.w) + " hjälp";
+  if (ex.unit === "sek") return (st.s || ex.lo) + " sekunder";
+  return ex.unit === "kg" ? kgSay(st.w) : "";
+}
+function setPhrase(ex, i){
+  const st = draft.sets[ex.k][i], load = loadSay(ex, st), r = repsSay(ex);
+  return "Dags. Set " + (i + 1) + " av " + ex.sets + ". " + spokenName(ex) + (load ? ", " + load : "") + (r ? ", " + r : "") + ".";
+}
+function nextExPhrase(ex){
+  const list = PROGRAM[draft.type].ex, idx = list.findIndex(e => e.k === ex.k);
+  const nx = list.slice(idx + 1).find(e => draft.sets[e.k].some(x => !x.done)) || list.find(e => draft.sets[e.k].some(x => !x.done));
+  if (!nx) return "Alla set är klara. Starkt jobbat! Glöm inte att spara passet.";
+  const st = draft.sets[nx.k].find(x => !x.done), load = loadSay(nx, st), r = repsSay(nx);
+  return "Nästa övning: " + spokenName(nx) + ". " + nx.sets + " set" + (r ? ", " + r : "") + (load ? ". Börja på " + load : "") + ".";
+}
+/* Konfetti: liten smäll vid ett slaget set, stor vid nytt rekord */
+function confetti(x, y, n, big){
+  try {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let c = $("confetti"); if (!c){ c = document.createElement("canvas"); c.id = "confetti"; document.body.appendChild(c); }
+    const dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight; c.width = W * dpr; c.height = H * dpr; c.style.width = W + "px"; c.style.height = H + "px";
+    const ctx = c.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const cols = ["#3ACB7C", "#2E6BFF", "#FFC23D", "#FF4D4D", "#B26BFF", "#FFFFFF"];
+    const ps = Array.from({length: n}, () => { const a = big ? Math.PI * (1.15 + Math.random() * .7) : Math.random() * Math.PI * 2, v = big ? 9 + Math.random() * 9 : 2.5 + Math.random() * 4;
+      return {x: big ? W * (.2 + Math.random() * .6) : x, y: big ? H + 10 : y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - (big ? 4 : 2), r: 3 + Math.random() * 4, c: cols[(Math.random() * cols.length) | 0], rot: Math.random() * 6, vr: (Math.random() - .5) * .4}; });
+    const t0 = performance.now(), dur = big ? 2600 : 900;
+    (function frame(t){
+      const k = (t - t0) / dur; ctx.clearRect(0, 0, W, H); if (k >= 1){ ctx.clearRect(0, 0, W, H); return; }
+      ps.forEach(p => { p.vy += big ? .32 : .18; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.rot += p.vr; ctx.save(); ctx.globalAlpha = 1 - Math.max(0, k - .6) / .4; ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.c; ctx.fillRect(-p.r, -p.r * .45, p.r * 2, p.r * .9); ctx.restore(); });
+      requestAnimationFrame(frame);
+    })(t0);
+  } catch(e){}
+}
+/* Slå förra gången: samma set förra passet */
+function beatVerdict(ex, cur, i){
+  const last = lastFor(ex.k); if (!last || !last.sets[i]) return null;
+  const p = last.sets[i];
+  let a, b;
+  if (ex.unit === "hjalp"){
+    // mindre hjälp = starkare; samma hjälp och fler reps = också bättre
+    if (cur.w == null || p.w == null || cur.r == null || p.r == null) return null;
+    if (cur.w < p.w) return cur.r >= ex.lo ? "beat" : null;
+    if (cur.w > p.w) return "worse";
+    a = cur.r; b = p.r;
+  } else if (ex.unit === "sek"){ a = cur.s; b = p.s; }
+  else if (ex.unit === "reps"){ a = cur.r; b = p.r; }
+  else { a = setScore(ex, cur); b = setScore(ex, p); }  // kg: uppskattat max, båda armarna för curls
+  if (a == null || b == null) return null;
+  if (Math.abs(a - b) < 1e-6) return "same";
+  return a > b ? "beat" : "worse";
+}
+function ensureAudio(){ primeVoice(); try { if (!audio){ const A = window.AudioContext || window.webkitAudioContext; if (A) audio = new A(); } if (audio && audio.state === "suspended") audio.resume(); } catch(e){} }
 function beep(){ try { if (!audio) return; [0, .28].forEach(off => { const o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = 880; g.gain.setValueAtTime(.0001, audio.currentTime + off); g.gain.exponentialRampToValueAtTime(.25, audio.currentTime + off + .02); g.gain.exponentialRampToValueAtTime(.0001, audio.currentTime + off + .2); o.connect(g); g.connect(audio.destination); o.start(audio.currentTime + off); o.stop(audio.currentTime + off + .22); }); } catch(e){} }
-function startTimer(sec, label){
-  tTotal = sec * 1000; tEnd = Date.now() + tTotal;
+function startTimer(sec, label, sayNext){
+  tTotal = sec * 1000; tEnd = Date.now() + tTotal; tSay = sayNext || ""; tSaid10 = false;
   const t = $("timer"); t.classList.remove("go"); t.hidden = false; document.body.classList.add("timer-on"); $("tsub").textContent = "Vila · " + label;
   tick();
 }
@@ -920,16 +1062,17 @@ function tick(){
   const left = tEnd - Date.now();
   const frac = Math.max(0, Math.min(1, left / tTotal));
   $("ringfg").style.strokeDashoffset = String(119.38 * (1 - frac));
+  if (left <= 10500 && left > 0 && !tSaid10 && tTotal > 20000){ tSaid10 = true; say("Tio sekunder"); }
   if (left <= 0){
     $("tbig").textContent = "Kör!"; $("tsub").textContent = "Dags för nästa set"; $("timer").classList.add("go");
-    beep(); try { navigator.vibrate && navigator.vibrate([180, 90, 180]); } catch(e){}
+    beep(); if (tSay){ const t = tSay; tSay = ""; setTimeout(() => say(t), 450); } try { navigator.vibrate && navigator.vibrate([180, 90, 180]); } catch(e){}
     tTimer = setTimeout(stopTimer, 6000); return;
   }
   $("tbig").textContent = mmss(left / 1000);
   tTimer = setTimeout(tick, 250);
 }
 function stopTimer(){ clearTimeout(tTimer); $("timer").hidden = true; document.body.classList.remove("timer-on"); }
-$("tplus").addEventListener("click", () => { if ($("timer").classList.contains("go")){ tEnd = Date.now() + 30000; tTotal = 30000; $("timer").classList.remove("go"); } else { tEnd += 30000; tTotal += 30000; } tick(); });
+$("tplus").addEventListener("click", () => { tSaid10 = false; if ($("timer").classList.contains("go")){ tEnd = Date.now() + 30000; tTotal = 30000; $("timer").classList.remove("go"); } else { tEnd += 30000; tTotal += 30000; } tick(); });
 $("tskip").addEventListener("click", stopTimer);
 async function keepAwake(){ try { if ("wakeLock" in navigator && !wakeLock && document.visibilityState === "visible"){ wakeLock = await navigator.wakeLock.request("screen"); wakeLock.addEventListener("release", () => { wakeLock = null; updateSummary(); }); updateSummary(); } } catch(e){ wakeLock = null; } }
 function releaseAwake(){ try { if (wakeLock) wakeLock.release(); } catch(e){} wakeLock = null; }
@@ -1109,6 +1252,7 @@ function renderProg(){
   for (let n = nNow - 7; n <= nNow; n++){ if (n < 1){ rows.push({n, v: 0, cur: false}); continue; } const ws = addDays(w0, (n - 1) * 7), we = addDays(ws, 7); let v = 0; sessions.forEach(s => { const d = parseIso(s.date); if (d >= ws && d < we) v += s.volume || 0; }); rows.push({n, v, cur: n === nNow}); }
   const totalSessions = sessions.length;
   el.innerHTML = '<div><div class="lead">Hur du blir starkare</div><h2 class="h2">Framsteg</h2></div>' +
+    (typeof muscleMapHTML === "function" ? muscleMapHTML() : "") +
     '<div class="chips" role="group" aria-label="Välj övning">' + EXERCISES.filter(e => !e.old || sessions.some(s => setsOf(s, e.k))).map(e => '<button class="chip" type="button" data-ex="' + e.k + '" aria-pressed="' + (e.k === progEx) + '" style="--c:var(--' + e.c + ')"><span class="dot"></span>' + esc(SHORT[e.k] || e.n) + '</button>').join("") + '</div>' +
     body +
     '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><b>Volym per vecka</b><span class="lead num">' + totalSessions + ' pass totalt</span></div>' +
@@ -1228,7 +1372,7 @@ $("v-historik").addEventListener("click", async e => {
 });
 
 /* ---------- Navigering ---------- */
-const VIEWS = ["pass", "vanor", "framsteg", "vikt", "historik", "program"];
+const VIEWS = ["pass", "vanor", "boxning", "framsteg", "vikt", "historik", "program"];
 function go(v){ if (location.hash !== "#" + v) location.hash = v; else show(v); }
 let programSub = null;
 function show(v){
@@ -1240,7 +1384,7 @@ function show(v){
 }
 function render(){
   renderStrip();
-  if (view === "pass") renderPass(); else if (view === "framsteg") renderProg(); else if (view === "vikt") renderVikt(); else if (view === "program") renderProgram(); else if (view === "vanor") renderVanor(); else renderHist();
+  if (view === "pass") renderPass(); else if (view === "framsteg") renderProg(); else if (view === "vikt") renderVikt(); else if (view === "program") renderProgram(); else if (view === "vanor") renderVanor(); else if (view === "boxning") renderBox(); else renderHist();
 }
 document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest("[data-v]"); if (b) go(b.dataset.v); });
 window.addEventListener("hashchange", () => show(location.hash.slice(1)));
@@ -1281,6 +1425,8 @@ class LocalDB {
     let n = 0;
     (data.sessions || []).forEach(sx => { if (!sx || !sx.date || !sx.type) return; if (!sx.id) sx.id = "imp" + (sx.ts || Date.now()) + Math.random().toString(36).slice(2, 6); if (!this.sessions.some(y => y.id === sx.id)){ this.sessions.push(sx); n++; } });
     (data.weights || []).forEach(w => { if (w && w.date && typeof w.kg === "number" && !this.weights[w.date]){ this.weights[w.date] = w; n++; } });
+    (Array.isArray(data.boxing) ? data.boxing : []).forEach(b => { if (b && b.ts && b.date && !boxLog.some(x => x.ts === b.ts)){ boxLog.push(b); n++; } });
+    boxLog.sort((a, b) => a.ts - b.ts); store("gymschema.boxing.v1", boxLog);
     const hb = data.habits && typeof data.habits === "object" ? data.habits : {};
     Object.keys(hb).forEach(date => { if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !hb[date] || typeof hb[date] !== "object") return; const cur = habits[date] || (habits[date] = {}); Object.keys(hb[date]).forEach(k => { if (hb[date][k] === true && !cur[k]){ cur[k] = true; n++; } }); });
     store("lyftloggen.habits.v1", habits);
@@ -1300,7 +1446,7 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "GymSchema", version: 3, exported: new Date().toISOString(), sessions, weights, habits};
+  const data = {app: "GymSchema", version: 4, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
@@ -1397,6 +1543,144 @@ $("v-program").addEventListener("click", e => {
   const b = e.target.closest("[data-gsec]"); if (!b) return; e.preventDefault(); gSection = b.dataset.gsec; renderProgram(); window.scrollTo({top: 0});
 });
 
+/* ---------- Boxning hemma: rundtimer med klocka, klapp vid 10 s och röst som ropar kombinationer ---------- */
+const BXN = {"1": ["Jabb", "rak med främre handen"], "2": ["Rak", "rak med bakre handen"], "3": ["Krok", "främre handen, armbågen i axelhöjd"], "4": ["Bakre krok", "bakre handen, vrid på bakre foten"],
+  "5": ["Uppercut", "främre handen, underifrån"], "6": ["Bakre uppercut", "bakre handen, underifrån"], "G": ["Glid", "luta huvudet åt sidan"], "D": ["Duck", "böj benen, ryggen rak"]};
+const BXC = {
+  1: [["1"], ["1", "1"], ["1", "2"], ["2"], ["1", "2", "1"], ["1", "1", "2"], ["2", "1", "2"]],
+  2: [["1", "2"], ["1", "2", "3"], ["1", "2", "3", "2"], ["2", "3", "2"], ["1", "6", "3"], ["3", "2"], ["1", "1", "2", "3"], ["1", "2", "5", "2"], ["D", "3", "2"], ["G", "2", "3"]],
+  3: [["1", "2", "3", "4"], ["1", "2", "3", "2", "5"], ["3", "4", "3"], ["1", "1", "2", "3", "2"], ["G", "G", "2", "3", "2"], ["D", "4", "3", "2"], ["1", "6", "3", "2"], ["2", "3", "6", "3"], ["1", "2", "D", "2", "3"]]};
+const BXCUE = ["Händerna uppe!", "Andas ut på varje slag.", "Rör på fötterna.", "Hakan ner.", "Snabba raka – fem sekunder!"];
+let boxCfg = Object.assign({rounds: 6, round: 180, rest: 60, level: 2}, (() => { try { return JSON.parse(localStorage.getItem("gymschema.boxset.v1") || "{}"); } catch(e){ return {}; } })());
+let boxLog = (() => { try { const x = JSON.parse(localStorage.getItem("gymschema.boxing.v1") || "[]"); return Array.isArray(x) ? x : []; } catch(e){ return []; } })();
+let BX = null, bxStopArm = 0;
+function bell(times){ try { ensureAudio(); if (!audio) return; for (let k = 0; k < times; k++){ const t0 = audio.currentTime + .05 + k * .45; [[523.25, 1], [1046.5, .55], [1567.98, .35], [2093, .22], [2637, .14]].forEach(([f, a]) => { const o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = f; g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(.32 * a, t0 + .006); g.gain.exponentialRampToValueAtTime(.0001, t0 + 1.5); o.connect(g); g.connect(audio.destination); o.start(t0); o.stop(t0 + 1.6); }); } } catch(e){} }
+function clap(){ try { ensureAudio(); if (!audio) return; for (let k = 0; k < 3; k++){ const t0 = audio.currentTime + .03 + k * .17, len = Math.floor(audio.sampleRate * .045), b = audio.createBuffer(1, len, audio.sampleRate), d = b.getChannelData(0); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); const src = audio.createBufferSource(), f = audio.createBiquadFilter(), g = audio.createGain(); f.type = "bandpass"; f.frequency.value = 1900; f.Q.value = 1.1; g.gain.value = 1.4; src.buffer = b; src.connect(f); f.connect(g); g.connect(audio.destination); src.start(t0); } } catch(e){} }
+const bxSaveCfg = () => { try { localStorage.setItem("gymschema.boxset.v1", JSON.stringify(boxCfg)); } catch(e){} };
+const bxMin = c => Math.round((c.rounds * c.round + (c.rounds - 1) * c.rest) / 60);
+function renderBox(){
+  const el = $("v-boxning"), c = boxCfg, ws = weekStart(today());
+  const wk = boxLog.filter(b => parseIso(b.date) >= ws), wkR = wk.reduce((a, b) => a + b.rounds, 0), wkMin = Math.round(wk.reduce((a, b) => a + b.rounds * b.round / 60, 0));
+  const seg = (key, opts) => '<div class="bxseg" role="group">' + opts.map(o => '<button type="button" data-bx="' + key + '" data-val="' + o[0] + '" aria-pressed="' + (c[key] === o[0]) + '">' + o[1] + '</button>').join("") + '</div>';
+  el.innerHTML = '<div><div class="lead">Hemma · säck eller skuggboxning</div><h2 class="h2">Boxning</h2></div>' +
+    '<div class="card" style="display:flex;flex-direction:column;gap:14px">' +
+      '<div class="bxrow"><span>Ronder</span><div class="bxstep"><button type="button" data-bxr="-1" aria-label="Färre ronder">−</button><b class="num">' + c.rounds + '</b><button type="button" data-bxr="1" aria-label="Fler ronder">+</button><span class="lead" style="margin-left:auto">ca ' + bxMin(c) + ' min</span></div></div>' +
+      '<div class="bxrow"><span>Rundlängd</span>' + seg("round", [[120, "2 min"], [180, "3 min"]]) + '</div>' +
+      '<div class="bxrow"><span>Vila</span>' + seg("rest", [[30, "30 s"], [60, "1 min"]]) + '</div>' +
+      '<div class="bxrow"><span>Nivå</span>' + seg("level", [[1, "Nybörjare"], [2, "Medel"], [3, "Svår"]]) + '</div>' +
+      '<button class="btn bxgo" type="button" data-bxgo>▶ Starta · ' + c.rounds + (c.rounds === 1 ? ' rond' : ' ronder') + '</button>' +
+      '<div class="small">' + (voiceOn ? "Rösten ropar kombinationer under ronderna." : "Rösten är av – slå på den med 🔊 Röst i Pass-fliken.") + ' Klocka vid start och slut, klapp när 10 sekunder är kvar.</div>' +
+    '</div>' +
+    '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b>Siffrorna</b><a class="yt" href="https://www.youtube.com/watch?v=BUQDStVxnPY" target="_blank" rel="noopener">▶ Video: grundslagen</a></div>' +
+      '<div class="bxnums" style="margin-top:10px">' + Object.keys(BXN).map(k => '<div><b>' + (k === "G" || k === "D" ? "↯" : k) + '</b><span>' + BXN[k][0] + '<small>' + BXN[k][1] + '</small></span></div>').join("") + '</div>' +
+      '<div class="small" style="margin-top:10px">Händerna uppe vid hakan, hakan ner, andas ut på varje slag. Slå mot säck? Linda händerna och använd handskar. Känns handen eller handleden fel – skuggboxas utan säck tills det är bra.</div></div>' +
+    '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b>Den här veckan</b><span class="lead num">' + wk.length + ' pass · ' + wkR + ' ronder · ' + wkMin + ' min</span></div>' +
+      (boxLog.length ? '<div class="rows" style="margin-top:8px">' + boxLog.slice(-6).reverse().map(b => '<div class="row"><span class="num"><b>' + b.rounds + ' ronder</b> × ' + (b.round / 60) + ' min</span><span class="d">' + dLong(b.date) + '</span></div>').join("") + '</div>' : '<div class="small" style="margin-top:6px">Passen sparas här när du kört minst en hel rond.</div>') + '</div>';
+}
+$("v-boxning").addEventListener("click", e => {
+  const r = e.target.closest("[data-bxr]"), b = e.target.closest("[data-bx]"), go = e.target.closest("[data-bxgo]");
+  if (r){ boxCfg.rounds = Math.max(1, Math.min(15, boxCfg.rounds + +r.dataset.bxr)); bxSaveCfg(); renderBox(); return; }
+  if (b){ boxCfg[b.dataset.bx] = +b.dataset.val; bxSaveCfg(); renderBox(); return; }
+  if (go) bxStart();
+});
+function bxEl(){
+  let o = $("boxrun"); if (o) return o;
+  o = document.createElement("div"); o.className = "boxrun"; o.id = "boxrun"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Boxning pågår");
+  o.innerHTML = '<div class="bx-top"><span id="bxLvl"></span><span id="bxRound"></span></div>' +
+    '<div class="bx-mid"><div class="bx-phase" id="bxPhase"></div><div class="bx-time" id="bxTime">0:00</div><div class="bx-bar"><i id="bxBar"></i></div></div>' +
+    '<div class="bx-combo" aria-live="polite"><div class="bx-n" id="bxNums"></div><div class="bx-w" id="bxNames"></div></div>' +
+    '<div class="bx-btns"><button type="button" id="bxPause">Paus</button><button type="button" id="bxStop">Avsluta</button></div>';
+  document.body.appendChild(o);
+  $("bxPause").addEventListener("click", () => { if (!BX || BX.phase === "done") return; if (BX.paused){ BX.paused = false; BX.end = Date.now() + BX.leftAtPause; BX.nextCall = Date.now() + 3000; $("bxPause").textContent = "Paus"; keepAwake(); bxLoop(); } else { BX.paused = true; BX.leftAtPause = BX.end - Date.now(); clearTimeout(BX.t); $("bxPause").textContent = "Fortsätt"; say("Paus."); } });
+  $("bxStop").addEventListener("click", () => {
+    if (!BX) return;
+    if (BX.phase === "done"){ bxClose(); return; }
+    if (Date.now() - bxStopArm > 3000){ bxStopArm = Date.now(); $("bxStop").textContent = "Tryck igen"; setTimeout(() => { const s = $("bxStop"); if (s && BX && BX.phase !== "done") s.textContent = "Avsluta"; }, 3000); return; }
+    bxFinish(true);
+  });
+  return o;
+}
+function bxStart(){
+  ensureAudio(); primeVoice(); const c = Object.assign({}, boxCfg);
+  BX = {cfg: c, phase: "prep", round: 1, end: Date.now() + 10000, paused: false, nextCall: 0, said: {}, done: 0, roundStart: 0, cue: 0};
+  const o = bxEl(); o.hidden = false; o.className = "boxrun"; $("bxPause").textContent = "Paus"; $("bxStop").textContent = "Avsluta"; $("bxNums").textContent = ""; $("bxNames").textContent = "";
+  $("bxLvl").textContent = ["", "Nybörjare", "Medel", "Svår"][c.level];
+  keepAwake(); say("Gör dig redo. Runda ett om tio sekunder."); bxLoop();
+}
+function bxCall(){
+  const c = BX.cfg, pool = BXC[c.level];
+  if (c.level > 1 && ++BX.cue % 5 === 0){ const t = BXCUE[(Math.random() * BXCUE.length) | 0]; $("bxNums").textContent = "!"; $("bxNames").textContent = t; say(t); return; }
+  const combo = pool[(Math.random() * pool.length) | 0];
+  const n = $("bxNums"); n.textContent = combo.map(k => k === "G" || k === "D" ? BXN[k][0].toUpperCase() : k).join(" · "); n.classList.remove("pop"); void n.offsetWidth; n.classList.add("pop");
+  const words = combo.map(k => BXN[k][0]); $("bxNames").textContent = words.join(" – "); say(words.join(", ").toLowerCase());
+}
+function bxLoop(){
+  if (!BX) return; clearTimeout(BX.t); if (BX.paused || BX.phase === "done") return;
+  const c = BX.cfg, now = Date.now(); let left = BX.end - now;
+  if (BX.phase === "prep" && left <= 0){ BX.phase = "round"; BX.end = now + c.round * 1000; BX.roundStart = now; BX.said = {}; BX.nextCall = now + 3500; bell(1); say("Runda ett. Kör!"); left = c.round * 1000; }
+  else if (BX.phase === "round"){
+    if (left <= 0){
+      BX.done = BX.round; bell(3);
+      if (BX.round >= c.rounds){ bxFinish(false); return; }
+      BX.phase = "rest"; BX.end = now + c.rest * 1000; BX.said = {}; left = c.rest * 1000;
+      $("bxNums").textContent = ""; $("bxNames").textContent = "Andas. Skaka loss armarna.";
+      setTimeout(() => say("Vila. Bra runda!"), 1300);
+    } else {
+      if (left <= 10000 && !BX.said.c10){ BX.said.c10 = 1; clap(); }
+      if (left <= 30000 && left > 12000 && !BX.said.s30 && c.round >= 120){ BX.said.s30 = 1; say("Trettio sekunder kvar. Öka tempot!"); BX.nextCall = now + 4500; }
+      else if (now >= BX.nextCall && left > 3500){ bxCall(); const base = [0, 8000, 6000, 4500][c.level]; BX.nextCall = now + base + Math.random() * 2000; }
+    }
+  } else if (BX.phase === "rest"){
+    if (left <= 0){ BX.round++; BX.phase = "round"; BX.end = now + c.round * 1000; BX.roundStart = now; BX.said = {}; BX.nextCall = now + 3500; bell(1); say(BX.round === c.rounds ? "Sista rundan. Kör!" : "Runda " + BX.round + ". Kör!"); left = c.round * 1000; $("bxNums").textContent = ""; $("bxNames").textContent = ""; }
+    else if (left <= 10000 && !BX.said.r10){ BX.said.r10 = 1; say("Tio sekunder. Upp med händerna."); }
+  }
+  const o = $("boxrun"), total = BX.phase === "round" ? c.round * 1000 : BX.phase === "rest" ? c.rest * 1000 : 10000;
+  o.className = "boxrun " + (BX.phase === "round" ? "round" + (left <= 10000 ? " end10" : "") : BX.phase === "rest" ? "rest" : "");
+  $("bxPhase").textContent = BX.phase === "round" ? "Kör!" : BX.phase === "rest" ? "Vila" : "Gör dig redo";
+  $("bxRound").textContent = "Runda " + BX.round + "/" + c.rounds;
+  $("bxTime").textContent = mmss(Math.max(0, left) / 1000);
+  $("bxBar").style.width = (100 * (1 - Math.max(0, left) / total)).toFixed(1) + "%";
+  BX.t = setTimeout(bxLoop, 200);
+}
+function bxFinish(early){
+  const c = BX.cfg, n = BX.done; clearTimeout(BX.t); BX.phase = "done";
+  if (n >= 1){ boxLog.push({date: iso(today()), ts: Date.now(), rounds: n, round: c.round, rest: c.rest, level: c.level}); boxLog = boxLog.slice(-200); store("gymschema.boxing.v1", boxLog); }
+  const o = $("boxrun"); o.className = "boxrun done";
+  $("bxPhase").textContent = n ? "Klart!" : "Avslutat"; $("bxRound").textContent = n + " av " + c.rounds + (c.rounds === 1 ? " rond" : " ronder");
+  $("bxTime").textContent = n ? "🥊" : "–"; $("bxBar").style.width = "100%";
+  $("bxNums").textContent = n ? Math.round(n * c.round / 60) + " min" : ""; $("bxNames").textContent = n ? (early ? "Sparat – " + (n === 1 ? "en hel rond." : n + " hela ronder.") : "Alla ronder klara. Stark insats!") : "Ingen hel rond – inget sparat.";
+  $("bxPause").textContent = "–"; $("bxStop").textContent = "Klar"; $("bxStop").classList.add("solid");
+  if (n && !early){ bell(3); setTimeout(() => say("Bra jobbat! " + n + " ronder klara."), 1500); confetti(0, 0, 140, true); } else if (n) say(n === 1 ? "Sparat. En rond." : "Sparat. " + n + " ronder.");
+  releaseAwake();
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && BX && !BX.paused && BX.phase !== "done"){ keepAwake(); bxLoop(); } });
+function bxClose(){ const o = $("boxrun"); if (o){ o.hidden = true; $("bxStop").classList.remove("solid"); } BX = null; try { speechSynthesis.cancel(); } catch(e){} renderBox(); }
+
+/* ---------- Veckans muskelkarta: set per muskel den här veckan (huvudmuskel 1, hjälpmuskel ½) ---------- */
+const MBODY = "<g transform=\"translate(0,0)\"><circle cx=\"30\" cy=\"11\" r=\"8.5\" style=\"fill:var(--mbody)\"/><rect x=\"26.5\" y=\"18\" width=\"7\" height=\"7\" style=\"fill:var(--mbody)\"/><path d=\"M16,25 Q30,22 44,25 L46,47 Q46,57 41.5,67 L18.5,67 Q14,57 14,47 Z\" style=\"fill:var(--mbody)\"/><path d=\"M18.5,67 L41.5,67 L43,81 L17,81 Z\" style=\"fill:var(--mbody)\"/><polyline points=\"15,28 9,53 6.5,79\" fill=\"none\" style=\"stroke:var(--mbody)\" stroke-width=\"7.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"45,28 51,53 53.5,79\" fill=\"none\" style=\"stroke:var(--mbody)\" stroke-width=\"7.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"23,80 22,101 22,117\" fill=\"none\" style=\"stroke:var(--mbody)\" stroke-width=\"9.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"37,80 38,101 38,117\" fill=\"none\" style=\"stroke:var(--mbody)\" stroke-width=\"9.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g><g transform=\"translate(80,0)\"><circle cx=\"30\" cy=\"11\" r=\"8.5\" style=\"fill:var(--mbody)\"/><rect x=\"26.5\" y=\"18\" width=\"7\" height=\"7\" style=\"fill:var(--mbody)\"/><path d=\"M16,25 Q30,22 44,25 L46,47 Q46,57 41.5,67 L18.5,67 Q14,57 14,47 Z\" style=\"fill:var(--mbody)\"/><path d=\"M18.5,67 L41.5,67 L43,81 L17,81 Z\" style=\"fill:var(--mbody)\"/><polyline points=\"15,28 9,53 6.5,79\" fill=\"none\" style=\"stroke:var(--mbody)\" stroke-width=\"7.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"45,28 51,53 53.5,79\" fill=\"none\" style=\"stroke:var(--mbody)\" stroke-width=\"7.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"23,80 22,101 22,117\" fill=\"none\" style=\"stroke:var(--mbody)\" stroke-width=\"9.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"37,80 38,101 38,117\" fill=\"none\" style=\"stroke:var(--mbody)\" stroke-width=\"9.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g>", MSPOTS = {"brost": [["f", 23, 33, 6.5, 5], ["f", 37, 33, 6.5, 5]], "framaxel": [["f", 15, 28, 5, 4.5], ["f", 45, 28, 5, 4.5]], "mellanaxel": [["f", 14, 29, 4, 5], ["f", 46, 29, 4, 5], ["b", 14, 29, 4, 5], ["b", 46, 29, 4, 5]], "bakaxel": [["b", 15, 28, 5, 4.5], ["b", 45, 28, 5, 4.5]], "biceps": [["f", 11.5, 41, 3.4, 7], ["f", 48.5, 41, 3.4, 7]], "triceps": [["b", 11.5, 41, 3.4, 7], ["b", 48.5, 41, 3.4, 7]], "underarm": [["f", 7.5, 66, 3, 9], ["f", 52.5, 66, 3, 9], ["b", 7.5, 66, 3, 9], ["b", 52.5, 66, 3, 9]], "lats": [["b", 19.5, 43, 5, 10], ["b", 40.5, 43, 5, 10]], "mellanrygg": [["b", 30, 35, 8, 6.5]], "trapezius": [["b", 30, 25.5, 9, 4]], "brostrygg": [["b", 30, 40, 9, 10]], "landrygg": [["b", 30, 58, 5.5, 6]], "mage": [["f", 30, 49, 6, 12]], "rumpa": [["b", 23.5, 73, 6, 6], ["b", 36.5, 73, 6, 6]], "framlar": [["f", 23, 91, 5, 10], ["f", 37, 91, 5, 10]], "baklar": [["b", 23, 91, 4.6, 10], ["b", 37, 91, 4.6, 10]], "vader": [["b", 22, 109, 3.8, 7], ["b", 38, 109, 3.8, 7]], "nacke": [["f", 30, 21, 4, 4.5], ["b", 30, 21, 4, 4.5]], "sida": [["f", 17, 60, 3.6, 6], ["f", 43, 60, 3.6, 6], ["b", 20.5, 61, 3.4, 5.5], ["b", 39.5, 61, 3.4, 5.5]]}, MNAMES = {"lats": "Bred rygg", "biceps": "Biceps", "mellanrygg": "Mellersta rygg", "underarm": "Underarm", "bakaxel": "Bakre axel", "brost": "Bröst", "framaxel": "Främre axel", "triceps": "Triceps", "mellanaxel": "Axel", "trapezius": "Trapezius", "framlar": "Framsida lår", "rumpa": "Rumpa", "baklar": "Baksida lår", "landrygg": "Ländrygg", "vader": "Vader", "mage": "Mage", "brostrygg": "Bröstrygg", "nacke": "Nacke", "sida": "Sidan ovanför höftbenet"}, MUSC = {"chins": [["lats", "biceps"], ["mellanrygg", "underarm", "bakaxel"]], "hantelbank": [["brost"], ["framaxel", "triceps"]], "kabelrodd": [["mellanrygg", "lats"], ["bakaxel", "biceps"]], "axelpress": [["framaxel", "mellanaxel"], ["triceps"]], "sidolyftm": [["mellanaxel"], ["framaxel"]], "curls": [["biceps"], ["underarm"]], "facepulls": [["bakaxel", "mellanrygg"], ["trapezius"]], "benpress": [["framlar"], ["rumpa", "baklar"]], "hoftlyft": [["rumpa"], ["baklar"]], "rdl": [["baklar", "rumpa"], ["landrygg", "underarm"]], "larcurl": [["baklar"], ["vader"]], "vadpress": [["vader"], []], "plankan": [["mage"], ["rumpa", "framaxel"]], "deadbug": [["mage"], []]};
+function weekMuscleSets(){
+  const ws = weekStart(today()), we = addDays(ws, 7), out = {};
+  const add = (k, n) => { const m = MUSC[k]; if (!m || !n) return; m[0].forEach(x => { out[x] = (out[x] || 0) + n; }); m[1].forEach(x => { out[x] = (out[x] || 0) + n * 0.5; }); };
+  sessions.forEach(s => { const d = parseIso(s.date); if (d < ws || d >= we) return; (s.exercises || []).forEach(e => add(e.k, (e.sets || []).length)); });
+  if (draft && draft.started && !justSaved) Object.keys(draft.sets || {}).forEach(k => add(k, draft.sets[k].filter(x => x.done).length));
+  return out;
+}
+function muscleMapHTML(){
+  const m = weekMuscleSets(), lvl = n => n <= 0 ? 0 : n < 5 ? 1 : n < 10 ? 2 : 3, op = [0, .32, .62, 1];
+  let spots = "";
+  Object.keys(MSPOTS).forEach(k => { const l = lvl(m[k] || 0); if (!l) return; MSPOTS[k].forEach(sp => { spots += '<ellipse cx="' + (sp[1] + (sp[0] === "b" ? 80 : 0)) + '" cy="' + sp[2] + '" rx="' + sp[3] + '" ry="' + sp[4] + '" style="fill:var(--blue)" opacity="' + op[l] + '"/>'; }); });
+  const inProg = {}; ORDER.forEach(t => PROGRAM[t].ex.forEach(e => { const mm = MUSC[e.k]; if (mm) mm[0].concat(mm[1]).forEach(x => { inProg[x] = 1; }); }));
+  const fmtN = n => String(Math.round(n * 2) / 2).replace(".", ",");
+  const trained = Object.keys(m).filter(k => m[k] > 0 && MNAMES[k]).sort((a, b) => m[b] - m[a]);
+  const zero = Object.keys(inProg).filter(k => !(m[k] > 0) && MNAMES[k] && k !== "sida");
+  return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><b>Veckans muskelkarta</b><span class="lead num">' + fmtN(Object.values(m).reduce((a, b) => a + b, 0) / 1) + ' set</span></div>' +
+    '<svg class="mmap" viewBox="0 0 140 132" role="img" aria-label="Veckans muskelkarta">' + MBODY + spots + '<text x="30" y="129" text-anchor="middle">FRAM</text><text x="110" y="129" text-anchor="middle">BAK</text></svg>' +
+    '<div class="mleg"><span><i style="opacity:.32"></i>1–4 set</span><span><i style="opacity:.62"></i>5–9</span><span><i></i>10+ ✓</span></div>' +
+    (trained.length ? '<div class="mchips" style="margin-top:10px">' + trained.map(k => '<span class="mchip">' + esc(MNAMES[k]) + '<b>' + fmtN(m[k]) + '</b></span>').join("") + '</div>' : '<div class="mhint" style="margin-top:8px">Kroppen lyser upp när du loggar set den här veckan.</div>') +
+    (zero.length && trained.length ? '<div class="mhint" style="margin-top:8px">Inte tränat än i veckan: ' + esc(zero.map(k => MNAMES[k].toLowerCase()).join(", ")) + '</div>' : '') +
+    '<div class="mhint" style="margin-top:6px">Sikta på 10+ set per muskel och vecka. Hjälpmuskler räknas som ett halvt set.</div></div>';
+}
+
 /* ---------- Vanor (dagliga regler, sparas på enheten) ---------- */
 const HABITS = [
   {k: "somn", n: "Sömn 10 timmar", h: "Helt mörkt och svalt rum, skärmen av en halvtimme innan. Går du upp 07.30 – släck 21.30."},
@@ -1473,7 +1757,7 @@ $("v-vanor").addEventListener("click", e => {
 });
 
 /* ---------- Start ---------- */
-const BUILD = "11 nov 22.49", BUILD_NOTE = "Vikt-fliken säger vilken shake-storlek du ska köra";
+const BUILD = "11 nov 23.08", BUILD_NOTE = "Nytt: röstcoach, 🔥 när du slår förra gången, muskelkarta och Boxning";
 draft = restoreDraft();
 if (draft) selType = draft.type;
 initDb();
