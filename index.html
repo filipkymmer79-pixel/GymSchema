@@ -116,6 +116,10 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .ch{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:center;white-space:nowrap}
 .set.one .fld input{width:100%}
 .set.one{grid-template-columns:22px minmax(0,1fr) 44px}
+.set.lr{grid-template-columns:22px minmax(0,1fr) 44px}
+.lrrows{display:flex;flex-direction:column;gap:6px;min-width:0}
+.lrrow{display:grid;grid-template-columns:18px minmax(0,1fr) 58px;gap:8px;align-items:center}
+.side{font-family:var(--display);font-weight:800;font-size:15px;color:var(--muted);text-align:center}
 .set.done{background:var(--good-bg)}
 .sn{font-family:var(--display);font-weight:800;font-size:18px;text-align:center;color:var(--muted)}
 .fld{display:flex;align-items:center;gap:4px;min-width:0}
@@ -424,7 +428,7 @@ const OVER_EX = [
   {k:"hantelbank", n:"Hantelbänkpress (kg per hantel)", sets:3, lo:6, hi:8, unit:"kg", step:2, rest:150},
   {k:"kabelrodd", n:"Sittande kabelrodd", sets:3, lo:8, hi:10, unit:"kg", step:2.5, rest:120},
   {k:"axelpress", n:"Axelpress i maskin", sets:3, lo:8, hi:10, unit:"kg", step:2.5, rest:120}, // maskin, inte hantlar (Filip 11 nov) – samma nyckel så historiken följer med
-  {k:"curls", n:"Bicepscurl med hantlar (kg per hantel)", sets:2, lo:10, hi:12, unit:"kg", step:1, rest:75},
+  {k:"curls", n:"Bicepscurl med hantlar", sets:2, lo:10, hi:12, unit:"kg", step:1, rest:75, lr:true}, // lr: vänster (w/r) och höger (wR/rR) var för sig – Filip är starkare i vänster
   {k:"facepulls", n:"Face pulls", sets:2, lo:15, hi:20, unit:"kg", step:2.5, rest:60}
 ];
 const UNDER_EX = [
@@ -448,7 +452,7 @@ const ORDER = ["oA","uA","oB","uB"];
 const BY_DOW = {2:"oA", 3:"uA", 5:"oB", 6:"uB"};
 const EXERCISES = (function(){
   const seen = {}, list = [];
-  ORDER.forEach(t => PROGRAM[t].ex.forEach(e => { if(!seen[e.k]){ seen[e.k]=1; list.push({k:e.k, n:e.n, unit:e.unit, m:e.m, per:e.per, lo:e.lo, c:PROGRAM[t].c}); } }));
+  ORDER.forEach(t => PROGRAM[t].ex.forEach(e => { if(!seen[e.k]){ seen[e.k]=1; list.push({k:e.k, n:e.n, unit:e.unit, m:e.m, per:e.per, lo:e.lo, lr:e.lr, c:PROGRAM[t].c}); } }));
   // Övningar som bytts ut – bara med så att gamla pass syns i historiken och framstegen
   [
     {k:"upphopp", n:"Upphopp", unit:"reps", lo:5, c:"red", old:1},
@@ -567,6 +571,7 @@ function setText(ex, st){
   if (ex.unit === "sek") return fmt(st.s, 0) + " s";
   if (ex.unit === "reps") return fmt(st.r, 0) + " st";
   const w = fmt(st.w);
+  if (ex.lr && (st.wR != null || st.rR != null)) return "H " + fmt(st.wR) + " × " + fmt(st.rR, 0) + " · V " + w + " × " + fmt(st.r, 0);
   if (ex.m) return w + " kg × " + fmt(st.r, 0) + " m";
   return (ex.unit === "hjalp" ? w + " kg hjälp" : w) + " × " + fmt(st.r, 0);
 }
@@ -574,6 +579,7 @@ function suggestion(ex){
   const last = lastFor(ex.k);
   if (ex.unit === "reps" && ex.tip0) return {val: null, text: last ? ex.tip : ex.tip0, up: false};
   if (!last && ex.m) return {val: null, text: "Välj en vikt du orkar bära " + ex.hi + " m utan att släppa", up: false};
+  if (!last && ex.lr) return {val: null, valR: null, text: "Välj vikt för varje arm – " + ex.hi + " reps med 1–2 kvar. Höger först.", up: false};
   if (!last) return {val: null, text: ex.unit === "reps" ? "Lugnt och kontrollerat – ländryggen i golvet" : ex.unit === "sek" ? "Börja på " + ex.lo + " sekunder" : ex.unit === "hjalp" ? "Välj hjälp så du klarar " + ex.lo + "–" + ex.hi + " reps" : "Välj en vikt du klarar " + ex.hi + " gånger med 1–2 kvar", up: false};
   const st = last.sets;
   const full = st.length >= ex.sets;
@@ -590,6 +596,16 @@ function suggestion(ex){
     if (hit){ const nv = Math.max(0, +(a - ex.step).toFixed(1)); return {val: nv, text: "↓ Mindre hjälp: " + fmt(nv) + " kg – börja om på " + ex.lo + " reps", up: true}; }
     return {val: a, text: "= Samma hjälp – sikta på " + ex.hi + " reps i alla set", up: false};
   }
+  if (ex.lr){
+    const side = (wk, rk) => {
+      const ws = st.filter(x => x[wk] != null).map(x => x[wk]);
+      if (!ws.length) return {val: null, up: false, t: "välj vikt"};
+      const top = Math.max.apply(null, ws), hit = full && st.every(x => (x[rk] || 0) >= ex.hi && x[wk] === top);
+      return hit ? {val: +(top + ex.step).toFixed(1), up: true, t: "↑ " + fmt(+(top + ex.step).toFixed(1)) + " kg"} : {val: top, up: false, t: fmt(top) + " kg"};
+    };
+    const L = side("w", "r"), R = side("wR", "rR");
+    return {val: L.val, valR: R.val, up: L.up || R.up, text: "Höger " + R.t + " · Vänster " + L.t + " – sikta på " + ex.hi + " reps, höger först"};
+  }
   const top = Math.max.apply(null, st.map(x => x.w || 0));
   const hit = full && st.every(x => (x.r || 0) >= ex.hi && x.w === top);
   if (hit){ const nv = +(top + ex.step).toFixed(1); return {val: nv, text: "↑ Öka till " + fmt(nv) + " kg idag", up: true}; }
@@ -598,6 +614,7 @@ function suggestion(ex){
 // Ett mått per set: uppskattat max (Epley) för kg, hjälpvikt för assisterat (lägre = starkare), sekunder, reps.
 function setScore(ex, x){
   if (ex.m) return x.w != null && (x.r || 0) >= ex.lo ? x.w : null;
+  if (ex.unit === "kg" && ex.lr){ const a = x.w != null && x.r ? x.w * (1 + x.r / 30) : null, b = x.wR != null && x.rR ? x.wR * (1 + x.rR / 30) : null; return a != null && b != null ? (a + b) / 2 : (a != null ? a : b); }
   if (ex.unit === "kg") return x.w != null && x.r ? x.w * (1 + x.r / 30) : null;
   if (ex.unit === "hjalp") return x.w != null && (x.r || 0) >= ex.lo ? x.w : null;
   if (ex.unit === "sek") return x.s || null;
@@ -609,9 +626,9 @@ function bestSet(ex, st){
   (st || []).forEach(x => { const s = setScore(ex, x); if (s == null) return; if (bs == null || (lowerIsBetter(ex) ? s < bs : s > bs)){ bs = s; best = x; } });
   return best ? {set: best, score: bs} : null;
 }
-function chartVal(ex, st){
+function chartVal(ex, st, key){
   if (!st || !st.length) return null;
-  if (ex.unit === "kg"){ const w = st.filter(x => x.w != null).map(x => x.w); return w.length ? Math.max.apply(null, w) : null; }
+  if (ex.unit === "kg"){ const k = key || "w", w = st.filter(x => x[k] != null).map(x => x[k]); return w.length ? Math.max.apply(null, w) : null; }
   if (ex.unit === "hjalp"){ const w = st.filter(x => x.w != null && x.r).map(x => x.w); return w.length ? Math.min.apply(null, w) : null; }
   const b = bestSet(ex, st); return b ? b.score : null;
 }
@@ -628,14 +645,14 @@ function findPRs(doc){
   });
   return out;
 }
-function volumeOf(exs){ let v = 0; exs.forEach(e => { const ex = EXMAP[e.k]; if (ex && ex.unit === "kg" && !ex.m) e.sets.forEach(x => { if (x.w && x.r) v += x.w * x.r * (ex.per === "per ben" ? 2 : 1); }); }); return Math.round(v); }
+function volumeOf(exs){ let v = 0; exs.forEach(e => { const ex = EXMAP[e.k]; if (ex && ex.unit === "kg" && !ex.m) e.sets.forEach(x => { if (x.w && x.r) v += x.w * x.r * (ex.per === "per ben" ? 2 : 1); if (x.wR && x.rR) v += x.wR * x.rR; }); }); return Math.round(v); }
 
 /* ---------- Utkast (sparas bara på den här enheten tills du sparar passet) ---------- */
 function newDraft(type){
   const sets = {};
   PROGRAM[type].ex.forEach(ex => {
     const sug = suggestion(ex);
-    sets[ex.k] = Array.from({length: ex.sets}, () => ({w: ex.unit === "kg" || ex.unit === "hjalp" ? sug.val : null, s: ex.unit === "sek" ? sug.val : null, r: ex.pre ? ex.hi : null, done: false}));
+    sets[ex.k] = Array.from({length: ex.sets}, () => Object.assign({w: ex.unit === "kg" || ex.unit === "hjalp" ? sug.val : null, s: ex.unit === "sek" ? sug.val : null, r: ex.pre ? ex.hi : null, done: false}, ex.lr ? {wR: sug.valR == null ? null : sug.valR, rR: null} : {}));
   });
   return {type, date: iso(today()), sets, note: "", started: false};
 }
@@ -721,11 +738,20 @@ function exHTML(ex){
     '<div class="sets">' + setsHead(ex) + st.map((x, i) => setHTML(ex, x, i)).join("") + '</div></article>';
 }
 function setsHead(ex){
+  if (ex.lr) return '<div class="set hdr lr" aria-hidden="true"><span></span><div class="lrrow"><span></span><span class="ch">Vikt (kg)</span><span class="ch">Reps</span></div><span></span></div>';
   if (ex.unit === "sek" || ex.unit === "reps") return '<div class="set hdr one" aria-hidden="true"><span></span><span class="ch">' + (ex.unit === "sek" ? "Sekunder" : "Reps " + (ex.per || "")) + '</span><span></span></div>';
   return '<div class="set hdr" aria-hidden="true"><span></span><span class="ch">' + (ex.unit === "hjalp" ? "Hjälp (kg)" : ex.m ? "Kg per hand" : "Vikt (kg)") + '</span><span class="ch">' + (ex.m ? "Meter" : "Reps") + '</span><span></span></div>';
 }
 function setHTML(ex, x, i){
   const id = ex.k + "-" + i;
+  if (ex.lr){
+    const arm = (wk, rk, lab, name, R) => '<div class="lrrow"><span class="side" aria-hidden="true">' + lab + '</span>' +
+      '<div class="fld w"><button class="step" type="button" data-step="-1"' + R + ' aria-label="Minska vikt ' + name + '">−</button><input id="' + wk + '-' + id + '" data-f="' + wk + '" inputmode="decimal" value="' + (x[wk] == null ? "" : String(x[wk]).replace(".", ",")) + '" placeholder="–" aria-label="Vikt ' + name + ' arm set ' + (i+1) + '"><button class="step" type="button" data-step="1"' + R + ' aria-label="Öka vikt ' + name + '">+</button></div>' +
+      '<div class="fld r"><input id="' + rk + '-' + id + '" data-f="' + rk + '" inputmode="numeric" value="' + (x[rk] == null ? "" : x[rk]) + '" placeholder="' + (ex.lo === ex.hi ? ex.lo : ex.lo + "–" + ex.hi) + '" aria-label="Reps ' + name + ' arm set ' + (i+1) + '"></div></div>';
+    return '<div class="set lr' + (x.done ? ' done' : '') + '" data-i="' + i + '"><span class="sn">' + (i+1) + '</span><div class="lrrows">' +
+      arm("wR", "rR", "H", "höger", ' data-side="R"') + arm("w", "r", "V", "vänster", '') + '</div>' +
+      '<button class="chk" type="button" data-chk="1" aria-pressed="' + x.done + '" aria-label="Klart set ' + (i+1) + '">✓</button></div>';
+  }
   let fields;
   if (ex.unit === "sek"){
     fields = '<div class="fld s"><button class="step" type="button" data-step="-1" aria-label="Minska tid">−</button><input id="s-' + id + '" data-f="s" inputmode="numeric" value="' + (x.s == null ? "" : x.s) + '" placeholder="' + ex.lo + '" aria-label="Sekunder set ' + (i+1) + '"><button class="step" type="button" data-step="1" aria-label="Öka tid">+</button></div>';
@@ -761,6 +787,7 @@ function refreshHints(){
     if (!draft.started){
       draft.sets[ex.k].forEach((x, i) => {
         if (ex.unit === "kg" || ex.unit === "hjalp"){ if (x.w == null && sug.val != null){ x.w = sug.val; const inp = $("w-" + ex.k + "-" + i); if (inp) inp.value = String(sug.val).replace(".", ","); } }
+        if (ex.lr && x.wR == null && sug.valR != null){ x.wR = sug.valR; const inp = $("wR-" + ex.k + "-" + i); if (inp) inp.value = String(sug.valR).replace(".", ","); }
         if (ex.unit === "sek"){ if (x.s == null && sug.val != null){ x.s = sug.val; const inp = $("s-" + ex.k + "-" + i); if (inp) inp.value = sug.val; } }
       });
     }
@@ -805,13 +832,15 @@ $("v-pass").addEventListener("click", e => {
   if (stepBtn){
     const dir = +stepBtn.dataset.step;
     if (ex.unit === "sek"){ st.s = Math.max(0, (st.s || ex.lo) + dir * ex.step); $("s-" + ex.k + "-" + i).value = st.s; }
-    else { const cur = st.w == null ? 0 : st.w; st.w = Math.max(0, +(cur + dir * ex.step).toFixed(2)); $("w-" + ex.k + "-" + i).value = String(st.w).replace(".", ","); }
+    else { const wk = stepBtn.dataset.side === "R" ? "wR" : "w", other = wk === "w" ? "wR" : "w"; const cur = st[wk] != null ? st[wk] : (ex.lr && st[other] != null ? st[other] : 0); st[wk] = Math.max(0, +(cur + dir * ex.step).toFixed(2)); $(wk + "-" + ex.k + "-" + i).value = String(st[wk]).replace(".", ","); }
     st.edited = true; row.classList.remove("need");
     draft.started = true; persistDraft(); updateSummary(); return;
   }
   if (e.target.closest("[data-chk]")){
     ensureAudio();
     if (!st.done){
+      const missLR = ex.lr ? ["wR", "rR", "w", "r"].find(k => st[k] == null) : null;
+      if (missLR){ row.classList.add("need"); const f = row.querySelector('[data-f="' + missLR + '"]'); if (f) f.focus(); toast("Skriv vikt och reps för båda armarna"); return; }
       const needW = (ex.unit === "kg" || ex.unit === "hjalp") && st.w == null;
       const need = ex.unit === "sek" ? st.s == null : st.r == null;
       if (needW || need){
@@ -824,7 +853,7 @@ $("v-pass").addEventListener("click", e => {
       draft.started = true; keepAwake();
       // Samma vikt i nästa set, om du inte redan ändrat den själv
       const nx = draft.sets[ex.k][i+1];
-      if (nx && !nx.done && !nx.edited){ if ((ex.unit === "kg" || ex.unit === "hjalp") && st.w != null){ nx.w = st.w; const inp = $("w-" + ex.k + "-" + (i+1)); if (inp) inp.value = String(st.w).replace(".", ","); } if (ex.unit === "sek" && st.s != null){ nx.s = st.s; const inp = $("s-" + ex.k + "-" + (i+1)); if (inp) inp.value = st.s; } }
+      if (nx && !nx.done && !nx.edited){ if ((ex.unit === "kg" || ex.unit === "hjalp") && st.w != null){ nx.w = st.w; const inp = $("w-" + ex.k + "-" + (i+1)); if (inp) inp.value = String(st.w).replace(".", ","); } if (ex.unit === "sek" && st.s != null){ nx.s = st.s; const inp = $("s-" + ex.k + "-" + (i+1)); if (inp) inp.value = st.s; } if (ex.lr && st.wR != null){ nx.wR = st.wR; const inp = $("wR-" + ex.k + "-" + (i+1)); if (inp) inp.value = String(st.wR).replace(".", ","); } }
       const nextIdx = draft.sets[ex.k].findIndex(x => !x.done);
       startTimer(ex.rest, nextIdx < 0 ? "Nästa övning" : ex.n + " · set " + (nextIdx + 1));
     } else { st.done = false; row.classList.remove("done"); }
@@ -839,8 +868,8 @@ $("v-pass").addEventListener("input", e => {
   if (!card || !row) return;
   const st = draft.sets[card.dataset.k][+row.dataset.i];
   const v = num(e.target.value);
-  st[f] = v == null ? null : (f === "r" || f === "s" ? Math.max(0, Math.round(v)) : Math.max(0, v));
-  if (f === "w" || f === "s") st.edited = true;
+  st[f] = v == null ? null : (f === "r" || f === "s" || f === "rR" ? Math.max(0, Math.round(v)) : Math.max(0, v));
+  if (f === "w" || f === "s" || f === "wR") st.edited = true;
   row.classList.remove("need");
   draft.started = true; persistDraft(); updateSummary();
 });
@@ -848,7 +877,7 @@ $("v-pass").addEventListener("input", e => {
 async function saveSession(){
   if (!db || readOnly || !draft) return;
   const p = PROGRAM[draft.type];
-  const exercises = p.ex.map(ex => ({k: ex.k, unit: ex.unit, sets: draft.sets[ex.k].filter(x => x.done).map(x => ({w: x.w == null ? null : x.w, r: x.r == null ? null : x.r, s: x.s == null ? null : x.s}))})).filter(e => e.sets.length);
+  const exercises = p.ex.map(ex => ({k: ex.k, unit: ex.unit, sets: draft.sets[ex.k].filter(x => x.done).map(x => Object.assign({w: x.w == null ? null : x.w, r: x.r == null ? null : x.r, s: x.s == null ? null : x.s}, ex.lr ? {wR: x.wR == null ? null : x.wR, rR: x.rR == null ? null : x.rR} : {}))})).filter(e => e.sets.length);
   if (!exercises.length){ toast("Bocka av minst ett set först"); return; }
   const doc = {date: draft.date, ts: Date.now(), type: draft.type, exercises, note: (draft.note || "").trim(), volume: volumeOf(exercises), warm: !!draft.warm, stretch: !!draft.stretch, abs: !!draft.abs};
   const prs = findPRs(doc);
@@ -1036,7 +1065,12 @@ function renderProg(){
   const el = $("v-framsteg");
   if (!progEx){ const withData = EXERCISES.find(e => sessions.some(s => setsOf(s, e.k))); progEx = (withData || EXERCISES[0]).k; }
   const ex = EXMAP[progEx];
-  const pts = sessions.slice().reverse().map(s => ({t: parseIso(s.date).getTime(), y: chartVal(ex, setsOf(s, ex.k)), s})).filter(p => p.y != null);
+  let pts = sessions.slice().reverse().map(s => ({t: parseIso(s.date).getTime(), y: chartVal(ex, setsOf(s, ex.k)), s})).filter(p => p.y != null);
+  let extra = [], lrNote = "";
+  if (ex.lr){
+    const ptsR = sessions.slice().reverse().map(s => ({t: parseIso(s.date).getTime(), y: chartVal(ex, setsOf(s, ex.k), "wR"), s})).filter(p => p.y != null);
+    if (ptsR.length){ extra = [{pts: pts.map(p => ({t: p.t, y: p.y})), color: "var(--muted)", dash: "5 4"}]; pts = ptsR; lrNote = "Höger arm (heldragen) · vänster (streckad) – tyngsta set per pass"; }
+  }
   const unit = ex.unit === "sek" ? "s" : ex.unit === "reps" ? "st" : "kg";
   const colorVar = "var(--" + ex.c + ")";
   let body;
@@ -1052,8 +1086,8 @@ function renderProg(){
       '<div class="stat"><div class="stat-l">Nu</div><div class="stat-v num">' + fmt(cur) + '</div></div>' +
       '<div class="stat"><div class="stat-l">' + (ex.unit === "hjalp" ? "Hjälp" : "Ökning") + '</div><div class="stat-v num' + (better ? " good" : "") + '">' + (diff > 0 ? "+" : diff < 0 ? "−" : "±") + fmt(Math.abs(diff)) + '</div></div>' +
       '<div class="stat"><div class="stat-l">Rekord</div><div class="stat-v num">' + fmt(best) + '</div></div></div>' +
-      '<div style="margin-top:12px">' + lineChart({pts: pts.map(p => ({t: p.t, y: p.y})), color: colorVar, unit, label: ex.n}) + '</div>' +
-      '<div class="lead" style="margin-top:6px">' + (ex.unit === "kg" ? "Tyngsta set per pass" + (pct && better ? " · +" + pct + " % sedan start" : "") : ex.unit === "hjalp" ? "Hjälpvikt per pass – lägre är starkare" : ex.unit === "sek" ? "Längsta hållning per pass" : "Flest reps per pass") + '</div></div>' +
+      '<div style="margin-top:12px">' + lineChart({pts: pts.map(p => ({t: p.t, y: p.y})), color: colorVar, unit, label: ex.n, extra}) + '</div>' +
+      '<div class="lead" style="margin-top:6px">' + (lrNote ? lrNote : ex.unit === "kg" ? "Tyngsta set per pass" + (pct && better ? " · +" + pct + " % sedan start" : "") : ex.unit === "hjalp" ? "Hjälpvikt per pass – lägre är starkare" : ex.unit === "sek" ? "Längsta hållning per pass" : "Flest reps per pass") + '</div></div>' +
       '<div class="card rows">' + pts.slice(-6).reverse().map(p => '<div class="row"><span class="num">' + setsOf(p.s, ex.k).map(x => esc(setText(ex, x))).join(", ") + '</span><span class="d">' + dLabel(p.s.date) + '</span></div>').join("") + '</div>';
   }
   // Veckovolym
@@ -1399,7 +1433,7 @@ $("v-vanor").addEventListener("click", e => {
 });
 
 /* ---------- Start ---------- */
-const BUILD = "11 nov 16.45", BUILD_NOTE = "Hela övningskortet blir grönt när alla set är klara";
+const BUILD = "11 nov 16.53", BUILD_NOTE = "Curls loggas per arm: höger och vänster";
 draft = restoreDraft();
 if (draft) selType = draft.type;
 initDb();
