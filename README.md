@@ -1,12 +1,18 @@
 # GymSchema
 
-Filips gymschema – program 2.0. Öppna https://filipkymmer79-pixel.github.io/GymSchema/ i Safari på mobilen och välj *Dela → Lägg till på hemskärmen*.
+Filips gymschema – program 2.1. Öppna https://filipkymmer79-pixel.github.io/GymSchema/ i Safari på mobilen och välj *Dela → Lägg till på hemskärmen*.
+
+### Programmet
+
+Överkroppen först, benen korta och tunga. **Över** onsdag och lördag (chins, hantelbänkpress, kabelrodd, axelpress, sidolyft, bicepscurl, face pulls). **Ben + över** torsdag och söndag: benpress, hip thrust och rumänska marklyft med tre set var, sedan lutande hantelpress, sidolyft och triceps över huvudet med rep i kabel, sist plankan och dead bug. Uppvärmningen före benen har 3 × 5 upphopp för skelettet. Löpning i pratfart en gång i veckan, på tisdagen (30–40 min). Måndag och fredag är vilodagar. Varje övning har bild, steg för steg, vanliga fel och video under **Program**.
+
+Version 2.1 kom 12 november 2026: dagarna flyttades en dag, lårcurl och vadpress utgick och löpningen gick ner till en gång i veckan. Gamla pass behåller sina namn i historiken (Under-passen före 12 november heter fortfarande Under).
 
 ### Garmin
 
 Sömn, HRV, vilopuls, steg och löprundor från Garmin-klockan visas i appen: ett kort för dagen överst i **Pass**, och löpning, sömn och återhämtning överst i **Framsteg**. Under **Vanor** bockas sömnen av när klockan mätt 10 timmar, och löpdagens pass när en löprunda finns.
 
-**Löppassen på klockan:** måndag och torsdag läggs som planerade pass i intervals.icu (uppvärmning, pratfart i pulszon 2, nedvarvning), och intervals.icu skickar dem till Garmin. Det kräver att *upload workouts* är ibockat i Garmin-rutan på intervals.icu och att pulszonerna för löpning är ifyllda. Gympassen går inte att skicka – intervals.icu kan inte göra styrkepass med övningar och reps än.
+**Löppasset på klockan:** tisdagens runda läggs som planerat pass i intervals.icu (uppvärmning, pratfart i pulszon 2, nedvarvning), och intervals.icu skickar det till Garmin. Pass som ligger kvar på dagar som inte längre är löpdagar tas bort. Det kräver att *upload workouts* är ibockat i Garmin-rutan på intervals.icu och att pulszonerna för löpning är ifyllda. Gympassen går inte att skicka – intervals.icu kan inte göra styrkepass med övningar och reps än.
 
 **Läggdags:** appen räknar sömnskulden de senaste sju nätterna mot tio timmar och säger när du ska släcka i kväll (uppvakningstiden ställs in under Framsteg).
 
@@ -40,7 +46,7 @@ Fliken **Kropp** (förut Vikt) har delarna **Vikt** och **Mat**. Under Mat räkn
 
 ### Löpväder
 
-På löpdagarna visar Pass bästa timmen att springa i Umeå (07–21): temperatur och känns som, timme för timme, vad du ska ha på dig, risk för halka (underkylt regn, regn och plusgrader följt av minus, nysnö, runt nollan), blåst och mörker. Vädret kommer från [Open-Meteo](https://open-meteo.com) (gratis, CC BY 4.0) och hämtas högst var 30:e minut. Kortet försvinner när dagens löprunda kommit från klockan.
+På löpdagen (tisdag) visar Pass bästa timmen att springa i Umeå (07–21): temperatur och känns som, timme för timme, vad du ska ha på dig, risk för halka (underkylt regn, regn och plusgrader följt av minus, nysnö, runt nollan), blåst och mörker. Vädret kommer från [Open-Meteo](https://open-meteo.com) (gratis, CC BY 4.0) och hämtas högst var 30:e minut. Kortet försvinner när dagens löprunda kommit från klockan.
 
 ### Prime-nivåer
 
