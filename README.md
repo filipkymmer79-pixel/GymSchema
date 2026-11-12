@@ -14,6 +14,10 @@ Datan går klockan → Garmin Connect → [intervals.icu](https://intervals.icu)
 
 **Live puls:** pulsen från klockan visas live i en liten bubbla som ligger ovanpå appen och går att dra vart man vill (den fastnar vid närmaste kant och kommer ihåg platsen). Klockan kör gratisappen [HypeRate](https://apps.garmin.com/apps/31741843-431a-4aee-8f2f-b04775de7551) (Connect IQ), som skickar pulsen via Garmin Connect på telefonen till HypeRate. Bubblan visar en beskuren bit av HypeRates enkla pulsruta (hjärtat och siffran) – deras animerade hjärtan är videor som iPhone ritar med vit bakgrund. Slå på med **♥ Live puls** i Garmin-rutan under Pass eller på Boxning, och skriv in koden som klockan visar (det som står efter `app.hyperate.io/`). Bubblan stängs med × eller av sig själv efter fyra timmar. Garmin Connect måste vara igång på telefonen och telefonen behöver nät. Koden sparas bara på telefonen.
 
+### Hemmet
+
+Under Garmin-rutan i **Pass** finns knappar till hemmet, från början **Stäng gardinen**. En knapp kör genvägen med samma namn i iPhones app Genvägar (`shortcuts://run-shortcut?name=…`), och genvägen styr SwitchBot-gardinen via SwitchBot- eller Home Assistant-appen. Webbappar får inte styra hemmet direkt, så iPhone hoppar in i Genvägar en kort stund. Första gången visar appen hur man gör genvägen. Fler knappar (t.ex. Öppna gardinen, Filmkväll) läggs till under ⋯.
+
 ### Coachen, prognos och lätt vecka
 
 - **Coachen** överst i Framsteg kopierar de senaste fyra veckorna – pass, vikt, sömn, HRV, löpning och vanor – och öppnar Claude med en färdig fråga.
