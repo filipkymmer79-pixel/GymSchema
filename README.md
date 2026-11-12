@@ -12,6 +12,8 @@ Sömn, HRV, vilopuls, steg och löprundor från Garmin-klockan visas i appen: et
 
 Datan går klockan → Garmin Connect → [intervals.icu](https://intervals.icu) (gratis, officiellt kopplad till Garmin) → appen. Koppla under **Framsteg → Koppla din Garmin**: skapa ett gratis konto på intervals.icu, koppla Garmin Connect under Settings med wellness ibockat och klistra in API-nyckeln från Settings → Developer Settings. Appen hämtar direkt från intervals.icu varje gång den öppnas. Nyckeln och värdena sparas bara på telefonen och följer inte med i backupen.
 
+**Live puls:** pulsen från klockan visas live i en remsa högst upp i appen, på alla flikar. Klockan kör gratisappen [HypeRate](https://apps.garmin.com/apps/31741843-431a-4aee-8f2f-b04775de7551) (Connect IQ), som skickar pulsen via Garmin Connect på telefonen till HypeRate, och HypeRates pulsruta visas i appen. Slå på med **♥ Live puls** i Garmin-rutan under Pass eller på Boxning, och skriv in koden som klockan visar (det som står efter `app.hyperate.io/`). Remsan stängs med × eller av sig själv efter fyra timmar. Garmin Connect måste vara igång på telefonen och telefonen behöver nät. Koden sparas bara på telefonen.
+
 ### Coachen, prognos och lätt vecka
 
 - **Coachen** överst i Framsteg kopierar de senaste fyra veckorna – pass, vikt, sömn, HRV, löpning och vanor – och öppnar Claude med en färdig fråga.

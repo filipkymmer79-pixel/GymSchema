@@ -565,6 +565,41 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .live-cue:empty{display:none}
 .live-sum{display:block;font-family:var(--display);font-weight:800;font-size:28px;line-height:1.15;color:#fff}
 @media (prefers-reduced-motion: reduce){.live-n.pop{animation:none}}
+/* Live puls */
+.hr-dock{position:relative;margin-top:10px;height:100px;border-radius:16px;overflow:hidden;background:#000}
+.hr-dock[hidden]{display:none}
+/* HypeRates ruta har fast storlek inuti – den ritas i dubbel storlek och skalas ner till halva, centrerad.
+   color-scheme:light så att rutan förblir genomskinlig när appen är i mörkt läge (annars målar webbläsaren en vit bakgrund). */
+.hr-dock iframe{position:absolute;left:50%;top:0;width:440px;height:calc(100px * 2);border:0;display:block;background:transparent;transform:translateX(-50%) scale(.5);transform-origin:50% 0;pointer-events:none;color-scheme:light}
+.hr-tag{position:absolute;left:10px;top:8px;display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.14);padding:3px 8px;border-radius:999px;pointer-events:none}
+.hr-tag i{width:6px;height:6px;border-radius:50%;background:#FF5B52;animation:hrblink 1.2s infinite}
+@keyframes hrblink{50%{opacity:.3}}
+.hr-x{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:20px;line-height:1;display:grid;place-items:center}
+.hrt-line{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-radius:12px;padding:10px 12px;background:var(--surface2);font-size:14px;line-height:1.35;color:var(--ink)}
+.hrt-line b{font-weight:800}
+.hrt-heart{color:var(--red);font-size:17px;line-height:1}
+.hrt-arr{margin-left:auto;font-weight:800;color:var(--muted);font-size:17px}
+.hrt-card .bk{display:flex;gap:8px;flex-wrap:wrap}
+.hrt .hrt-intro{margin:0;font-size:15px;line-height:1.45;color:#D8DCE2}
+.hrt-intro b{color:#fff}
+.hrt-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.hrt-steps li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:11px;align-items:start}
+.hrt-n{width:30px;height:30px;border-radius:50%;background:#fff;color:#0B0D12;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:17px}
+.hrt-steps li > div > b{display:block;font-size:16px;line-height:1.25;margin-top:4px}
+.hrt-steps p{margin:4px 0 0;font-size:14px;line-height:1.4;color:#B8BEC8}
+.hrt-steps p b{color:#fff}
+.hrt-steps .btn{display:inline-flex;margin-top:8px;text-decoration:none}
+.hrt-s a{color:#fff;font-weight:700}
+.hrt-watch{width:100%;max-width:320px;height:auto;display:block;margin:8px 0 2px}
+.hrt-ring{transform-box:fill-box;transform-origin:center;animation:hrring 1.8s ease-out infinite}
+@keyframes hrring{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.hrt-form{display:flex;gap:8px;margin-top:8px}
+.hrt-form input{flex:1;min-width:0;border-radius:12px;padding:10px 12px;font-size:17px;font-weight:700;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff}
+.hrt-steps .hrt-form .btn{margin-top:0}
+.hrt-steps .hrt-msg{color:#FF8A80;font-weight:700}
+.hrt-msg:empty{display:none}
+.hrt-note{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.4;background:rgba(255,255,255,.08);border-radius:14px;padding:11px 13px;color:#D8DCE2}
+.hrt-note b{color:#fff}
 /* Vanor */
 .hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .hnav{display:flex;gap:6px;flex:0 0 auto}
@@ -610,6 +645,7 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
       <div class="wk num" id="wk">Vecka 1</div>
     </div>
     <div class="strip" id="strip" aria-label="Veckans pass"></div>
+    <div class="hr-dock" id="hrDock" hidden></div>
   </header>
 
   <main>
@@ -1765,7 +1801,7 @@ function renderBox(){
       '<div class="bxnums" style="margin-top:10px">' + Object.keys(BXN).map(k => '<div><b>' + (k === "G" || k === "D" ? "↯" : k) + '</b><span>' + BXN[k][0] + '<small>' + BXN[k][1] + '</small></span></div>').join("") + '</div>' +
       '<div class="small" style="margin-top:10px">Händerna uppe vid hakan, hakan ner, andas ut på varje slag. Slå mot säck? Linda händerna och använd handskar. Känns handen eller handleden fel – skuggboxas utan säck tills det är bra.</div></div>' +
     '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b>Den här veckan</b><span class="lead num">' + wk.length + ' pass · ' + wkR + ' ronder · ' + wkMin + ' min</span></div>' +
-      (boxLog.length ? '<div class="rows" style="margin-top:8px">' + boxLog.slice(-6).reverse().map(b => '<div class="row"><span class="num"><b>' + b.rounds + ' ronder</b> × ' + (b.round / 60) + ' min</span><span class="d">' + dLong(b.date) + '</span></div>').join("") + '</div>' : '<div class="small" style="margin-top:6px">Passen sparas här när du kört minst en hel rond.</div>') + '</div>' + camCoachHTML();
+      (boxLog.length ? '<div class="rows" style="margin-top:8px">' + boxLog.slice(-6).reverse().map(b => '<div class="row"><span class="num"><b>' + b.rounds + ' ronder</b> × ' + (b.round / 60) + ' min</span><span class="d">' + dLong(b.date) + '</span></div>').join("") + '</div>' : '<div class="small" style="margin-top:6px">Passen sparas här när du kört minst en hel rond.</div>') + '</div>' + hrtBoxCard() + camCoachHTML();
 }
 $("v-boxning").addEventListener("click", e => {
   const r = e.target.closest("[data-bxr]"), b = e.target.closest("[data-bx]"), go = e.target.closest("[data-bxgo]");
@@ -2175,7 +2211,7 @@ function gmTile(label, val, sub, tr){ return '<div class="gm-t"><small>' + label
 function gmPassInner(){
   if (!gmOn()) return '<div class="gm-top"><span class="stat-l"><i class="gm-live off"></i>Garmin</span><button class="gm-x" type="button" data-gm="hide" aria-label="Dölj">×</button></div>' +
     '<div class="gm-line"><span>Se sömn, HRV, vilopuls och löprundor från klockan här. Gratis via intervals.icu.</span></div>' +
-    '<a class="btn sm gm-go" href="#framsteg/garmin">Koppla Garmin →</a>';
+    '<a class="btn sm gm-go" href="#framsteg/garmin">Koppla Garmin →</a>' + hrtLine();
   const t = iso(today()), w = gmW(t) || {}, v = gmVerdict();
   const avg = k => gmStats(k, iso(addDays(today(), -7)), iso(addDays(today(), -1)));
   const cmp = (val, a, higherGood) => { if (val == null || !a) return null; const d = (val - a.m) / a.m, up = d > 0, flat = Math.abs(d) < .04; return {txt: "snitt " + Math.round(a.m), arrow: flat ? "" : up ? "↑" : "↓", cls: flat ? "" : up === higherGood ? "up" : "dn"}; };
@@ -2191,7 +2227,7 @@ function gmPassInner(){
   const kmToday = gmRunOn(t).reduce((x, r) => x + r.km, 0);
   if (kmToday >= 10) h += '<div class="gm-tip"><span aria-hidden="true">🥤</span> Långpass i dag, ' + fmt(kmToday, 1) + ' km – ta nästa storlek på shaken.</div>';
   if (new Date().getHours() >= 15) h += '<div class="gm-line"><span aria-hidden="true">🌙</span><span>' + gmBedLine() + '</span></div>';
-  return h + '<a class="exlink" href="#framsteg">Sömn, löpning och trender →</a>';
+  return h + hrtLine() + '<a class="exlink" href="#framsteg">Sömn, löpning och trender →</a>';
 }
 
 /* Framsteg-fliken: koppla, löpning, sömn och återhämtning */
@@ -3153,14 +3189,113 @@ function liveClose(save, quiet){
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-live]"); if (b) liveStart(b.dataset.live); });
 
+/* Live puls i appen.
+   Gratisappen HypeRate på klockan skickar pulsen via Garmin Connect på telefonen till HypeRate,
+   och HypeRates pulsruta visas i en remsa högst upp (i headern, så den inte laddas om när vyerna ritas om).
+   Appen ser inte själva siffran – den visar bara rutan. Koden från klockan sparas bara på telefonen. */
+const HRT_KEY = "gymschema.hyperate.id", HRT_ON = "gymschema.hyperate.on", HRT_HOURS = 4;
+const HRT_CIQ = "https://apps.garmin.com/apps/31741843-431a-4aee-8f2f-b04775de7551";
+const HRT_CIQAPP = "https://apps.apple.com/app/id1317652970";
+const HRT_STYLE = 1;
+const hrtId = () => { try { return localStorage.getItem(HRT_KEY) || ""; } catch(e){ return ""; } };
+const hrtOn = () => { const t = store(HRT_ON); return !!(hrtId() && typeof t === "number" && Date.now() - t < HRT_HOURS * 3600e3); };
+function hrtParse(raw){
+  const s = String(raw || "").trim().replace(/\s+/g, "");
+  const m = s.match(/[?&]id=([A-Za-z0-9]{2,40})/i) || s.match(/hyperate\.io\/(?:animation\/\d+\/)?([A-Za-z0-9]{2,40})\/?$/i) || s.match(/^([A-Za-z0-9]{2,40})$/);
+  return m ? m[1] : "";
+}
+const hrtSrc = id => "https://app.hyperate.io/animation/" + HRT_STYLE + "/" + encodeURIComponent(id);
+function hrtDock(){
+  const d = $("hrDock"); if (!d) return;
+  if (!hrtOn()){ if (!d.hidden || d.dataset.src){ d.hidden = true; d.innerHTML = ""; d.dataset.src = ""; hrtLines(); } return; }
+  const src = hrtSrc(hrtId());
+  if (d.dataset.src !== src){
+    d.dataset.src = src;
+    d.innerHTML = '<iframe title="Live puls från klockan" src="' + esc(src) + '" sandbox="allow-scripts allow-same-origin" allow="autoplay" referrerpolicy="no-referrer"></iframe>' +
+      '<span class="hr-tag" aria-hidden="true"><i></i>Live</span><button type="button" class="hr-x" data-hrt="off" aria-label="Stäng live puls">×</button>';
+  }
+  d.hidden = false;
+}
+function hrtSet(on){
+  store(HRT_ON, on ? Date.now() : null);
+  hrtDock(); hrtLines();
+  if (on){ toast("Live puls visas högst upp ✓"); try { scrollTo({top: 0, behavior: "smooth"}); } catch(e){} }
+}
+function hrtLines(){ document.querySelectorAll("[data-hrtline]").forEach(el => { el.outerHTML = el.dataset.hrtline === "box" ? hrtBoxCard() : hrtLine(); }); }
+function hrtLine(){
+  const id = hrtId(), on = hrtOn();
+  return '<button type="button" class="hrt-line" data-hrtline="pass" data-hrt="' + (!id ? "setup" : on ? "off" : "on") + '"><span class="hrt-heart" aria-hidden="true">♥</span><span><b>Live puls</b> ' +
+    (!id ? "– se pulsen från klockan här i appen" : on ? "visas högst upp. Tryck för att stänga." : "– tryck för att se pulsen från klockan") + '</span><span class="hrt-arr" aria-hidden="true">' + (on ? "×" : "→") + '</span></button>';
+}
+function hrtBoxCard(){
+  const id = hrtId(), on = hrtOn();
+  return '<div class="card hrt-card" data-hrtline="box"><div class="gm-top"><b><span class="hrt-heart" aria-hidden="true">♥</span> Live puls</b><span class="lead">från klockan</span></div>' +
+    '<div class="small">' + (!id ? "Se pulsen live högst upp i appen medan du boxas. Klockan skickar den med gratisappen HypeRate." : on ? "Pulsen visas högst upp. Den stängs av sig själv efter " + HRT_HOURS + " timmar." : "Öppna HypeRate på klockan och tryck Visa live puls.") + '</div>' +
+    '<div class="bk">' + (!id ? '<button class="btn sm" type="button" data-hrt="setup">Så kopplar du klockan</button>' : on ? '<button class="btn sm ghost" type="button" data-hrt="off">Stäng live puls</button>' : '<button class="btn sm" type="button" data-hrt="on">Visa live puls</button>') +
+    (id ? '<button class="btn sm ghost" type="button" data-hrt="setup">Ändra kod</button>' : '') + '</div></div>';
+}
+const HRT_HEART = '<path fill="currentColor" d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.6 0 5.7 3.7 4.2 7.2C19.5 16.4 12 21 12 21z"/>';
+const HRT_WATCH = '<svg class="hrt-watch" viewBox="0 0 320 196" role="img" aria-label="Klockan: tryck START uppe till höger, bläddra till HypeRate med UP och DOWN och tryck START igen">' +
+  '<rect x="124" y="0" width="72" height="50" rx="12" fill="#3A404A"/><rect x="124" y="146" width="72" height="50" rx="12" fill="#3A404A"/>' +
+  '<g fill="#8A929C"><rect x="105.9" y="39.9" width="12" height="20" rx="4" transform="rotate(45 111.9 49.9)"/><rect x="202.1" y="39.9" width="12" height="20" rx="4" transform="rotate(-45 208.1 49.9)"/><rect x="86" y="88" width="12" height="20" rx="4"/><rect x="105.9" y="136.1" width="12" height="20" rx="4" transform="rotate(-45 111.9 146.1)"/><rect x="202.1" y="136.1" width="12" height="20" rx="4" transform="rotate(45 208.1 146.1)"/></g>' +
+  '<circle cx="160" cy="98" r="66" fill="#4A515C"/><circle cx="160" cy="98" r="56" fill="#07090D"/>' +
+  '<text x="160" y="72" text-anchor="middle" fill="#8A929C" font-family="Archivo,Arial,sans-serif" font-size="12" font-weight="700">Löpning</text>' +
+  '<rect x="104" y="84" width="112" height="28" rx="14" fill="#fff"/><g transform="translate(111 88.5) scale(.8)" style="color:#FF5B52">' + HRT_HEART + '</g>' +
+  '<text x="133" y="103" fill="#0B0D12" font-family="Archivo,Arial,sans-serif" font-size="13" font-weight="800">HypeRate</text>' +
+  '<text x="160" y="132" text-anchor="middle" fill="#8A929C" font-family="Archivo,Arial,sans-serif" font-size="12" font-weight="700">Styrka</text>' +
+  '<circle class="hrt-ring" cx="208.1" cy="49.9" r="13" fill="none" stroke="#FF9A3D" stroke-width="3"/><circle cx="208.1" cy="49.9" r="13" fill="none" stroke="#FF9A3D" stroke-width="3"/>' +
+  '<path d="M224 44h32" stroke="#FF9A3D" stroke-width="2.5" stroke-linecap="round"/>' +
+  '<text x="316" y="30" text-anchor="end" fill="#B8BEC8" font-family="Archivo,Arial,sans-serif" font-size="12" font-weight="700">tryck</text><text x="316" y="49" text-anchor="end" fill="#fff" font-family="Archivo,Arial,sans-serif" font-size="16" font-weight="900">START</text>' +
+  '<path d="M64 98h16" stroke="#B8BEC8" stroke-width="2" stroke-linecap="round"/>' +
+  '<text x="4" y="90" fill="#B8BEC8" font-family="Archivo,Arial,sans-serif" font-size="12" font-weight="700">bläddra</text><text x="4" y="109" fill="#fff" font-family="Archivo,Arial,sans-serif" font-size="14" font-weight="900">UP/DOWN</text>' +
+  '</svg>';
+function hrtSheet(){
+  let o = $("hrtOv");
+  if (!o){ o = document.createElement("div"); o.id = "hrtOv"; o.className = "scan hrt"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Live puls i appen"); document.body.appendChild(o); }
+  const id = hrtId();
+  o.innerHTML = '<div class="scan-top"><b>Live puls i appen</b><button type="button" class="scan-x" data-hrt="close" aria-label="Stäng">×</button></div>' +
+    '<p class="hrt-intro">Med gratisappen <b>HypeRate</b> på klockan syns pulsen live högst upp i GymSchema. Klockan skickar pulsen via Garmin Connect på telefonen. Du behöver inget konto.</p>' +
+    '<ol class="hrt-steps">' +
+      '<li><span class="hrt-n">1</span><div><b>Installera HypeRate på klockan</b><p>Tryck på knappen och sedan Installera i Connect IQ, Garmins appbutik. Klockan får appen när den synkar.</p><a class="btn sm" href="' + HRT_CIQ + '" target="_blank" rel="noopener">Öppna HypeRate i Connect IQ</a><p class="hrt-s">Har du inte Connect IQ på telefonen? <a href="' + HRT_CIQAPP + '" target="_blank" rel="noopener">Hämta den gratis</a> först.</p></div></li>' +
+      '<li><span class="hrt-n">2</span><div><b>Öppna HypeRate på klockan</b>' + HRT_WATCH + '<p>Tryck START, bläddra till HypeRate och tryck START igen. Klockan visar pulsen och en adress som slutar med din kod.</p></div></li>' +
+      '<li><span class="hrt-n">3</span><div><b>Skriv in koden</b><p>Det som står efter <b>app.hyperate.io/</b> på klockan.</p>' +
+        '<form id="hrtForm" class="gm-form hrt-form" autocomplete="off"><input id="hrtIn" type="text" inputmode="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="t.ex. AB12C" aria-label="Koden från klockan" value="' + esc(id) + '"><button class="btn sm" type="submit">' + (id ? "Spara och visa" : "Visa pulsen") + '</button></form><p class="hrt-msg" id="hrtMsg" role="alert"></p></div></li>' +
+    '</ol>' +
+    '<div class="hrt-note"><span aria-hidden="true">📱</span><span>Ha <b>Garmin Connect</b> igång på telefonen – det räcker att den ligger i bakgrunden. Det är den som skickar pulsen vidare, så telefonen behöver nät.</span></div>' +
+    '<div class="hrt-note"><span aria-hidden="true">⌚</span><span>Klar? Tryck BACK på klockan så stängs HypeRate. Pulsremsan i appen stänger du med ×.</span></div>' +
+    (id ? '<div class="scan-btns"><button type="button" class="btn ghost" data-hrt="forget">Ta bort koden</button></div>' : '');
+  o.hidden = false; document.documentElement.classList.add("noscroll");
+}
+function hrtClose(){ const o = $("hrtOv"); if (o) o.hidden = true; document.documentElement.classList.remove("noscroll"); }
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-hrt]"); if (!b) return;
+  const a = b.dataset.hrt;
+  if (a === "setup") hrtSheet();
+  else if (a === "on") hrtSet(true);
+  else if (a === "off") hrtSet(false);
+  else if (a === "close") hrtClose();
+  else if (a === "forget"){ try { localStorage.removeItem(HRT_KEY); } catch(x){} store(HRT_ON, null); hrtDock(); hrtLines(); hrtClose(); toast("Koden är borttagen"); }
+});
+document.addEventListener("submit", e => {
+  if (!e.target || e.target.id !== "hrtForm") return;
+  e.preventDefault();
+  const id = hrtParse($("hrtIn").value);
+  if (!id){ $("hrtMsg").textContent = "Skriv koden som står på klockan efter app.hyperate.io/ – bara bokstäver och siffror."; return; }
+  try { localStorage.setItem(HRT_KEY, id); } catch(x){}
+  $("hrDock").dataset.src = ""; hrtClose(); hrtSet(true);
+});
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") hrtDock(); });
+setInterval(hrtDock, 60e3);
+
 /* ---------- Start ---------- */
-const BUILD = "12 nov 01.05", BUILD_NOTE = "Nytt: kameran som tränare under Boxning – räknar armhävningar och knäböj och kollar garden";
+const BUILD = "12 nov 10.52", BUILD_NOTE = "Nytt: live puls från klockan högst upp i appen – tryck ♥ Live puls i Garmin-rutan";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
 initDb();
 show(location.hash.slice(1) || "pass");
 gmInit();
+hrtDock();
 if ("serviceWorker" in navigator){ window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); }); }
 try { if (localStorage.getItem("gymschema.build") !== BUILD){ localStorage.setItem("gymschema.build", BUILD); setTimeout(() => { toast("Uppdaterad ✓ " + BUILD_NOTE); clearTimeout(toastT); toastT = setTimeout(() => { $("toast").hidden = true; }, 6500); }, 900); } } catch(e){}
 })();
