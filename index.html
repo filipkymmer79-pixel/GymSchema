@@ -3385,7 +3385,7 @@ function hemSheet(){
     '<p class="hrt-intro">Knappen kör en <b>genväg</b> i iPhones app Genvägar – samma genväg som Siri kan köra. Gör den en gång:</p>' +
     '<ol class="hrt-steps">' +
       '<li><span class="hrt-n">1</span><div><b>Öppna appen Genvägar</b><p>Tryck <b>+</b> uppe till höger för en ny genväg.</p></div></li>' +
-      '<li><span class="hrt-n">2</span><div><b>Lägg till gardinen</b><p>Tryck <b>Lägg till åtgärd</b> och sök <b>SwitchBot</b>. Välj gardinen och <b>Stäng</b>.</p><p class="hrt-s">Med Home Assistant-appen i stället: sök <b>Home Assistant</b>, välj <b>Control cover</b>, gardinen och <b>Close</b>.</p></div></li>' +
+      '<li><span class="hrt-n">2</span><div><b>Lägg till gardinen</b><p>Tryck <b>Lägg till åtgärd</b> och sök <b>Home Assistant</b>. Välj <b>Control cover</b>, gardinen och <b>Close</b>. Home Assistant-appen ska vara inloggad på Jarvis.</p><p class="hrt-s">Med SwitchBot-appen i stället (kräver en SwitchBot Hub nära gardinen): gardinen → ⚙ → Tredjepartstjänster → Siri Shortcuts → Lägg till genväg → Stäng.</p></div></li>' +
       '<li><span class="hrt-n">3</span><div><b>Döp genvägen till exakt</b><div class="hem-name"><code>' + esc(first) + '</code><button type="button" class="btn sm ghost" data-hem="copy">Kopiera</button></div><p>Tryck på namnet högst upp i genvägen och klistra in. Tryck <b>Klar</b>.</p></div></li>' +
       '<li><span class="hrt-n">4</span><div><b>Testa</b><p>Första gången frågar iPhone om GymSchema får öppna Genvägar – tryck <b>Öppna</b>.</p><a class="btn sm" href="' + esc(hemUrl(first)) + '" data-hem="test">' + hemIcon(first) + ' ' + esc(first) + '</a></div></li>' +
     '</ol>' +
@@ -3418,7 +3418,7 @@ document.addEventListener("change", e => {
 });
 
 /* ---------- Start ---------- */
-const BUILD = "12 nov 11.29", BUILD_NOTE = "Nytt: knapp som stänger gardinen (Hemmet under Pass) och pulsen som en liten bubbla";
+const BUILD = "12 nov 11.33", BUILD_NOTE = "Nytt: knapp som stänger gardinen (Hemmet under Pass) och pulsen som en liten bubbla";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
