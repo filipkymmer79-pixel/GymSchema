@@ -566,10 +566,11 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .live-sum{display:block;font-family:var(--display);font-weight:800;font-size:28px;line-height:1.15;color:#fff}
 @media (prefers-reduced-motion: reduce){.live-n.pop{animation:none}}
 /* Live puls: bubblan */
-.hr-pill{position:fixed;left:0;top:0;z-index:35;display:flex;align-items:center;gap:4px;padding:5px 5px 5px 8px;border-radius:999px;background:#111827;box-shadow:0 8px 24px rgba(0,0,0,.3),inset 0 0 0 1px rgba(255,255,255,.08);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:grab;transition:left .3s cubic-bezier(.2,.8,.2,1),top .3s cubic-bezier(.2,.8,.2,1),transform .15s}
+.hr-pill{position:fixed;left:0;top:0;z-index:35;display:flex;align-items:center;gap:4px;padding:5px 5px 5px 8px;border-radius:999px;background:#000;box-shadow:0 8px 24px rgba(0,0,0,.3),inset 0 0 0 1px rgba(255,255,255,.14);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:grab;transition:left .3s cubic-bezier(.2,.8,.2,1),top .3s cubic-bezier(.2,.8,.2,1),transform .15s}
 .hr-pill.drag{transition:transform .15s;transform:scale(1.06);cursor:grabbing}
-.hr-num{position:relative;display:block;flex:0 0 auto;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
-.hr-num iframe{position:absolute;left:0;top:0;border:0;display:block;transform-origin:0 0;pointer-events:none;background:transparent;color-scheme:light}
+.hr-num{position:relative;display:block;flex:0 0 auto;overflow:hidden;pointer-events:none}
+/* filtret gör både HypeRates mörkblå ruta och svarta bakgrund helt svarta (v → 1,22v − 0,22), så att bubblan blir sömlös oavsett hur bred siffran är */
+.hr-num iframe{position:absolute;left:0;top:0;border:0;display:block;transform-origin:0 0;pointer-events:none;background:transparent;color-scheme:light;filter:brightness(.847) contrast(1.44)}
 .hr-x{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:0;padding:0;background:rgba(255,255,255,.1);color:#C9CED6;font-size:15px;line-height:1;display:grid;place-items:center;position:relative}
 .hr-x::after{content:"";position:absolute;inset:-9px}
 .hrt-line{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-radius:12px;padding:10px 12px;background:var(--surface2);font-size:14px;line-height:1.35;color:var(--ink)}
@@ -3335,7 +3336,7 @@ window.addEventListener("resize", () => { const p = $("hrPill"); if (p) hrtPlace
 setInterval(hrtPill, 60e3);
 
 /* ---------- Start ---------- */
-const BUILD = "12 nov 11.15", BUILD_NOTE = "Nytt: live puls från klockan högst upp i appen – tryck ♥ Live puls i Garmin-rutan";
+const BUILD = "12 nov 11.20", BUILD_NOTE = "Nytt: live puls från klockan högst upp i appen – tryck ♥ Live puls i Garmin-rutan";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
