@@ -22,6 +22,11 @@ Datan går klockan → Garmin Connect → [intervals.icu](https://intervals.icu)
 
 Fliken **Kropp** (förut Vikt) har delarna **Vikt** och **Mat**. Under Mat räknas dagens kalorier och protein: shaken med glas (storlek och antal glas går att ställa in), och maten genom att skanna streckkoden på förpackningen – värdena hämtas från [Open Food Facts](https://world.openfoodfacts.org), en öppen och gratis matdatabas – eller skriva in den själv. Det du ätit ofta blir snabbval. Under Vanor bockas *125 g protein* och *Shaken* av av sig själva när siffrorna når målet. Streckkodsläsaren är ZXing (`vendor/zxing.min.js`, Apache-licens i `vendor/zxing-LICENSE.txt`).
 
+### Bilder och hållning
+
+- **Bilder** (under Kropp): progressbilder framifrån, från sidan och bakifrån. Kameran räknar ner tio sekunder och visar förra bilden genomskinlig så att du ställer dig likadant. Före och nu sida vid sida, med vikten de dagarna, och alla bilder som film. Bilderna sparas bara på telefonen (IndexedDB) och följer inte med i backupen.
+- **Hållning** (under Kropp): AI:n [MediaPipe Pose](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker) körs i telefonen och hittar öra, axel, höft, knä och fotled. Från sidan mäts hur långt örat sitter framför axeln och axeln framför höften (i cm, utifrån din längd), framifrån om axlar, höfter och huvud står snett. Mätningarna sparas och visas som trend. Det är en mätning med kameran, ingen diagnos. Bibliotek och modell hämtas första gången från jsDelivr och Google.
+
 ### Månadens sammanfattning
 
 Sist i Framsteg: en bild i storyformat med månadens pass, set, ton, rekord, de övningar som gått mest framåt, vikt, löpning, sömn, perfekta dagar och boxning – att spara eller skicka.

@@ -518,6 +518,42 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .scan-tot{font-family:var(--display);font-weight:900;font-size:30px;text-align:center}
 .wrap-img{display:flex;justify-content:center}
 .wrap-img img{width:min(100%,420px);height:auto;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+/* Bilder och hållning */
+.cam-view{position:relative;width:100%;max-width:480px;margin:0 auto;aspect-ratio:3/4;max-height:58vh;border-radius:20px;overflow:hidden;background:#000}
+.cam.done .cam-view{display:none}
+.cam-view video,.cam-view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cam-view img{opacity:.35;pointer-events:none}
+.cam-count{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:min(42vw,200px);color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.6);pointer-events:none}
+.cam-guide{position:absolute;pointer-events:none}
+.cam-guide.body,.cam-guide.side{left:28%;right:28%;top:5%;bottom:4%;border:2px dashed rgba(255,255,255,.55);border-radius:40% 40% 12px 12px / 18% 18% 12px 12px}
+.cam-result{display:flex;justify-content:center}
+.cam-result img{max-width:100%;max-height:58vh;border-radius:16px;object-fit:contain}
+.ph-cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ph-cmp figure{margin:0;display:flex;flex-direction:column;gap:5px}
+.ph-cmp img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;background:var(--surface2)}
+.ph-cmp figcaption{font-size:12.5px;color:var(--muted)}
+.ph-cmp figcaption b{color:var(--ink)}
+.ph-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ph-grid button{border:0;padding:0;background:none;display:flex;flex-direction:column;gap:3px;cursor:pointer}
+.ph-grid img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;background:var(--surface2)}
+.ph-grid span{font-size:11.5px;font-weight:700;color:var(--muted)}
+.film{position:relative;display:flex;justify-content:center}
+.film img{max-width:100%;max-height:66vh;border-radius:16px}
+.film-lbl{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(11,13,18,.8);color:#fff;font-family:var(--display);font-weight:800;font-size:22px;padding:6px 14px;border-radius:999px;white-space:nowrap}
+.pos-how{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center}
+.pos-how svg{width:54px;height:auto;color:var(--ink)}
+.pos-how ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:13.5px;line-height:1.4}
+.pos-h{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13.5px;font-weight:700;color:var(--muted)}
+.pos-h input{width:64px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:10px;padding:6px 8px;font:inherit;font-size:16px;font-weight:700}
+.pos-h small{font-weight:600}
+.pos-list{display:flex;flex-direction:column;gap:6px}
+.pos-list > div{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,.08);border-radius:12px;padding:9px 12px}
+.pos-list b{font-size:16px}
+.pos-list small{font-size:12.5px;color:#B8BEC8;line-height:1.35}
+.pos-list .stat-l{color:#B8BEC8}
+.pos-list.light > div{background:var(--surface2)}
+.pos-list.light .stat-l{color:var(--muted)}
+.pos-img{width:100%;max-height:60vh;object-fit:contain;border-radius:14px;background:#000}
 /* Vanor */
 .hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .hnav{display:flex;gap:6px;flex:0 0 auto}
@@ -1568,6 +1604,8 @@ class LocalDB {
     const sg = data.shakeGlasses && typeof data.shakeGlasses === "object" ? data.shakeGlasses : {};
     Object.keys(sg).forEach(date => { if (/^\d{4}-\d{2}-\d{2}$/.test(date) && typeof sg[date] === "number" && !shakeGl[date]){ shakeGl[date] = sg[date]; n++; } });
     if (data.foodSettings && data.foodSettings.size) foodSet = Object.assign(foodSet, data.foodSettings);
+    (Array.isArray(data.posture) ? data.posture : []).forEach(x => { if (x && x.id && x.m && !posture.some(y => y.id === x.id)){ posture.push(x); n++; } });
+    posture.sort((a, b) => a.ts - b.ts); store("gymschema.posture.v1", posture);
     foodSave();
     this._save("sessions"); this._save("weights"); return n;
   }
@@ -1585,7 +1623,7 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "GymSchema", version: 5, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet};
+  const data = {app: "GymSchema", version: 5, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
@@ -2675,8 +2713,298 @@ document.addEventListener("click", e => {
   if (b && b.dataset.wrap === "make") wrapOpen();
 });
 
+
+/* ---------- Kropp: Bilder och Hållning (kameran). Bilderna sparas bara på telefonen (IndexedDB). ---------- */
+KSEGS.push(["bilder", "Bilder"], ["hallning", "Hållning"]);
+try { const v = localStorage.getItem("gymschema.kropp.seg"); if (v === "bilder" || v === "hallning") kroppSeg = v; } catch(e){}
+function kroppExtra(seg){ return seg === "bilder" ? photosHTML() : seg === "hallning" ? postureHTML() : ""; }
+const kroppRender = () => { if (view === "vikt") renderVikt(); };
+
+const PDB = {
+  db: null,
+  open(){ if (this.db) return Promise.resolve(this.db); return new Promise((res, rej) => { let r; try { r = indexedDB.open("gymschema-bilder", 1); } catch(e){ rej(e); return; } r.onupgradeneeded = () => { const d = r.result; if (!d.objectStoreNames.contains("photos")) d.createObjectStore("photos", {keyPath: "id"}); }; r.onsuccess = () => { this.db = r.result; res(this.db); }; r.onerror = () => rej(r.error); }); },
+  async tx(mode, fn){ const d = await this.open(); return new Promise((res, rej) => { const t = d.transaction("photos", mode), st = t.objectStore("photos"); let out; const q = fn(st); if (q) q.onsuccess = () => { out = q.result; }; t.oncomplete = () => res(out); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); }); },
+  all(){ return this.tx("readonly", st => st.getAll()); },
+  put(o){ return this.tx("readwrite", st => st.put(o)); },
+  del(id){ return this.tx("readwrite", st => st.delete(id)); }
+};
+let photos = null, photoView = "fram", photoUrls = {}, photoErr = "";
+async function photosLoad(){ try { photos = (await PDB.all()).sort((a, b) => a.ts - b.ts); } catch(e){ photos = []; photoErr = "Telefonen tillåter inte att appen sparar bilder här."; } kroppRender(); }
+const photoUrl = p => photoUrls[p.id] || (photoUrls[p.id] = URL.createObjectURL(p.blob));
+const PVIEWS = [["fram", "Framifrån"], ["sida", "Från sidan"], ["bak", "Bakifrån"]];
+const weightOn = date => { let best = null; weights.forEach(w => { if (Math.abs(parseIso(w.date) - parseIso(date)) <= 4 * 864e5 && (!best || Math.abs(parseIso(w.date) - parseIso(date)) < Math.abs(parseIso(best.date) - parseIso(date)))) best = w; }); return best; };
+function photosHTML(){
+  if (photos == null){ photosLoad(); return '<div class="card"><div class="small">Laddar bilderna…</div></div>'; }
+  const list = photos.filter(p => p.kind === "progress" && p.view === photoView), first = list[0], last = list[list.length - 1];
+  let h = '<div><div class="lead">Samma ställe, samma ljus, en gång i veckan</div><h2 class="h2">Progressbilder</h2></div>' +
+    '<div class="bxseg">' + PVIEWS.map(v => '<button type="button" data-pview="' + v[0] + '" aria-pressed="' + (photoView === v[0]) + '">' + v[1] + '</button>').join("") + '</div>' +
+    '<div class="card coach"><button class="btn" type="button" data-ph="new">📷 Ta veckans bild</button><div class="small">Ställ mobilen mot något i höfthöjd, 2–3 meter bort, och tryck <b>Om 10 s</b>. ' + (last ? 'Förra bilden syns genomskinlig så att du kan ställa dig likadant.' : 'Nästa gång syns den här bilden genomskinlig så att du ställer dig likadant.') + '</div>' + (photoErr ? '<div class="gm-err">' + esc(photoErr) + '</div>' : '') + '</div>';
+  if (list.length >= 2){
+    const wa = weightOn(first.date), wb = weightOn(last.date), wk = Math.round((parseIso(last.date) - parseIso(first.date)) / 864e5 / 7);
+    h += '<div class="card"><div class="gm-top"><b>Före och nu</b><span class="lead">' + wk + (wk === 1 ? " vecka" : " veckor") + '</span></div><div class="ph-cmp">' +
+      [[first, wa, "Första"], [last, wb, "Senaste"]].map(([p, w, l]) => '<figure><img src="' + photoUrl(p) + '" alt="' + l + ' bilden, ' + dLabel(p.date) + '"><figcaption><b>' + l + '</b> · ' + dLabel(p.date) + (w ? ' · ' + fmt(w.kg) + ' kg' : '') + '</figcaption></figure>').join("") + '</div>' +
+      '<button class="btn sm ghost" type="button" data-ph="film">▶ Spela upp som film (' + list.length + ' bilder)</button></div>';
+  }
+  if (list.length){
+    h += '<div class="card"><div class="gm-top"><b>Alla bilder</b><span class="lead">' + list.length + '</span></div><div class="ph-grid">' +
+      list.slice().reverse().map(p => '<button type="button" data-phopen="' + p.id + '"><img src="' + photoUrl(p) + '" alt="Bild ' + dLabel(p.date) + '"><span>' + dLabel(p.date) + '</span></button>').join("") + '</div></div>';
+  } else h += '<div class="card empty"><b>Inga bilder ' + PVIEWS.find(v => v[0] === photoView)[1].toLowerCase() + ' än</b><span>Ta en i dag, så har du något att jämföra med om en månad.</span></div>';
+  return h + '<div class="small" style="padding:0 4px">Bilderna sparas bara på den här telefonen och följer inte med i backupen.</div>';
+}
+
+/* Kameran: förhandsvisning, genomskinlig förra bild, nedräkning */
+let CAM = null;
+function camEl(){
+  let o = $("camOv"); if (o) return o;
+  o = document.createElement("div"); o.id = "camOv"; o.className = "scan cam"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true");
+  o.innerHTML = '<div class="scan-top"><b id="camTitle"></b><button type="button" class="scan-x" data-cam="close" aria-label="Stäng">×</button></div>' +
+    '<div class="cam-view"><video id="camVid" playsinline muted autoplay></video><img id="camGhost" alt="" hidden><div class="cam-guide" id="camGuide"></div><div class="cam-count" id="camCount"></div></div>' +
+    '<div class="scan-msg" id="camMsg"></div>' +
+    '<div class="scan-btns" id="camBtns"><button type="button" class="btn" data-cam="timer">Om 10 s</button><button type="button" class="btn ghost" data-cam="now">Nu</button><button type="button" class="btn ghost" data-cam="flip">Byt kamera</button><button type="button" class="btn ghost" data-cam="file">Välj bild</button></div>' +
+    '<div class="scan-body" id="camBody"></div><input type="file" accept="image/*" id="camFile" hidden>';
+  document.body.appendChild(o);
+  o.addEventListener("click", e => {
+    const b = e.target.closest("[data-cam]"); if (!b) return;
+    const a = b.dataset.cam;
+    if (a === "close") camClose();
+    else if (a === "flip"){ CAM.facing = CAM.facing === "user" ? "environment" : "user"; camStart(); }
+    else if (a === "file") $("camFile").click();
+    else if (a === "now") camShoot(0);
+    else if (a === "timer") camShoot(10);
+    else if (CAM && CAM.onAction) CAM.onAction(a, b);
+  });
+  $("camFile").addEventListener("change", e => {
+    const f = e.target.files && e.target.files[0]; e.target.value = ""; if (!f) return;
+    const img = new Image(), url = URL.createObjectURL(f);
+    img.onload = () => { const c = camCanvas(img, img.naturalWidth, img.naturalHeight, false); URL.revokeObjectURL(url); camStop(); CAM.onShot(c); };
+    img.onerror = () => { URL.revokeObjectURL(url); toast("Kunde inte läsa bilden"); };
+    img.src = url;
+  });
+  return o;
+}
+function camCanvas(src, w, h, mirror){
+  const s = Math.min(1, 1600 / Math.max(w, h)), c = document.createElement("canvas"); c.width = Math.round(w * s); c.height = Math.round(h * s);
+  const x = c.getContext("2d"); if (mirror){ x.translate(c.width, 0); x.scale(-1, 1); } x.drawImage(src, 0, 0, c.width, c.height); return c;
+}
+function camOpen(opts){
+  CAM = Object.assign({facing: "user"}, opts); const o = camEl();
+  $("camTitle").textContent = opts.title; $("camMsg").textContent = opts.note || ""; $("camBody").innerHTML = ""; $("camBtns").hidden = false; o.classList.remove("done");
+  $("camGuide").className = "cam-guide" + (opts.guide ? " " + opts.guide : "");
+  const g = $("camGhost"); if (opts.ghost){ g.src = opts.ghost; g.hidden = false; } else { g.hidden = true; g.removeAttribute("src"); }
+  o.hidden = false; document.documentElement.classList.add("noscroll"); ensureAudio(); keepAwake(); camStart();
+}
+async function camStart(){
+  camStop(); const v = $("camVid"); v.style.transform = CAM.facing === "user" ? "scaleX(-1)" : ""; $("camGhost").style.transform = v.style.transform;
+  try { const st = await navigator.mediaDevices.getUserMedia({video: {facingMode: CAM.facing, width: {ideal: 1080}, height: {ideal: 1920}}, audio: false}); CAM.stream = st; v.srcObject = st; await v.play().catch(() => {}); }
+  catch(e){ $("camMsg").textContent = "Kameran gick inte att starta. Tryck Välj bild och ta bilden med vanliga kameran i stället."; }
+}
+function camStop(){ if (CAM && CAM.stream){ try { CAM.stream.getTracks().forEach(t => t.stop()); } catch(e){} CAM.stream = null; } const v = $("camVid"); if (v) v.srcObject = null; if (CAM) clearInterval(CAM.cd); }
+function camClose(){ camStop(); const o = $("camOv"); if (o) o.hidden = true; document.documentElement.classList.remove("noscroll"); releaseAwake(); CAM = null; kroppRender(); }
+function camShoot(sec){
+  const v = $("camVid"); if (!CAM || !CAM.stream || !v.videoWidth){ toast("Kameran är inte igång – tryck Välj bild"); return; }
+  clearInterval(CAM.cd); let n = sec; const cnt = $("camCount");
+  const fire = () => { cnt.textContent = ""; beep1(); const c = camCanvas(v, v.videoWidth, v.videoHeight, false); camStop(); CAM.onShot(c); };
+  if (!n){ fire(); return; }
+  cnt.textContent = n; say("Ställ dig på plats. Tio sekunder.");
+  CAM.cd = setInterval(() => { n--; if (n <= 0){ clearInterval(CAM.cd); fire(); return; } cnt.textContent = n; if (n <= 3) say(["", "ett", "två", "tre"][n]); else beep1(); }, 1000);
+}
+const canvasBlob = (c, q) => new Promise(res => c.toBlob(b => res(b), "image/jpeg", q || .86));
+
+function photoNew(){
+  const list = (photos || []).filter(p => p.kind === "progress" && p.view === photoView), last = list[list.length - 1];
+  camOpen({title: "Veckans bild · " + PVIEWS.find(v => v[0] === photoView)[1].toLowerCase(), ghost: last ? photoUrl(last) : null, guide: "body",
+    note: last ? "Ställ dig så att du täcker den genomskinliga bilden." : "Hela kroppen i bild, armarna avslappnade.",
+    onShot: async c => {
+      $("camBtns").hidden = true; $("camOv").classList.add("done");
+      $("camBody").innerHTML = '<div class="cam-result"><img src="' + c.toDataURL("image/jpeg", .8) + '" alt="Bilden du tog"></div><div class="scan-btns"><button type="button" class="btn" data-cam="save">Spara</button><button type="button" class="btn ghost" data-cam="again">Ta om</button></div>';
+      CAM.canvas = c;
+    },
+    onAction: async a => {
+      if (a === "again"){ $("camBody").innerHTML = ""; $("camBtns").hidden = false; $("camOv").classList.remove("done"); camStart(); }
+      if (a === "save"){ const blob = await canvasBlob(CAM.canvas); const p = {id: "p" + Date.now().toString(36), kind: "progress", view: photoView, date: iso(today()), ts: Date.now(), w: CAM.canvas.width, h: CAM.canvas.height, blob};
+        try { await PDB.put(p); photos.push(p); toast("Bilden är sparad"); } catch(e){ toast("Kunde inte spara bilden – är telefonen full?"); } camClose(); }
+    }});
+}
+function photoViewer(id){
+  const p = photos.find(x => x.id === id); if (!p) return;
+  let o = $("phOv"); if (!o){ o = document.createElement("div"); o.id = "phOv"; o.className = "scan"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); document.body.appendChild(o);
+    o.addEventListener("click", async e => { const b = e.target.closest("[data-phv]"); if (!b) return; const a = b.dataset.phv;
+      if (a === "close"){ o.hidden = true; document.documentElement.classList.remove("noscroll"); }
+      if (a === "del"){ if (b.dataset.arm !== "1"){ b.dataset.arm = "1"; b.textContent = "Tryck igen för att ta bort"; return; } await PDB.del(o.dataset.id).catch(() => {}); photos = photos.filter(x => x.id !== o.dataset.id); o.hidden = true; document.documentElement.classList.remove("noscroll"); toast("Bilden är borttagen"); kroppRender(); } }); }
+  o.dataset.id = id; const w = weightOn(p.date);
+  o.innerHTML = '<div class="scan-top"><b>' + esc(gmCap(dLong(p.date))) + (w ? ' · ' + fmt(w.kg) + ' kg' : '') + '</b><button type="button" class="scan-x" data-phv="close" aria-label="Stäng">×</button></div><div class="cam-result"><img src="' + photoUrl(p) + '" alt="Bild ' + dLabel(p.date) + '"></div><div class="scan-btns"><button type="button" class="btn ghost" data-phv="del">Ta bort bilden</button></div>';
+  o.hidden = false; document.documentElement.classList.add("noscroll");
+}
+async function photoFilm(){
+  const list = photos.filter(p => p.kind === "progress" && p.view === photoView); if (list.length < 2) return;
+  let o = $("filmOv"); if (!o){ o = document.createElement("div"); o.id = "filmOv"; o.className = "scan"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); document.body.appendChild(o);
+    o.addEventListener("click", e => { const b = e.target.closest("[data-film]"); if (!b) return; if (b.dataset.film === "close"){ clearInterval(o.t); o.hidden = true; document.documentElement.classList.remove("noscroll"); } else if (b.dataset.film === "save") filmSave(); }); }
+  o.innerHTML = '<div class="scan-top"><b>Förändringen</b><button type="button" class="scan-x" data-film="close" aria-label="Stäng">×</button></div><div class="film"><img id="filmImg" alt=""><div class="film-lbl" id="filmLbl"></div></div>' +
+    ('MediaRecorder' in window ? '<div class="scan-btns"><button type="button" class="btn" data-film="save">Spara som film</button></div>' : '') + '<div class="scan-msg" id="filmMsg"></div>';
+  o.hidden = false; document.documentElement.classList.add("noscroll");
+  let i = 0; const show = () => { const p = list[i % list.length], w = weightOn(p.date); $("filmImg").src = photoUrl(p); $("filmLbl").textContent = dLabel(p.date) + " " + parseIso(p.date).getFullYear() + (w ? " · " + fmt(w.kg) + " kg" : ""); i++; };
+  show(); clearInterval(o.t); o.t = setInterval(show, 700);
+}
+async function filmSave(){
+  const list = photos.filter(p => p.kind === "progress" && p.view === photoView), msg = $("filmMsg");
+  const W = 720, H = 1280, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
+  const imgs = await Promise.all(list.map(p => new Promise(res => { const im = new Image(); im.onload = () => res({im, p}); im.onerror = () => res(null); im.src = photoUrl(p); })));
+  const frames = imgs.filter(Boolean);
+  const types = ["video/mp4", "video/webm;codecs=vp9", "video/webm"], type = types.find(t => { try { return MediaRecorder.isTypeSupported(t); } catch(e){ return false; } });
+  if (!type || !c.captureStream){ msg.textContent = "Telefonen kan inte spara film härifrån. Filmen spelas fortfarande upp här."; return; }
+  msg.textContent = "Gör filmen…";
+  const rec = new MediaRecorder(c.captureStream(30), {mimeType: type}), chunks = [];
+  rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  const done = new Promise(res => { rec.onstop = res; });
+  rec.start();
+  for (const f of frames){
+    x.fillStyle = "#0B0D12"; x.fillRect(0, 0, W, H);
+    const s = Math.min(W / f.im.naturalWidth, (H - 120) / f.im.naturalHeight), w = f.im.naturalWidth * s, h = f.im.naturalHeight * s;
+    x.drawImage(f.im, (W - w) / 2, 40, w, h);
+    const wt = weightOn(f.p.date); x.fillStyle = "#fff"; x.font = '800 44px "Big Shoulders Display", "Arial Narrow", sans-serif'; x.textAlign = "center"; x.fillText(dLabel(f.p.date) + " " + parseIso(f.p.date).getFullYear() + (wt ? " · " + fmt(wt.kg) + " kg" : ""), W / 2, H - 40);
+    await new Promise(r => setTimeout(r, 700));
+  }
+  rec.stop(); await done;
+  const blob = new Blob(chunks, {type: type.split(";")[0]}), name = "gymschema-forandring." + (type.indexOf("mp4") >= 0 ? "mp4" : "webm"), file = new File([blob], name, {type: blob.type});
+  msg.textContent = "";
+  try { if (navigator.canShare && navigator.canShare({files: [file]})){ await navigator.share({files: [file], title: "Förändringen"}); return; } } catch(e){ if (e && e.name === "AbortError") return; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 1000);
+}
+document.addEventListener("click", e => {
+  const v = e.target.closest("[data-pview]"), ph = e.target.closest("[data-ph]"), op = e.target.closest("[data-phopen]");
+  if (v){ photoView = v.dataset.pview; kroppRender(); return; }
+  if (op){ photoViewer(op.dataset.phopen); return; }
+  if (ph){ if (ph.dataset.ph === "new") photoNew(); else if (ph.dataset.ph === "film") photoFilm(); }
+});
+
+/* ---------- Hållningsmätare: AI:n (MediaPipe Pose) körs i telefonen och hittar öra, axel, höft, knä och fotled ---------- */
+const MP_VER = "0.10.35", MP_BASE = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@" + MP_VER;
+const MP_MODEL = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/latest/pose_landmarker_full.task";
+const POS_KEY = "gymschema.posture.v1", HEIGHT_KEY = "gymschema.height";
+let posture = store(POS_KEY) || [], poseLm = null, posePending = null;
+const bodyCm = () => { const v = +store(HEIGHT_KEY); return v >= 120 && v <= 230 ? v : 183; };
+async function poseLoad(msg){
+  if (poseLm) return poseLm;
+  if (posePending) return posePending;
+  posePending = (async () => {
+    msg && msg("Laddar AI:n – första gången tar det en stund (ca 20 MB)…");
+    const mp = await import(MP_BASE + "/vision_bundle.mjs");
+    const fs = await mp.FilesetResolver.forVisionTasks(MP_BASE + "/wasm");
+    const mk = d => mp.PoseLandmarker.createFromOptions(fs, {baseOptions: {modelAssetPath: MP_MODEL, delegate: d}, runningMode: "IMAGE", numPoses: 1});
+    try { poseLm = await mk("GPU"); } catch(e){ poseLm = await mk("CPU"); }
+    return poseLm;
+  })();
+  try { return await posePending; } catch(e){ posePending = null; throw e; }
+}
+// Mått från 2D-punkterna. Skala: öra–fotled ≈ 89 % av längden.
+function poseMeasure(lm, w, h, view, height){
+  if (!lm || lm.length < 33) return {err: "Hittade ingen kropp i bilden. Hela kroppen ska synas, från huvud till fötter."};
+  const P = i => ({x: lm[i].x * w, y: lm[i].y * h, v: lm[i].visibility == null ? 1 : lm[i].visibility});
+  const L = [7, 11, 23, 25, 27].map(P), R = [8, 12, 24, 26, 28].map(P), avgV = a => a.reduce((s, p) => s + p.v, 0) / a.length;
+  const shW = Math.abs(P(11).x - P(12).x), hipMid = {x: (P(23).x + P(24).x) / 2, y: (P(23).y + P(24).y) / 2}, shMid = {x: (P(11).x + P(12).x) / 2, y: (P(11).y + P(12).y) / 2};
+  const torso = Math.hypot(shMid.x - hipMid.x, shMid.y - hipMid.y) || 1;
+  const ankY = (P(27).y + P(28).y) / 2, earY = (P(7).y + P(8).y) / 2;
+  if (Math.max(P(27).v, P(28).v) < .35 || ankY > h * 1.02) return {err: "Fötterna syns inte. Ställ mobilen längre bort så att hela kroppen kommer med."};
+  const pxcm = Math.abs(ankY - earY) / (0.89 * height);
+  if (!(pxcm > 0)) return {err: "Kunde inte räkna på bilden. Ta om den."};
+  if (view === "sida"){
+    if (shW > torso * .45) return {err: "Det ser ut som att du står framifrån. Vänd sidan mot kameran och ta om bilden."};
+    const S = avgV(L) >= avgV(R) ? L : R, [ear, sh, hip, knee, ank] = S;
+    if (Math.min(ear.v, sh.v, hip.v, ank.v) < .3) return {err: "Örat, axeln, höften och fotleden måste synas tydligt. Ta om bilden från sidan."};
+    const facing = P(0).x >= sh.x ? 1 : -1, fwd = (a, b) => (a.x - b.x) * facing / pxcm;
+    const ang = Math.atan2(sh.y - ear.y, (ear.x - sh.x) * facing) * 180 / Math.PI;
+    return {view, pts: {ear, sh, hip, knee, ank}, facing, pxcm, m: {headAng: Math.round(ang), earSh: +fwd(ear, sh).toFixed(1), shHip: +fwd(sh, hip).toFixed(1), hipAnk: +fwd(hip, ank).toFixed(1)}};
+  }
+  if (shW < torso * .45) return {err: "Det ser ut som att du står från sidan. Vänd dig mot kameran och ta om bilden."};
+  const dCm = (a, b) => +((P(b).y - P(a).y) / pxcm).toFixed(1); // + = höger (b) lägre
+  const tilt = (a, b) => Math.round(Math.atan2(P(b).y - P(a).y, Math.abs(P(b).x - P(a).x)) * 1800 / Math.PI) / 10;
+  return {view, pts: {lSh: P(11), rSh: P(12), lHip: P(23), rHip: P(24), lEar: P(7), rEar: P(8)}, pxcm, m: {sh: dCm(11, 12), hip: dCm(23, 24), head: dCm(7, 8), shAng: tilt(11, 12), hipAng: tilt(23, 24)}};
+}
+if (/[?&]selftest\b/.test(location.search)) window.__gs = {poseMeasure};
+function poseDraw(c, r){
+  const x = c.getContext("2d"), u = Math.max(2, c.width / 260);
+  x.lineWidth = u * 1.6; x.lineCap = "round"; x.font = '800 ' + Math.round(u * 9) + 'px "Archivo", Arial, sans-serif';
+  const dot = (p, col) => { x.fillStyle = col; x.beginPath(); x.arc(p.x, p.y, u * 3.2, 0, 7); x.fill(); x.strokeStyle = "#fff"; x.lineWidth = u; x.stroke(); x.lineWidth = u * 1.6; };
+  const lbl = (t, px, py, col) => { const tw = x.measureText(t).width + u * 6; x.fillStyle = "rgba(11,13,18,.78)"; x.fillRect(px, py - u * 9, tw, u * 12); x.fillStyle = col || "#fff"; x.fillText(t, px + u * 3, py); };
+  if (r.view === "sida"){
+    const {ear, sh, hip, knee, ank} = r.pts;
+    x.setLineDash([u * 4, u * 4]); x.strokeStyle = "rgba(255,255,255,.85)"; x.beginPath(); x.moveTo(ank.x, ank.y); x.lineTo(ank.x, Math.max(0, ear.y - u * 30)); x.stroke(); x.setLineDash([]);
+    x.strokeStyle = "#6B95FF"; x.beginPath(); [ear, sh, hip, knee, ank].forEach((p, i) => i ? x.lineTo(p.x, p.y) : x.moveTo(p.x, p.y)); x.stroke();
+    [ear, sh, hip, knee, ank].forEach(p => dot(p, "#6B95FF"));
+    const side = r.facing > 0 ? 1 : -1, lx = p => p.x + side * u * 10 - (side < 0 ? x.measureText("00,0 cm").width + u * 6 : 0);
+    lbl(fmt(Math.abs(r.m.earSh), 1) + " cm", lx(ear), ear.y, "#FFC93A"); lbl(fmt(Math.abs(r.m.shHip), 1) + " cm", lx(sh), sh.y, "#FFC93A");
+  } else {
+    const p = r.pts;
+    [[p.lSh, p.rSh], [p.lHip, p.rHip], [p.lEar, p.rEar]].forEach(([a, b], i) => {
+      x.setLineDash([u * 4, u * 4]); x.strokeStyle = "rgba(255,255,255,.7)"; x.beginPath(); x.moveTo(Math.min(a.x, b.x) - u * 12, a.y); x.lineTo(Math.max(a.x, b.x) + u * 12, a.y); x.stroke(); x.setLineDash([]);
+      x.strokeStyle = ["#6B95FF", "#3CCB7C", "#FFC93A"][i]; x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(b.x, b.y); x.stroke(); dot(a, x.strokeStyle); dot(b, x.strokeStyle);
+    });
+  }
+}
+function poseTexts(r){
+  const m = r.m, cm = v => fmt(Math.abs(v), 1) + " cm";
+  if (r.view === "sida") return [
+    ["Huvudet", m.earSh > 0.5 ? "Örat " + cm(m.earSh) + " framför axeln" : m.earSh < -0.5 ? "Örat " + cm(m.earSh) + " bakom axeln" : "Örat rakt över axeln", "Mindre = bättre. Hakindrag och ryggövningarna flyttar huvudet bakåt."],
+    ["Huvudets vinkel", m.headAng + "°", "Vinkeln från axeln upp till örat. Högre = rakare hållning."],
+    ["Axlarna", m.shHip > 0.5 ? "Axeln " + cm(m.shHip) + " framför höften" : m.shHip < -0.5 ? "Axeln " + cm(m.shHip) + " bakom höften" : "Axeln rakt över höften", "Mindre = rakare. Rundade axlar syns här."],
+    ["Höften", m.hipAnk > 0.5 ? "Höften " + cm(m.hipAnk) + " framför fotleden" : m.hipAnk < -0.5 ? "Höften " + cm(m.hipAnk) + " bakom fotleden" : "Höften rakt över fotleden", "Står höften långt fram trycker du ofta fram bäckenet."]];
+  const sd = (v, a, b) => Math.abs(v) < 0.5 ? "I nivå" : (v > 0 ? b : a) + " " + cm(v) + " lägre";
+  return [["Axlarna", sd(m.sh, "Vänster", "Höger"), m.shAng ? "Lutning " + fmt(Math.abs(m.shAng), 1) + "°" : ""], ["Höfterna", sd(m.hip, "Vänster", "Höger"), m.hipAng ? "Lutning " + fmt(Math.abs(m.hipAng), 1) + "°" : ""], ["Huvudet", sd(m.head, "Vänster öra", "Höger öra").replace("I nivå", "Rakt"), ""]];
+}
+function postureStart(viewName){
+  camOpen({title: viewName === "sida" ? "Hållning från sidan" : "Hållning framifrån", guide: viewName === "sida" ? "side" : "body", facing: "user",
+    note: viewName === "sida" ? "Stå med sidan mot kameran, avslappnat, armarna hängande, blicken rakt fram. Hela kroppen i bild." : "Stå rakt mot kameran, fötterna höftbrett, armarna hängande. Hela kroppen i bild.",
+    onShot: async c => {
+      $("camBtns").hidden = true; $("camOv").classList.add("done");
+      const body = $("camBody"), say2 = t => { body.innerHTML = '<div class="scan-msg">' + esc(t) + '</div>'; };
+      say2("Analyserar bilden…");
+      let r;
+      try { const lmk = await poseLoad(say2); say2("Letar efter öra, axel, höft, knä och fotled…"); const res = lmk.detect(c); r = poseMeasure(res && res.landmarks && res.landmarks[0], c.width, c.height, viewName, bodyCm()); }
+      catch(e){ r = {err: "AI:n gick inte att ladda. Är du uppkopplad? Första gången hämtas den från nätet."}; }
+      if (r.err){ body.innerHTML = '<div class="cam-result"><img src="' + c.toDataURL("image/jpeg", .7) + '" alt=""></div><div class="scan-msg">' + esc(r.err) + '</div><div class="scan-btns"><button type="button" class="btn" data-cam="again">Ta om</button></div>'; CAM.res = null; return; }
+      poseDraw(c, r); CAM.canvas = c; CAM.res = r;
+      body.innerHTML = '<div class="cam-result"><img src="' + c.toDataURL("image/jpeg", .82) + '" alt="Bilden med punkterna AI:n hittade"></div><div class="pos-list">' + poseTexts(r).map(t => '<div><span class="stat-l">' + esc(t[0]) + '</span><b>' + esc(t[1]) + '</b>' + (t[2] ? '<small>' + esc(t[2]) + '</small>' : '') + '</div>').join("") + '</div>' +
+        '<div class="scan-btns"><button type="button" class="btn" data-cam="psave">Spara mätningen</button><button type="button" class="btn ghost" data-cam="again">Ta om</button></div>';
+    },
+    onAction: async a => {
+      if (a === "again"){ $("camBody").innerHTML = ""; $("camBtns").hidden = false; $("camOv").classList.remove("done"); camStart(); }
+      if (a === "psave" && CAM.res){
+        const id = "h" + Date.now().toString(36), blob = await canvasBlob(CAM.canvas, .82);
+        try { await PDB.put({id, kind: "posture", view: viewName, date: iso(today()), ts: Date.now(), w: CAM.canvas.width, h: CAM.canvas.height, blob}); if (photos) photos.push({id, kind: "posture", view: viewName, date: iso(today()), ts: Date.now(), blob}); } catch(e){}
+        posture.push({id, date: iso(today()), ts: Date.now(), view: viewName, m: CAM.res.m}); posture = posture.slice(-200); store(POS_KEY, posture);
+        toast("Mätningen är sparad"); camClose();
+      }
+    }});
+}
+function postureHTML(){
+  if (photos == null) photosLoad();
+  const side = posture.filter(p => p.view === "sida"), front = posture.filter(p => p.view === "fram");
+  const delta = (arr, k, lowerBetter) => { if (arr.length < 2) return ""; const d = arr[arr.length - 1].m[k] - arr[0].m[k]; if (Math.abs(d) < 0.3) return "samma som första gången"; const better = lowerBetter ? d < 0 : d > 0; return (better ? "✓ " : "") + (d > 0 ? "+" : "−") + fmt(Math.abs(d), 1) + " cm sedan " + dLabel(arr[0].date); };
+  let h = '<div><div class="lead">Mät en gång i veckan – samma ställe och kläder</div><h2 class="h2">Hållning</h2></div>' +
+    '<div class="card coach"><div class="pos-how"><svg viewBox="0 0 60 120" aria-hidden="true"><circle cx="34" cy="14" r="8" fill="none" stroke="currentColor" stroke-width="3"/><path d="M31 23 L30 62 L28 88 L27 114 M30 62 L33 88 L34 114 M31 30 L33 58" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M27 114h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M14 4v114" stroke="var(--blue)" stroke-width="2" stroke-dasharray="4 4"/></svg>' +
+      '<ul><li>Mobilen i höfthöjd, 2–3 meter bort. Hela kroppen i bild.</li><li>Stå avslappnat som du brukar – inte rakare än vanligt.</li><li>Tighta kläder eller bar överkropp ger säkrast mått.</li></ul></div>' +
+      '<div class="bk"><button class="btn" type="button" data-pos="sida">Mät från sidan</button><button class="btn sm ghost" type="button" data-pos="fram">Mät framifrån</button></div>' +
+      '<label class="pos-h">Din längd <input id="posHeight" inputmode="numeric" value="' + bodyCm() + '"> cm <small>– används för att räkna om till centimeter</small></label></div>';
+  const last = posture[posture.length - 1];
+  if (last){
+    const ph = photos && photos.find(p => p.id === last.id), r = {view: last.view, m: last.m};
+    h += '<div class="card"><div class="gm-top"><b>Senaste mätningen</b><span class="lead">' + esc(dLong(last.date)) + ' · ' + (last.view === "sida" ? "från sidan" : "framifrån") + '</span></div>' +
+      (ph ? '<img class="pos-img" src="' + photoUrl(ph) + '" alt="Senaste hållningsbilden">' : '') +
+      '<div class="pos-list light">' + poseTexts(r).map(t => '<div><span class="stat-l">' + esc(t[0]) + '</span><b>' + esc(t[1]) + '</b></div>').join("") + '</div></div>';
+  }
+  if (side.length){
+    h += '<div class="card"><div class="gm-top"><b>Från sidan över tid</b><span class="lead">' + side.length + (side.length === 1 ? " mätning" : " mätningar") + '</span></div>' +
+      '<div class="stats gm-stats two">' + gmStat("Örat framför axeln", fmt(side[side.length - 1].m.earSh, 1), "cm", delta(side, "earSh", true) || "mät igen nästa vecka") + gmStat("Axeln framför höften", fmt(side[side.length - 1].m.shHip, 1), "cm", delta(side, "shHip", true) || "mät igen nästa vecka") + '</div>' +
+      (side.length >= 2 ? lineChart({pts: side.map(p => ({t: parseIso(p.date).getTime(), y: p.m.earSh})), color: "var(--blue)", unit: "cm", label: "Örat framför axeln"}) + '<div class="lead" style="font-size:13px">Örat framför axeln, cm. Neråt = huvudet kommer bakåt, dit du vill.</div>' : '') + '</div>';
+  }
+  if (front.length){ const f = front[front.length - 1]; h += '<div class="card"><div class="gm-top"><b>Framifrån</b><span class="lead">' + front.length + (front.length === 1 ? " mätning" : " mätningar") + '</span></div><div class="pos-list light">' + poseTexts({view: "fram", m: f.m}).map(t => '<div><span class="stat-l">' + esc(t[0]) + '</span><b>' + esc(t[1]) + '</b></div>').join("") + '</div></div>'; }
+  return h + '<div class="small" style="padding:0 4px">Det här är en mätning med kameran, ingen diagnos – ett par centimeter hit eller dit kan bero på hur du står. Titta på trenden över veckorna, och visa Tobias om något ser konstigt ut. Bilderna sparas bara på telefonen.</div>';
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-pos]"); if (b) postureStart(b.dataset.pos); });
+document.addEventListener("change", e => { if (e.target && e.target.id === "posHeight"){ const v = num(e.target.value); if (v >= 120 && v <= 230){ store(HEIGHT_KEY, Math.round(v)); toast("Längd " + Math.round(v) + " cm"); } else toast("Skriv din längd i cm, t.ex. 183"); } });
+
 /* ---------- Start ---------- */
-const BUILD = "12 nov 00.50", BUILD_NOTE = "Nytt: Mat med streckkodsläsare under Kropp, och månadens bild i Framsteg";
+const BUILD = "12 nov 00.59", BUILD_NOTE = "Nytt: progressbilder och hållningsmätare under Kropp";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
