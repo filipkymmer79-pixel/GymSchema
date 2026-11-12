@@ -718,6 +718,40 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .pr-cur{font-weight:800}
 .pr-done{display:flex;flex-direction:column;gap:7px;font-size:14px;line-height:1.35}
 .pr-done b{color:var(--good)}
+/* Påminnelser */
+.nt-row{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:40px minmax(0,1fr) 14px;gap:12px;align-items:center;background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:12px 14px;cursor:pointer;color:var(--ink)}
+.nt-row:active{transform:scale(.99)}
+.nt-ic{width:40px;height:40px;border-radius:12px;background:var(--surface2);display:grid;place-items:center;font-size:20px}
+.nt-tx{min-width:0}
+.nt-tx b{display:block;font-size:15px;font-weight:800;line-height:1.25}
+.nt-tx small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+.nt-msg span:last-child{line-height:1.4}
+.nt-on{display:flex;flex-direction:column;gap:6px}
+.nt-big{font-family:var(--display);font-weight:800;font-size:22px;color:var(--good)}
+.nt-set{display:flex;flex-direction:column;gap:2px}
+.nt-set > b{margin-bottom:4px}
+.nt-line{display:grid;grid-template-columns:32px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.nt-set > b + .nt-line{border-top:0}
+.nt-e{font-size:20px;text-align:center}
+.nt-time{font:inherit;font-weight:800;font-size:15px;border:0;border-radius:10px;background:var(--surface2);color:var(--ink);padding:7px 8px;min-width:0;width:auto}
+.nt-time:disabled{opacity:.4}
+.nt-sw{position:relative;display:inline-block;width:50px;height:30px;flex:0 0 auto}
+.nt-sw input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.nt-sw i{position:absolute;inset:0;border-radius:99px;background:var(--line);transition:background .2s;pointer-events:none}
+.nt-sw i::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.nt-sw input:checked + i{background:var(--good)}
+.nt-sw input:checked + i::after{transform:translateX(20px)}
+.nt-sw input:focus-visible + i{outline:2px solid var(--blue);outline-offset:2px}
+.nt-steps{list-style:none;margin:0;display:flex;flex-direction:column;gap:18px;padding:16px}
+.nt-steps li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:11px;align-items:start}
+.nt-n{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:17px}
+.nt-steps li > div > b{display:block;font-size:16px;line-height:1.25;margin-top:4px}
+.nt-steps p{margin:4px 0 0;font-size:14px;line-height:1.45;color:var(--muted)}
+.nt-steps p b{color:var(--ink)}
+.nt-ok{color:var(--good);margin-left:4px}
+.nt-wait{color:var(--warn)!important;font-weight:600}
+.nt-steps .btn{text-decoration:none;display:inline-flex}
+.hem-in.nt-in{border:1px solid var(--line);background:var(--surface2);color:var(--ink)}
 /* Vanor */
 .hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .hnav{display:flex;gap:6px;flex:0 0 auto}
@@ -2082,7 +2116,7 @@ function renderVanor(){
     const gn = gmHabitNote(habitDate, hb) || foodHabitNote(habitDate, hb);
     return '<button type="button" class="hrow' + (hb.auto ? ' auto' : '') + '" data-h="' + hb.k + '" aria-pressed="' + done + '"><span class="hchk" aria-hidden="true">✓</span><span class="ht"><b>' + esc(plan ? plan.n : hb.n) + '</b><small>' + (gn ? '<span class="gm-hn">' + esc(gn) + '</span>' : esc(plan ? plan.h : hb.h)) + '</small><span class="hdots">' + dots + '<small>7 dagar</small></span></span></button>';
   }).join("");
-  el.innerHTML = primeHTML() + '<div class="hhead"><div><div class="lead">' + (isT ? "Bocka av på kvällen" : "Du kan fylla i 14 dagar bakåt") + '</div><h2 class="h2">' + esc(title) + '</h2></div>' +
+  el.innerHTML = primeHTML() + ntRowHTML() + '<div class="hhead"><div><div class="lead">' + (isT ? "Bocka av på kvällen" : "Du kan fylla i 14 dagar bakåt") + '</div><h2 class="h2">' + esc(title) + '</h2></div>' +
     '<div class="hnav"><button type="button" data-hnav="-1" aria-label="Föregående dag"' + (habitDate <= min ? ' disabled' : '') + '>‹</button><button type="button" data-hnav="1" aria-label="Nästa dag"' + (isT ? ' disabled' : '') + '>›</button></div></div>' +
     '<div class="card"><div class="hsum"><div><div class="stat-l">' + (isT ? "Idag" : "Den dagen") + '</div><div class="hbig num' + (score >= total ? ' full' : '') + '">' + score + '<small>/' + total + '</small></div></div>' +
     '<div><div class="stat-l">Perfekta dagar i rad</div><div class="hbig num' + (streak > 0 ? ' full' : '') + '">' + streak + '<small> ' + (streak === 1 ? "dag" : "dagar") + '</small></div></div></div>' +
@@ -2273,6 +2307,7 @@ function gmPaint(){
   const g = $("gmProg"); if (g) g.innerHTML = gmProgInner();
   if (view === "vanor") renderVanor();
   if (typeof kcalPaint === "function") kcalPaint();
+  if (typeof ntSoon === "function" && nt.on) ntSoon();
   const wc = $("wxCard"); if (wc && gm && gmRunOn(iso(today())).length) wc.remove();
 }
 function gmInit(){
@@ -3462,7 +3497,7 @@ setInterval(hrtPill, 60e3);
    switchbot-worker.js) som bara skickar vidare till api.switch-bot.com. Token och secret från SwitchBot-appen
    sparas bara på telefonen (inte i backupen) och signerar varje anrop med HMAC-SHA256, som SwitchBot kräver. */
 const SB_KEY = "gymschema.switchbot.v1";
-const SB_CODE = "// GymSchema \u2192 SwitchBot (Cloudflare Worker)\n// SwitchBots moln sl\u00e4pper inte in webbappar direkt (inget CORS). Den h\u00e4r Workern skickar bara\n// vidare appens anrop till api.switch-bot.com. Token och secret kommer fr\u00e5n appen \u2013 inget sparas h\u00e4r.\nconst APP = \"https://filipkymmer79-pixel.github.io\";\n\nexport default {\n  async fetch(request) {\n    const cors = {\n      \"Access-Control-Allow-Origin\": APP,\n      \"Access-Control-Allow-Methods\": \"GET, POST, OPTIONS\",\n      \"Access-Control-Allow-Headers\": \"Authorization, sign, t, nonce, Content-Type\",\n      \"Access-Control-Max-Age\": \"86400\",\n      \"Vary\": \"Origin\"\n    };\n    if (request.method === \"OPTIONS\") return new Response(null, { status: 204, headers: cors });\n    const url = new URL(request.url);\n    const allowed = /^\\/v1\\.1\\/devices(\\/[A-Za-z0-9_-]+\\/(commands|status))?$/.test(url.pathname);\n    if (!allowed || request.headers.get(\"Origin\") !== APP) {\n      return new Response('{\"message\":\"not allowed\"}', { status: 403, headers: { ...cors, \"Content-Type\": \"application/json\" } });\n    }\n    const headers = new Headers();\n    for (const h of [\"Authorization\", \"sign\", \"t\", \"nonce\", \"Content-Type\"]) {\n      const v = request.headers.get(h);\n      if (v) headers.set(h, v);\n    }\n    const res = await fetch(\"https://api.switch-bot.com\" + url.pathname, {\n      method: request.method,\n      headers,\n      body: request.method === \"POST\" ? await request.text() : undefined\n    });\n    return new Response(await res.text(), {\n      status: res.status,\n      headers: { ...cors, \"Content-Type\": \"application/json; charset=utf-8\" }\n    });\n  }\n};\n";
+const SB_CODE = "// GymSchema-mellanhanden (Cloudflare Worker)\n// 1) Gardinen: skickar vidare appens anrop till api.switch-bot.com (SwitchBots moln sl\u00e4pper inte in webbappar).\n//    Token och secret kommer fr\u00e5n appen och sparas inte h\u00e4r.\n// 2) P\u00e5minnelser: sparar appens notisschema i KV (bindningen GS) och skickar notiserna med web push.\n//    Cron-schemat (varje minut) kollar vad som ska skickas.\nconst APP = \"https://filipkymmer79-pixel.github.io\";\nconst CONTACT = \"https://filipkymmer79-pixel.github.io/GymSchema/\";\nconst te = new TextEncoder();\nconst b64u = b => { let s = \"\"; const u = new Uint8Array(b); for (let i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s).replace(/\\+/g, \"-\").replace(/\\//g, \"_\").replace(/=+$/, \"\"); };\nconst unb64u = s => { s = String(s).replace(/-/g, \"+\").replace(/_/g, \"/\"); while (s.length % 4) s += \"=\"; const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; };\nconst cat = (...a) => { const o = new Uint8Array(a.reduce((n, x) => n + x.length, 0)); let p = 0; for (const x of a){ o.set(x, p); p += x.length; } return o; };\nconst sha = async s => b64u(await crypto.subtle.digest(\"SHA-256\", te.encode(s)));\nasync function hkdf(salt, ikm, info, len){\n  const k = await crypto.subtle.importKey(\"raw\", ikm, \"HKDF\", false, [\"deriveBits\"]);\n  return new Uint8Array(await crypto.subtle.deriveBits({name: \"HKDF\", hash: \"SHA-256\", salt, info}, k, len * 8));\n}\nasync function vapid(env){\n  let v = await env.GS.get(\"vapid\", \"json\");\n  if (!v){\n    const kp = await crypto.subtle.generateKey({name: \"ECDSA\", namedCurve: \"P-256\"}, true, [\"sign\", \"verify\"]);\n    v = {jwk: await crypto.subtle.exportKey(\"jwk\", kp.privateKey), pub: b64u(await crypto.subtle.exportKey(\"raw\", kp.publicKey))};\n    await env.GS.put(\"vapid\", JSON.stringify(v));\n  }\n  return v;\n}\n// Web push (RFC 8291 aes128gcm + RFC 8292 VAPID)\nasync function push(env, sub, msg){\n  const v = await vapid(env);\n  const jh = b64u(te.encode('{\"typ\":\"JWT\",\"alg\":\"ES256\"}'));\n  const jb = b64u(te.encode(JSON.stringify({aud: new URL(sub.endpoint).origin, exp: Math.floor(Date.now() / 1000) + 12 * 3600, sub: CONTACT})));\n  const sk = await crypto.subtle.importKey(\"jwk\", v.jwk, {name: \"ECDSA\", namedCurve: \"P-256\"}, false, [\"sign\"]);\n  const sig = await crypto.subtle.sign({name: \"ECDSA\", hash: \"SHA-256\"}, sk, te.encode(jh + \".\" + jb));\n  const ua = unb64u(sub.keys.p256dh), auth = unb64u(sub.keys.auth);\n  const eph = await crypto.subtle.generateKey({name: \"ECDH\", namedCurve: \"P-256\"}, true, [\"deriveBits\"]);\n  const as = new Uint8Array(await crypto.subtle.exportKey(\"raw\", eph.publicKey));\n  const uk = await crypto.subtle.importKey(\"raw\", ua, {name: \"ECDH\", namedCurve: \"P-256\"}, false, []);\n  const shared = new Uint8Array(await crypto.subtle.deriveBits({name: \"ECDH\", public: uk}, eph.privateKey, 256));\n  const ikm = await hkdf(auth, shared, cat(te.encode(\"WebPush: info\\0\"), ua, as), 32);\n  const salt = crypto.getRandomValues(new Uint8Array(16));\n  const cek = await crypto.subtle.importKey(\"raw\", await hkdf(salt, ikm, te.encode(\"Content-Encoding: aes128gcm\\0\"), 16), \"AES-GCM\", false, [\"encrypt\"]);\n  const nonce = await hkdf(salt, ikm, te.encode(\"Content-Encoding: nonce\\0\"), 12);\n  const ct = new Uint8Array(await crypto.subtle.encrypt({name: \"AES-GCM\", iv: nonce}, cek, cat(te.encode(JSON.stringify(msg)), new Uint8Array([2]))));\n  const r = await fetch(sub.endpoint, {method: \"POST\", body: cat(salt, new Uint8Array([0, 0, 16, 0, 65]), as, ct), headers: {\n    \"Authorization\": \"vapid t=\" + jh + \".\" + jb + \".\" + b64u(sig) + \", k=\" + v.pub,\n    \"Content-Encoding\": \"aes128gcm\", \"Content-Type\": \"application/octet-stream\", \"TTL\": \"3600\", \"Urgency\": \"high\"}});\n  return r.status;\n}\nasync function tick(env){\n  if (!env.GS) return;\n  const now = Date.now(), last = Number(await env.GS.get(\"cron\")) || 0;\n  if (now - last > 50 * 60e3) await env.GS.put(\"cron\", String(now));\n  const cfg = await env.GS.get(\"cfg\", \"json\");\n  if (!cfg || !cfg.sub || !Array.isArray(cfg.events)) return;\n  const due = cfg.events.filter(e => e.at <= now + 20e3 && now - e.at < 15 * 60e3);\n  if (!due.length) return;\n  const sent = (await env.GS.get(\"sent\", \"json\")) || {}, todo = due.filter(e => !sent[e.id]);\n  if (!todo.length) return;\n  for (const e of todo){\n    const st = await push(env, cfg.sub, {title: e.title, body: e.body, url: e.url, tag: e.id});\n    if (st === 404 || st === 410){ await env.GS.delete(\"cfg\"); return; }\n    sent[e.id] = now;\n  }\n  for (const k in sent) if (now - sent[k] > 3 * 864e5) delete sent[k];\n  await env.GS.put(\"sent\", JSON.stringify(sent));\n}\nasync function pushApi(request, env, path, json){\n  if (!env.GS) return json({error: \"kv\"}, 503);\n  if (path === \"/push/key\" && request.method === \"GET\"){\n    const v = await vapid(env);\n    return json({key: v.pub, cron: Number(await env.GS.get(\"cron\")) || 0, on: !!(await env.GS.get(\"cfg\"))});\n  }\n  if (request.method !== \"POST\") return json({error: \"method\"}, 405);\n  let b = {}; try { b = await request.json(); } catch(e){}\n  const key = request.headers.get(\"X-GS-Key\") || \"\";\n  if (key.length < 20) return json({error: \"key\"}, 400);\n  const kh = await sha(key), cfg = await env.GS.get(\"cfg\", \"json\");\n  const sub = b && b.sub && typeof b.sub.endpoint === \"string\" && /^https:\\/\\//.test(b.sub.endpoint) && b.sub.keys && b.sub.keys.p256dh && b.sub.keys.auth ? b.sub : null;\n  if (cfg && cfg.kh !== kh && !(sub && cfg.sub && sub.endpoint === cfg.sub.endpoint)) return json({error: \"taken\"}, 409);\n  if (path === \"/push/save\"){\n    if (!sub) return json({error: \"sub\"}, 400);\n    const events = (Array.isArray(b.events) ? b.events : []).filter(e => e && typeof e.at === \"number\" && e.title).slice(0, 300)\n      .map(e => ({id: String(e.id || e.at).slice(0, 60), at: e.at, title: String(e.title).slice(0, 90), body: String(e.body || \"\").slice(0, 300), url: String(e.url || \"./\").slice(0, 80)}));\n    await env.GS.put(\"cfg\", JSON.stringify({kh, sub: {endpoint: sub.endpoint, keys: {p256dh: String(sub.keys.p256dh), auth: String(sub.keys.auth)}}, events}));\n    return json({ok: true, n: events.length, cron: Number(await env.GS.get(\"cron\")) || 0});\n  }\n  if (path === \"/push/test\"){\n    if (!cfg) return json({error: \"off\"}, 404);\n    const st = await push(env, cfg.sub, {title: \"P\u00e5minnelserna funkar \u2713\", body: \"S\u00e5 h\u00e4r ser det ut n\u00e4r GymSchema p\u00e5minner dig.\", url: \"./#vanor\", tag: \"test\"});\n    if (st === 404 || st === 410) await env.GS.delete(\"cfg\");\n    return json({ok: st >= 200 && st < 300, status: st});\n  }\n  if (path === \"/push/off\"){ if (cfg) await env.GS.delete(\"cfg\"); return json({ok: true}); }\n  return json({error: \"path\"}, 404);\n}\nexport default {\n  async fetch(request, env){\n    const cors = {\n      \"Access-Control-Allow-Origin\": APP,\n      \"Access-Control-Allow-Methods\": \"GET, POST, OPTIONS\",\n      \"Access-Control-Allow-Headers\": \"Authorization, sign, t, nonce, Content-Type, X-GS-Key\",\n      \"Access-Control-Max-Age\": \"86400\",\n      \"Vary\": \"Origin\"\n    };\n    const json = (o, status) => new Response(JSON.stringify(o), {status: status || 200, headers: {...cors, \"Content-Type\": \"application/json; charset=utf-8\"}});\n    if (request.method === \"OPTIONS\") return new Response(null, {status: 204, headers: cors});\n    const url = new URL(request.url);\n    if (request.headers.get(\"Origin\") !== APP) return json({message: \"not allowed\"}, 403);\n    if (url.pathname.startsWith(\"/push/\")) return pushApi(request, env, url.pathname, json);\n    if (!/^\\/v1\\.1\\/devices(\\/[A-Za-z0-9_-]+\\/(commands|status))?$/.test(url.pathname)) return json({message: \"not allowed\"}, 403);\n    const headers = new Headers();\n    for (const h of [\"Authorization\", \"sign\", \"t\", \"nonce\", \"Content-Type\"]){\n      const v = request.headers.get(h);\n      if (v) headers.set(h, v);\n    }\n    const res = await fetch(\"https://api.switch-bot.com\" + url.pathname, {\n      method: request.method,\n      headers,\n      body: request.method === \"POST\" ? await request.text() : undefined\n    });\n    return new Response(await res.text(), {status: res.status, headers: {...cors, \"Content-Type\": \"application/json; charset=utf-8\"}});\n  },\n  async scheduled(event, env, ctx){ ctx.waitUntil(tick(env)); }\n};\n";
 let sb = (() => { const x = store(SB_KEY); return x && typeof x === "object" ? x : {}; })();
 let sbBusy = "", sbFound = null, sbMsg = "", sbDraft = {}, sbStat = {}, sbChk = 0;
 const sbOn = () => !!(sb.url && sb.token && sb.secret && sb.dev && sb.dev.id);
@@ -3901,8 +3936,193 @@ document.addEventListener("click", e => {
   else { const o = $("primeOv"); if (o) o.hidden = true; document.documentElement.classList.remove("noscroll"); }
 });
 
+
+/* ---------- Påminnelser i mobilen: web push via Filips Cloudflare-worker (samma som gardinen) ---------- */
+// Appen räknar ut notiserna för 7 dagar framåt och skickar listan till workern (KV). Workerns cron kollar varje
+// minut och skickar det som är dags med web push. Fungerar när GymSchema ligger på hemskärmen (iOS 16.4+).
+const NT_KEY = "gymschema.push.v1";
+const NT_DEF = {bed: {on: true}, gym: {on: true, t: "10:00"}, run: {on: true, t: "10:00"}, shake: {on: true, t: "09:00"}, hall: {on: true, t: "18:00"}};
+const NT_ROWS = [["bed", "🌙", "Läggdags", "30 min innan och när det är dags – tiden räknas från sömnskulden"], ["gym", "🏋️", "Gymdag", "Tis, ons, fre och lör"],
+  ["run", "🏃", "Löpdag", "Mån och tor, med tips om löpvädret"], ["shake", "🥤", "Shaken", "Varje dag"], ["hall", "🧍", "Hållning + fascia", "Varje dag"]];
+const NT_MSG = {net: "Fick ingen kontakt med mellanhanden. Är du uppkopplad, och stämmer adressen?", old: "Mellanhanden har fortfarande den gamla koden. Gör steg 1 och tryck Deploy.",
+  kv: "Lagringen är inte kopplad än – gör steg 2.", taken: "Mellanhanden är redan kopplad till en annan installation av appen. Stäng av påminnelserna där först.",
+  worker: "Mellanhanden svarade konstigt. Kolla att hela koden är inklistrad och att du tryckt Deploy.", perm: "Notiser är avstängda för GymSchema. Slå på dem i Inställningar → Notiser → GymSchema och tryck igen.",
+  url: "Klistra in adressen till mellanhanden först – den slutar på .workers.dev.", sub: "iPhone gav ingen notis-prenumeration. Testa igen om en stund.", off: "Påminnelserna är inte på hos mellanhanden längre – slå på igen."};
+let nt = Object.assign({on: false, url: "", key: "", set: {}}, store(NT_KEY) || {});
+let ntBusy = "", ntMsg = "", ntStat = null, ntTimer = 0;
+const ntSet = k => Object.assign({}, NT_DEF[k], (nt.set || {})[k] || {});
+const ntSave = () => store(NT_KEY, nt);
+const ntUrl = () => sbNormUrl(nt.url || (sb && sb.url) || "");
+const ntCan = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+const ntHome = () => { try { return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true; } catch(e){ return false; } };
+const ntMin = hm => { const p = String(hm).split(/[:.]/).map(Number); return (p[0] || 0) * 60 + (p[1] || 0); };
+const ntHm = m => { m = ((m % 1440) + 1440) % 1440; return pad(Math.floor(m / 60)) + "." + pad(m % 60); };
+const ntText = e => NT_MSG[e && e.code] || "Något gick fel (" + esc(String(e && (e.code || e.message) || "")) + ").";
+const ntU8 = s => { s = String(s).replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; };
+function ntKey(){ if (!nt.key){ nt.key = sbB64(crypto.getRandomValues(new Uint8Array(24))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); ntSave(); } return nt.key; }
+async function ntApi(path, body){
+  if (!/^https:\/\/[^/]+\.[^/]+/.test(ntUrl())) throw sbErr("url");
+  let r, j = null;
+  try { r = await fetch(ntUrl() + path, body ? {method: "POST", headers: {"Content-Type": "application/json", "X-GS-Key": ntKey()}, body: JSON.stringify(body), cache: "no-store"} : {cache: "no-store"}); }
+  catch(e){ throw sbErr("net"); }
+  try { j = await r.json(); } catch(e){}
+  if (r.status === 503 && j && j.error === "kv") throw sbErr("kv");
+  if (r.status === 403 && j && j.message === "not allowed") throw sbErr("old");
+  if (r.status === 409) throw sbErr("taken");
+  if (r.status === 404 && j && j.error === "off") throw sbErr("off");
+  if (!r.ok || !j) throw sbErr("worker");
+  return j;
+}
+// Notiserna för 7 dagar framåt. id är unikt per dag så att workern aldrig skickar samma två gånger.
+function ntEvents(){
+  const out = [], now = Date.now(), t0 = today(), ti = iso(t0), bed = gmBedtime(), wake = gmWake().replace(":", ".");
+  const at = (d, hm) => { const p = String(hm).split(/[:.]/).map(Number), x = new Date(d); x.setHours(p[0] || 0, p[1] || 0, 0, 0); return x.getTime(); };
+  for (let i = 0; i < 7; i++){
+    const d = addDays(t0, i), ds = iso(d), dow = d.getDay();
+    if (ntSet("bed").on){
+      let b = at(d, bed.hm); if (+bed.hm.split(".")[0] < 12) b += 864e5;
+      out.push({id: "bed30-" + ds, at: b - 30 * 60e3, title: "Läggdags om 30 min 🌙", body: "Släck " + bed.hm + " så får du 10 timmar till " + wake + ". Bocka av vanorna och lägg undan mobilen.", url: "./#vanor"});
+      out.push({id: "bed-" + ds, at: b, title: "Dags att sova 😴", body: "Släck nu – då får du 10 timmar till " + wake + ".", url: "./#vanor"});
+    }
+    const gk = d >= START ? BY_DOW[dow] : null;
+    if (gk && ntSet("gym").on && !(ds === ti && sessions.some(s => s.date === ti)))
+      out.push({id: "gym-" + ds, at: at(d, ntSet("gym").t), title: "Gymdag: " + PROGRAM[gk].name + " 💪", body: PROGRAM[gk].ex.length + " övningar i dag. Passet ligger under Pass.", url: "./#pass"});
+    if (RUN_DAYS[dow] && ntSet("run").on && !(ds === ti && gmOn() && gm && gmRunOn(ti).length))
+      out.push({id: "run-" + ds, at: at(d, ntSet("run").t), title: RUN_DAYS[dow] + " 🏃", body: "Pratfart. Kolla löpvädret i appen – bästa timmen och vad du ska ha på dig.", url: "./#pass"});
+    if (ntSet("shake").on && !(ds === ti && (shakeGl[ti] || 0) > 0))
+      out.push({id: "shake-" + ds, at: at(d, ntSet("shake").t), title: "Shaken 🥤", body: "Mixa dagens shake – " + gmSteps(foodSet.size) + " kcal i " + foodSet.glasses + " glas.", url: "./#vikt"});
+    if (ntSet("hall").on && !(ds === ti && habits[ti] && habits[ti].hall))
+      out.push({id: "hall-" + ds, at: at(d, ntSet("hall").t), title: "Hållning + fascia · 12 min 🧍", body: "Hållningspasset och 2 min fascia-håll per sida.", url: "./#vanor"});
+  }
+  if (nt.ct && nt.ct > now) out.push({id: "crontest-" + nt.ct, at: nt.ct, title: "Schemat funkar också ✓", body: "Den här kom från schemat i Cloudflare. Nu kommer påminnelserna av sig själva.", url: "./#vanor"});
+  return out.filter(e => e.at > now + 30e3).sort((a, b) => a.at - b.at);
+}
+async function ntSub(){ const reg = await navigator.serviceWorker.ready; return reg.pushManager.getSubscription(); }
+async function ntSync(force){
+  if (!nt.on || !ntCan()) return;
+  try {
+    const sub = await ntSub();
+    if (!sub){ nt.on = false; nt.err = "Notiserna har stängts av i telefonen – slå på igen."; ntSave(); ntPaint(); return; }
+    const sj = sub.toJSON(), events = ntEvents(), sig = JSON.stringify([sj.endpoint, events.map(e => e.id + "@" + e.at)]);
+    if (!force && sig === nt.sig && Date.now() - (nt.ts || 0) < 6 * 3600e3) return;
+    const j = await ntApi("/push/save", {sub: {endpoint: sj.endpoint, keys: sj.keys}, events});
+    nt.sig = sig; nt.ts = Date.now(); nt.err = ""; nt.cron = j.cron || nt.cron || 0; ntSave();
+  } catch(e){ nt.err = ntText(e); ntSave(); }
+  ntPaint();
+}
+const ntSoon = () => { clearTimeout(ntTimer); ntTimer = setTimeout(() => ntSync(false), 1500); };
+async function ntCheck(){
+  ntBusy = "check"; ntPaint();
+  try { const j = await ntApi("/push/key"); ntStat = {code: "ok", key: j.key, cron: j.cron || 0}; nt.vk = j.key; ntSave(); }
+  catch(e){ ntStat = {code: e.code || "net"}; }
+  ntBusy = ""; ntPaint();
+}
+async function ntEnable(){
+  if (!ntCan() || !ntHome()){ ntMsg = "Öppna GymSchema från hemskärmen först – på iPhone fungerar notiser bara då, inte i Safari."; ntPaint(); return; }
+  const ask = Notification.requestPermission();   // måste anropas direkt i trycket på iPhone
+  ntBusy = "on"; ntMsg = ""; ntPaint();
+  try {
+    if ((await ask) !== "granted") throw sbErr("perm");
+    const j = await ntApi("/push/key"), reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (sub && nt.vk && nt.vk !== j.key){ await sub.unsubscribe(); sub = null; }
+    if (!sub){
+      try { sub = await reg.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: ntU8(j.key)}); }
+      catch(e){ const old = await reg.pushManager.getSubscription(); if (old){ await old.unsubscribe(); sub = await reg.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: ntU8(j.key)}); } else throw sbErr("sub"); }
+    }
+    nt.vk = j.key; nt.on = true; nt.sig = ""; nt.err = ""; ntSave(); ntStat = {code: "ok", key: j.key, cron: j.cron || 0};
+    await ntSync(true);
+    if (!nt.err) toast("Påminnelserna är på ✓");
+  } catch(e){ ntMsg = ntText(e); nt.on = false; ntSave(); }
+  ntBusy = ""; ntPaint();
+}
+async function ntTest(){
+  ntBusy = "test"; ntMsg = ""; ntPaint();
+  try {
+    nt.ct = Date.now() + 75e3; ntSave(); await ntSync(true);
+    const j = await ntApi("/push/test", {});
+    if (!j.ok) ntMsg = j.status === 403 ? "Apple godtog inte mellanhandens nyckel (403). Säg till Claude." : j.status === 410 || j.status === 404 ? "Prenumerationen är borta hos Apple – slå på påminnelserna igen." : "Apple svarade " + j.status + " på testet.";
+    else toast("Testnotisen är skickad – en till kommer om ungefär en minut");
+  } catch(e){ ntMsg = ntText(e); }
+  ntBusy = ""; ntPaint();
+}
+async function ntDisable(){
+  ntBusy = "off"; ntPaint();
+  try { await ntApi("/push/off", {}); } catch(e){}
+  try { const s = await ntSub(); if (s) await s.unsubscribe(); } catch(e){}
+  nt.on = false; nt.sig = ""; nt.err = ""; ntSave(); ntBusy = ""; ntMsg = ""; ntPaint(); toast("Påminnelserna är avstängda");
+}
+function ntNext(){ const e = nt.on ? ntEvents().find(x => !/^crontest/.test(x.id)) : null; if (!e) return ""; const d = new Date(e.at), ds = iso(d); return e.title.replace(/ [^\wåäöÅÄÖ.:+\-–]+$/u, "") + " · " + (ds === iso(today()) ? "i dag" : ds === iso(addDays(today(), 1)) ? "i morgon" : dLong(ds)) + " " + pad(d.getHours()) + "." + pad(d.getMinutes()); }
+function ntRowHTML(){
+  return '<button type="button" class="card nt-row" id="ntRow" data-nt="open"><span class="nt-ic" aria-hidden="true">🔔</span><span class="nt-tx"><b>Påminnelser i mobilen</b><small>' +
+    (nt.on ? (nt.err ? esc(nt.err) : "På · nästa: " + esc(ntNext())) : "Läggdags, gymdag, löpdag, shake och hållning – slå på") + '</small></span><span class="rx-go" aria-hidden="true">›</span></button>';
+}
+function ntSheet(){
+  let o = $("ntOv");
+  if (!o){ o = document.createElement("div"); o.id = "ntOv"; o.className = "sheet"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Påminnelser"); document.body.appendChild(o); }
+  const keep = o.hidden ? 0 : o.scrollTop;
+  o.innerHTML = '<div class="sh-in">' + ntSheetHTML() + '</div>';
+  o.hidden = false; o.scrollTop = keep; document.documentElement.classList.add("noscroll");
+}
+function ntSheetHTML(){
+  const top = '<div class="sh-top"><b>Påminnelser i mobilen</b><button type="button" class="sh-x" data-nt="close" aria-label="Stäng">×</button></div>';
+  const msg = ntMsg ? '<div class="gm-v warn nt-msg" role="alert"><span aria-hidden="true">!</span><span>' + ntMsg + '</span></div>' : '';
+  if (nt.on){
+    const bed = gmBedtime();
+    return top + msg +
+      '<div class="card nt-on"><div class="nt-big">✓ Påminnelserna är på</div><div class="small">' + (nt.err ? esc(nt.err) : "Nästa: " + esc(ntNext() || "–")) + '</div>' +
+        '<div class="hem-two"><button type="button" class="btn sm" data-nt="test"' + (ntBusy ? " disabled" : "") + '>' + (ntBusy === "test" ? "Skickar…" : "Skicka en test") + '</button><button type="button" class="btn sm ghost" data-nt="off"' + (ntBusy ? " disabled" : "") + '>Stäng av</button></div></div>' +
+      '<div class="card nt-set"><b>Vad du får påminnelser om</b>' + NT_ROWS.map(r => { const s = ntSet(r[0]);
+        return '<div class="nt-line"><span class="nt-e" aria-hidden="true">' + r[1] + '</span><span class="nt-tx"><b>' + r[2] + '</b><small>' + (r[0] === "bed" ? "I kväll " + ntHm(ntMin(bed.hm) - 30) + " och " + esc(bed.hm) + ". Räknas från sömnskulden." : esc(r[3])) + '</small></span>' +
+          (s.t ? '<input type="time" class="nt-time" data-ntt="' + r[0] + '" value="' + s.t + '" aria-label="Tid för ' + r[2] + '"' + (s.on ? "" : " disabled") + '>' : '') +
+          '<label class="nt-sw"><input type="checkbox" data-ntk="' + r[0] + '"' + (s.on ? " checked" : "") + ' aria-label="' + r[2] + '"><i></i></label></div>'; }).join("") + '</div>' +
+      '<div class="small">Notiserna skickas av din mellanhand på Cloudflare, även när appen är stängd. Ändrar du något här uppdateras schemat direkt.</div>';
+  }
+  const st = ntStat ? ntStat.code : "", s1 = st === "ok" || st === "kv", s2 = st === "ok", s3 = s2 && ntStat.cron && Date.now() - ntStat.cron < 2 * 3600e3;
+  const chk = ok => ok ? '<span class="nt-ok">✓</span>' : '';
+  return top + '<p class="lead">Notiser när det är läggdags, gymdag, löpdag, shake och hållning – även när appen är stängd. De skickas av samma gratis mellanhand på Cloudflare som gardinen. Tar ca 5 minuter.</p>' +
+    (!ntHome() ? '<div class="gm-v warn"><span aria-hidden="true">!</span><span>På iPhone fungerar notiser bara när GymSchema är öppnad från hemskärmen. Lägg den där först om du inte redan gjort det.</span></div>' : '') + msg +
+    '<ol class="card nt-steps">' +
+      '<li><span class="nt-n">1</span><div><b>Uppdatera mellanhanden ' + chk(s1) + '</b><p>Cloudflare → <b>Workers &amp; Pages</b> → din worker → <b>Edit code</b>. Markera allt, klistra in den nya koden och tryck <b>Deploy</b>. Gardinen fortsätter fungera som vanligt.</p>' +
+        '<div class="hem-two"><button type="button" class="btn sm" data-nt="code">Kopiera nya koden</button><a class="btn sm ghost" href="https://dash.cloudflare.com" target="_blank" rel="noopener">Öppna Cloudflare ↗</a></div>' +
+        (sb && sb.url ? '' : '<p>Adressen till mellanhanden (slutar på .workers.dev):</p><input class="hem-in nt-in" id="ntUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://….workers.dev" value="' + esc(nt.url || "") + '">') + '</div></li>' +
+      '<li><span class="nt-n">2</span><div><b>Skapa lagringen och koppla den ' + chk(s2) + '</b><p><b>Storage &amp; Databases</b> → <b>Workers KV</b> → <b>Create instance</b>. Döp den till <b>gymschema</b> och tryck <b>Create</b>. Gå sedan till din worker → fliken <b>Bindings</b> → <b>Add binding</b> → <b>KV namespace</b> → <b>Add binding</b>. Variable name: <b>GS</b> (stora bokstäver), välj <b>gymschema</b> och tryck <b>Add binding</b>.</p></div></li>' +
+      '<li><span class="nt-n">3</span><div><b>Lägg till schemat ' + chk(s3) + '</b><p>Din worker → <b>Settings</b> → <b>Triggers</b> (kan heta Trigger Events) → <b>Add</b> → <b>Cron Triggers</b>. Ställ in <b>varje minut</b> – cron-uttrycket <b>* * * * *</b> – och tryck <b>Add</b>.</p>' + (s2 && !s3 ? '<p class="nt-wait">Schemat har inte kört än. Det kan ta upp till 15 minuter efter att du lagt till det – tryck Kolla igen sen. Du kan slå på redan nu.</p>' : '') + '</div></li>' +
+      '<li><span class="nt-n">4</span><div><b>Slå på</b><p>iPhone frågar om GymSchema får skicka notiser – tryck <b>Tillåt</b>.</p><div class="hem-two">' +
+        '<button type="button" class="btn sm" data-nt="on"' + (ntBusy || !s2 ? " disabled" : "") + '>' + (ntBusy === "on" ? "Slår på…" : "Slå på påminnelser") + '</button>' +
+        '<button type="button" class="btn sm ghost" data-nt="check"' + (ntBusy ? " disabled" : "") + '>' + (ntBusy === "check" ? "Kollar…" : "Kolla igen") + '</button></div>' +
+        (st && st !== "ok" ? '<p class="nt-wait">' + ntText({code: st}) + '</p>' : '') + '</div></li>' +
+    '</ol>' +
+    '<div class="small">Mellanhanden sparar bara notisschemat och din telefons notisadress. Inget annat från appen lämnar telefonen.</div>';
+}
+function ntPaint(){ const r = $("ntRow"); if (r) r.outerHTML = ntRowHTML(); const o = $("ntOv"); if (o && !o.hidden) ntSheet(); }
+function ntClose(){ const o = $("ntOv"); if (o) o.hidden = true; document.documentElement.classList.remove("noscroll"); ntMsg = ""; }
+function ntInit(){
+  if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e => { if (e.data && typeof e.data.nav === "string") location.hash = e.data.nav; });
+  ntSync(false);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") ntSoon(); });
+  setInterval(() => { if (document.visibilityState === "visible") ntSync(false); }, 30 * 60e3);
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-nt]"); if (!b) return;
+  const a = b.dataset.nt;
+  if (a === "open"){ ntMsg = ""; ntSheet(); if (!nt.on) ntCheck(); }
+  else if (a === "close") ntClose();
+  else if (a === "check") ntCheck();
+  else if (a === "on") ntEnable();
+  else if (a === "test") ntTest();
+  else if (a === "off") ntDisable();
+  else if (a === "code"){ coachCopy(SB_CODE); toast("Koden är kopierad – klistra in den i Cloudflare"); }
+});
+document.addEventListener("change", e => {
+  const k = e.target && e.target.dataset ? e.target.dataset.ntk : null, tk = e.target && e.target.dataset ? e.target.dataset.ntt : null;
+  if (k){ nt.set = nt.set || {}; nt.set[k] = Object.assign({}, nt.set[k] || {}, {on: e.target.checked}); ntSave(); ntSheet(); ntSync(false); }
+  else if (tk && /^\d{2}:\d{2}$/.test(e.target.value)){ nt.set = nt.set || {}; nt.set[tk] = Object.assign({}, nt.set[tk] || {}, {t: e.target.value}); ntSave(); ntSync(false); }
+});
+document.addEventListener("input", e => { if (e.target && e.target.id === "ntUrl"){ nt.url = e.target.value.trim(); ntSave(); } });
+
 /* ---------- Start ---------- */
-const BUILD = "12 nov 12.52", BUILD_NOTE = "Nytt: Prime-nivåer under Vanor, kcal-mål med klockan och 26 recept under Kropp → Mat, löpväder på löpdagar";
+const BUILD = "12 nov 13.16", BUILD_NOTE = "Nytt: påminnelser i mobilen – slå på under Vanor";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
@@ -3911,6 +4131,7 @@ show(location.hash.slice(1) || "pass");
 gmInit();
 hrtPill();
 wxInit();
+ntInit();
 if ("serviceWorker" in navigator){ window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); }); }
 try { if (localStorage.getItem("gymschema.build") !== BUILD){ localStorage.setItem("gymschema.build", BUILD); setTimeout(() => { toast("Uppdaterad ✓ " + BUILD_NOTE); clearTimeout(toastT); toastT = setTimeout(() => { $("toast").hidden = true; }, 6500); }, 900); } } catch(e){}
 })();
