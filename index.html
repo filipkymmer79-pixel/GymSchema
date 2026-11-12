@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Big+Shoulders+Display:wght@700;800;900&display=swap">
 </head><body>
 <style>
-/* Layout: one-column phone app – sticky header with this week's four sessions, logging cards, bottom tab bar.
+/* Layout: one-column phone app – sticky header with the whole week (seven days; rest days say Vila · hållning, Tuesday the run), logging cards, bottom tab bar.
    Weight-plate colours (25 kg red, 20 kg blue, 15 kg yellow, 10 kg green) code the four sessions: Över 1 (ons), Ben + över 1 (tor), Över 2 (lör), Ben + över 2 (sön). */
 :root{
   --bg:#ECEEF1; --surface:#FFFFFF; --surface2:#F4F5F7; --ink:#13161B; --muted:#5D6570; --faint:#8A929C; --line:#DADEE4;
@@ -69,6 +69,18 @@ button{cursor:pointer}
 .day-t{min-width:0}
 .day-d{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);line-height:1.1}
 .day-s{font-family:var(--display);font-weight:800;font-size:17px;line-height:1.05;white-space:nowrap}
+/* Veckoraden: alla sju dagar */
+:root{--run:#E0600F;--on-run:#FFFFFF;--rest:#7C5CE6;--on-rest:#FFFFFF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--run:#FF8A4C;--on-run:#210C00;--rest:#A48BFF;--on-rest:#140B33}}
+:root[data-theme="dark"]{--run:#FF8A4C;--on-run:#210C00;--rest:#A48BFF;--on-rest:#140B33}
+.strip{grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.strip .day{flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding:7px 1px;text-align:center;border-radius:11px}
+.strip .day-d{font-size:10px;letter-spacing:.05em;line-height:1}
+.strip .plate{width:18px;height:18px;border-width:2.5px}
+.strip .day.done .plate::after{font-size:10px}
+.strip .day-s{font-size:16px;line-height:.95}
+.strip .day-x{display:block;font-size:9.5px;font-weight:700;line-height:1;color:var(--muted);white-space:nowrap;margin-top:-1px;letter-spacing:-.01em}
+.strip .day.skip .day-x{visibility:hidden}
 
 /* Views */
 .view{display:flex;flex-direction:column;gap:14px;padding-top:16px}
@@ -796,7 +808,7 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
       <div class="logo" aria-label="GymSchema">Gym<span>Schema</span></div>
       <div class="wk num" id="wk">Vecka 1</div>
     </div>
-    <div class="strip" id="strip" aria-label="Veckans pass"></div>
+    <div class="strip" id="strip" aria-label="Veckans dagar"></div>
   </header>
 
   <main>
@@ -1132,11 +1144,25 @@ function renderStrip(){
   const w = weekInfo(), t = today();
   const from = w.ws < START ? START : w.ws;
   $("wk").innerHTML = "<b>Vecka " + w.n + "</b>" + from.getDate() + " " + MON[from.getMonth()] + " – " + addDays(w.ws, 6).getDate() + " " + MON[addDays(w.ws, 6).getMonth()];
-  $("strip").innerHTML = ORDER.map(k => {
-    const p = PROGRAM[k], isToday = BY_DOW[t.getDay()] === k, done = !!w.doneTypes[k];
-    const dayDate = addDays(w.ws, (p.dow + 6) % 7), skip = dayDate < START && !done;
-    return '<div class="day' + (done ? " done" : "") + (isToday && !skip ? " today" : "") + (skip ? " skip" : "") + '" style="' + sessColor(k) + '" title="' + esc(p.name) + (done ? " – klart" : skip ? " – utgår, programmet startar " + dLong(iso(START)) : "") + '">' +
-      '<span class="plate" aria-hidden="true"></span><span class="day-t"><span class="day-d">' + p.day + '</span><br><span class="day-s">' + (skip ? "–" : p.ab) + '</span></span></div>';
+  const DSHORT = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"], td = iso(t);
+  $("strip").innerHTML = [0, 1, 2, 3, 4, 5, 6].map(i => {
+    const d = addDays(w.ws, i), ds = iso(d), dow = d.getDay(), k = BY_DOW[dow];
+    let done, st, title, code, sub = "";
+    if (k){
+      const p = PROGRAM[k];
+      done = !!w.doneTypes[k]; st = sessColor(k); code = p.ab; title = p.name + (done ? " – klart" : "");
+    } else {
+      // vilodag (hållningen) eller löpdag – bockas per datum via Vanor (löpningen även av Garmin)
+      const run = RUN_DAYS[dow], hb = HABITS.find(h => h.k === (run ? "pass" : "hall"));
+      done = !!(hb && habitDone(ds, hb));
+      st = run ? "--c:var(--run);--onc:var(--on-run)" : "--c:var(--rest);--onc:var(--on-rest)";
+      code = run ? "Löp" : "Vila"; sub = run ? "" : "hållning";
+      title = run ? run + " i pratfart" + (done ? " – klart" : "") : "Vila – hållningsövningar" + (done ? " – gjort" : "");
+    }
+    const skip = d < START && !done;
+    if (skip) title += " – före programmet (startade " + dLong(iso(START)) + ")";
+    return '<div class="day' + (done ? " done" : "") + (ds === td && !skip ? " today" : "") + (skip ? " skip" : "") + '" style="' + st + '" title="' + esc(title) + '">' +
+      '<span class="day-d">' + DSHORT[dow] + '</span><span class="plate" aria-hidden="true"></span><span class="day-s">' + (skip ? "–" : code) + '</span>' + (sub ? '<span class="day-x">' + sub + '</span>' : '') + '</div>';
   }).join("");
 }
 function nextScheduled(){
@@ -2155,7 +2181,7 @@ $("v-vanor").addEventListener("click", e => {
   if (was) delete day[k]; else day[k] = true;
   if (!Object.keys(day).length) delete habits[habitDate];
   store("lyftloggen.habits.v1", habits);
-  renderVanor();
+  renderVanor(); renderStrip();
   if (!was && dayScore(habitDate) >= HABITS.length) toast("Perfekt dag ✓");
 });
 
@@ -2328,6 +2354,7 @@ function gmPaint(){
   const p = $("gmPass"); if (p) p.innerHTML = gmPassInner();
   const g = $("gmProg"); if (g) g.innerHTML = gmProgInner();
   if (view === "vanor") renderVanor();
+  renderStrip();  // löprundan från klockan bockar tisdagen i veckoraden
   if (typeof kcalPaint === "function") kcalPaint();
   if (typeof ntSoon === "function" && nt.on) ntSoon();
   const wc = $("wxCard"); if (wc && gm && gmRunOn(iso(today())).length) wc.remove();
@@ -4143,7 +4170,7 @@ document.addEventListener("change", e => {
 document.addEventListener("input", e => { if (e.target && e.target.id === "ntUrl"){ nt.url = e.target.value.trim(); ntSave(); } });
 
 /* ---------- Start ---------- */
-const BUILD = "12 nov 20.19", BUILD_NOTE = "Shrugs på Över-dagarna – för större trapezius";
+const BUILD = "12 nov 20.48", BUILD_NOTE = "Hela veckan syns högst upp – och shrugs på Över-dagarna";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
