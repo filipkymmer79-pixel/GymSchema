@@ -433,6 +433,7 @@ var SHAKE = (function () {
 
   // One entry per thing that goes in the mixer, in the order it goes in.
   //   g     grams in one household unit       step  smallest amount that is practical to measure
+  //   The whey is Star Nutrition Whey-80 Naturell, measured with a decilitre: the pack gives 37 g as about 1 dl.
   //   vol   how much room one gram takes once mixed, in ml
   //   tint  how strongly it colours the shake (berries stain far more than milk does)
   var ING = [
@@ -441,7 +442,7 @@ var SHAKE = (function () {
     { key: "smp",     name: "Skummjölkspulver",       short: "mjölkpulver",  buy: "Skummjölkspulver",            unit: "msk",   g: 7.5,  step: 1,   vol: 0.6, color: "#EDE0C0", tint: 1 },
     { key: "yog",     name: "Grekisk yoghurt 10 %",   short: "yoghurt",      buy: "Grekisk yoghurt 10 %",        unit: "dl",    g: 100,  step: 0.5, vol: 1.0, color: "#FBF8F1", tint: 1 },
     { key: "oat",     name: "Havremjöl",              short: "havremjöl",    buy: "Havremjöl",                   unit: "dl",    g: 50,   step: 0.5, vol: 1.2, color: "#D6BF94", tint: 1.4 },
-    { key: "whey",    name: "Whey",                   short: "whey",         buy: "Whey",                        unit: "skopa", g: 30,   step: 0.5, vol: 0.8, color: "#E9D79C", tint: 1 },
+    { key: "whey",    name: "Whey-80 Naturell",       short: "whey",         buy: "Star Nutrition Whey-80 Naturell", unit: "dl", g: 37, step: 0.5, vol: 0.8, color: "#E9D79C", tint: 1 },
     { key: "blue",    name: "Blåbär, frysta",         short: "blåbär",       buy: "Blåbär, frysta",              unit: "dl",    g: 60,   step: 0.5, vol: 1.0, color: "#5A36B8", tint: 120 },
     { key: "currant", name: "Svarta vinbär, frysta",  short: "vinbär",       buy: "Svarta vinbär, frysta",       unit: "dl",    g: 65,   step: 0.5, vol: 1.0, color: "#6E1F86", tint: 120 },
     { key: "spinach", name: "Spenat, fryst hackad",   short: "spenat",       buy: "Spenat, fryst hackad",        unit: "dl",    g: 65,   step: 0.5, vol: 1.0, color: "#2F6B3A", tint: 8 },
@@ -454,9 +455,10 @@ var SHAKE = (function () {
   ING.forEach(function (it) { it.stepG = it.g * it.step; BY[it.key] = it; });
 
   // The three sizes, in household units. 3 000 and 2 000 are the two recipe sheets; 2 500 sits halfway.
+  // The sheets had the whey in scoops (60, 45 and 30 g). In decilitres it is the nearest half: 1½, 1 and 1 dl.
   var SIZES = {
-    3000: { milk: 5,   smp: 8, yog: 4,   oat: 4, whey: 2,   blue: 2,   currant: 1, spinach: 1, banana: 2,   honey: 1, salt: 1, oil: 5 },
-    2500: { milk: 3.5, smp: 8, yog: 3.5, oat: 3, whey: 1.5, blue: 1.5, currant: 1, spinach: 1, banana: 1.5, honey: 1, salt: 1, oil: 5 },
+    3000: { milk: 5,   smp: 8, yog: 4,   oat: 4, whey: 1.5, blue: 2,   currant: 1, spinach: 1, banana: 2,   honey: 1, salt: 1, oil: 5 },
+    2500: { milk: 3.5, smp: 8, yog: 3.5, oat: 3, whey: 1,   blue: 1.5, currant: 1, spinach: 1, banana: 1.5, honey: 1, salt: 1, oil: 5 },
     2000: { milk: 2,   smp: 8, yog: 3,   oat: 2, whey: 1,   blue: 1,   currant: 1, spinach: 1, banana: 1,   honey: 1, salt: 1, oil: 5 }
   };
 
@@ -560,7 +562,7 @@ var SHAKE = (function () {
     var noSmp = !!s.noSmp || !!missing.smp;
     if (noSmp) {
       base.smp = 0;
-      if (!missing.whey) base.whey += 2;           // one more scoop stands in for the powder
+      if (!missing.whey) base.whey += 2;           // one more decilitre of whey stands in for the powder
     }
     if (s.honey === false || missing.honey) base.honey = 0;
     ING.forEach(function (it) {
@@ -582,7 +584,7 @@ var SHAKE = (function () {
       lo[key] = Math.max(0, base[key] - FLEX[key].down);
       hi[key] = base[key] + FLEX[key].up;
       if (key === "milk" && s.thick === 1) hi[key] = base[key];   // thicker means the milk stays down
-      if (key === "whey" && noSmp) hi[key] = base[key];           // the extra scoop is already in
+      if (key === "whey" && noSmp) hi[key] = base[key];           // the extra decilitre is already in
     });
 
     var caCap = Math.max(plainT.Ca, 2300) + 10;
@@ -1149,7 +1151,7 @@ var SHAKE = (function () {
       '<p class="hint">' + (s.thick === -1 ? halves(thickSteps) + NB + "dl vatten till. Samma kalorier." : s.thick === 1 ? halves(thickSteps) + NB + "dl mindre " + (s.missing.milk ? "vatten" : "mjölk") + ". Kalorierna hålls ungefär lika." : "Som i receptet.") + "</p></div>";
     html += '<div class="block switches">' +
       '<button type="button" class="switch" data-act="honey" aria-pressed="' + (s.honey !== false && !s.missing.honey) + '"><span><b>Honung</b><small>1 msk ger 17 g tillsatt socker. Av betyder noll.</small></span><span class="knob"></span></button>' +
-      '<button type="button" class="switch" data-act="smp" aria-pressed="' + (!s.noSmp && !s.missing.smp) + '"><span><b>Mjölkpulver</b><small>Av: en skopa whey tar dess plats. Snällare mot magen och mycket mindre kalcium.</small></span><span class="knob"></span></button></div>';
+      '<button type="button" class="switch" data-act="smp" aria-pressed="' + (!s.noSmp && !s.missing.smp) + '"><span><b>Mjölkpulver</b><small>Av: 1 dl whey tar dess plats. Snällare mot magen och mycket mindre kalcium.</small></span><span class="knob"></span></button></div>';
     html += '<div class="block"><h2 class="h2">Mjölk</h2>' + seg("milk", s.milk15 ? 1 : 0, [[0, "3" + NB + "%, röd"], [1, "1,5" + NB + "%, grön"]], "Vilken mjölk") +
       '<p class="hint">Laktosfri i båda fallen.' + (rec.steps.milk ? " Den gröna ger ungefär " + kc(S.grams(rec.steps, "milk") * 0.13) + NB + "kcal mindre om dagen." : "") + "</p></div>";
 
@@ -1203,7 +1205,7 @@ var SHAKE = (function () {
       html += "</div>";
     });
     html += '<p class="key"><span><i></i>shaken</span><span><i class="extra"></i>tillskotten</span><span><i class="need"></i>hela dagsbehovet</span></p>';
-    html += '<p class="hint">Dagsbehov enligt de nordiska näringsrekommendationerna 2023 för män 18–24 år. Värdena är standardvärden; skopor, havremjöl och yoghurt skiljer sig mellan märken.</p>';
+    html += '<p class="hint">Dagsbehov enligt de nordiska näringsrekommendationerna 2023 för män 18–24 år. Värdena är standardvärden. Vasslen är räknad som en vanlig 80-vassle; havremjöl och yoghurt skiljer sig mellan märken.</p>';
     $("view-nutrition").innerHTML = html;
   }
 
@@ -1217,7 +1219,6 @@ var SHAKE = (function () {
       if (it.key === "milk") text = trim1(Math.ceil(n * it.step * days / 5 - 1e-9) / 2) + NB + "liter";
       else if (it.key === "banana") text = Math.ceil(n * it.step * days - 1e-9) + NB + "st";
       else if (it.key === "oil") text = halves(Math.ceil(g / 0.915 / 50 - 1e-9) / 2) + NB + "dl";
-      else if (it.key === "whey") text = weight(g) + " (" + halves(n * it.step * days) + NB + "skopor)";
       else text = weight(g);
       out.push({ key: it.key, name: it.key === "milk" && state.settings.milk15 ? "Laktosfri mellanmjölk 1,5 %" : it.buy, text: text, color: it.color });
     });
