@@ -4,9 +4,9 @@ Filips gymschema – program 2.1. Öppna https://filipkymmer79-pixel.github.io/G
 
 ### Programmet
 
-Överkroppen först, benen korta och tunga. **Över** onsdag och lördag (chins, hantelbänkpress, kabelrodd, axelpress, sidolyft, bicepscurl, face pulls). **Ben + över** torsdag och söndag: benpress, hip thrust och rumänska marklyft med tre set var, sedan lutande hantelpress, sidolyft och triceps över huvudet med rep i kabel, sist plankan och dead bug. Uppvärmningen före benen har 3 × 5 upphopp för skelettet. Löpning i pratfart en gång i veckan, på tisdagen (30–40 min). Måndag och fredag är vilodagar. Varje övning har bild, steg för steg, vanliga fel och video under **Program**.
+Överkroppen först, benen korta och tunga. **Över** onsdag och lördag (chins, hantelbänkpress, kabelrodd, axelpress, sidolyft, bicepscurl, face pulls). **Ben + över** torsdag och söndag: benpress, vadpress (i benpressen direkt efter), hip thrust och rumänska marklyft, sedan lutande hantelpress, sidolyft, triceps över huvudet med rep i kabel och bicepscurl, sist plankan och dead bug. Uppvärmningen före benen har 3 × 5 upphopp för skelettet. Löpning i pratfart en gång i veckan, på tisdagen (30–40 min). Måndag och fredag är vilodagar. Varje övning har bild, steg för steg, vanliga fel och video under **Program**.
 
-Version 2.1 kom 12 november 2026: dagarna flyttades en dag, lårcurl och vadpress utgick och löpningen gick ner till en gång i veckan. Gamla pass behåller sina namn i historiken (Under-passen före 12 november heter fortfarande Under).
+Version 2.1 kom 12 november 2026: dagarna flyttades en dag, lårcurl utgick, biceps och triceps fick fler set och löpningen gick ner till en gång i veckan. Gamla pass behåller sina namn i historiken (Under-passen före 12 november heter fortfarande Under).
 
 ### Garmin
 
