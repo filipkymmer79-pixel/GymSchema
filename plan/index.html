@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="sv" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Telefon-AI-planen</title>
+<meta name="description" content="Planen för AI-telefonisten till verkstäder: steg, kunder och manus.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AI-planen">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0B1226">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;display=swap">
+<style>
+/* One phone column like the other apps: sticky progress strip on top, three tabs pinned to the bottom. */
+:root {
+  --bg: #F3F5FA;
+  --ink: #0D1530;
+  --muted: #5B6584;
+  --line: #D9DEEC;
+  --edge: #B4BDD6;
+  --done: #7C86A3;
+  --lamp: #FFB627;
+  --lamp-ink: #1B1300;
+  --lamp-soft: rgba(27, 19, 0, 0.64);
+  --lamp-edge: rgba(27, 19, 0, 0.45);
+  --lamp-line: rgba(27, 19, 0, 0.24);
+  --mark: var(--lamp);
+  --mark-ink: var(--lamp-ink);
+  --good: #1D7A52;
+  --good-ink: #FFFFFF;
+  --good-soft: rgba(29, 122, 82, 0.1);
+  --late: #C23B12;
+  --late-ink: #FFFFFF;
+  --font-display: "Bricolage Grotesque", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --font-body: "Instrument Sans", "Helvetica Neue", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1226; --ink: #EDF0FA; --muted: #98A2C3; --line: #1F2947;
+    --edge: #3B4878; --done: #6F7A9C; --lamp: #FFBE3D;
+    --good: #4CC38A; --good-ink: #06231A; --good-soft: rgba(76, 195, 138, 0.13);
+    --late: #FF8A5B; --late-ink: #2A0D00;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1226; --ink: #EDF0FA; --muted: #98A2C3; --line: #1F2947;
+  --edge: #3B4878; --done: #6F7A9C; --lamp: #FFBE3D;
+  --good: #4CC38A; --good-ink: #06231A; --good-soft: rgba(76, 195, 138, 0.13);
+  --late: #FF8A5B; --late-ink: #2A0D00;
+  color-scheme: dark;
+}
+
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--bg);
+}
+.page {
+  box-sizing: border-box;
+  max-width: 34rem;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: calc(1.375rem + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Header */
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; padding-bottom: 0.875rem; }
+.headtext { display: grid; gap: 0.5rem; min-width: 0; }
+.badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 4px 4px 0;
+  border-radius: 50%;
+  background: var(--lamp);
+  color: var(--lamp-ink);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--lamp);
+}
+.badge svg { width: 1.625rem; height: 1.625rem; }
+.eyebrow {
+  margin: 0;
+  font: 500 0.75rem/1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+h1 {
+  margin: 0;
+  font: 800 clamp(2.25rem, 10.5vw, 3.25rem)/0.95 var(--font-display);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Sticky progress strip */
+.bar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  display: grid;
+  gap: 0.625rem;
+  padding-block: 0.625rem 0.75rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.segs { display: flex; gap: 6px; min-height: 7px; }
+.segs > span { display: flex; gap: 2px; min-width: 0; }
+.segs i {
+  flex: 1 1 0%;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--line);
+  transition: background-color 0.2s ease;
+}
+.segs i.on { background: var(--lamp); }
+.segs i.cur { background: var(--ink); }
+.barrow { display: flex; align-items: center; gap: 0.75rem; }
+.nowbtn {
+  flex: 1;
+  min-width: 0;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.tag {
+  flex: none;
+  padding: 0.3125rem 0.4375rem 0.25rem;
+  border-radius: 0.375rem;
+  background: var(--lamp);
+  color: var(--lamp-ink);
+  font: 500 0.6875rem/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.nowtext { min-width: 0; font: 700 1.0625rem/1.2 var(--font-display); overflow-wrap: anywhere; }
+.count {
+  flex: none;
+  font: 500 0.9375rem/1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.count b { font-weight: 500; color: var(--ink); }
+
+/* Sections */
+main, .view { display: grid; gap: 1.625rem; padding-top: 1.375rem; }
+section { display: grid; gap: 0.5rem; }
+.sec {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+  margin: 0;
+  padding-inline: 0.75rem;
+  font: 500 0.75rem/1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.sectitle { min-width: 0; color: var(--ink); }
+.secright { display: flex; gap: 0.625rem; }
+.num { letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+.when.ok { color: var(--good); }
+.when.late {
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.3125rem;
+  background: var(--late);
+  color: var(--late-ink);
+}
+.secnote { margin: 0 0.75rem; font-size: 0.875rem; line-height: 1.4; color: var(--muted); }
+.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+
+/* One step */
+.task {
+  position: relative;
+  border-radius: 1rem;
+  transition: background-color 0.2s ease;
+}
+.chk {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.task > label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.125rem;
+  padding: 0.5rem 0.75rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.dot {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 1.875rem;
+  height: 1.875rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 50%;
+  font: 500 0.75rem/1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.dot::before { content: attr(data-n); }
+.dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.7rem;
+  height: 0.36rem;
+  border-left: 2px solid var(--mark-ink);
+  border-bottom: 2px solid var(--mark-ink);
+  transform: translate(-50%, -68%) rotate(-45deg);
+  opacity: 0;
+}
+.txt { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.t { display: block; font-weight: 600; }
+.note {
+  display: block;
+  margin-top: 0.1875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--muted);
+}
+.goalnow { font-family: var(--font-mono); font-size: 0.75rem; white-space: nowrap; }
+
+.task.is-done .dot { background: var(--mark); border-color: var(--mark); color: transparent; }
+.task.is-done .dot::after { opacity: 1; }
+.task.is-done .txt { color: var(--done); }
+.task.is-done .t { text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.task.is-done .note { color: var(--done); }
+
+/* The step to do now: the one lit row. Its children read the lamp tokens. */
+.task.now {
+  background: var(--lamp);
+  color: var(--lamp-ink);
+  --ink: var(--lamp-ink);
+  --muted: var(--lamp-soft);
+  --edge: var(--lamp-edge);
+  --line: var(--lamp-line);
+  --done: var(--lamp-soft);
+  --mark: var(--lamp-ink);
+  --mark-ink: var(--lamp);
+}
+.task.now .dot { border-color: var(--lamp-ink); color: var(--lamp-ink); }
+.task.now .t { font-weight: 700; }
+.task.now > label::after {
+  content: "Nu";
+  flex: none;
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  font: 500 0.6875rem/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* How-to folded under a step */
+.more { padding: 0 0.75rem 0.75rem 3.375rem; margin-top: -0.25rem; }
+.more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.25rem;
+  list-style: none;
+  border-radius: 0.5rem;
+  font: 500 0.8125rem/1 var(--font-mono);
+  color: var(--muted);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.more summary::-webkit-details-marker { display: none; }
+.more summary::before {
+  content: "+";
+  flex: none;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 50%;
+  line-height: 1;
+}
+.more[open] summary::before { content: "\2212"; }
+.steps { margin: 0.375rem 0 0; padding: 0 0 0 1.25rem; display: grid; gap: 0.5rem; font-size: 0.875rem; line-height: 1.4; }
+
+/* Customers: the money first */
+.money {
+  display: grid;
+  gap: 0.875rem;
+  padding: 1rem 1rem 1.125rem;
+  border: 1.5px solid var(--line);
+  border-radius: 1.25rem;
+}
+.money .sec { padding-inline: 0; }
+.bigrow { display: flex; align-items: flex-end; gap: 1rem; }
+.big {
+  font: 800 clamp(3.5rem, 18vw, 4.5rem)/0.82 var(--font-display);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.perm {
+  min-width: 0;
+  padding-bottom: 0.125rem;
+  font: 500 0.875rem/1.45 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.perm b { font-weight: 500; color: var(--ink); }
+.meter { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.meter > span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--lamp);
+  transition: width 0.3s ease;
+}
+.next { margin: 0; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; }
+.next .left { font-weight: 500; color: var(--muted); }
+
+/* Contacts today */
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-inline: 0.75rem;
+}
+.round {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  padding: 0;
+  border: 1.5px solid var(--edge);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  font: 500 1.625rem/1 var(--font-body);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.round.plus { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.round:disabled { opacity: 0.4; cursor: default; }
+.cnum { font: 500 1rem/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+.cnum b { font: 800 2.75rem/1 var(--font-display); color: var(--ink); }
+.segs10 { display: flex; gap: 4px; padding-inline: 0.75rem; }
+.segs10 i { flex: 1 1 0%; height: 7px; border-radius: 2px; background: var(--line); transition: background-color 0.2s ease; }
+.segs10 i.on { background: var(--lamp); }
+
+/* Add a workshop */
+.add { display: flex; gap: 0.5rem; }
+.add input {
+  flex: 1;
+  min-width: 0;
+  min-height: 3rem;
+  padding: 0 1rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 500 1rem/1 var(--font-body);
+}
+.add input::placeholder { color: var(--muted); }
+.addbtn {
+  flex: none;
+  min-height: 3rem;
+  padding: 0 1.125rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 700 1rem/1 var(--font-body);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.formmsg, .copymsg, .status {
+  min-height: 1.4em;
+  margin: 0 0.75rem;
+  font: 400 0.75rem/1.4 var(--font-mono);
+  color: var(--muted);
+}
+.clist { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.crow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3.25rem;
+  padding: 0.375rem 0.375rem 0.375rem 0.75rem;
+  border-radius: 1rem;
+}
+.crow.st-betalar { background: var(--good-soft); }
+.cname { flex: 1; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.crow.st-nej .cname { color: var(--done); text-decoration: line-through; }
+.selwrap { position: relative; flex: none; color: var(--ink); }
+.selwrap::after {
+  content: "";
+  position: absolute;
+  right: 0.8125rem;
+  top: 50%;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+.stsel {
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 2.25rem;
+  margin: 0;
+  padding: 0 1.875rem 0 0.75rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: 600 0.875rem/1 var(--font-body);
+  cursor: pointer;
+}
+.crow.st-provar .selwrap { color: var(--good); }
+.crow.st-provar .stsel { border-color: var(--good); }
+.crow.st-betalar .selwrap { color: var(--good-ink); }
+.crow.st-betalar .stsel { border-color: var(--good); background: var(--good); }
+.crow.st-nej .selwrap { color: var(--done); }
+.stsel option { color: var(--ink); background: var(--bg); }
+.del {
+  flex: none;
+  min-height: 2.25rem;
+  padding: 0 0.625rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: 500 0.75rem/1 var(--font-mono);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.del.armed { background: var(--late); color: var(--late-ink); }
+.empty { margin: 0 0.75rem; font-size: 0.9375rem; line-height: 1.4; color: var(--muted); }
+
+/* Scripts */
+q { quotes: "\201D" "\201D" "\2019" "\2019"; }
+.script {
+  margin: 0;
+  padding: 0 0.75rem 0 2.5rem;
+  display: grid;
+  gap: 0.875rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.script li::marker { font: 500 0.8125rem/1 var(--font-mono); color: var(--muted); }
+.stage {
+  display: block;
+  margin-top: 0.25rem;
+  font: 400 0.75rem/1.4 var(--font-mono);
+  color: var(--muted);
+}
+.lines { font-size: 1rem; font-weight: 500; }
+.qas { margin: 0; padding-inline: 0.75rem; display: grid; gap: 1rem; }
+.qa { display: grid; gap: 0.25rem; }
+.qa dt, .qa dd { margin: 0; line-height: 1.35; }
+.qa dt { color: var(--muted); font-weight: 500; }
+.qa dd { font-weight: 600; }
+.qa dt::before, .qa dd::before {
+  display: inline-block;
+  min-width: 2.25rem;
+  font: 500 0.6875rem/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.qa dt::before { content: "De"; }
+.qa dd::before { content: "Du"; }
+.prompt {
+  margin: 0;
+  padding: 1rem;
+  border: 1.5px solid var(--line);
+  border-radius: 1rem;
+  font: 400 0.8125rem/1.55 var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.copybtn {
+  min-height: 3rem;
+  padding: 0 1.125rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 700 1rem/1 var(--font-body);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.copybox {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 1rem;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 0.875rem/1.4 var(--font-mono);
+}
+.tips { margin: 0; padding: 0 0.75rem 0 2.5rem; display: grid; gap: 0.375rem; font-size: 0.9375rem; line-height: 1.4; color: var(--muted); }
+
+/* Three tabs */
+.tabs {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem max(16px, env(safe-area-inset-right, 0px)) calc(0.5rem + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}
+.tab {
+  flex: 1;
+  max-width: 11rem;
+  min-height: 2.75rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: 700 1rem/1 var(--font-body);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.tab[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+
+/* Keyboard focus */
+.chk:focus-visible + label,
+.nowbtn:focus-visible,
+.tab:focus-visible,
+.round:focus-visible,
+.add input:focus-visible,
+.addbtn:focus-visible,
+.stsel:focus-visible,
+.del:focus-visible,
+.copybtn:focus-visible,
+.copybox:focus-visible,
+.more summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.task > .chk:focus-visible + label { outline-offset: -3px; border-radius: 1rem; }
+
+@keyframes pop { 40% { transform: scale(1.22); } }
+.task.pop .dot { animation: pop 0.28s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .task, .dot, .segs i, .segs10 i, .meter > span { transition: none; }
+  .task.pop .dot { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="head">
+    <div class="headtext">
+      <p class="eyebrow" id="eyebrow">AI-telefonist för verkstäder</p>
+      <h1 id="pageTitle">Planen</h1>
+    </div>
+    <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+  </header>
+
+  <div id="planView">
+    <div class="bar">
+      <div class="segs" id="segs" aria-hidden="true"></div>
+      <div class="barrow">
+        <button type="button" class="nowbtn" id="nowBtn">
+          <span class="tag" id="nowTag">Nu</span><span class="nowtext" id="nowText">Bara den här affären nu</span>
+        </button>
+        <span class="count"><b id="doneN">0</b>/30</span>
+      </div>
+    </div>
+    <main id="list">
+<section data-phase="p1" data-due="2026-11-12" data-duelabel="tor 12 nov"><h2 class="sec"><span class="sectitle">Bestäm dig</span><span class="secright"><span class="when">Idag</span><span class="num"></span></span></h2><ol class="rows">
+<li class="task"><input class="chk" type="checkbox" id="t-fokus"><label for="t-fokus"><span class="dot" data-n="1"></span><span class="txt"><span class="t">Bara den här affären nu</span><small class="note">Andra pengaprojekt får vänta tills du har 20 kunder.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-bransch"><label for="t-bransch"><span class="dot" data-n="2"></span><span class="txt"><span class="t">Välj bransch: verkstäder</span><small class="note">Däck och bil. De får massor av samtal om bokningar, och det finns kedjor.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-sociala"><label for="t-sociala"><span class="dot" data-n="3"></span><span class="txt"><span class="t">Ingen Instagram eller TikTok nu</span><small class="note">Varje timme där är en timme du inte pratar med verkstäder.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-creator"><label for="t-creator"><span class="dot" data-n="4"></span><span class="txt"><span class="t">Behåll ElevenLabs Creator</span><small class="note">Säger du upp det kan du inte använda din professionella röstklon.</small></span></label></li>
+</ol></section>
+<section data-phase="p2" data-due="2026-11-15" data-duelabel="sön 15 nov"><h2 class="sec"><span class="sectitle">Rösten</span><span class="secright"><span class="when">sön 15 nov</span><span class="num"></span></span></h2><ol class="rows">
+<li class="task"><input class="chk" type="checkbox" id="t-rum"><label for="t-rum"><span class="dot" data-n="5"></span><span class="txt"><span class="t">Tyst rum och riktig mikrofon</span><small class="note">En garderob full med kläder, eller hyr en studio i Umeå. Inte mobilen.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-spela"><label for="t-spela"><span class="dot" data-n="6"></span><span class="txt"><span class="t">Spela in 1–3 timmar</span><small class="note">Minst 30 minuter. Glad och lugn, i hela meningar. Repliker finns under Manus.</small></span></label><details class="more"><summary>Så gör du</summary><ol class="steps"><li>Samma avstånd till mikrofonen hela tiden</li><li>Ingen musik, inga ljud och inget eko</li><li>Spara som MP3, 192 kbps eller bättre</li><li>Lyssna i hörlurar. Hör du rummet så hör klonen det också</li></ol></details></li>
+<li class="task"><input class="chk" type="checkbox" id="t-klon"><label for="t-klon"><span class="dot" data-n="7"></span><span class="txt"><span class="t">Skapa Professional Voice Clone</span><small class="note">I ElevenLabs. Träningen tar några timmar, ibland upp till ett dygn.</small></span></label><details class="more"><summary>Så gör du</summary><ol class="steps"><li>My Voices → Create voice → Professional Voice Clone</li><li>Välj svenska och ladda upp ljudet</li><li>Verifiera att rösten är din</li><li>Kolla i My Voices att den är tränad för v4</li></ol></details></li>
+<li class="task"><input class="chk" type="checkbox" id="t-agent"><label for="t-agent"><span class="dot" data-n="8"></span><span class="txt"><span class="t">Bygg agenten i ElevenAgents</span><small class="note">Välj Eleven v4 Turbo och din röst. Klistra in instruktionerna från Manus.</small></span></label><details class="more"><summary>Så gör du</summary><ol class="steps"><li>Vill du hellre stanna i Retell: importera klonen med delningslänk under Import Professional Voices</li><li>Kör den då på Flash v2.5 och byt till v4 Turbo när Retell lägger till den</li></ol></details></li>
+<li class="task"><input class="chk" type="checkbox" id="t-nummer"><label for="t-nummer"><span class="dot" data-n="9"></span><span class="txt"><span class="t">Koppla ett svenskt telefonnummer</span><small class="note">Det är numret verkstäderna ringer för att testa demon. I ElevenAgents kopplar du in det via Twilio eller SIP.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-test"><label for="t-test"><span class="dot" data-n="10"></span><span class="txt"><span class="t">Ring den själv 20 gånger</span><small class="note">Ute, i bilen och med dialekt. Rätta varje ord den säger fel.</small></span></label></li>
+</ol></section>
+<section data-phase="p3" data-due="2026-11-18" data-duelabel="ons 18 nov"><h2 class="sec"><span class="sectitle">Demon för verkstad</span><span class="secright"><span class="when">ons 18 nov</span><span class="num"></span></span></h2><ol class="rows">
+<li class="task"><input class="chk" type="checkbox" id="t-ai"><label for="t-ai"><span class="dot" data-n="11"></span><span class="txt"><span class="t">Den säger att den är en AI</span><small class="note">Det är ett krav enligt EU:s AI-förordning sedan 2 augusti 2026.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-fragor"><label for="t-fragor"><span class="dot" data-n="12"></span><span class="txt"><span class="t">Den tar namn, nummer, regnummer och ärende</span><small class="note">Och när kunden vill komma. Den upprepar nummer för att kolla att de stämmer.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-sms"><label for="t-sms"><span class="dot" data-n="13"></span><span class="txt"><span class="t">Ägaren får allt direkt efter samtalet</span><small class="note">Som sms eller mejl, kort och tydligt.</small></span></label><details class="more"><summary>Så gör du</summary><ol class="steps"><li>Till exempel: agentens webhook efter samtalet skickar sammanfattningen vidare via Make eller Zapier</li></ol></details></li>
+<li class="task"><input class="chk" type="checkbox" id="t-mall"><label for="t-mall"><span class="dot" data-n="14"></span><span class="txt"><span class="t">Gör en mall du kan kopiera</span><small class="note">Byt bara namn, öppettider och priser. En ny demo på 30 minuter.</small></span></label></li>
+</ol></section>
+<section data-phase="p4" data-due="2026-11-20" data-duelabel="fre 20 nov"><h2 class="sec"><span class="sectitle">Hemsida och erbjudande</span><span class="secright"><span class="when">fre 20 nov</span><span class="num"></span></span></h2><ol class="rows">
+<li class="task"><input class="chk" type="checkbox" id="t-sida"><label for="t-sida"><span class="dot" data-n="15"></span><span class="txt"><span class="t">Hemsida på en sida</span><small class="note">Det är allt som behövs:</small></span></label><details class="more"><summary>Så gör du</summary><ol class="steps"><li>En mening: AI som svarar i telefon åt verkstäder</li><li>Demonumret som de kan ringa för att testa</li><li>Första månaden gratis, ingen bindningstid</li><li>Ditt namn, telefonnummer och en mejl med egen domän, inte gmail</li></ol></details></li>
+<li class="task"><input class="chk" type="checkbox" id="t-pris"><label for="t-pris"><span class="dot" data-n="16"></span><span class="txt"><span class="t">Erbjudandet: 5 000 kr i månaden plus moms</span><small class="note">Fakturan blir 6 250 kr med moms. Första månaden gratis, ingen bindningstid, och du fixar allt.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-avtal"><label for="t-avtal"><span class="dot" data-n="17"></span><span class="txt"><span class="t">Avtal och PUB-avtal klara</span><small class="note">Du hanterar uppringarnas personuppgifter åt verkstaden. Då kräver GDPR ett personuppgiftsbiträdesavtal.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-lista"><label for="t-lista"><span class="dot" data-n="18"></span><span class="txt"><span class="t">Lista 30 verkstäder i Umeå</span><small class="note">Däck, bil och service. Lägg in dem under Kunder.</small></span></label></li>
+</ol></section>
+<section data-phase="p5" data-due="2026-11-30" data-duelabel="mån 30 nov"><h2 class="sec"><span class="sectitle">Första kunden</span><span class="secright"><span class="when">mån 30 nov</span><span class="num"></span></span></h2><ol class="rows">
+<li class="task"><input class="chk" type="checkbox" id="t-dagligen"><label for="t-dagligen"><span class="dot" data-n="19"></span><span class="txt"><span class="t">Prata med 10 verkstäder om dagen</span><small class="note">Gå in eller ring, varje vardag. Räkna under Kunder.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-personlig"><label for="t-personlig"><span class="dot" data-n="20"></span><span class="txt"><span class="t">Bygg en demo med deras namn innan du går dit</span><small class="note">Låt ägaren ringa från sin egen telefon.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-forsta"><label for="t-forsta"><span class="dot" data-n="21"></span><span class="txt"><span class="t">Första kunden inkopplad</span><small class="note">Du ställer in vidarekoppling vid ej svar till AI-numret. De behöver inte göra något.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-mat"><label for="t-mat"><span class="dot" data-n="22"></span><span class="txt"><span class="t">Mät samtalen från dag ett</span><small class="note">Hur många samtal AI:n tog som de annars hade missat.</small></span></label></li>
+</ol></section>
+<section data-phase="p6" data-due="2026-12-31" data-duelabel="31 dec"><h2 class="sec"><span class="sectitle">5 kunder</span><span class="secright"><span class="when">Före nyår</span><span class="num"></span></span></h2><ol class="rows">
+<li class="task" data-goal="5"><input class="chk" type="checkbox" id="t-5"><label for="t-5"><span class="dot" data-n="23"></span><span class="txt"><span class="t">5 betalande verkstäder</span><small class="note">25 000 kr i månaden. <span class="goalnow" data-goalnow="5"></span></small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-rapport"><label for="t-rapport"><span class="dot" data-n="24"></span><span class="txt"><span class="t">Skicka en rapport till varje kund varje månad</span><small class="note">Till exempel: AI:n tog 63 samtal och bokade 21 tider.</small></span></label></li>
+</ol></section>
+<section data-phase="p7"><h2 class="sec"><span class="sectitle">10 kunder och kedjan</span><span class="secright"><span class="when">Vid 10 kunder</span><span class="num"></span></span></h2><ol class="rows">
+<li class="task" data-goal="10"><input class="chk" type="checkbox" id="t-10"><label for="t-10"><span class="dot" data-n="25"></span><span class="txt"><span class="t">10 betalande verkstäder</span><small class="note">50 000 kr i månaden. <span class="goalnow" data-goalnow="10"></span></small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-kedjan"><label for="t-kedjan"><span class="dot" data-n="26"></span><span class="txt"><span class="t">Visa siffrorna för kedjan</span><small class="note">Cirka 100 verkstäder. Målet är 300 000 kr i månaden från en enda affär.</small></span></label></li>
+</ol></section>
+<section data-phase="p8"><h2 class="sec"><span class="sectitle">20 kunder och frihet</span><span class="secright"><span class="when">Vid 20 kunder</span><span class="num"></span></span></h2><ol class="rows">
+<li class="task" data-goal="20"><input class="chk" type="checkbox" id="t-20"><label for="t-20"><span class="dot" data-n="27"></span><span class="txt"><span class="t">20 betalande verkstäder</span><small class="note">100 000 kr i månaden. <span class="goalnow" data-goalnow="20"></span></small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-saljare"><label for="t-saljare"><span class="dot" data-n="28"></span><span class="txt"><span class="t">Ta in en säljare som får betalt per kund</span><small class="note">Då slipper du ringa runt själv.</small></span></label></li>
+<li class="task"><input class="chk" type="checkbox" id="t-support"><label for="t-support"><span class="dot" data-n="29"></span><span class="txt"><span class="t">Ta in någon som sköter supporten</span><small class="note">Då slipper du hålla koll på allt själv.</small></span></label></li>
+</ol></section>
+<section data-phase="p9"><h2 class="sec"><span class="sectitle">5 miljoner om året</span><span class="secright"><span class="when">Vid 84 kunder</span><span class="num"></span></span></h2><ol class="rows">
+<li class="task" data-goal="84"><input class="chk" type="checkbox" id="t-84"><label for="t-84"><span class="dot" data-n="30"></span><span class="txt"><span class="t">84 betalande verkstäder</span><small class="note">5 miljoner om året före kostnader och skatt. Vill du ha 5 miljoner kvar efter skatt behövs minst dubbelt så många. <span class="goalnow" data-goalnow="84"></span></small></span></label></li>
+</ol></section>
+    </main>
+  </div>
+
+  <div id="kundView" class="view" hidden>
+    <section class="money" aria-labelledby="moneyHead">
+      <h2 class="sec" id="moneyHead"><span class="sectitle">Betalande kunder</span><span class="num" id="trialN"></span></h2>
+      <div class="bigrow">
+        <span class="big" id="payN">0</span>
+        <span class="perm"><b id="mrr">0&nbsp;kr</b> i månaden<br><span id="arr">0&nbsp;kr</span> om året</span>
+      </div>
+      <div class="meter" id="meter" role="progressbar" aria-label="Mot nästa mål" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"><span id="meterFill"></span></div>
+      <p class="next" id="nextText">Nästa mål: 1 kund · Första kunden</p>
+    </section>
+
+    <section aria-labelledby="todayHead">
+      <h2 class="sec" id="todayHead"><span class="sectitle">Kontakter idag</span><span class="num" id="todayDate"></span></h2>
+      <div class="counter">
+        <button type="button" class="round" id="minusBtn" aria-label="En kontakt mindre">&#8722;</button>
+        <span class="cnum" aria-live="polite"><b id="todayN">0</b> av 10</span>
+        <button type="button" class="round plus" id="plusBtn" aria-label="En kontakt till">+</button>
+      </div>
+      <div class="segs10" id="segs10" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </section>
+
+    <section aria-labelledby="listHead">
+      <h2 class="sec" id="listHead"><span class="sectitle">Verkstäder</span><span class="num" id="listN"></span></h2>
+      <form class="add" id="addForm" autocomplete="off">
+        <label class="sr" for="addName">Verkstadens namn</label>
+        <input id="addName" type="text" placeholder="Verkstadens namn" maxlength="80" enterkeyhint="done">
+        <button type="submit" class="addbtn" id="addBtn">Lägg till</button>
+      </form>
+      <p class="formmsg" id="addMsg" role="status"></p>
+      <ul class="clist" id="clist"></ul>
+      <p class="empty" id="empty">Inga verkstäder än. Skriv in de 30 du ska prata med, en i taget. Ändra status när något händer.</p>
+    </section>
+  </div>
+
+  <div id="manusView" class="view" hidden>
+    <section aria-labelledby="pitchHead">
+      <h2 class="sec" id="pitchHead"><span class="sectitle">När du går in eller ringer</span></h2>
+      <ol class="script"><li><q>Hej! Jag heter Filip. Jag bygger AI som svarar i telefon åt verkstäder här i Umeå.</q></li><li><q>Hur ofta missar ni samtal när ni står ute i verkstaden?</q><span class="stage">Vänta på svaret.</span></li><li><q>Jag har byggt en åt er. Ring det här numret, så får du höra.</q><span class="stage">Låt ägaren ringa från sin egen telefon.</span></li><li><q>Den säger att den är en AI, tar namn, nummer, regnummer och vad det gäller, och skickar allt till dig direkt.</q></li><li><q>Första månaden är gratis och ni kan säga upp när ni vill. Sen kostar den 5 000 kr i månaden plus moms.</q></li><li><q>Jag fixar allt. Ska jag koppla in den i morgon?</q></li></ol>
+    </section>
+
+    <section aria-labelledby="objHead">
+      <h2 class="sec" id="objHead"><span class="sectitle">Om de säger</span></h2>
+      <dl class="qas"><div class="qa"><dt>Det låter som en robot.</dt><dd>Ring igen och lyssna. Det är min röst.</dd></div><div class="qa"><dt>Det är för dyrt.</dt><dd>Vad är ett jobb värt för er? Räddar den några jobb i månaden har den betalat sig.</dd></div><div class="qa"><dt>Vi har telefonsvarare.</dt><dd>Många lägger på i stället för att lämna ett meddelande, och ringer nästa verkstad. AI:n tar hand om dem direkt.</dd></div><div class="qa"><dt>Jag måste fundera.</dt><dd>Klart. Testa gratis en månad, så ser du siffrorna själv. Säger du upp kostar det inget.</dd></div><div class="qa"><dt>Hur funkar det?</dt><dd>Ni behåller ert nummer. Samtal ni inte hinner ta går vidare till AI:n. Jag ställer in det på några minuter.</dd></div></dl>
+    </section>
+
+    <section aria-labelledby="promptHead">
+      <h2 class="sec" id="promptHead"><span class="sectitle">Instruktioner till AI:n</span></h2>
+      <p class="secnote">Kopiera, klistra in i agenten och byt ut allt inom hakparenteser.</p>
+      <pre class="prompt" id="promptText">Du är AI-assistent i telefonen åt [VERKSTADENS NAMN], en bilverkstad i Umeå. Du svarar när verkstaden inte hinner.
+
+Börja varje samtal med exakt detta:
+&quot;Hej, du har ringt [VERKSTADENS NAMN]. Jag är verkstadens AI-assistent. Vad kan jag hjälpa dig med?&quot;
+
+Så låter du:
+- Glad, lugn och kort, som en trevlig person i receptionen.
+- Högst två meningar åt gången. En fråga i taget.
+- Vanlig svenska, inga svåra ord.
+
+Ta reda på det här, i den här ordningen:
+1. Vad det gäller, till exempel däckbyte, service, reparation eller däckhotell.
+2. Bilens registreringsnummer. Upprepa det tecken för tecken och fråga om det stämmer.
+3. Kundens namn.
+4. Telefonnummer. Upprepa siffrorna och fråga om det stämmer.
+5. När kunden vill komma.
+
+Fakta om verkstaden:
+- Öppettider: [ÖPPETTIDER]
+- Adress: [ADRESS]
+- Tjänster och priser: [TJÄNSTER OCH PRISER]
+
+Regler:
+- Lova aldrig en tid. Säg: &quot;Jag skickar det här till verkstaden direkt, så bekräftar de tiden med dig.&quot;
+- Gissa aldrig priser eller vad som är fel på bilen. Säg att verkstaden återkommer.
+- Är det bråttom, till exempel att bilen inte går att köra: säg att du meddelar verkstaden på en gång.
+- Vill kunden prata med en människa: ta namn och nummer och säg att verkstaden ringer upp.
+- Avsluta med att kort upprepa det du fått veta, och säg: &quot;Tack för att du ringde, ha en fin dag!&quot;</pre>
+      <button type="button" class="copybtn" id="copyPrompt">Kopiera instruktionerna</button>
+      <p class="copymsg" id="copyMsg" role="status"></p>
+      <textarea class="copybox" id="copyBox" rows="8" hidden aria-label="Instruktionerna att kopiera"></textarea>
+    </section>
+
+    <section aria-labelledby="recHead">
+      <h2 class="sec" id="recHead"><span class="sectitle">Läs in rösten</span></h2>
+      <ul class="tips"><li>Läs replikerna flera gånger, med lite olika känsla.</li><li>Prata sedan fritt i samma ton: om bilar, din dag, vad som helst.</li><li>Fortsätt tills du har minst 30 minuter, helst 1–3 timmar.</li><li>Le när du pratar. Det hörs.</li></ul>
+      <ol class="script lines"><li><q>Hej, du har ringt verkstaden. Jag är verkstadens AI-assistent. Vad kan jag hjälpa dig med?</q></li><li><q>Absolut, det fixar vi. Vilket registreringsnummer har bilen?</q></li><li><q>Okej, så det gäller ett däckbyte. Har du däcken på däckhotellet hos oss?</q></li><li><q>Vad heter du, och vilket nummer når vi dig på?</q></li><li><q>Då upprepar jag: noll sju tre, ett två tre, fyrtiofem sextiosju. Stämmer det?</q></li><li><q>Perfekt. Jag skickar det här till verkstaden direkt, så bekräftar de tiden med dig.</q></li><li><q>Förlåt, jag hörde inte riktigt. Kan du säga det en gång till?</q></li><li><q>Ingen fara alls, vi löser det.</q></li><li><q>Vi har öppet vardagar sju till fyra.</q></li><li><q>Det låter bråttom. Jag meddelar verkstaden på en gång.</q></li><li><q>Hmm, låt mig se… jo, det går bra.</q></li><li><q>Tack för att du ringde, ha en fin dag!</q></li></ol>
+    </section>
+  </div>
+
+  <p class="status" id="status" role="status"></p>
+</div>
+
+<nav class="tabs" aria-label="Delar av appen">
+  <button type="button" class="tab" id="tabPlan" aria-pressed="true">Plan</button>
+  <button type="button" class="tab" id="tabKund" aria-pressed="false">Kunder</button>
+  <button type="button" class="tab" id="tabManus" aria-pressed="false">Manus</button>
+</nav>
+
+<script>
+(function () {
+  "use strict";
+
+  var KEY = "telefon-ai-plan-v1";
+  var CLOUD = false;
+  var PRICE = 5000;
+  var DAY_GOAL = 10;
+  var MSG = {
+    saved: "Allt sparas automatiskt.",
+    local: "Allt sparas på telefonen.",
+    failed: "Kunde inte spara just nu. Det ligger kvar på den här enheten.",
+    stale: "Når inte det sparade just nu. Det du ser kan vara gammalt."
+  };
+  var MILESTONES = [
+    { n: 1, label: "Första kunden" },
+    { n: 5, label: "Före nyår" },
+    { n: 10, label: "Visa siffrorna för kedjan" },
+    { n: 20, label: "Säljare och support" },
+    { n: 84, label: "5 miljoner om året" }
+  ];
+  var STATUS = [
+    ["ny", "Att kontakta"],
+    ["kontaktad", "Kontaktad"],
+    ["demo", "Demo visad"],
+    ["provar", "Provar gratis"],
+    ["betalar", "Betalar"],
+    ["nej", "Nej tack"]
+  ];
+  var STATUS_KEYS = STATUS.map(function (s) { return s[0]; });
+  var SORT = { betalar: 0, provar: 1, demo: 2, kontaktad: 3, ny: 4, nej: 5 };
+  var COLLECTIONS = ["checks", "kunder", "dagar"];
+  var DAYS = ["sön", "mån", "tis", "ons", "tor", "fre", "lör"];
+  var MONTHS = ["jan", "feb", "mars", "apr", "maj", "juni", "juli", "aug", "sep", "okt", "nov", "dec"];
+
+  function $(id) { return document.getElementById(id); }
+  var listEl = $("list"), statusEl = $("status");
+
+  // ---- The plan as it is written in the page ----
+  var tasks = [].map.call(listEl.querySelectorAll(".task"), function (li) {
+    var box = li.querySelector(".chk");
+    return {
+      id: box.id,
+      box: box,
+      el: li,
+      label: li.querySelector(".t").textContent,
+      goal: Number(li.getAttribute("data-goal")) || 0,
+      goalEl: li.querySelector(".goalnow")
+    };
+  });
+  var TASK_IDS = tasks.map(function (t) { return t.id; });
+  var sections = [].map.call(listEl.querySelectorAll("section"), function (sec) {
+    var when = sec.querySelector(".when");
+    return {
+      due: sec.getAttribute("data-due") || "",
+      dueLabel: sec.getAttribute("data-duelabel") || "",
+      when: when,
+      whenText: when.textContent,
+      num: sec.querySelector(".num"),
+      tasks: tasks.filter(function (t) { return sec.contains(t.el); })
+    };
+  });
+  var segsEl = $("segs");
+  sections.forEach(function (s) {
+    var g = document.createElement("span");
+    g.style.flex = s.tasks.length + " 1 0%";
+    s.tasks.forEach(function (t) {
+      t.seg = document.createElement("i");
+      g.appendChild(t.seg);
+    });
+    segsEl.appendChild(g);
+  });
+
+  // ---- Small helpers ----
+  function pad(x) { return (x < 10 ? "0" : "") + x; }
+  function todayKey() {
+    var d = new Date();
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+  function todayLabel() {
+    var d = new Date();
+    return DAYS[d.getDay()] + " " + d.getDate() + " " + MONTHS[d.getMonth()];
+  }
+  function kr(x) {
+    return String(x).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " kr";
+  }
+  function say(m) { statusEl.textContent = m; }
+
+  // ---- Data: one small document per thing, mirrored on this device ----
+  // checks/<step>   {done: true}
+  // kunder/<id>     {namn, status, t}
+  // dagar/<datum>   {n}
+  function validPath(p) {
+    var parts = String(p).split("/");
+    if (parts.length !== 2) return false;
+    if (parts[0] === "checks") return TASK_IDS.indexOf(parts[1]) !== -1;
+    if (parts[0] === "kunder") return /^[A-Za-z0-9_-]{1,40}$/.test(parts[1]);
+    if (parts[0] === "dagar") return /^\d{4}-\d{2}-\d{2}$/.test(parts[1]);
+    return false;
+  }
+  function clean(p, d) {
+    if (!validPath(p) || !d || typeof d !== "object") return undefined;
+    var col = p.split("/")[0];
+    if (col === "checks") return d.done === true ? { done: true } : undefined;
+    if (col === "kunder") {
+      var namn = typeof d.namn === "string" ? d.namn.replace(/\s+/g, " ").trim().slice(0, 80) : "";
+      if (!namn) return undefined;
+      return {
+        namn: namn,
+        status: STATUS_KEYS.indexOf(d.status) !== -1 ? d.status : "ny",
+        t: typeof d.t === "number" && isFinite(d.t) ? d.t : 0
+      };
+    }
+    var c = Math.round(Number(d.n));
+    if (!isFinite(c)) c = 0;
+    return { n: Math.max(0, Math.min(999, c)) };
+  }
+
+  var docs = {};      // path -> data
+  var pending = {};   // path -> data, or null for a delete, not yet confirmed by the store
+  try {
+    var raw = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (raw && raw.docs && typeof raw.docs === "object") {
+      Object.keys(raw.docs).forEach(function (p) {
+        var c = clean(p, raw.docs[p]);
+        if (c) docs[p] = c;
+      });
+    }
+    if (raw && raw.pending && typeof raw.pending === "object") {
+      Object.keys(raw.pending).forEach(function (p) {
+        if (raw.pending[p] === null) { if (validPath(p)) pending[p] = null; return; }
+        var c = clean(p, raw.pending[p]);
+        if (c) pending[p] = c;
+      });
+    }
+  } catch (e) { /* no storage: start clean */ }
+
+  function saveLocal() {
+    try { localStorage.setItem(KEY, JSON.stringify({ docs: docs, pending: pending })); } catch (e) { /* fine without it */ }
+  }
+
+  var db = null;
+  var busy = {};
+  var retried = {};
+  var seen = {};
+  var confirmed = false;
+  var loadTimer = null;
+
+  function goLocal() { db = null; say(MSG.local); }
+
+  function sync(p) {
+    if (!db || busy[p] || !(p in pending)) return;
+    var want = pending[p];
+    var op;
+    busy[p] = true;
+    try {
+      var ref = db.doc(p);
+      op = want === null ? ref.delete() : ref.set(want);
+    } catch (e) {
+      busy[p] = false;
+      goLocal();
+      return;
+    }
+    op.then(function () {
+      busy[p] = false;
+      retried[p] = false;
+      if (pending[p] === want) {
+        delete pending[p];
+        saveLocal();
+        if (confirmed) say(MSG.saved);
+      } else {
+        sync(p);
+      }
+    }, function (err) {
+      busy[p] = false;
+      var code = err && err.code;
+      if (code === "resource_exhausted" || code === "quota_exceeded") { say(MSG.failed); return; }
+      if (code === "invalid_argument" || code === "transform_error" || code === "revoked" ||
+          code === "not_granted" || code === "capability_disabled" || code === "capability_removed" ||
+          code === "permission_denied") {
+        goLocal();
+        return;
+      }
+      if (!retried[p]) {
+        retried[p] = true;
+        setTimeout(function () { sync(p); }, 500 + Math.random() * 1000);
+      } else {
+        retried[p] = false;
+        say(MSG.failed);
+      }
+    });
+  }
+
+  function write(p, data) {
+    if (data === null) delete docs[p];
+    else docs[p] = data;
+    if (CLOUD) pending[p] = data;
+    saveLocal();
+    render();
+    sync(p);
+  }
+
+  function connect(ns) {
+    if (!ns) { say(MSG.local); return; }
+    db = ns;
+    loadTimer = setTimeout(function () { if (!confirmed) say(MSG.stale); }, 10000);
+    for (var i = 0; i < COLLECTIONS.length; i++) {
+      if (!db) return;
+      var ok = listen(COLLECTIONS[i]);
+      if (!ok) return;
+    }
+    Object.keys(pending).forEach(sync);
+  }
+
+  function listen(col) {
+    try {
+      db.collection(col).onSnapshot(function (snap) {
+        var remote = {};
+        snap.docs.forEach(function (d) {
+          var p = col + "/" + d.id;
+          var c = clean(p, d.data());
+          if (c) remote[p] = c;
+        });
+        Object.keys(docs).forEach(function (p) {
+          if (p.indexOf(col + "/") !== 0 || p in pending || busy[p]) return;
+          if (!(p in remote)) delete docs[p];
+        });
+        Object.keys(remote).forEach(function (p) {
+          if (p in pending || busy[p]) return;
+          docs[p] = remote[p];
+        });
+        saveLocal();
+        render();
+        if (!(snap.metadata && snap.metadata.fromCache)) {
+          seen[col] = true;
+          if (!confirmed && COLLECTIONS.every(function (c) { return seen[c]; })) {
+            confirmed = true;
+            clearTimeout(loadTimer);
+            say(MSG.saved);
+          }
+        }
+      }, function () {
+        clearTimeout(loadTimer);
+        goLocal();
+      });
+      return true;
+    } catch (e) {
+      clearTimeout(loadTimer);
+      goLocal();
+      return false;
+    }
+  }
+
+  // ---- Reading the data ----
+  function customers() {
+    return Object.keys(docs).filter(function (p) { return p.indexOf("kunder/") === 0; }).map(function (p) {
+      var d = docs[p];
+      return { id: p.slice(7), namn: d.namn, status: d.status, t: d.t };
+    });
+  }
+
+  // ---- Plan tab ----
+  var doneN = $("doneN"), nowTag = $("nowTag"), nowText = $("nowText"), nowBtn = $("nowBtn");
+  var nowTask = null;
+  function renderPlan(payN) {
+    var nDone = 0;
+    nowTask = null;
+    tasks.forEach(function (t) {
+      var on = !!docs["checks/" + t.id];
+      if (t.box.checked !== on) t.box.checked = on;
+      t.isDone = on;
+      if (on) nDone++;
+      else if (!nowTask) nowTask = t;
+    });
+    tasks.forEach(function (t) {
+      var cur = t === nowTask;
+      t.el.classList.toggle("is-done", t.isDone);
+      t.el.classList.toggle("now", cur);
+      if (cur) t.el.setAttribute("aria-current", "step");
+      else t.el.removeAttribute("aria-current");
+      t.seg.className = t.isDone ? "on" : cur ? "cur" : "";
+      if (t.goalEl) t.goalEl.textContent = "Just nu: " + payN + " av " + t.goal + ".";
+    });
+    var today = todayKey();
+    sections.forEach(function (s) {
+      var d = s.tasks.filter(function (t) { return t.isDone; }).length;
+      var all = d === s.tasks.length;
+      var late = !all && s.due && today > s.due;
+      s.num.textContent = d + "/" + s.tasks.length;
+      s.when.textContent = all ? "Klar" : late ? "Sen · " + s.dueLabel : s.whenText;
+      s.when.classList.toggle("ok", all);
+      s.when.classList.toggle("late", !!late);
+    });
+    doneN.textContent = nDone;
+    if (nowTask) {
+      nowTag.textContent = "Nu";
+      nowText.textContent = nowTask.label;
+    } else {
+      nowTag.textContent = "Klart";
+      nowText.textContent = "Hela planen är avbockad";
+    }
+  }
+
+  listEl.addEventListener("change", function (e) {
+    var b = e.target;
+    if (!b || !b.classList || !b.classList.contains("chk")) return;
+    write("checks/" + b.id, b.checked ? { done: true } : null);
+    var li = b.closest(".task");
+    if (li && b.checked) {
+      li.classList.add("pop");
+      setTimeout(function () { li.classList.remove("pop"); }, 320);
+    }
+  });
+
+  nowBtn.addEventListener("click", function () {
+    if (!nowTask) return;
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    nowTask.el.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "center" });
+  });
+
+  // ---- Customers tab ----
+  var payEl = $("payN"), mrrEl = $("mrr"), arrEl = $("arr"), trialEl = $("trialN");
+  var meterEl = $("meter"), fillEl = $("meterFill"), nextEl = $("nextText");
+  var listNEl = $("listN"), clistEl = $("clist"), emptyEl = $("empty");
+  var addForm = $("addForm"), addName = $("addName"), addMsg = $("addMsg");
+  var lastSig = null;
+  var armed = null;
+  var armTimer = null;
+
+  function renderMoney(list, payN) {
+    var trial = list.filter(function (k) { return k.status === "provar"; }).length;
+    payEl.textContent = payN;
+    mrrEl.textContent = kr(payN * PRICE);
+    arrEl.textContent = kr(payN * PRICE * 12);
+    trialEl.textContent = trial ? trial + " provar gratis" : "";
+    var next = null;
+    for (var i = 0; i < MILESTONES.length; i++) {
+      if (MILESTONES[i].n > payN) { next = MILESTONES[i]; break; }
+    }
+    nextEl.textContent = "";
+    if (next) {
+      var pct = Math.max(0, Math.min(100, payN / next.n * 100));
+      fillEl.style.width = pct + "%";
+      meterEl.setAttribute("aria-valuemin", "0");
+      meterEl.setAttribute("aria-valuemax", String(next.n));
+      meterEl.setAttribute("aria-valuenow", String(payN));
+      nextEl.appendChild(document.createTextNode(
+        "Nästa mål: " + next.n + (next.n === 1 ? " kund" : " kunder") + " · " + next.label));
+      var left = document.createElement("span");
+      left.className = "left";
+      left.textContent = " · " + (next.n - payN) + " kvar";
+      nextEl.appendChild(left);
+    } else {
+      fillEl.style.width = "100%";
+      meterEl.setAttribute("aria-valuemin", "0");
+      meterEl.setAttribute("aria-valuemax", "84");
+      meterEl.setAttribute("aria-valuenow", String(payN));
+      nextEl.textContent = "Målet är nått: 5 miljoner om året.";
+    }
+  }
+
+  function row(k) {
+    var li = document.createElement("li");
+    li.className = "crow st-" + k.status;
+
+    var name = document.createElement("span");
+    name.className = "cname";
+    name.textContent = k.namn;
+
+    var wrap = document.createElement("span");
+    wrap.className = "selwrap";
+    var sel = document.createElement("select");
+    sel.className = "stsel";
+    sel.id = "st-" + k.id;
+    sel.setAttribute("aria-label", "Status för " + k.namn);
+    STATUS.forEach(function (s) {
+      var o = document.createElement("option");
+      o.value = s[0];
+      o.textContent = s[1];
+      if (s[0] === k.status) o.selected = true;
+      sel.appendChild(o);
+    });
+    sel.addEventListener("change", function () {
+      var cur = docs["kunder/" + k.id];
+      if (!cur || cur.status === sel.value) return;
+      write("kunder/" + k.id, { namn: cur.namn, status: sel.value, t: cur.t });
+    });
+    wrap.appendChild(sel);
+
+    var del = document.createElement("button");
+    del.type = "button";
+    del.className = "del" + (armed === k.id ? " armed" : "");
+    del.id = "del-" + k.id;
+    del.textContent = armed === k.id ? "Säker?" : "Ta bort";
+    del.setAttribute("aria-label", armed === k.id ? "Tryck igen för att ta bort " + k.namn : "Ta bort " + k.namn);
+    del.addEventListener("click", function () {
+      clearTimeout(armTimer);
+      if (armed === k.id) {
+        armed = null;
+        write("kunder/" + k.id, null);
+        addMsg.textContent = k.namn + " är borttagen.";
+        return;
+      }
+      armed = k.id;
+      lastSig = null;
+      render();
+      armTimer = setTimeout(function () { armed = null; lastSig = null; render(); }, 3000);
+    });
+
+    li.appendChild(name);
+    li.appendChild(wrap);
+    li.appendChild(del);
+    return li;
+  }
+
+  function renderList(list) {
+    var sorted = list.slice().sort(function (a, b) {
+      return (SORT[a.status] - SORT[b.status]) || (a.t - b.t) || (a.namn < b.namn ? -1 : a.namn > b.namn ? 1 : 0);
+    });
+    var active = sorted.filter(function (k) { return k.status !== "nej"; }).length;
+    listNEl.textContent = sorted.length ? active + " i listan" : "";
+    emptyEl.hidden = sorted.length > 0;
+    var sig = JSON.stringify(sorted) + "|" + armed;
+    if (sig === lastSig) return;
+    lastSig = sig;
+    var focusId = document.activeElement && document.activeElement.id;
+    clistEl.textContent = "";
+    sorted.forEach(function (k) { clistEl.appendChild(row(k)); });
+    if (focusId && focusId !== "addName") {
+      var f = document.getElementById(focusId);
+      if (f) f.focus();
+    }
+  }
+
+  addForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var namn = addName.value.replace(/\s+/g, " ").trim().slice(0, 80);
+    if (!namn) {
+      addMsg.textContent = "Skriv verkstadens namn först.";
+      addName.focus();
+      return;
+    }
+    var exists = customers().some(function (k) { return k.namn.toLowerCase() === namn.toLowerCase(); });
+    if (exists) {
+      addMsg.textContent = namn + " finns redan i listan.";
+      return;
+    }
+    var id = "k" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    write("kunder/" + id, { namn: namn, status: "ny", t: Date.now() });
+    addName.value = "";
+    addMsg.textContent = namn + " är tillagd.";
+    addName.focus();
+  });
+
+  // Contacts today
+  var todayNEl = $("todayN"), todayDateEl = $("todayDate"), minusBtn = $("minusBtn"), plusBtn = $("plusBtn");
+  var segs10 = [].slice.call($("segs10").querySelectorAll("i"));
+  function renderDay() {
+    var d = docs["dagar/" + todayKey()];
+    var c = d ? d.n : 0;
+    todayNEl.textContent = c;
+    todayDateEl.textContent = todayLabel();
+    segs10.forEach(function (i, idx) { i.className = idx < c ? "on" : ""; });
+    minusBtn.disabled = c <= 0;
+  }
+  function bump(delta) {
+    var p = "dagar/" + todayKey();
+    var cur = docs[p] ? docs[p].n : 0;
+    var next = Math.max(0, Math.min(999, cur + delta));
+    if (next !== cur) write(p, { n: next });
+  }
+  plusBtn.addEventListener("click", function () { bump(1); });
+  minusBtn.addEventListener("click", function () { bump(-1); });
+
+  // ---- Everything ----
+  function render() {
+    var list = customers();
+    var payN = list.filter(function (k) { return k.status === "betalar"; }).length;
+    renderPlan(payN);
+    renderMoney(list, payN);
+    renderList(list);
+    renderDay();
+  }
+
+  // ---- Manus: copy the instructions ----
+  var copyBtn = $("copyPrompt"), copyMsg = $("copyMsg"), copyBox = $("copyBox");
+  copyBtn.addEventListener("click", function () {
+    var text = $("promptText").textContent;
+    function byHand() {
+      copyBox.hidden = false;
+      copyBox.value = text;
+      copyBox.focus();
+      copyBox.select();
+      copyMsg.textContent = "Markera allt i rutan och kopiera.";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        copyMsg.textContent = "Kopierat. Klistra in i agenten och byt ut det inom hakparenteser.";
+      }, byHand);
+    } else {
+      byHand();
+    }
+  });
+
+  // ---- Tabs ----
+  var VIEWS = {
+    plan: { el: "planView", tab: "tabPlan", eyebrow: "AI-telefonist för verkstäder", title: "Planen" },
+    kund: { el: "kundView", tab: "tabKund", eyebrow: "84 kunder = 5 miljoner om året", title: "Kunder" },
+    manus: { el: "manusView", tab: "tabManus", eyebrow: "Säg så här", title: "Manus" }
+  };
+  function show(name) {
+    if (!VIEWS[name]) name = "plan";
+    Object.keys(VIEWS).forEach(function (k) {
+      var on = k === name;
+      $(VIEWS[k].el).hidden = !on;
+      $(VIEWS[k].tab).setAttribute("aria-pressed", String(on));
+    });
+    $("eyebrow").textContent = VIEWS[name].eyebrow;
+    $("pageTitle").textContent = VIEWS[name].title;
+    try { localStorage.setItem(KEY + ".tab", name); } catch (e) { /* fine without it */ }
+  }
+  Object.keys(VIEWS).forEach(function (k) {
+    $(VIEWS[k].tab).addEventListener("click", function () { show(k); window.scrollTo(0, 0); });
+  });
+  var startTab = "plan";
+  try { startTab = localStorage.getItem(KEY + ".tab") || "plan"; } catch (e) { /* plan it is */ }
+  show(startTab);
+
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) render(); });
+
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () { /* works without it */ });
+    });
+  }
+
+  render();
+
+  if (CLOUD && window.claude && typeof window.claude.use === "function") {
+    window.claude.use("db").then(connect, function () { say(MSG.local); });
+  } else {
+    say(MSG.local);
+  }
+})();
+</script>
+</body>
+</html>

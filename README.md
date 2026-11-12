@@ -93,3 +93,13 @@ Dagens shake som app: https://filipkymmer79-pixel.github.io/GymSchema/shake/ –
 - **Handla** räknar ut vad som går åt för 1–14 dagar. **Kopiera listan** ger en lista som går att klistra in under Handla i Dagsschema.
 
 Allt sparas bara på telefonen. Näringsvärdena är standardvärden per 100 g (Livsmedelsverket och USDA), och dagsbehoven kommer från de nordiska näringsrekommendationerna 2023. Vasslen är Star Nutrition Whey-80 Naturell och mäts i dl (37 g per dl enligt påsen): 1½ dl i 3 000, 1 dl i 2 500 och 2 000. Typsnittet är Sofia Sans, under SIL Open Font License (`shake/fonts/LICENSE.txt`).
+
+## Telefon-AI-planen
+
+Planen för AI-telefonisten till verkstäder som app: https://filipkymmer79-pixel.github.io/GymSchema/plan/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*.
+
+- **Plan** har 30 steg i nio delar med datum, från rösten (klar söndag 15 november) till 84 kunder. Steget du ska göra nu lyser gult, och en del som inte blev klar i tid blir röd.
+- **Kunder** är verkstäderna du pratar med och var de står: Att kontakta, Kontaktad, Demo visad, Provar gratis, Betalar eller Nej tack. Appen räknar ut vad du tjänar i månaden och om året (5 000 kr per kund och månad, utan moms) och hur många kunder som är kvar till nästa mål. Dagens kontakter räknas mot 10.
+- **Manus** har det du säger när du går in hos en verkstad, svar när de tvekar, instruktionerna till AI:n som kopieras rakt in i agenten och meningar att läsa när rösten spelas in.
+
+Allt sparas bara på telefonen.
