@@ -3357,8 +3357,8 @@ window.addEventListener("resize", () => { const p = $("hrPill"); if (p) hrtPlace
 setInterval(hrtPill, 60e3);
 
 /* Hemmet: knappar i Pass-fliken som kör en genväg i iPhones app Genvägar, t.ex. "Stäng gardinen"
-   (genvägen styr SwitchBot-gardinen via SwitchBot- eller Home Assistant-appen). Webbappar får inte
-   styra gardinen själva, men de får öppna shortcuts://run-shortcut?name=… – samma genväg som Siri kör. */
+   (en Siri-genväg som SwitchBot-appen gör – kräver SwitchBot Hub). SwitchBots moln-API saknar CORS, så webbappen
+   kan inte anropa det själv – men den får öppna shortcuts://run-shortcut?name=…, samma genväg som Siri kör. */
 const HEM_KEY = "gymschema.hem.v1", HEM_SEEN = "gymschema.hem.seen";
 let hemBtns = (() => { const x = store(HEM_KEY); return Array.isArray(x) && x.length ? x.filter(b => b && typeof b.n === "string" && b.n.trim()) : [{n: "Stäng gardinen"}]; })();
 if (!hemBtns.length) hemBtns = [{n: "Stäng gardinen"}];
@@ -3382,14 +3382,14 @@ function hemSheet(){
   if (!o){ o = document.createElement("div"); o.id = "hemOv"; o.className = "scan hrt hemov"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Knappar till hemmet"); document.body.appendChild(o); }
   const first = hemBtns[0].n;
   o.innerHTML = '<div class="scan-top"><b>Knappar till hemmet</b><button type="button" class="scan-x" data-hem="close" aria-label="Stäng">×</button></div>' +
-    '<p class="hrt-intro">Knappen kör en <b>genväg</b> i iPhones app Genvägar – samma genväg som Siri kan köra. Gör den en gång:</p>' +
+    '<p class="hrt-intro">Knappen kör en <b>genväg</b> som SwitchBot-appen gör åt dig – samma som Siri kan köra. Gör den en gång:</p>' +
     '<ol class="hrt-steps">' +
-      '<li><span class="hrt-n">1</span><div><b>Öppna appen Genvägar</b><p>Tryck <b>+</b> uppe till höger för en ny genväg.</p></div></li>' +
-      '<li><span class="hrt-n">2</span><div><b>Lägg till gardinen</b><p>Tryck <b>Lägg till åtgärd</b> och sök <b>Home Assistant</b>. Välj <b>Control cover</b>, gardinen och <b>Close</b>. Home Assistant-appen ska vara inloggad på Jarvis.</p><p class="hrt-s">Med SwitchBot-appen i stället (kräver en SwitchBot Hub nära gardinen): gardinen → ⚙ → Tredjepartstjänster → Siri Shortcuts → Lägg till genväg → Stäng.</p></div></li>' +
-      '<li><span class="hrt-n">3</span><div><b>Döp genvägen till exakt</b><div class="hem-name"><code>' + esc(first) + '</code><button type="button" class="btn sm ghost" data-hem="copy">Kopiera</button></div><p>Tryck på namnet högst upp i genvägen och klistra in. Tryck <b>Klar</b>.</p></div></li>' +
-      '<li><span class="hrt-n">4</span><div><b>Testa</b><p>Första gången frågar iPhone om GymSchema får öppna Genvägar – tryck <b>Öppna</b>.</p><a class="btn sm" href="' + esc(hemUrl(first)) + '" data-hem="test">' + hemIcon(first) + ' ' + esc(first) + '</a></div></li>' +
+      '<li><span class="hrt-n">1</span><div><b>Öppna SwitchBot-appen och tryck på gardinen</b><p>Tryck <b>⚙</b> uppe till höger → <b>Third-party Service</b> (Tredjepartstjänster) → <b>Siri Shortcuts</b> → <b>Add Shortcut</b>.</p></div></li>' +
+      '<li><span class="hrt-n">2</span><div><b>Välj Stäng och döp genvägen till exakt</b><div class="hem-name"><code>' + esc(first) + '</code><button type="button" class="btn sm ghost" data-hem="copy">Kopiera</button></div><p>Klistra in det som frasen och spara. Då hamnar genvägen i appen Genvägar med det namnet.</p></div></li>' +
+      '<li><span class="hrt-n">3</span><div><b>Testa</b><p>Första gången frågar iPhone om GymSchema får öppna Genvägar – tryck <b>Öppna</b>.</p><a class="btn sm" href="' + esc(hemUrl(first)) + '" data-hem="test">' + hemIcon(first) + ' ' + esc(first) + '</a></div></li>' +
     '</ol>' +
-    '<div class="hrt-note"><span aria-hidden="true">↩︎</span><span>iPhone hoppar in i Genvägar en kort stund när gardinen stängs – Apple låter inte appar köra genvägar i bakgrunden. Svep tillbaka till GymSchema efteråt. Bonus: nu kan du också säga <b>”Hej Siri, ' + esc(first.toLowerCase()) + '”</b>.</span></div>' +
+    '<div class="hrt-note"><span aria-hidden="true">⌂</span><span>Det kräver en <b>SwitchBot Hub</b> (Hub Mini, Hub 2 eller Hub 3) nära gardinen. Utan hubb kan bara SwitchBot-appen själv styra gardinen, via Bluetooth.</span></div>' +
+    '<div class="hrt-note"><span aria-hidden="true">↩︎</span><span>iPhone hoppar in i Genvägar en kort stund när knappen körs – SwitchBot släpper inte in webbappar direkt. Svep tillbaka till GymSchema efteråt. Bonus: nu kan du också säga <b>”Hej Siri, ' + esc(first.toLowerCase()) + '”</b>.</span></div>' +
     '<div class="hem-list"><b>Dina knappar</b><p class="hrt-s">Varje knapp kör genvägen med samma namn – t.ex. Öppna gardinen eller Filmkväll.</p>' +
       hemBtns.map((b, i) => '<div class="hem-li"><input type="text" value="' + esc(b.n) + '" data-hemname="' + i + '" aria-label="Knapp ' + (i + 1) + ', namnet på genvägen" autocapitalize="sentences" maxlength="40">' + (hemBtns.length > 1 ? '<button type="button" class="hem-del" data-hem="del" data-i="' + i + '" aria-label="Ta bort ' + esc(b.n) + '">×</button>' : '') + '</div>').join("") +
       (hemBtns.length < 6 ? '<button type="button" class="btn sm ghost" data-hem="add">+ Lägg till knapp</button>' : '') +
@@ -3418,7 +3418,7 @@ document.addEventListener("change", e => {
 });
 
 /* ---------- Start ---------- */
-const BUILD = "12 nov 11.33", BUILD_NOTE = "Nytt: knapp som stänger gardinen (Hemmet under Pass) och pulsen som en liten bubbla";
+const BUILD = "12 nov 11.36", BUILD_NOTE = "Nytt: knapp som stänger gardinen (Hemmet under Pass) och pulsen som en liten bubbla";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;

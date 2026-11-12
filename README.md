@@ -16,7 +16,7 @@ Datan går klockan → Garmin Connect → [intervals.icu](https://intervals.icu)
 
 ### Hemmet
 
-Under Garmin-rutan i **Pass** finns knappar till hemmet, från början **Stäng gardinen**. En knapp kör genvägen med samma namn i iPhones app Genvägar (`shortcuts://run-shortcut?name=…`), och genvägen styr SwitchBot-gardinen via Home Assistant-appen (Control cover) eller SwitchBot-appen (kräver SwitchBot Hub). Webbappar får inte styra hemmet direkt, så iPhone hoppar in i Genvägar en kort stund. Första gången visar appen hur man gör genvägen. Fler knappar (t.ex. Öppna gardinen, Filmkväll) läggs till under ⋯.
+Under Garmin-rutan i **Pass** finns knappar till hemmet, från början **Stäng gardinen**. En knapp kör genvägen med samma namn i iPhones app Genvägar (`shortcuts://run-shortcut?name=…`), och genvägen är en Siri-genväg som SwitchBot-appen gör (gardinen → ⚙ → Third-party Service → Siri Shortcuts; kräver SwitchBot Hub). SwitchBots moln-API går inte att anropa direkt från en webbapp (inget CORS). Webbappar får inte styra hemmet direkt, så iPhone hoppar in i Genvägar en kort stund. Första gången visar appen hur man gör genvägen. Fler knappar (t.ex. Öppna gardinen, Filmkväll) läggs till under ⋯.
 
 ### Coachen, prognos och lätt vecka
 
