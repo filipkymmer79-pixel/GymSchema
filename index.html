@@ -603,22 +603,23 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .hem-t{flex:0 0 auto;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .hem-btns{flex:1;min-width:0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .hem-btns::-webkit-scrollbar{display:none}
-.hem-b{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;text-decoration:none;color:var(--ink);background:var(--surface2);border-radius:12px;padding:9px 12px;font-weight:800;font-size:14px;line-height:1.1}
+.hem-b{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;border:0;color:var(--ink);background:var(--surface2);border-radius:12px;padding:9px 12px;font-weight:800;font-size:14px;line-height:1.1}
 .hem-b:active{transform:scale(.97)}
+.hem-b[disabled]{opacity:.6}
 .hem-b svg,.hemov .btn svg{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .hem-e{flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:0;background:transparent;color:var(--muted);display:grid;place-items:center;padding:0}
 .hem-e svg{width:20px;height:20px;fill:currentColor}
-.hem-name{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
-.hem-name code{font-family:var(--body);font-size:16px;font-weight:800;color:#fff;background:rgba(255,255,255,.1);border-radius:10px;padding:8px 12px}
-.hem-name .btn{margin-top:0!important}
 .hemov .hrt-steps .btn{gap:7px;align-items:center}
-.hem-list{display:flex;flex-direction:column;gap:8px;background:rgba(255,255,255,.06);border-radius:14px;padding:12px}
-.hem-list > b{font-size:15px}
-.hem-list .hrt-s{margin:0;font-size:13.5px;line-height:1.4;color:#B8BEC8}
-.hem-li{display:flex;gap:8px;align-items:center}
-.hem-li input{flex:1;min-width:0;border-radius:12px;padding:10px 12px;font-size:16px;font-weight:700;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff}
-.hem-del{flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:18px;line-height:1}
-.hem-list .btn{align-self:flex-start}
+.hem-two{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.hem-two .btn{margin-top:0!important}
+.hem-in{display:block;width:100%;margin-top:8px;border-radius:12px;padding:11px 12px;font-size:16px;font-weight:600;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff}
+.hem-in::placeholder{color:#8A929C}
+.hem-devs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.hem-dev{border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px}
+.hem-dev[aria-checked="true"]{background:#fff;color:#0B0D12;border-color:#fff}
+.hrt-steps .hem-ok{color:#3CCB7C;font-weight:700}
+.hrt-steps .hem-warn{color:#FFC93A;font-weight:600}
+.hrt-steps .hem-warn b{color:#FFC93A}
 /* Vanor */
 .hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .hnav{display:flex;gap:6px;flex:0 0 auto}
@@ -3356,69 +3357,135 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 window.addEventListener("resize", () => { const p = $("hrPill"); if (p) hrtPlace(p); });
 setInterval(hrtPill, 60e3);
 
-/* Hemmet: knappar i Pass-fliken som kör en genväg i iPhones app Genvägar, t.ex. "Stäng gardinen"
-   (en Siri-genväg som SwitchBot-appen gör – kräver SwitchBot Hub). SwitchBots moln-API saknar CORS, så webbappen
-   kan inte anropa det själv – men den får öppna shortcuts://run-shortcut?name=…, samma genväg som Siri kör. */
-const HEM_KEY = "gymschema.hem.v1", HEM_SEEN = "gymschema.hem.seen";
-let hemBtns = (() => { const x = store(HEM_KEY); return Array.isArray(x) && x.length ? x.filter(b => b && typeof b.n === "string" && b.n.trim()) : [{n: "Stäng gardinen"}]; })();
-if (!hemBtns.length) hemBtns = [{n: "Stäng gardinen"}];
-const hemUrl = n => "shortcuts://run-shortcut?name=" + encodeURIComponent(n);
-const HEM_IC = {
-  gardin: '<path d="M3 4h18"/><path d="M5 4v16c2.2-1.2 4-1.2 6 0V4"/><path d="M19 4v16c-2.2-1.2-4-1.2-6 0V4"/>',
-  lampa: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/>',
-  film: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/>',
-  hem: '<path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v10h12V10"/><path d="M10 20v-5h4v5"/>'
-};
-function hemIcon(n){ const k = /gardin|persienn|curtain|rullgardin/i.test(n) ? "gardin" : /lamp|ljus|lys|light/i.test(n) ? "lampa" : /film|tv|bio/i.test(n) ? "film" : "hem"; return '<svg viewBox="0 0 24 24" aria-hidden="true">' + HEM_IC[k] + '</svg>'; }
-function hemSave(){ store(HEM_KEY, hemBtns); }
-function hemHTML(){
-  return '<div class="hem" id="hemRow"><span class="hem-t">Hemmet</span><div class="hem-btns">' +
-    hemBtns.map((b, i) => '<a class="hem-b" href="' + esc(hemUrl(b.n)) + '" data-hemrun="' + i + '">' + hemIcon(b.n) + '<span>' + esc(b.n) + '</span></a>').join("") +
-    '</div><button class="hem-e" type="button" data-hem="edit" aria-label="Ändra knapparna till hemmet"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></div>';
+/* Hemmet: knappar i Pass-fliken som styr SwitchBot-gardinen direkt.
+   SwitchBots moln-API saknar CORS, så anropen går via Filips egen lilla Cloudflare Worker (koden i
+   switchbot-worker.js) som bara skickar vidare till api.switch-bot.com. Token och secret från SwitchBot-appen
+   sparas bara på telefonen (inte i backupen) och signerar varje anrop med HMAC-SHA256, som SwitchBot kräver. */
+const SB_KEY = "gymschema.switchbot.v1";
+const SB_CODE = "// GymSchema \u2192 SwitchBot (Cloudflare Worker)\n// SwitchBots moln sl\u00e4pper inte in webbappar direkt (inget CORS). Den h\u00e4r Workern skickar bara\n// vidare appens anrop till api.switch-bot.com. Token och secret kommer fr\u00e5n appen \u2013 inget sparas h\u00e4r.\nconst APP = \"https://filipkymmer79-pixel.github.io\";\n\nexport default {\n  async fetch(request) {\n    const cors = {\n      \"Access-Control-Allow-Origin\": APP,\n      \"Access-Control-Allow-Methods\": \"GET, POST, OPTIONS\",\n      \"Access-Control-Allow-Headers\": \"Authorization, sign, t, nonce, Content-Type\",\n      \"Access-Control-Max-Age\": \"86400\",\n      \"Vary\": \"Origin\"\n    };\n    if (request.method === \"OPTIONS\") return new Response(null, { status: 204, headers: cors });\n    const url = new URL(request.url);\n    const allowed = /^\\/v1\\.1\\/devices(\\/[A-Za-z0-9_-]+\\/(commands|status))?$/.test(url.pathname);\n    if (!allowed || request.headers.get(\"Origin\") !== APP) {\n      return new Response('{\"message\":\"not allowed\"}', { status: 403, headers: { ...cors, \"Content-Type\": \"application/json\" } });\n    }\n    const headers = new Headers();\n    for (const h of [\"Authorization\", \"sign\", \"t\", \"nonce\", \"Content-Type\"]) {\n      const v = request.headers.get(h);\n      if (v) headers.set(h, v);\n    }\n    const res = await fetch(\"https://api.switch-bot.com\" + url.pathname, {\n      method: request.method,\n      headers,\n      body: request.method === \"POST\" ? await request.text() : undefined\n    });\n    return new Response(await res.text(), {\n      status: res.status,\n      headers: { ...cors, \"Content-Type\": \"application/json; charset=utf-8\" }\n    });\n  }\n};\n";
+let sb = (() => { const x = store(SB_KEY); return x && typeof x === "object" ? x : {}; })();
+let sbBusy = "", sbFound = null, sbMsg = "", sbDraft = {};
+const sbOn = () => !!(sb.url && sb.token && sb.secret && sb.dev && sb.dev.id);
+const sbB64 = buf => { let s = ""; const b = new Uint8Array(buf); for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); };
+async function sbHeaders(c){
+  const t = String(Date.now()), nonce = crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + t;
+  const enc = new TextEncoder(), key = await crypto.subtle.importKey("raw", enc.encode(c.secret), {name: "HMAC", hash: "SHA-256"}, false, ["sign"]);
+  return {"Authorization": c.token, "sign": sbB64(await crypto.subtle.sign("HMAC", key, enc.encode(c.token + t + nonce))), "t": t, "nonce": nonce};
 }
-function hemRepaint(){ const r = $("hemRow"); if (r) r.outerHTML = hemHTML(); }
+function sbErr(code, msg){ const e = new Error(msg || String(code)); e.code = code; return e; }
+async function sbCall(c, path, body){
+  const h = await sbHeaders(c); if (body) h["Content-Type"] = "application/json; charset=utf8";
+  let r;
+  try { r = await fetch(c.url + path, {method: body ? "POST" : "GET", headers: h, body: body ? JSON.stringify(body) : undefined, cache: "no-store"}); }
+  catch(e){ throw sbErr("net"); }
+  if (r.status === 401) throw sbErr("auth");
+  if (r.status === 429) throw sbErr("rate");
+  if (!r.ok) throw sbErr("worker");
+  let j; try { j = await r.json(); } catch(e){ throw sbErr("worker"); }
+  if (!j || j.statusCode !== 100) throw sbErr(j && j.statusCode != null ? j.statusCode : "worker", j && j.message);
+  return j.body || {};
+}
+const SB_MSG = {
+  net: "Fick ingen kontakt. Är du uppkopplad, och stämmer adressen som slutar på .workers.dev?",
+  worker: "Cloudflare-adressen svarar inte rätt. Kolla att du klistrat in hela koden och tryckt Deploy.",
+  auth: "SwitchBot godkänner inte token eller secret. Kopiera dem igen i SwitchBot-appen.",
+  rate: "SwitchBot ber appen vänta en stund. Försök igen strax.",
+  152: "Hittar inte gardinen längre – tryck på ⋯ och Hämta igen.",
+  160: "Gardinen tar inte emot det kommandot.",
+  161: "Gardinen svarar inte – är batteriet slut, eller står den för långt från hubben?",
+  171: "Hubben är offline – kolla att den har ström och wifi.",
+  190: "SwitchBot hängde inte med. Försök igen om en stund."
+};
+const sbText = e => SB_MSG[e && e.code] || "SwitchBot svarade med ett fel (" + esc(String(e && (e.message || e.code))) + ").";
+const SB_IC = {
+  close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18"/><path d="M5 4v16c2.2-1.2 4-1.2 6 0V4"/><path d="M19 4v16c-2.2-1.2-4-1.2-6 0V4"/></svg>',
+  open: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18"/><path d="M4 4v16c1.4-.8 2.6-.8 4 0V4"/><path d="M20 4v16c-1.4-.8-2.6-.8-4 0V4"/></svg>'
+};
+function sbBtn(cmd, cls, long){
+  const close = cmd === "turnOff";
+  return '<button type="button" class="' + cls + '" data-sb="' + cmd + '"' + (sbBusy ? ' disabled' : '') + '>' + SB_IC[close ? "close" : "open"] +
+    '<span>' + (sbBusy === cmd ? (close ? "Stänger…" : "Öppnar…") : (close ? "Stäng" : "Öppna") + (long ? " gardinen" : "")) + '</span></button>';
+}
+function hemHTML(){
+  return '<div class="hem" id="hemRow"><span class="hem-t">Gardinen</span><div class="hem-btns">' + sbBtn("turnOff", "hem-b") + (sbOn() ? sbBtn("turnOn", "hem-b") : '') + '</div>' +
+    '<button class="hem-e" type="button" data-hem="edit" aria-label="Ställ in gardinen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></div>';
+}
+function hemRepaint(){ const r = $("hemRow"); if (r) r.outerHTML = hemHTML(); const o = $("hemOv"); if (o && !o.hidden) hemSheet(); }
+async function sbRun(cmd){
+  if (!sbOn()){ hemSheet(); return; }
+  if (sbBusy) return;
+  sbBusy = cmd; hemRepaint();
+  try { await sbCall(sb, "/v1.1/devices/" + encodeURIComponent(sb.dev.id) + "/commands", {command: cmd, parameter: "default", commandType: "command"}); toast(cmd === "turnOff" ? "Gardinen stängs ✓" : "Gardinen öppnas ✓"); }
+  catch(e){ toast(sbText(e)); clearTimeout(toastT); toastT = setTimeout(() => { $("toast").hidden = true; }, 6000); }
+  sbBusy = ""; hemRepaint();
+}
+const sbVal = k => sbDraft[k] != null ? sbDraft[k] : (sb[k] || "");
+function sbNormUrl(v){ v = String(v || "").trim().replace(/\s+/g, ""); if (v && !/^https?:\/\//i.test(v)) v = "https://" + v; return v.replace(/\/+$/, ""); }
 function hemSheet(){
   let o = $("hemOv");
-  if (!o){ o = document.createElement("div"); o.id = "hemOv"; o.className = "scan hrt hemov"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Knappar till hemmet"); document.body.appendChild(o); }
-  const first = hemBtns[0].n;
-  o.innerHTML = '<div class="scan-top"><b>Knappar till hemmet</b><button type="button" class="scan-x" data-hem="close" aria-label="Stäng">×</button></div>' +
-    '<p class="hrt-intro">Knappen kör en <b>genväg</b> som SwitchBot-appen gör åt dig – samma som Siri kan köra. Gör den en gång:</p>' +
+  if (!o){ o = document.createElement("div"); o.id = "hemOv"; o.className = "scan hrt hemov"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Koppla gardinen"); o.hidden = true; document.body.appendChild(o); }
+  const on = sbOn(), list = sbFound || (on ? [sb.dev] : []);
+  const keep = o.hidden ? 0 : o.scrollTop;
+  o.innerHTML = '<div class="scan-top"><b>Koppla gardinen</b><button type="button" class="scan-x" data-hem="close" aria-label="Stäng">×</button></div>' +
+    '<p class="hrt-intro">Knappen styr gardinen direkt via SwitchBots moln. SwitchBot släpper inte in webbappar själva, så anropen går via en liten gratis mellanhand som du lägger på Cloudflare. Det görs en gång och tar ungefär 10 minuter.</p>' +
     '<ol class="hrt-steps">' +
-      '<li><span class="hrt-n">1</span><div><b>Öppna SwitchBot-appen och tryck på gardinen</b><p>Tryck <b>⚙</b> uppe till höger → <b>Third-party Service</b> (Tredjepartstjänster) → <b>Siri Shortcuts</b> → <b>Add Shortcut</b>.</p></div></li>' +
-      '<li><span class="hrt-n">2</span><div><b>Välj Stäng och döp genvägen till exakt</b><div class="hem-name"><code>' + esc(first) + '</code><button type="button" class="btn sm ghost" data-hem="copy">Kopiera</button></div><p>Klistra in det som frasen och spara. Då hamnar genvägen i appen Genvägar med det namnet.</p></div></li>' +
-      '<li><span class="hrt-n">3</span><div><b>Testa</b><p>Första gången frågar iPhone om GymSchema får öppna Genvägar – tryck <b>Öppna</b>.</p><a class="btn sm" href="' + esc(hemUrl(first)) + '" data-hem="test">' + hemIcon(first) + ' ' + esc(first) + '</a></div></li>' +
+      '<li><span class="hrt-n">1</span><div><b>Lägg mellanhanden på Cloudflare</b><p>Skapa ett gratis konto. Gå till <b>Workers &amp; Pages</b> → <b>Create application</b> → <b>Create Worker</b> → <b>Deploy</b>. Tryck sedan <b>Edit code</b>, ta bort allt som står där och klistra in koden. Tryck <b>Deploy</b> igen.</p>' +
+        '<div class="hem-two"><button type="button" class="btn sm" data-hem="code">Kopiera koden</button><a class="btn sm ghost" href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener">Öppna Cloudflare ↗</a></div>' +
+        '<p>Kopiera adressen som slutar på <b>.workers.dev</b> och klistra in den här:</p><input class="hem-in" id="sbUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://….workers.dev" aria-label="Adressen från Cloudflare" value="' + esc(sbVal("url")) + '"></div></li>' +
+      '<li><span class="hrt-n">2</span><div><b>Hämta nyckeln i SwitchBot-appen</b><p><b>Profile</b> → <b>Preferences</b> → tryck <b>10 gånger</b> på <b>App Version</b> → <b>Developer Options</b> → <b>Get Token</b>. Kopiera <b>Token</b> och <b>Secret Key</b> och klistra in dem här.</p>' +
+        '<input class="hem-in" id="sbTok" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Token" aria-label="Token från SwitchBot" value="' + esc(sbVal("token")) + '">' +
+        '<input class="hem-in" id="sbSec" type="password" autocomplete="off" placeholder="Secret Key" aria-label="Secret Key från SwitchBot" value="' + esc(sbVal("secret")) + '"></div></li>' +
+      '<li><span class="hrt-n">3</span><div><b>Hämta gardinen</b>' +
+        (list.length > 1 ? '<div class="hem-devs" role="radiogroup" aria-label="Välj gardin">' + list.map(d => '<button type="button" class="hem-dev" role="radio" aria-checked="' + !!(sb.dev && sb.dev.id === d.id) + '" data-sbdev="' + esc(d.id) + '">' + esc(d.name) + '</button>').join("") + '</div>' : list.length ? '<p class="hem-ok">✓ ' + esc(list[0].name) + ' är kopplad.</p>' : '') +
+        (sb.dev && sb.dev.cloud === false ? '<p class="hem-warn">Slå på <b>Cloud Services</b> för gardinen i SwitchBot-appen (gardinen → ⚙ → Cloud Services), annars kan den inte styras härifrån.</p>' : '') +
+        (sbMsg ? '<p class="hem-warn" role="alert">' + sbMsg + '</p>' : '') +
+        '<button type="button" class="btn sm" data-hem="find"' + (sbBusy === "find" ? ' disabled' : '') + '>' + (sbBusy === "find" ? "Hämtar…" : on ? "Hämta igen" : "Hämta gardinen") + '</button></div></li>' +
+      (on ? '<li><span class="hrt-n">4</span><div><b>Testa</b><div class="hem-two">' + sbBtn("turnOff", "btn sm", 1) + sbBtn("turnOn", "btn sm ghost", 1) + '</div></div></li>' : '') +
     '</ol>' +
-    '<div class="hrt-note"><span aria-hidden="true">⌂</span><span>Det kräver en <b>SwitchBot Hub</b> (Hub Mini, Hub 2 eller Hub 3) nära gardinen. Utan hubb kan bara SwitchBot-appen själv styra gardinen, via Bluetooth.</span></div>' +
-    '<div class="hrt-note"><span aria-hidden="true">↩︎</span><span>iPhone hoppar in i Genvägar en kort stund när knappen körs – SwitchBot släpper inte in webbappar direkt. Svep tillbaka till GymSchema efteråt. Bonus: nu kan du också säga <b>”Hej Siri, ' + esc(first.toLowerCase()) + '”</b>.</span></div>' +
-    '<div class="hem-list"><b>Dina knappar</b><p class="hrt-s">Varje knapp kör genvägen med samma namn – t.ex. Öppna gardinen eller Filmkväll.</p>' +
-      hemBtns.map((b, i) => '<div class="hem-li"><input type="text" value="' + esc(b.n) + '" data-hemname="' + i + '" aria-label="Knapp ' + (i + 1) + ', namnet på genvägen" autocapitalize="sentences" maxlength="40">' + (hemBtns.length > 1 ? '<button type="button" class="hem-del" data-hem="del" data-i="' + i + '" aria-label="Ta bort ' + esc(b.n) + '">×</button>' : '') + '</div>').join("") +
-      (hemBtns.length < 6 ? '<button type="button" class="btn sm ghost" data-hem="add">+ Lägg till knapp</button>' : '') +
-    '</div>' +
-    '<div class="scan-btns"><button type="button" class="btn" data-hem="done">Klar</button></div>';
-  o.hidden = false; document.documentElement.classList.add("noscroll");
+    '<div class="hrt-note"><span aria-hidden="true">🔒</span><span>Token och secret sparas bara på den här telefonen och följer inte med i backupen. Mellanhanden sparar ingenting, den skickar bara vidare till SwitchBot.</span></div>' +
+    '<div class="scan-btns">' + (on ? '<button type="button" class="btn ghost" data-hem="off">Koppla bort</button>' : '') + '<button type="button" class="btn" data-hem="done">Klar</button></div>';
+  o.hidden = false; o.scrollTop = keep; document.documentElement.classList.add("noscroll");
 }
-function hemClose(){ const o = $("hemOv"); if (o) o.hidden = true; document.documentElement.classList.remove("noscroll"); hemRepaint(); }
+function hemClose(){ const o = $("hemOv"); if (o) o.hidden = true; document.documentElement.classList.remove("noscroll"); sbMsg = ""; const r = $("hemRow"); if (r) r.outerHTML = hemHTML(); }
+async function sbFind(){
+  const c = {url: sbNormUrl(sbVal("url")), token: String(sbVal("token")).trim(), secret: String(sbVal("secret")).trim()};
+  if (!/^https:\/\/[^/]+\.[^/]+/i.test(c.url)){ sbMsg = "Klistra in adressen från Cloudflare först (steg 1). Den slutar på .workers.dev."; hemSheet(); return; }
+  if (c.token.length < 16 || c.secret.length < 8){ sbMsg = "Klistra in både Token och Secret Key från SwitchBot-appen (steg 2)."; hemSheet(); return; }
+  sbBusy = "find"; sbMsg = ""; hemSheet();
+  try {
+    const body = await sbCall(c, "/v1.1/devices");
+    const list = (body.deviceList || []).filter(d => d && /curtain|roller ?shade|blind ?tilt/i.test(d.deviceType || "") && d.master !== false)
+      .map(d => ({id: String(d.deviceId), name: d.deviceName || "Gardinen", type: d.deviceType, cloud: d.enableCloudService !== false}));
+    if (!list.length) sbMsg = "Hittade ingen gardin på kontot. Är den tillagd i SwitchBot-appen, med en hubb?";
+    else {
+      sbFound = list;
+      const keepDev = sb.dev && list.find(d => d.id === sb.dev.id);
+      sb = Object.assign({}, c, {dev: keepDev || list.find(d => d.cloud) || list[0]}); store(SB_KEY, sb); sbDraft = {};
+      toast("Gardinen är kopplad ✓");
+    }
+  } catch(e){ sbMsg = sbText(e); }
+  sbBusy = ""; hemSheet(); const r = $("hemRow"); if (r) r.outerHTML = hemHTML();
+}
 document.addEventListener("click", e => {
-  const run = e.target.closest("[data-hemrun]");
-  if (run){ if (!store(HEM_SEEN)){ e.preventDefault(); hemSheet(); } return; }
+  const run = e.target.closest("[data-sb]");
+  if (run){ sbRun(run.dataset.sb); return; }
+  const dv = e.target.closest("[data-sbdev]");
+  if (dv && sbFound){ const d = sbFound.find(x => x.id === dv.dataset.sbdev); if (d){ sb.dev = d; store(SB_KEY, sb); hemSheet(); } return; }
   const b = e.target.closest("[data-hem]"); if (!b) return;
   const a = b.dataset.hem;
   if (a === "edit") hemSheet();
-  else if (a === "close" || a === "done"){ store(HEM_SEEN, 1); hemClose(); }
-  else if (a === "test") store(HEM_SEEN, 1);
-  else if (a === "copy"){ coachCopy(hemBtns[0].n); toast("Namnet är kopierat"); }
-  else if (a === "add"){ hemBtns.push({n: hemBtns.length === 1 && /stäng gardin/i.test(hemBtns[0].n) ? "Öppna gardinen" : "Ny knapp"}); hemSave(); hemSheet(); const i = document.querySelectorAll("[data-hemname]"); if (i.length) i[i.length - 1].select(); }
-  else if (a === "del"){ hemBtns.splice(+b.dataset.i, 1); if (!hemBtns.length) hemBtns = [{n: "Stäng gardinen"}]; hemSave(); hemSheet(); }
+  else if (a === "close" || a === "done") hemClose();
+  else if (a === "code"){ coachCopy(SB_CODE); toast("Koden är kopierad – klistra in den i Cloudflare"); }
+  else if (a === "find") sbFind();
+  else if (a === "off"){ store(SB_KEY, null); sb = {}; sbFound = null; sbDraft = {}; sbMsg = ""; hemSheet(); toast("Gardinen är bortkopplad"); }
 });
-document.addEventListener("change", e => {
-  const i = e.target && e.target.dataset ? e.target.dataset.hemname : null; if (i == null) return;
-  const v = e.target.value.trim().slice(0, 40);
-  if (!v){ e.target.value = hemBtns[+i].n; return; }
-  hemBtns[+i].n = v; hemSave(); if (+i === 0) hemSheet();
+document.addEventListener("input", e => {
+  const id = e.target && e.target.id;
+  if (id === "sbUrl") sbDraft.url = e.target.value; else if (id === "sbTok") sbDraft.token = e.target.value; else if (id === "sbSec") sbDraft.secret = e.target.value;
 });
 
 /* ---------- Start ---------- */
-const BUILD = "12 nov 11.36", BUILD_NOTE = "Nytt: knapp som stänger gardinen (Hemmet under Pass) och pulsen som en liten bubbla";
+const BUILD = "12 nov 11.44", BUILD_NOTE = "Nytt: knapp som stänger gardinen direkt via SwitchBot – Hemmet under Pass";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;

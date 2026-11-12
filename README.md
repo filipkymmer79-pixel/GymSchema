@@ -14,9 +14,9 @@ Datan går klockan → Garmin Connect → [intervals.icu](https://intervals.icu)
 
 **Live puls:** pulsen från klockan visas live i en liten bubbla som ligger ovanpå appen och går att dra vart man vill (den fastnar vid närmaste kant och kommer ihåg platsen). Klockan kör gratisappen [HypeRate](https://apps.garmin.com/apps/31741843-431a-4aee-8f2f-b04775de7551) (Connect IQ), som skickar pulsen via Garmin Connect på telefonen till HypeRate. Bubblan visar en beskuren bit av HypeRates enkla pulsruta (hjärtat och siffran) – deras animerade hjärtan är videor som iPhone ritar med vit bakgrund. Slå på med **♥ Live puls** i Garmin-rutan under Pass eller på Boxning, och skriv in koden som klockan visar (det som står efter `app.hyperate.io/`). Bubblan stängs med × eller av sig själv efter fyra timmar. Garmin Connect måste vara igång på telefonen och telefonen behöver nät. Koden sparas bara på telefonen.
 
-### Hemmet
+### Gardinen (SwitchBot)
 
-Under Garmin-rutan i **Pass** finns knappar till hemmet, från början **Stäng gardinen**. En knapp kör genvägen med samma namn i iPhones app Genvägar (`shortcuts://run-shortcut?name=…`), och genvägen är en Siri-genväg som SwitchBot-appen gör (gardinen → ⚙ → Third-party Service → Siri Shortcuts; kräver SwitchBot Hub). SwitchBots moln-API går inte att anropa direkt från en webbapp (inget CORS). Webbappar får inte styra hemmet direkt, så iPhone hoppar in i Genvägar en kort stund. Första gången visar appen hur man gör genvägen. Fler knappar (t.ex. Öppna gardinen, Filmkväll) läggs till under ⋯.
+Under Garmin-rutan i **Pass** finns raden **Gardinen** med knapparna **Stäng** och **Öppna**, som styr SwitchBot-gardinen direkt. SwitchBots moln-API släpper inte in webbappar (inget CORS), så anropen går via en liten gratis Cloudflare Worker som Filip lägger upp själv – koden finns i [`switchbot-worker.js`](switchbot-worker.js) och kopieras från appen. Workern skickar bara vidare till `api.switch-bot.com`, bara från appens adress och bara till enheterna och deras kommandon. Token och secret hämtas i SwitchBot-appen (Profile → Preferences → tryck 10 gånger på App Version → Developer Options), sparas bara på telefonen och signerar varje anrop med HMAC-SHA256. Kräver en SwitchBot Hub och att Cloud Services är på för gardinen.
 
 ### Coachen, prognos och lätt vecka
 
