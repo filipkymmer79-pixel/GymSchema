@@ -75,11 +75,9 @@ En sak per rad. `# Rubrik` delar upp listan, och rubriken `Bra att ha` (eller `U
 
 Knappen **Ordna med Claude** kopierar listan tillsammans med en färdig fråga och öppnar Claude. Svaret klistras in i appen och blir dagens schema.
 
-### Guld och vintage
+### Viktigt lyser guld
 
-Viktiga rader lyser guld: skriv `> Viktigt` på raden under (allt med *viktig* eller *måste* räknas, till exempel `> Ett måste i dag` eller `> Otroligt viktigt`). Anteckningen blir en guldbricka, raden glöder, och de viktiga samlas överst under **Viktigast i dag** – ett tryck där hoppar till raden. När något bockas av gnistrar det i guld, en del av dagen som är klar blir guld, och när allt är klart regnar det guld. Med *minska rörelse* påslaget i telefonen står glöden still och gnistorna stängs av.
-
-Appen är i vintage-stil: svart och guld, Playfair Display, Lora och Courier Prime (Google Fonts) och lite filmkorn. **Vintage: på/av** längst ner byter till den första looken, och valet sparas på telefonen.
+Skriv `> Viktigt` på raden under något så lyser raden guld (allt med *viktig* eller *måste* räknas, till exempel `> Ett måste i dag` eller `> Otroligt viktigt`). Anteckningen blir en guldbricka, raden glöder och de viktiga samlas överst under **Viktigast i dag** – ett tryck där hoppar till raden. När en viktig rad bockas av gnistrar det i guld. Med *minska rörelse* påslaget i telefonen står glöden still och gnistorna stängs av.
 
 ### Handla
 

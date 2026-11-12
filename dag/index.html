@@ -9,24 +9,14 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Dagsschema">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0B0805">
-<script>
-/* Vintage (black and gold) unless the old look was chosen. Set before anything is drawn. */
-(function () {
-  var th = "";
-  try { th = localStorage.getItem("dagsschema.theme") || ""; } catch (e) { /* vintage it is */ }
-  var classic = th === "classic";
-  document.documentElement.setAttribute("data-theme", classic ? "classic" : "vintage");
-  if (classic) document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0B1226");
-})();
-</script>
+<meta name="theme-color" content="#0B1226">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="kira-180.png">
 <link rel="apple-touch-icon" sizes="180x180" href="kira-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="kira-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=Courier+Prime:wght@400;700&amp;family=DM+Mono:wght@400;500&amp;family=Instrument+Sans:wght@400..700&amp;family=Lora:ital,wght@0,400..700;1,400..700&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=DM+Mono:wght@400;500&amp;family=Instrument+Sans:wght@400..700&amp;display=swap">
 <style>
 /* Layout: one narrow column for a phone. A sticky strip of segments, one per task,
    sits over a numbered checklist; the task to do now is the single lit row.
@@ -67,33 +57,6 @@
     --gold: #FFC24D; --glow: rgba(255, 190, 61, 0.40); --vip-bg: rgba(255, 190, 61, 0.09); --vip-ink: #FFE6AE;
     color-scheme: dark;
   }
-}
-/* Vintage: black and gold, old type, a little film grain. Always dark, so the gold can glow. */
-html[data-theme="vintage"] {
-  --bg: #110D09;        /* warm black */
-  --ink: #F3E6C8;       /* cream */
-  --muted: #B9A47E;
-  --line: #2C2217;
-  --edge: #5E4B31;      /* bronze */
-  --done: #7D6D53;
-  --field: #18120C;
-  --band: #0B0805;
-  --lamp: #E3B95E;
-  --lamp-ink: #201406;
-  --lamp-soft: rgba(32, 20, 6, 0.66);
-  --lamp-edge: rgba(32, 20, 6, 0.42);
-  --lamp-line: rgba(32, 20, 6, 0.22);
-  --gold: #E8BE62;
-  --gold-hi: #FBE7A8;
-  --gold-grad: linear-gradient(135deg, #FBE7A8 0%, #E6BC5C 36%, #B7832B 62%, #F3D27E 100%);
-  --gold-ink: #241606;
-  --glow: rgba(240, 188, 84, 0.48);
-  --vip-bg: rgba(232, 190, 98, 0.08);
-  --vip-ink: #FCEBC0;
-  --font-display: "Playfair Display", "Didot", "Bodoni 72", Georgia, serif;
-  --font-body: "Lora", "Iowan Old Style", Georgia, serif;
-  --font-mono: "Courier Prime", "American Typewriter", "Courier New", monospace;
-  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -464,8 +427,7 @@ section.block { display: grid; gap: 0.5rem; }
 .secnote { margin: 0 0.75rem; font-size: 0.875rem; line-height: 1.35; color: var(--muted); }
 
 .foot { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
-.foot .btn { flex: 1; white-space: nowrap; }
-.foot #themeBtn { flex-basis: 100%; }
+.foot .btn { flex: 1; }
 
 /* Shopping list: add one more thing without opening the editor */
 .add { display: flex; gap: 0.5rem; padding-top: 0.875rem; }
@@ -625,13 +587,7 @@ textarea:focus-visible,
 .vipcard li.done .star { background: var(--gold-grad); color: var(--gold-ink); box-shadow: none; }
 .vipcard li.done .go { visibility: hidden; }
 
-/* A part of the day that is all done turns gold */
-.sec.alldone { color: var(--gold); }
-.sec.alldone .num::after { content: " \2713"; }
-.sec.shine { animation: secshine 1.3s ease; }
-@keyframes secshine { 30% { text-shadow: 0 0 14px var(--glow), 0 0 2px var(--gold-hi); } }
-
-/* Gold that answers a tick: sparks, a flash on the line, gold rain when the day is done */
+/* An important line that gets done answers in gold: sparks, a flash, a short note */
 .task.flash { animation: flash 1.2s ease-out; }
 @keyframes flash {
   0% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
@@ -664,18 +620,6 @@ textarea:focus-visible,
   65% { opacity: 1; }
   100% { transform: translate(var(--dx), var(--dy)) scale(var(--s, 1)) rotate(var(--r, 0deg)); opacity: 0; }
 }
-.conf {
-  position: fixed;
-  z-index: 40;
-  top: -24px;
-  width: 8px;
-  height: 14px;
-  border-radius: 2px;
-  pointer-events: none;
-  background: var(--gold-grad);
-  animation: fall var(--t, 2.4s) cubic-bezier(0.25, 0.6, 0.4, 1) var(--d, 0s) forwards;
-}
-@keyframes fall { to { transform: translate3d(var(--x, 0px), 112vh, 0) rotate(var(--r, 540deg)); } }
 .toast {
   position: fixed;
   z-index: 41;
@@ -700,71 +644,6 @@ textarea:focus-visible,
   100% { opacity: 0; transform: translate(-50%, -6px); }
 }
 
-/* Vintage: the look itself */
-.grain { display: none; }
-html[data-theme="vintage"] .grain {
-  display: block;
-  position: fixed;
-  inset: 0;
-  z-index: 30;
-  pointer-events: none;
-  opacity: 0.08;
-  background: url("data:image/png;base64,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") repeat;
-  background-size: 112px 112px;
-}
-html[data-theme="vintage"] body {
-  background: radial-gradient(640px 360px at 50% -80px, rgba(232, 178, 82, 0.17), rgba(232, 178, 82, 0) 70%) no-repeat, var(--bg);
-}
-html[data-theme="vintage"] h1 {
-  justify-self: start;
-  padding: 0 0.12em 0.12em 0;
-  margin-bottom: -0.12em;
-  font-style: italic;
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.005em;
-  background: var(--gold-grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
-html[data-theme="vintage"] .eyebrow { color: #C9A86A; letter-spacing: 0.18em; }
-html[data-theme="vintage"] .pup {
-  filter: sepia(0.35) saturate(1.08) contrast(1.04);
-  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--gold), 0 0 22px 2px var(--glow);
-}
-html[data-theme="vintage"] .bar,
-html[data-theme="vintage"] .tabs {
-  background: rgba(17, 13, 9, 0.95);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
-}
-html[data-theme="vintage"] .bar { border-bottom-color: rgba(232, 190, 98, 0.2); }
-html[data-theme="vintage"] .tabs { border-top-color: rgba(232, 190, 98, 0.2); }
-html[data-theme="vintage"] .segs i { background: #2E2418; }
-html[data-theme="vintage"] .segs i.on { background: var(--gold-grad); box-shadow: 0 0 6px rgba(240, 188, 84, 0.4); }
-html[data-theme="vintage"] .tag { background: var(--gold-grad); color: var(--gold-ink); }
-html[data-theme="vintage"] .task.now {
-  background: var(--gold-grad);
-  box-shadow: inset 0 0 0 1px rgba(255, 240, 200, 0.4), 0 10px 30px -8px rgba(232, 178, 82, 0.5), 0 0 22px rgba(232, 178, 82, 0.22);
-}
-html[data-theme="vintage"] .txt { font-weight: 500; }
-html[data-theme="vintage"] .task.is-done .txt { text-decoration-color: rgba(232, 190, 98, 0.55); }
-html[data-theme="vintage"] .task.is-done .dot { background: var(--gold-grad); border-color: #B98C3E; }
-html[data-theme="vintage"] .task:not(.now) .opt .chk:checked + label::before { background: var(--gold-grad); border-color: #B98C3E; }
-html[data-theme="vintage"] .sec { color: #C9A86A; letter-spacing: 0.16em; }
-html[data-theme="vintage"] .sec > span:first-child::before { content: "\2726"; margin-right: 0.55em; color: var(--gold); }
-html[data-theme="vintage"] .sec.alldone { color: var(--gold); }
-html[data-theme="vintage"] .btn.primary,
-html[data-theme="vintage"] .tab[aria-pressed="true"] {
-  background: var(--gold-grad);
-  border-color: #B98C3E;
-  color: var(--gold-ink);
-}
-html[data-theme="vintage"] .btn.primary { box-shadow: 0 0 18px -2px rgba(232, 178, 82, 0.35); }
-html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 1rem; line-height: 1.5; }
-.btn[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
 .vipcard button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 0.5rem; }
 
 @keyframes pop { 40% { transform: scale(1.22); } }
@@ -774,8 +653,8 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
   .task.pop .dot { animation: none; }
   .task.vip::before { animation: none; opacity: 0.9; }
   .task.vip.is-done::before { opacity: 0.4; }
-  .vipnote, .task.flash, .sec.shine { animation: none; }
-  .spark, .conf { display: none; }
+  .vipnote, .task.flash { animation: none; }
+  .spark { display: none; }
   .toast { animation: none; }
 }
 </style>
@@ -830,11 +709,9 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
       <button type="button" class="btn" id="editBtn">Ändra listan</button>
       <button type="button" class="btn" id="newBtn">Ny dag</button>
       <button type="button" class="btn" id="clearBtn" hidden>Rensa avbockade</button>
-      <button type="button" class="btn" id="themeBtn" aria-pressed="true">Vintage: på</button>
     </div>
   </div>
 </div>
-<div class="grain" aria-hidden="true"></div>
 
 <nav class="tabs" aria-label="Listor">
   <button type="button" class="tab" id="tabDay" aria-pressed="true">Idag</button>
@@ -849,7 +726,6 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
   var KEYS = { day: "dagsschema.v1", shop: "dagsschema.handla.v1" };
   var UIKEYS = { day: "dagsschema.ui", shop: "dagsschema.handla.ui" };
   var TABKEY = "dagsschema.tab";
-  var THEMEKEY = "dagsschema.theme";
   var WEEKDAYS = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
   var MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti",
                 "september", "oktober", "november", "december"];
@@ -919,7 +795,7 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
   var doneN = $("doneN"), totalN = $("totalN");
   var askHint = $("askHint"), addForm = $("addForm"), addInput = $("addInput");
   var newBtn = $("newBtn"), clearBtn = $("clearBtn"), tabDay = $("tabDay"), tabShop = $("tabShop");
-  var themeBtn = $("themeBtn"), vipHint = $("vipHint");
+  var vipHint = $("vipHint");
 
   // Everything lives on this phone: each list as plain text, its day, and what is ticked.
   function loadStore(k) {
@@ -1124,7 +1000,7 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
     var vip = isVip(t);
     if (vip) li.classList.add("vip");
     var view = { t: t, el: li, boxes: [], counter: null, seg: null, done: false, loose: false,
-                 vip: vip, later: false, h: null };
+                 vip: vip, later: false };
     if (!t.subs.length) {
       var input = box(t.key);
       head = el("label");
@@ -1217,9 +1093,9 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
     var n = 0;
     model.forEach(function (s) {
       var loose = s.loose || tab === "shop", later = tab === "day" && LATER.test(s.title);
-      var secEl = el("section", "block" + (loose ? " loose" : "") + (later ? " later" : "")), num = null, h = null;
+      var secEl = el("section", "block" + (loose ? " loose" : "") + (later ? " later" : "")), num = null;
       if (s.title) {
-        h = el("h2", "sec");
+        var h = el("h2", "sec");
         num = el("span", "num");
         h.appendChild(el("span", null, s.title));
         h.appendChild(num);
@@ -1246,7 +1122,7 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
       }
       secEl.appendChild(rows);
       listEl.appendChild(secEl);
-      groups.push({ num: num, h: h, tasks: mine });
+      groups.push({ num: num, tasks: mine });
     });
     if (tab === "day") {
       var vips = tasks.filter(function (v) { return v.vip && !v.later; });
@@ -1288,7 +1164,6 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
       if (!g.num) return;
       var d = g.tasks.filter(function (v) { return v.done; }).length;
       g.num.textContent = d + "/" + g.tasks.length;
-      if (g.h) g.h.classList.toggle("alldone", g.tasks.length > 0 && d === g.tasks.length);
     });
     if (card) {
       var vd = 0;
@@ -1502,16 +1377,9 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
     });
   });
 
-  // Gold that answers a tick: sparks from the box, more for an important line,
-  // a gold heading when a part of the day is done, gold rain when everything is.
-  function progress() {
-    var counted = tasks.filter(function (v) { return tab === "shop" || !v.loose; });
-    return {
-      all: counted.length > 0 && counted.every(function (v) { return v.done; }),
-      vip: !!card && card.rows.every(function (r) { return r.v.done; }),
-      secs: groups.map(function (g) { return g.tasks.length > 0 && g.tasks.every(function (v) { return v.done; }); })
-    };
-  }
+  // An important line that gets done answers in gold: sparks from its box and a flash,
+  // and a short note when all the important ones are done.
+  function vipAllDone() { return !!card && card.rows.every(function (r) { return r.v.done; }); }
   function originOf(b) {
     var main = b.parentNode && b.parentNode.classList.contains("task");
     var target = main ? b.parentNode.querySelector(".dot") : b.nextElementSibling;
@@ -1539,23 +1407,6 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
       wait((function (n) { return function () { n.remove(); }; })(s), 900);
     }
   }
-  function goldRain() {
-    if (reduced()) return;
-    var w = window.innerWidth;
-    for (var i = 0; i < 48; i++) {
-      var c = el("span", "conf");
-      c.style.left = Math.round(Math.random() * w) + "px";
-      c.style.width = (6 + Math.random() * 5).toFixed(1) + "px";
-      c.style.height = (10 + Math.random() * 8).toFixed(1) + "px";
-      c.style.setProperty("--x", Math.round(Math.random() * 120 - 60) + "px");
-      c.style.setProperty("--r", (Math.random() < 0.5 ? -1 : 1) * Math.round(360 + Math.random() * 540) + "deg");
-      c.style.setProperty("--t", (1.9 + Math.random() * 1.2).toFixed(2) + "s");
-      c.style.setProperty("--d", (Math.random() * 0.6).toFixed(2) + "s");
-      c.setAttribute("aria-hidden", "true");
-      document.body.appendChild(c);
-      wait((function (n) { return function () { n.remove(); }; })(c), 4000);
-    }
-  }
   var toastEl = null;
   function toast(text) {
     if (toastEl) toastEl.remove();
@@ -1571,28 +1422,6 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
     v.el.classList.add("flash");
     wait(function () { v.el.classList.remove("flash"); }, 1300);
   }
-  function celebrate(b, view, wasDone, before, after) {
-    var at = originOf(b), finished = !!(view && view.done && !wasDone);
-    if (finished && view.vip) {
-      sparks(at, 18, true);
-      flash(view);
-    } else {
-      sparks(at, finished ? 8 : 5, false);
-    }
-    after.secs.forEach(function (done, i) {
-      var h = groups[i] && groups[i].h;
-      if (done && !before.secs[i] && h && !reduced()) {
-        h.classList.add("shine");
-        wait(function () { h.classList.remove("shine"); }, 1400);
-      }
-    });
-    if (after.all && !before.all) {
-      goldRain();
-      toast(tab === "shop" ? "✦ Allt i korgen ✦" : "✦ Allt klart i dag ✦");
-    } else if (after.vip && !before.vip) {
-      toast("★ Det viktigaste är klart");
-    }
-  }
 
   listEl.addEventListener("change", function (e) {
     var b = e.target;
@@ -1600,7 +1429,7 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
     var k = b.getAttribute("data-key");
     var li = b.closest(".task"), view = null;
     tasks.forEach(function (v) { if (v.el === li) view = v; });
-    var before = progress(), wasDone = !!(view && view.done);
+    var wasDone = !!(view && view.done), vipBefore = vipAllDone();
     if (b.checked) store.done[k] = true;
     else delete store.done[k];
     save();
@@ -1609,7 +1438,11 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
       li.classList.add("pop");
       setTimeout(function () { li.classList.remove("pop"); }, 320);
     }
-    if (b.checked) celebrate(b, view, wasDone, before, progress());
+    if (b.checked && view && view.vip && view.done && !wasDone) {
+      sparks(originOf(b), 18, true);
+      flash(view);
+      if (!vipBefore && vipAllDone()) toast("\u2605 Det viktigaste är klart");
+    }
   });
 
   nowBtn.addEventListener("click", function () {
@@ -1638,25 +1471,6 @@ html[data-theme="vintage"] textarea { font-family: var(--font-mono); font-size: 
   }
   tabDay.addEventListener("click", function () { setTab("day"); });
   tabShop.addEventListener("click", function () { setTab("shop"); });
-
-  // Vintage (black and gold) or the first look. The choice stays on this phone.
-  function themeName() {
-    return document.documentElement.getAttribute("data-theme") === "classic" ? "classic" : "vintage";
-  }
-  function showTheme() {
-    var on = themeName() === "vintage";
-    themeBtn.textContent = on ? "Vintage: på" : "Vintage: av";
-    themeBtn.setAttribute("aria-pressed", String(on));
-  }
-  themeBtn.addEventListener("click", function () {
-    var next = themeName() === "vintage" ? "classic" : "vintage";
-    document.documentElement.setAttribute("data-theme", next);
-    try { localStorage.setItem(THEMEKEY, next); } catch (e) { /* this visit only */ }
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", next === "vintage" ? "#0B0805" : "#0B1226");
-    showTheme();
-  });
-  showTheme();
   start();
 
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
