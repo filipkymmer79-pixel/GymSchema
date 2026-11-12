@@ -554,6 +554,17 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .pos-list.light > div{background:var(--surface2)}
 .pos-list.light .stat-l{color:var(--muted)}
 .pos-img{width:100%;max-height:60vh;object-fit:contain;border-radius:14px;background:#000}
+/* Kameran som tränare */
+.live-view{position:relative;width:100%;max-width:480px;margin:0 auto;aspect-ratio:3/4;max-height:62vh;border-radius:20px;overflow:hidden;background:#000;box-shadow:0 0 0 4px transparent;transition:box-shadow .2s}
+.live.bad .live-view{box-shadow:0 0 0 4px #FF5B52}
+.live.done .live-view{display:none}
+.live-view video,.live-view canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.live-n{position:absolute;top:10px;left:14px;font-family:var(--display);font-weight:900;font-size:min(22vw,110px);line-height:1;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.6)}
+.live-n.pop{animation:bxpop .35s cubic-bezier(.2,1.5,.4,1)}
+.live-cue{position:absolute;left:10px;right:10px;bottom:10px;text-align:center;font-weight:800;font-size:18px;background:rgba(11,13,18,.72);border-radius:12px;padding:8px 10px;color:#fff}
+.live-cue:empty{display:none}
+.live-sum{display:block;font-family:var(--display);font-weight:800;font-size:28px;line-height:1.15;color:#fff}
+@media (prefers-reduced-motion: reduce){.live-n.pop{animation:none}}
 /* Vanor */
 .hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .hnav{display:flex;gap:6px;flex:0 0 auto}
@@ -1606,6 +1617,8 @@ class LocalDB {
     if (data.foodSettings && data.foodSettings.size) foodSet = Object.assign(foodSet, data.foodSettings);
     (Array.isArray(data.posture) ? data.posture : []).forEach(x => { if (x && x.id && x.m && !posture.some(y => y.id === x.id)){ posture.push(x); n++; } });
     posture.sort((a, b) => a.ts - b.ts); store("gymschema.posture.v1", posture);
+    (Array.isArray(data.home) ? data.home : []).forEach(x => { if (x && x.ts && x.mode && !homeLog.some(y => y.ts === x.ts)){ homeLog.push(x); n++; } });
+    homeLog.sort((a, b) => a.ts - b.ts); store("gymschema.home.v1", homeLog);
     foodSave();
     this._save("sessions"); this._save("weights"); return n;
   }
@@ -1623,7 +1636,7 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "GymSchema", version: 5, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture};
+  const data = {app: "GymSchema", version: 5, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
@@ -1752,7 +1765,7 @@ function renderBox(){
       '<div class="bxnums" style="margin-top:10px">' + Object.keys(BXN).map(k => '<div><b>' + (k === "G" || k === "D" ? "↯" : k) + '</b><span>' + BXN[k][0] + '<small>' + BXN[k][1] + '</small></span></div>').join("") + '</div>' +
       '<div class="small" style="margin-top:10px">Händerna uppe vid hakan, hakan ner, andas ut på varje slag. Slå mot säck? Linda händerna och använd handskar. Känns handen eller handleden fel – skuggboxas utan säck tills det är bra.</div></div>' +
     '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b>Den här veckan</b><span class="lead num">' + wk.length + ' pass · ' + wkR + ' ronder · ' + wkMin + ' min</span></div>' +
-      (boxLog.length ? '<div class="rows" style="margin-top:8px">' + boxLog.slice(-6).reverse().map(b => '<div class="row"><span class="num"><b>' + b.rounds + ' ronder</b> × ' + (b.round / 60) + ' min</span><span class="d">' + dLong(b.date) + '</span></div>').join("") + '</div>' : '<div class="small" style="margin-top:6px">Passen sparas här när du kört minst en hel rond.</div>') + '</div>';
+      (boxLog.length ? '<div class="rows" style="margin-top:8px">' + boxLog.slice(-6).reverse().map(b => '<div class="row"><span class="num"><b>' + b.rounds + ' ronder</b> × ' + (b.round / 60) + ' min</span><span class="d">' + dLong(b.date) + '</span></div>').join("") + '</div>' : '<div class="small" style="margin-top:6px">Passen sparas här när du kört minst en hel rond.</div>') + '</div>' + camCoachHTML();
 }
 $("v-boxning").addEventListener("click", e => {
   const r = e.target.closest("[data-bxr]"), b = e.target.closest("[data-bx]"), go = e.target.closest("[data-bxgo]");
@@ -3003,8 +3016,145 @@ function postureHTML(){
 document.addEventListener("click", e => { const b = e.target.closest("[data-pos]"); if (b) postureStart(b.dataset.pos); });
 document.addEventListener("change", e => { if (e.target && e.target.id === "posHeight"){ const v = num(e.target.value); if (v >= 120 && v <= 230){ store(HEIGHT_KEY, Math.round(v)); toast("Längd " + Math.round(v) + " cm"); } else toast("Skriv din längd i cm, t.ex. 183"); } });
 
+
+/* ---------- Kameran som tränare hemma: räknar armhävningar och knäböj, säger till om garden åker ner ---------- */
+const MP_LITE = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task";
+const HOME_KEY = "gymschema.home.v1";
+let homeLog = store(HOME_KEY) || [], liveLm = null, livePending = null, LIVE = null;
+const HMODES = {
+  push: {n: "Armhävningar", tip: "Lägg mobilen på golvet en bit bort, så att den ser dig från sidan. Hela kroppen i bild.", unit: "armhävningar"},
+  squat: {n: "Knäböj", tip: "Ställ mobilen i höfthöjd 2–3 meter bort, från sidan eller framifrån. Hela kroppen i bild.", unit: "knäböj"},
+  guard: {n: "Garden", tip: "Ställ mobilen i axelhöjd framför dig, 2–3 meter bort. Skuggboxas – appen säger till om händerna åker ner.", unit: "min med garden uppe"}
+};
+async function liveLoad(msg){
+  if (liveLm) return liveLm;
+  if (livePending) return livePending;
+  livePending = (async () => {
+    msg && msg("Laddar AI:n – första gången tar det en stund…");
+    const mp = await import(MP_BASE + "/vision_bundle.mjs"), fs = await mp.FilesetResolver.forVisionTasks(MP_BASE + "/wasm");
+    const mk = d => mp.PoseLandmarker.createFromOptions(fs, {baseOptions: {modelAssetPath: MP_LITE, delegate: d}, runningMode: "VIDEO", numPoses: 1});
+    try { liveLm = await mk("GPU"); } catch(e){ liveLm = await mk("CPU"); }
+    return liveLm;
+  })();
+  try { return await livePending; } catch(e){ livePending = null; throw e; }
+}
+const jAng = (a, b, c) => { const ux = a.x - b.x, uy = a.y - b.y, vx = c.x - b.x, vy = c.y - b.y, d = Math.hypot(ux, uy) * Math.hypot(vx, vy); return d ? Math.acos(Math.max(-1, Math.min(1, (ux * vx + uy * vy) / d))) * 180 / Math.PI : 180; };
+// Räknaren: tar emot punkterna för en bildruta och returnerar det som hände (rep, tips, status)
+function repTracker(mode){
+  const T = {mode, reps: 0, bad: 0, phase: "up", dip: false, lastCue: {}, guardOk: 0, guardAll: 0, lowSince: 0, t0: 0, tLast: 0};
+  const TH = mode === "push" ? {down: 100, up: 150, dip: 135} : {down: 105, up: 160, dip: 140};
+  T.step = (lm, w, h, now) => {
+    const ev = {};
+    if (!T.t0) T.t0 = now;
+    const ok = i => lm && lm[i] && (lm[i].visibility == null || lm[i].visibility > .5), P = i => ({x: lm[i].x * w, y: lm[i].y * h});
+    const cue = (k, text, gap) => { if (now - (T.lastCue[k] || -1e9) > (gap || 3500)){ T.lastCue[k] = now; ev.cue = text; } };
+    if (mode === "guard"){
+      if (![0, 11, 12, 15, 16].every(ok)){ ev.status = "Ställ dig så att huvudet, axlarna och händerna syns"; return ev; }
+      const sw = Math.abs(P(11).x - P(12).x), lim = Math.max(P(11).y, P(12).y) + sw * .25, up = P(15).y < lim && P(16).y < lim;
+      if (T.tLast) { const dt = Math.min(500, now - T.tLast); T.guardAll += dt; if (up) T.guardOk += dt; }
+      T.tLast = now;
+      if (up) T.lowSince = 0; else { if (!T.lowSince) T.lowSince = now; if (now - T.lowSince > 900) cue("low", "Händerna upp!", 3000); }
+      ev.status = up ? "Garden uppe" : "Händerna ner"; ev.good = up; return ev;
+    }
+    const L = mode === "push" ? [11, 13, 15, 23, 27] : [23, 25, 27, 11], R = mode === "push" ? [12, 14, 16, 24, 28] : [24, 26, 28, 12];
+    const vis = a => a.reduce((s, i) => s + (lm && lm[i] && lm[i].visibility != null ? lm[i].visibility : 1), 0);
+    const S = vis(L) >= vis(R) ? L : R;
+    if (!S.every(ok)){ ev.status = mode === "push" ? "Hela kroppen från sidan i bild" : "Höften, knät och foten måste synas"; return ev; }
+    const a = mode === "push" ? jAng(P(S[0]), P(S[1]), P(S[2])) : jAng(P(S[0]), P(S[1]), P(S[2]));
+    ev.angle = Math.round(a);
+    if (mode === "push" && T.phase === "down" && jAng(P(S[0]), P(S[3]), P(S[4])) < 150) cue("hip", "Håll höften uppe", 4000);
+    if (T.phase === "up"){
+      if (a < TH.down){ T.phase = "down"; T.dip = false; }
+      else if (a < TH.dip) T.dip = true;
+      else if (a > TH.up && T.dip){ T.dip = false; T.bad++; cue("deep", mode === "push" ? "Längre ner!" : "Djupare!", 2500); }
+    } else if (a > TH.up){ T.phase = "up"; T.reps++; ev.rep = T.reps; }
+    ev.status = T.phase === "down" ? (mode === "push" ? "Nere – tryck upp" : "Nere – res dig") : "Redo";
+    return ev;
+  };
+  return T;
+}
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {repTracker});
+function homeWeek(){ const ws = iso(weekStart(today())), wk = homeLog.filter(x => x.date >= ws), s = k => wk.filter(x => x.mode === k).reduce((a, x) => a + (k === "guard" ? x.secs / 60 : x.reps), 0); return {push: s("push"), squat: s("squat"), guard: Math.round(s("guard") * 10) / 10}; }
+function camCoachHTML(){
+  const w = homeWeek();
+  return '<div class="card coach"><div class="gm-top"><b>Kameran som tränare</b><span class="lead">hemma</span></div>' +
+    '<div class="small">AI:n i telefonen ser dig genom kameran: räknar armhävningar och knäböj, säger till om du inte går tillräckligt djupt, och när du skuggboxas om garden åker ner.</div>' +
+    '<div class="bxseg">' + Object.keys(HMODES).map(k => '<button type="button" data-live="' + k + '">' + HMODES[k].n + '</button>').join("") + '</div>' +
+    ((w.push || w.squat || w.guard) ? '<div class="small">Den här veckan: ' + [w.push ? w.push + " armhävningar" : "", w.squat ? w.squat + " knäböj" : "", w.guard ? fmt(w.guard, 1) + " min garden" : ""].filter(Boolean).join(" · ") + '</div>' : '') + '</div>';
+}
+function liveEl(){
+  let o = $("liveOv"); if (o) return o;
+  o = document.createElement("div"); o.id = "liveOv"; o.className = "scan live"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true");
+  o.innerHTML = '<div class="scan-top"><b id="liveTitle"></b><button type="button" class="scan-x" data-livea="close" aria-label="Stäng">×</button></div>' +
+    '<div class="live-view"><video id="liveVid" playsinline muted autoplay></video><canvas id="liveCan"></canvas><div class="live-n" id="liveN">0</div><div class="live-cue" id="liveCue"></div></div>' +
+    '<div class="scan-msg" id="liveMsg"></div><div class="scan-btns" id="liveBtns"><button type="button" class="btn" data-livea="done">Klar</button><button type="button" class="btn ghost" data-livea="flip">Byt kamera</button></div>';
+  document.body.appendChild(o);
+  o.addEventListener("click", e => { const b = e.target.closest("[data-livea]"); if (!b) return; const a = b.dataset.livea; if (a === "close") liveClose(false); else if (a === "done") liveClose(true); else if (a === "flip"){ LIVE.facing = LIVE.facing === "user" ? "environment" : "user"; liveCam(); } else if (a === "ok") liveClose(false, true); });
+  return o;
+}
+async function liveStart(mode){
+  const o = liveEl(), H = HMODES[mode];
+  LIVE = {mode, T: repTracker(mode), facing: "user", raf: 0, last: 0};
+  $("liveTitle").textContent = H.n; $("liveN").textContent = mode === "guard" ? "–" : "0"; $("liveCue").textContent = ""; $("liveMsg").textContent = H.tip; $("liveBtns").hidden = false; o.classList.remove("done");
+  o.hidden = false; document.documentElement.classList.add("noscroll"); ensureAudio(); primeVoice(); keepAwake();
+  await liveCam();
+  try { await liveLoad(t => { $("liveMsg").textContent = t; }); }
+  catch(e){ $("liveMsg").textContent = "AI:n gick inte att ladda. Är du uppkopplad? Första gången hämtas den från nätet."; return; }
+  if (!LIVE) return;
+  $("liveMsg").textContent = H.tip; say(mode === "guard" ? "Garden upp. Kör." : "Kör när du är redo.");
+  const loop = () => {
+    if (!LIVE) return; LIVE.raf = requestAnimationFrame(loop);
+    const v = $("liveVid"), now = performance.now();
+    if (v.readyState < 2 || !v.videoWidth || now - LIVE.last < 66) return;
+    LIVE.last = now;
+    let r; try { r = liveLm.detectForVideo(v, now); } catch(e){ return; }
+    const lm = r && r.landmarks && r.landmarks[0];
+    liveDraw(lm, v);
+    if (!lm){ $("liveCue").textContent = "Ingen kropp i bild"; return; }
+    const ev = LIVE.T.step(lm, v.videoWidth, v.videoHeight, now);
+    if (ev.rep){ $("liveN").textContent = ev.rep; $("liveN").classList.remove("pop"); void $("liveN").offsetWidth; $("liveN").classList.add("pop"); say(String(ev.rep)); }
+    if (ev.cue){ say(ev.cue); }
+    $("liveCue").textContent = ev.cue || ev.status || "";
+    if (LIVE.mode === "guard"){ const T = LIVE.T; $("liveN").textContent = T.guardAll > 2000 ? Math.round(T.guardOk / T.guardAll * 100) + "%" : "–"; $("liveOv").classList.toggle("bad", ev.good === false); }
+  };
+  loop();
+}
+async function liveCam(){
+  liveStopCam(); const v = $("liveVid"), m = LIVE.facing === "user" ? "scaleX(-1)" : ""; v.style.transform = m; $("liveCan").style.transform = m;
+  try { const st = await navigator.mediaDevices.getUserMedia({video: {facingMode: LIVE.facing, width: {ideal: 720}, height: {ideal: 1280}}, audio: false}); LIVE.stream = st; v.srcObject = st; await v.play().catch(() => {}); }
+  catch(e){ $("liveMsg").textContent = "Kameran gick inte att starta. Kolla att appen får använda kameran."; }
+}
+function liveStopCam(){ if (LIVE && LIVE.stream){ try { LIVE.stream.getTracks().forEach(t => t.stop()); } catch(e){} LIVE.stream = null; } const v = $("liveVid"); if (v) v.srcObject = null; }
+const LIVE_BONES = [[11, 12], [11, 13], [13, 15], [12, 14], [14, 16], [11, 23], [12, 24], [23, 24], [23, 25], [25, 27], [24, 26], [26, 28]];
+function liveDraw(lm, v){
+  const c = $("liveCan"), x = c.getContext("2d"); if (c.width !== v.videoWidth){ c.width = v.videoWidth; c.height = v.videoHeight; }
+  x.clearRect(0, 0, c.width, c.height); if (!lm) return;
+  const P = i => [lm[i].x * c.width, lm[i].y * c.height], seen = i => lm[i].visibility == null || lm[i].visibility > .5;
+  x.lineWidth = Math.max(3, c.width / 120); x.lineCap = "round"; x.strokeStyle = "rgba(107,149,255,.95)";
+  LIVE_BONES.forEach(([a, b]) => { if (!seen(a) || !seen(b)) return; x.beginPath(); x.moveTo(...P(a)); x.lineTo(...P(b)); x.stroke(); });
+  x.fillStyle = "#fff"; [0, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28].forEach(i => { if (!seen(i)) return; x.beginPath(); x.arc(...P(i), x.lineWidth * 1.2, 0, 7); x.fill(); });
+}
+function liveClose(save, quiet){
+  if (!LIVE) return;
+  cancelAnimationFrame(LIVE.raf); liveStopCam(); releaseAwake();
+  const T = LIVE.T, mode = LIVE.mode, secs = Math.round((T.guardAll || 0) / 1000);
+  if (save && !quiet){
+    const has = mode === "guard" ? secs >= 20 : T.reps > 0;
+    if (has){ homeLog.push({date: iso(today()), ts: Date.now(), mode, reps: T.reps, bad: T.bad, secs, pct: T.guardAll ? Math.round(T.guardOk / T.guardAll * 100) : null}); homeLog = homeLog.slice(-300); store(HOME_KEY, homeLog); }
+    const o = $("liveOv"); o.classList.add("done"); $("liveBtns").hidden = true;
+    const txt = mode === "guard" ? (secs >= 20 ? "Garden uppe " + Math.round(T.guardOk / Math.max(1, T.guardAll) * 100) + " % av tiden, " + fmt(secs / 60, 1) + " min." : "För kort för att spara – minst 20 sekunder.") : T.reps ? T.reps + " " + HMODES[mode].unit + (T.bad ? ", " + T.bad + " för grunda" : "") + "." : "Inga hela reps räknades. Kolla att hela kroppen syns från sidan.";
+    $("liveMsg").innerHTML = '<b class="live-sum">' + esc(txt) + '</b>';
+    $("liveCue").textContent = ""; o.insertAdjacentHTML("beforeend", '<div class="scan-btns" id="liveEnd"><button type="button" class="btn" data-livea="ok">Klart</button></div>');
+    if (has) say(mode === "guard" ? "Bra jobbat." : "Bra jobbat! " + T.reps + " " + HMODES[mode].unit + ".");
+    LIVE.raf = 0; LIVE.ended = true; return;
+  }
+  const o = $("liveOv"); if (o){ o.hidden = true; const e = $("liveEnd"); if (e) e.remove(); o.classList.remove("bad"); }
+  document.documentElement.classList.remove("noscroll"); LIVE = null; if (view === "boxning") renderBox();
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-live]"); if (b) liveStart(b.dataset.live); });
+
 /* ---------- Start ---------- */
-const BUILD = "12 nov 00.59", BUILD_NOTE = "Nytt: progressbilder och hållningsmätare under Kropp";
+const BUILD = "12 nov 01.05", BUILD_NOTE = "Nytt: kameran som tränare under Boxning – räknar armhävningar och knäböj och kollar garden";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;

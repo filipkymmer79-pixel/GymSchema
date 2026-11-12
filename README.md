@@ -27,6 +27,10 @@ Fliken **Kropp** (förut Vikt) har delarna **Vikt** och **Mat**. Under Mat räkn
 - **Bilder** (under Kropp): progressbilder framifrån, från sidan och bakifrån. Kameran räknar ner tio sekunder och visar förra bilden genomskinlig så att du ställer dig likadant. Före och nu sida vid sida, med vikten de dagarna, och alla bilder som film. Bilderna sparas bara på telefonen (IndexedDB) och följer inte med i backupen.
 - **Hållning** (under Kropp): AI:n [MediaPipe Pose](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker) körs i telefonen och hittar öra, axel, höft, knä och fotled. Från sidan mäts hur långt örat sitter framför axeln och axeln framför höften (i cm, utifrån din längd), framifrån om axlar, höfter och huvud står snett. Mätningarna sparas och visas som trend. Det är en mätning med kameran, ingen diagnos. Bibliotek och modell hämtas första gången från jsDelivr och Google.
 
+### Kameran som tränare
+
+Under **Boxning**: AI:n (samma MediaPipe Pose, den lätta modellen) följer dig live genom kameran. *Armhävningar* och *Knäböj* räknas högt och appen säger till om du inte går tillräckligt djupt eller om höften sjunker. *Garden* säger "Händerna upp!" när händerna åker ner när du skuggboxas och räknar hur stor del av tiden garden var uppe. Veckans siffror står på kortet och följer med i backupen.
+
 ### Månadens sammanfattning
 
 Sist i Framsteg: en bild i storyformat med månadens pass, set, ton, rekord, de övningar som gått mest framåt, vikt, löpning, sömn, perfekta dagar och boxning – att spara eller skicka.
