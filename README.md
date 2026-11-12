@@ -28,6 +28,18 @@ Under Garmin-rutan i **Pass** finns raden **Gardinen** med knapparna **Stäng** 
 
 Fliken **Kropp** (förut Vikt) har delarna **Vikt** och **Mat**. Under Mat räknas dagens kalorier och protein: shaken med glas (storlek och antal glas går att ställa in), och maten genom att skanna streckkoden på förpackningen – värdena hämtas från [Open Food Facts](https://world.openfoodfacts.org), en öppen och gratis matdatabas – eller skriva in den själv. Det du ätit ofta blir snabbval. Under Vanor bockas *125 g protein* och *Shaken* av av sig själva när siffrorna når målet. Streckkodsläsaren är ZXing (`vendor/zxing.min.js`, Apache-licens i `vendor/zxing-LICENSE.txt`).
 
+**Kalorimålet** räknas varje dag: grunden är vikten från Vikt, 183 cm och 20 år (Mifflin–St Jeor) gånger 1,4 för vardagen plus 300 kcal för ca +1 kg i månaden. Till det läggs det klockan säger att du bränt på dagens pass (kcal från intervals.icu minus vilan under passet). När du vägt dig minst fyra gånger på två veckor jämförs vikten med +1 kg i månaden och målet flyttas upp eller ner (högst −300/+500 kcal).
+
+**Vad ska jag äta?** räknar med hela shaken (2 700 kcal som standard) och föreslår mat för resten av dagen utifrån vad klockan är. **Recepten** är 26 egna: frukost, middag och matlåda, mellanmål – utan socker, honung, rapsolja, avokado, jordnötter och pumpafrön. Näringen per portion är uträknad från gram per ingrediens (`recipes.py` i byggskripten), portionerna går att skala, ingredienserna kan kopieras som inköpslista till Handla i Dagsschema och en portion läggs till i dagens mat med en tryckning.
+
+### Löpväder
+
+På löpdagarna visar Pass bästa timmen att springa i Umeå (07–21): temperatur och känns som, timme för timme, vad du ska ha på dig, risk för halka (underkylt regn, regn och plusgrader följt av minus, nysnö, runt nollan), blåst och mörker. Vädret kommer från [Open-Meteo](https://open-meteo.com) (gratis, CC BY 4.0) och hämtas högst var 30:e minut. Kortet försvinner när dagens löprunda kommit från klockan.
+
+### Prime-nivåer
+
+Överst i Vanor: XP för det som tar dig mot Prime self – gympass 100, löprunda 50 + 10 per km (max 200), boxning 50, kameratränaren 20, varje vana 10, perfekt dag +50 och 10 h sömn enligt klockan +20. 15 nivåer från Start till Prime self (sedan ★2, ★3 …), streaks för perfekta dagar, socker, alkohol, sömn och gymveckor, och en XP-rad efter sparat pass. Allt räknas ur det som redan loggas; dagar äldre än 14 dagar sparas i en liggare (följer med i backupen) så att XP inte försvinner när Garmin-datan rullar ut.
+
 ### Bilder och hållning
 
 - **Bilder** (under Kropp): progressbilder framifrån, från sidan och bakifrån. Kameran räknar ner tio sekunder och visar förra bilden genomskinlig så att du ställer dig likadant. Före och nu sida vid sida, med vikten de dagarna, och alla bilder som film. Bilderna sparas bara på telefonen (IndexedDB) och följer inte med i backupen.
