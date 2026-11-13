@@ -118,3 +118,11 @@ Planen för AI-telefonisten till verkstäder som app: https://filipkymmer79-pixe
 - **Manus** har det du säger när du går in hos en verkstad, svar när de tvekar, instruktionerna till AI:n som kopieras rakt in i agenten och meningar att läsa när rösten spelas in.
 
 Allt sparas bara på telefonen.
+
+## Jobbmotorn
+
+Jobbmotorn som app: https://filipkymmer79-pixel.github.io/GymSchema/jobb/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*.
+
+Appen öppnar Jobbmotorn i Claude. Där letar den upp dagens jobb på Indeed, skriver ett personligt brev till varje med dina egna ord och sparar jobben du har skickat, så att listan är klar för aktivitetsrapporten. Själva motorn körs i Claude, eftersom den använder ditt Claude-konto och din Indeed-koppling.
+
+Appen visar också vad som gäller för aktivitetsrapporten just nu. Mellan den 1 och 14 i månaden lyser rutan gult och visar hur många dagar som är kvar att skicka in förra månadens rapport.
