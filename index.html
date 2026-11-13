@@ -4144,6 +4144,8 @@ function menyScore(r, i, rand, ctx){
     const cnt = {}; ctx.d.forEach((id, j) => { if (id && j !== i && RXM[id]) cnt[RXM[id].pt] = (cnt[RXM[id].pt] || 0) + 1; });
     const max = {kyckling: 2, not: 2, fisk: 2, flask: 1, vego: 1}[r.pt] || 1;
     if ((cnt[r.pt] || 0) >= max) s -= 3 * ((cnt[r.pt] || 0) - max + 1);
+    // vid byte: håll veckans mix (2 fisk, 2 kyckling, 2 nöt, 1 fläsk) om det går
+    if ((cnt[r.pt] || 0) < ({kyckling: 2, not: 2, fisk: 2, flask: 1}[r.pt] || 0)) s += 1.5;
   }
   return s;
 }
@@ -4361,7 +4363,8 @@ function menyDoneHTML(){
   const x = menyToday(); if (!x || rxLog.some(l => l.id === x.r.id && l.d === iso(today()))) return "";
   return '<button type="button" class="mn-after" data-mn="tonight"><span aria-hidden="true">' + x.r.e + '</span><span><small>Middag i kväll</small><b>' + esc(x.r.n) + '</b></span><span class="rx-go" aria-hidden="true">›</span></button>';
 }
-function menyOpen(wk){ menyWk = wk || wkKey(today()); rxView = null; rxDay = null; rxPage = "meny"; rxSheet(true); }
+// på söndagen är bara i kväll kvar av veckan – då öppnas nästa vecka
+function menyOpen(wk){ menyWk = wk || wkKey(today().getDay() === 0 ? addDays(today(), 1) : today()); rxView = null; rxDay = null; rxPage = "meny"; rxSheet(true); }
 
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-mn]"); if (!b || b.tagName === "INPUT") return;
@@ -5108,7 +5111,7 @@ document.addEventListener("change", e => {
 document.addEventListener("input", e => { if (e.target && e.target.id === "ntUrl"){ nt.url = e.target.value.trim(); ntSave(); } });
 
 /* ---------- Start ---------- */
-const BUILD = "13 nov 23.59", BUILD_NOTE = "Veckomeny, inköpslista, laga-läge, matlådor och supersets";
+const BUILD = "14 nov 00.07", BUILD_NOTE = "Veckomeny, inköpslista, laga-läge, matlådor och supersets";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
