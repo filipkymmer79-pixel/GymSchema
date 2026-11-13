@@ -42,7 +42,7 @@ Fliken **Kropp** (förut Vikt) har delarna **Vikt** och **Mat**. Under Mat räkn
 
 **Kalorimålet** räknas varje dag: grunden är vikten från Vikt, 183 cm och 20 år (Mifflin–St Jeor) gånger 1,4 för vardagen plus 300 kcal för ca +1 kg i månaden. Till det läggs det klockan säger att du bränt på dagens pass (kcal från intervals.icu minus vilan under passet). När du vägt dig minst fyra gånger på två veckor jämförs vikten med +1 kg i månaden och målet flyttas upp eller ner (högst −300/+500 kcal).
 
-**Vad ska jag äta?** räknar med hela shaken (2 700 kcal som standard) och föreslår mat för resten av dagen utifrån vad klockan är. **Recepten** är 26 egna: frukost, middag och matlåda, mellanmål – utan socker, honung, rapsolja, avokado, jordnötter och pumpafrön. Näringen per portion är uträknad från gram per ingrediens (`recipes.py` i byggskripten), portionerna går att skala, ingredienserna kan kopieras som inköpslista till Handla i Dagsschema och en portion läggs till i dagens mat med en tryckning.
+**Vad ska jag äta?** räknar med hela shaken (2 700 kcal som standard) och föreslår mat för resten av dagen utifrån vad klockan är. **Recepten** är 110 egna: 6 frukostar, 100 middagar och 4 mellanmål – utan socker, honung, rapsolja, avokado, jordnötter, pumpafrön och alkohol. I listan går det att söka (även utan å, ä och ö), filtrera på huvudråvara (kyckling, nöt & lamm, fläsk, fisk & skaldjur, vego) och på max 30 minuter, matlåda och går att frysa, och 🎲 Slumpa väljer en middag åt dig. Näringen per portion är uträknad från gram per ingrediens (`recipes.py` i byggskripten), portionerna går att skala, ingredienserna kan kopieras som inköpslista till Handla i Dagsschema och en portion läggs till i dagens mat med en tryckning.
 
 ### Löpväder
 
