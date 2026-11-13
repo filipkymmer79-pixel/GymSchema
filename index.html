@@ -3820,7 +3820,7 @@ function rxResHTML(){
 function rxListHTML(){
   const withPt = rxCat === "alla" || rxCat === "middag";
   return '<div class="sh-top"><b>Recept</b><button type="button" class="sh-x" data-rx="close" aria-label="Stäng">×</button></div>' +
-    '<p class="lead">' + RX.length + ' recept, varav ' + RX.filter(r => r.c === "middag").length + ' middagar – utan socker, rapsolja, avokado och jordnötter. Näringen är räknad per portion.</p>' +
+    '<p class="lead">' + RX.length + ' recept, varav ' + RX.filter(r => r.c === "middag").length + ' middagar – utan socker, rapsolja, avokado och jordnötter. Näringen är räknad per portion. Bröd, tortillor och currypasta: kolla att de är utan socker och rapsolja.</p>' +
     '<input type="search" id="rxQ" class="rx-q" placeholder="Sök: lax, pasta, curry …" value="' + esc(rxQ) + '" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Sök recept">' +
     '<div class="rx-cats" role="group" aria-label="Välj sort">' + RX_CAT.map(c => '<button type="button" data-rxcat="' + c[0] + '" aria-pressed="' + (rxCat === c[0]) + '">' + c[1] + '</button>').join("") + '</div>' +
     (withPt ? '<div class="rx-cats rx-sub" role="group" aria-label="Välj huvudråvara">' + RX_PT.map(c => '<button type="button" data-rxpt="' + c[0] + '" aria-pressed="' + (rxPt === c[0]) + '">' + c[1] + '</button>').join("") + '</div>' : '') +
@@ -4217,7 +4217,7 @@ document.addEventListener("change", e => {
 document.addEventListener("input", e => { if (e.target && e.target.id === "ntUrl"){ nt.url = e.target.value.trim(); ntSave(); } });
 
 /* ---------- Start ---------- */
-const BUILD = "13 nov 13.10", BUILD_NOTE = "100 middagar under Recept – sök, filtrera och slumpa";
+const BUILD = "13 nov 13.18", BUILD_NOTE = "100 middagar under Recept – sök, filtrera och slumpa";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
