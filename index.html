@@ -1016,6 +1016,56 @@ span.mn-go{padding:10px 4px;background:none!important;color:var(--good)!importan
 .vk-tip p{margin:3px 0 0;font-size:13.5px;line-height:1.45;opacity:.85}
 .vk .btn{margin:0}
 @media (max-width:380px){.vk-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Flytta passet */
+.banner.fl-ban{align-items:center}
+.banner.fl-ban .btn{margin:0 0 0 auto;flex:0 0 auto}
+.pill.fl-pill{border:0;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
+.fl-days{grid-template-columns:repeat(auto-fit,minmax(44px,1fr))}
+.card.fl-list{padding:4px 14px}
+.fl-row{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.fl-row:first-child{border-top:0}
+.fl-row b{font-family:var(--display);font-weight:800;font-size:16px}
+.fl-row.past{opacity:.45}
+.fl-row.now b{color:var(--good)}
+.fl-row.ch span{font-weight:800}
+.fl-row i{font-style:normal;font-size:12px;font-weight:800;color:var(--warn)}
+/* Videon i appen */
+.sheet.yt-ov{z-index:97;background:#0B0D12;color:#fff}
+.yt-ov .sh-in{min-height:100%}
+.yt-ov .sh-x{background:rgba(255,255,255,.14);color:#fff}
+.yt-ov .yt-t{font-family:var(--display);font-weight:800;font-size:17px;line-height:1.25}
+.yt-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;margin-top:auto}
+.yt-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-ov p.small{margin:0 0 auto;color:rgba(255,255,255,.66);font-size:13px;text-align:center}
+.yt-ov .exlink{color:#fff;font-weight:700}
+/* Ändra programmet */
+.pr-open{align-self:flex-start}
+.pr-link{margin-top:2px}
+.pr-seg{grid-template-columns:1fr 1fr}
+.pr-ex{display:flex;flex-direction:column;gap:10px;padding:12px 14px}
+.pr-ex.pr-mod{box-shadow:var(--shadow),inset 3px 0 0 var(--blue)}
+button.exlink{border:0;background:none;font-family:inherit;cursor:pointer;text-align:left}
+.pr-h{display:flex;align-items:center;gap:10px}
+.pr-n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;font-weight:800;font-size:13px}
+.pr-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pr-t b{font-size:15px;line-height:1.25}
+.pr-t small{color:var(--muted);font-size:12.5px;font-weight:600;line-height:1.3}
+.pr-mv{display:flex;gap:6px;flex:0 0 auto}
+.pr-mv button{width:36px;height:36px;border-radius:10px;border:0;background:var(--surface2);color:var(--ink);font-size:17px;font-weight:800}
+.pr-mv button:disabled,.pr-step button:disabled{opacity:.3}
+.pr-ctl{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:end}
+.pr-f{display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);min-width:0}
+.pr-f select{width:100%;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;padding:0 8px}
+.pr-step{display:flex;align-items:center;height:40px;border-radius:10px;background:var(--surface2)}
+.pr-step button{width:38px;height:40px;border:0;background:none;color:var(--ink);font-size:20px;font-weight:800}
+.pr-step b{min-width:20px;text-align:center;font-size:16px;color:var(--ink);letter-spacing:0}
+.pr-act{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.pr-alts{display:flex;flex-direction:column;gap:8px}
+.pr-sub{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:4px 0 -6px}
+.pr-chips{display:flex;flex-wrap:wrap;gap:8px}
+.pr-chip{border:1px dashed var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 12px;font-weight:700;font-size:13.5px}
+.pr-sum{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.pr-altnote{background:var(--surface2);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.4;margin-bottom:10px}
 /* Löpväder */
 .wx-card{display:flex;flex-direction:column;gap:10px}
 .wx-best{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:2px;align-items:end}
@@ -1470,11 +1520,11 @@ function renderStrip(){
   $("wk").innerHTML = "<b>Vecka " + w.n + "</b>" + from.getDate() + " " + MON[from.getMonth()] + " – " + addDays(w.ws, 6).getDate() + " " + MON[addDays(w.ws, 6).getMonth()];
   const DSHORT = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"], td = iso(t);
   $("strip").innerHTML = [0, 1, 2, 3, 4, 5, 6].map(i => {
-    const d = addDays(w.ws, i), ds = iso(d), dow = d.getDay(), k = BY_DOW[dow];
+    const d = addDays(w.ws, i), ds = iso(d), dow = d.getDay(), k = gymOn(d);
     let done, st, title, code, sub = "";
     if (k){
       const p = PROGRAM[k];
-      done = !!w.doneTypes[k]; st = sessColor(k); code = p.ab; title = p.name + (done ? " – klart" : "");
+      done = !!w.doneTypes[k]; st = sessColor(k); code = p.ab; title = p.name + (done ? " – klart" : ""); if (flyttIn(d)){ sub = "flyttat"; title += " – flyttat hit"; }
     } else {
       // vilodag (hållningen) eller löpdag – bockas per datum via Vanor (löpningen även av Garmin)
       const run = RUN_DAYS[dow], hb = HABITS.find(h => h.k === (run ? "pass" : "hall"));
@@ -1491,7 +1541,7 @@ function renderStrip(){
 }
 function nextScheduled(){
   const t = today();
-  for (let i = 0; i < 14; i++){ const d = addDays(t, i); if (d < START) continue; const k = BY_DOW[d.getDay()]; if (k) return {k, d, i}; }
+  for (let i = 0; i < 14; i++){ const d = addDays(t, i); if (d < START) continue; const k = gymOn(d); if (k) return {k, d, i}; }
   return {k: "oA", d: t, i: 0};
 }
 
@@ -1501,26 +1551,26 @@ function renderPass(){
   if (justSaved){ el.innerHTML = doneHTML(justSaved); return; }
   const preStart = today() < START;
   if (!selType){
-    const tk = BY_DOW[today().getDay()];
+    const tk = gymOn(today());
     selType = draft ? draft.type : (preStart ? nextScheduled().k : (tk || nextScheduled().k));
   }
   if (!draft || draft.type !== selType) { draft = newDraft(selType); }
-  const p = PROGRAM[selType], tk = preStart ? null : BY_DOW[today().getDay()];
+  const p = PROGRAM[selType], tk = preStart ? null : gymOn(today());
   let banner = "";
   if (preStart){
     const nx = nextScheduled();
-    banner += '<div class="banner info"><span>▶</span><span><b>Programmet startar ' + (nx.i === 1 ? "imorgon" : DOW[nx.d.getDay()] + "dag " + nx.d.getDate() + " " + MON[nx.d.getMonth()]) + '</b> med ' + esc(PROGRAM[nx.k].name) + '. Kika igenom övningarna redan nu – vikterna fyller du i på plats.</span></div>';
+    banner += '<div class="banner info"><span>▶</span><span><b>Programmet startar ' + (nx.i === 1 ? "imorgon" : DAYL[nx.d.getDay()] + " " + nx.d.getDate() + " " + MON[nx.d.getMonth()]) + '</b> med ' + esc(PROGRAM[nx.k].name) + '. Kika igenom övningarna redan nu – vikterna fyller du i på plats.</span></div>';
   } else if (!tk){
     const nx = nextScheduled(), rd = RUN_DAYS[today().getDay()];
-    banner += rd ? '<div class="banner info"><span>🏃</span><span><b>Löpdag: ' + esc(rd.replace(/^Löpning /, "")) + ' i pratfart.</b> ' + (gmPushToday() ? 'Passet ligger på klockan – starta Löpning så finns det där. ' : '') + 'Nästa gympass: ' + DOW[nx.d.getDay()] + 'dag – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>'
-      : '<div class="banner info"><span>☾</span><span><b>Vilodag enligt schemat.</b> Nästa pass: ' + DOW[nx.d.getDay()] + 'dag – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>';
+    banner += rd ? '<div class="banner info"><span>🏃</span><span><b>Löpdag: ' + esc(rd.replace(/^Löpning /, "")) + ' i pratfart.</b> ' + (gmPushToday() ? 'Passet ligger på klockan – starta Löpning så finns det där. ' : '') + 'Nästa gympass: ' + DAYL[nx.d.getDay()] + ' – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>'
+      : '<div class="banner info"><span>☾</span><span><b>Vilodag enligt schemat.</b> Nästa pass: ' + DAYL[nx.d.getDay()] + ' – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>';
   }
   const loggedToday = sessions.some(s => s.date === iso(today()) && s.type === selType);
-  el.innerHTML = dlBannerHTML() + banner + runWxHTML() + gmPassHTML() + hemHTML() +
+  el.innerHTML = flyttBannerHTML() + dlBannerHTML() + banner + runWxHTML() + gmPassHTML() + hemHTML() +
     '<div class="picker" role="group" aria-label="Välj pass">' + ORDER.map(k => '<button class="pick" type="button" data-type="' + k + '" aria-pressed="' + (k === selType) + '" style="' + sessColor(k) + '"><span class="ab">' + PROGRAM[k].ab + '</span><span class="dd">' + PROGRAM[k].day + '</span></button>').join("") + '</div>' +
     '<div class="sess-head"><div><div class="lead">' + (preStart ? "Första passet" : tk === selType ? "Dagens pass" : "Valt pass") + '</div><h2 class="h2">' + esc(p.name) + '</h2></div>' +
     '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">' + ("speechSynthesis" in window ? '<button class="pill vtog" type="button" data-voice aria-pressed="' + voiceOn + '" aria-label="Röstcoach ' + (voiceOn ? "på" : "av") + '">' + (voiceOn ? "🔊 Röst" : "🔇 Röst") + '</button>' : '') +
-    (dlActive() ? '<span class="pill dl">Lätt vecka</span>' : '') + (loggedToday ? '<span class="pill good">✓ Loggat idag</span>' : '<span class="pill num">' + p.ex.length + ' övningar</span>') + '</div></div>' +
+    flyttPillHTML() + (dlActive() ? '<span class="pill dl">Lätt vecka</span>' : '') + (loggedToday ? '<span class="pill good">✓ Loggat idag</span>' : '<span class="pill num">' + p.ex.length + ' övningar</span>') + '</div></div>' +
     rcardHTML("w") +
     ssCardHTML() + passExHTML() +
     (RFOR[draft.type].a ? rcardHTML("a") : "") +
@@ -2186,6 +2236,7 @@ class LocalDB {
     (Array.isArray(ml.cooked) ? ml.cooked : []).forEach(x => { if (x && RXM[x.id] && /^\d{4}-\d{2}-\d{2}$/.test(x.d) && !rxLog.some(y => y.id === x.id && y.d === x.d)){ rxLog.push(x); n++; } });
     rxLog.sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0);
     (Array.isArray(ml.boxes) ? ml.boxes : []).forEach(x => { if (x && x.id && RXM[x.rx] && x.n > 0 && !lador.some(y => y.id === x.id)){ lador.push(x); n++; } });
+    if (data.program && typeof data.program === "object" && !Array.isArray(data.program) && Object.keys(data.program).length && !Object.keys(prog).length){ prog = data.program; prSave(); prApply("over", true); prApply("under", true); n++; }
     menySave(); store(RXFAV_KEY, rxFav); rxLogSave(); ladSave();
     foodSave();
     this._save("sessions"); this._save("weights"); return n;
@@ -2204,7 +2255,7 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}};
+  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}, program: prog};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
@@ -2230,18 +2281,18 @@ const GSECTIONS = [["over", "Över", "#2E6BFF"], ["under", "Ben + över", "#16A3
 let gSection = null;
 function renderProgram(){
   const el = $("v-program");
-  if (programSub){ const hit = GUIDE.find(g => g.key === programSub); if (hit) gSection = hit.section; }
-  if (!gSection){ const t = BY_DOW[today().getDay()] || nextScheduled().k; gSection = t && t.startsWith("u") ? "under" : "over"; }
+  if (programSub){ const hs = prSecFor(programSub); if (hs) gSection = hs; }
+  if (!gSection){ const t = gymOn(today()) || nextScheduled().k; gSection = t && t.startsWith("u") ? "under" : "over"; }
   const sec = GSECTIONS.find(x => x[0] === gSection);
   const heads = {over: ["Pass Över · ons & lör", "Åtta övningar. Chins och bänkpress är huvudövningarna – full vila på dem. Tryck på en övning för bild, steg för steg, vanliga fel och video."],
                  under: ["Pass Ben + över · tor & sön", "Tio övningar. Först benen: benpress, vadpress, hip thrust och rumänska marklyft – tunga set som håller benen växande och skelettet starkt. Sedan överkroppen: lutande hantelpress, sidolyft, triceps och biceps. Sist magen."],
                  abs: ["Mage · efter Över · 6 min", "Tre övningar, två varv, 30 sek vila. Tränar magen att hålla emot – det som bär hip thrust, marklyft och hållningen."],
                  hall: ["Hållningspasset · varje dag · 12 min", "Samma ordning, samma tid varje dag. Fascia-hållet från osteopaten ligger sist."]};
-  const rs = RSET[gSection] || null, items = GUIDE.filter(g => g.section === gSection);
+  const rs = RSET[gSection] || null, items = prGuideItems(gSection);
   let order = "", pre = "", post = "";
   if (rs){
     const steps = [{j: "g-r-" + rs.w, c: RCOL.w, n: "Uppvärmning", m: ROUTINES[rs.w].min + " min"},
-                   {j: "g-" + items[0].key, c: sec[2], n: items.length + " övningar", m: rs.ex},
+                   {j: "g-" + items[0].key, c: sec[2], n: items.length + " övningar", m: prMin(gSection, rs.ex)},
                    ...(rs.a ? [{j: "g-r-" + rs.a, c: RCOL.a, n: "Mage", m: ROUTINES[rs.a].min + " min"}] : []),
                    {j: "g-r-" + rs.s, c: RCOL.s, n: "Stretch", m: ROUTINES[rs.s].min + " min"}];
     order = '<div class="gorder-l">Passets ordning</div><div class="gorder" style="grid-template-columns:repeat(' + steps.length + ',1fr)">' +
@@ -2252,13 +2303,13 @@ function renderProgram(){
     pre = '<div class="card gstart"><div class="gnote">Två varv av alla tre, 30 sek vila mellan varven. Görs direkt efter sista övningen på Över – sen stretch.</div><button class="btn" type="button" data-gguide="absOver" data-gkind="a">▶ Kör magen med timer · 6 min</button></div>';
   }
   el.innerHTML = '<div class="seg" role="group" aria-label="Del av programmet">' + GSECTIONS.map(x => '<button type="button" data-gsec="' + x[0] + '" aria-pressed="' + (x[0] === gSection) + '">' + x[1] + '</button>').join("") + '</div>' +
-    '<div class="ghead"><h2 class="h2">' + esc(heads[gSection][0]) + '</h2><p class="lead">' + esc(heads[gSection][1]) + '</p></div>' +
+    '<div class="ghead"><h2 class="h2">' + esc(heads[gSection][0]) + '</h2><p class="lead">' + esc(prLead(gSection, heads[gSection][1])) + '</p></div>' + prBtnHTML(gSection) +
     order + pre +
     items.map(g => {
       const c = sec[2];
       const mus = g.muscles.map((m, i) => '<div class="gm' + (i >= g.primary_n ? ' s' : '') + '"><i></i>' + esc(m) + '</div>').join("");
       return '<details class="gcard" id="g-' + g.key + '" style="--c:' + c + '"' + (programSub === g.key ? ' open' : '') + '><summary><span class="gnum">' + g.i + '</span><span style="min-width:0"><span class="gname">' + esc(g.name) + '</span><br><span class="gdose">' + esc(g.dose) + '</span></span><span class="gchev">›</span></summary>' +
-        '<div class="gbody">' +
+        '<div class="gbody">' + prAltNoteHTML(g) +
         '<div class="glinks">' + (g.video ? '<a class="yt" href="' + g.video + '" target="_blank" rel="noopener">▶ Video' + (g.video_label ? ' – ' + esc(g.video_label) : '') + '</a>' : '<span class="tag">Osteopatens instruktion</span>') + '</div>' +
         '<div class="gfig">' + g.svg + '</div>' + '<div class="fc-slot" data-gk="' + g.key + '"></div>' +
         '<div class="gleg"><i style="background:var(--fig-ghost)"></i>start <i style="background:var(--fig-ink)"></i>slutläge <i style="background:' + c + ';opacity:.5"></i>där du ska känna det</div>' +
@@ -2457,7 +2508,7 @@ const RUN_DAYS = {2: "Löpning 30–40 min"};  // en gång i veckan, tisdag (Fil
 let habits = store("lyftloggen.habits.v1") || {};
 let habitDate = iso(today());
 function habitPlan(date){
-  const d = parseIso(date), k = BY_DOW[d.getDay()];
+  const d = parseIso(date), k = gymOn(d);
   if (k) return {kind: "gym", n: "Gym · " + PROGRAM[k].name, h: "Bockas av av sig själv när du sparar passet i Pass-fliken."};
   if (RUN_DAYS[d.getDay()]) return {kind: "run", n: RUN_DAYS[d.getDay()], h: "Pratfart – du ska kunna prata hela tiden. Inga intervaller."};
   return {kind: "rest", n: "Vila", h: "Promenad, mat och sömn. Räknas som klar."};
@@ -4758,6 +4809,10 @@ function ssPairsFor(type, porder){
   const p = PROGRAM[type], keys = p.ex.map(e => e.k), seen = {};
   const pairs = (SS_PAIRS[ssKind(type)] || []).filter(x => keys.indexOf(x[0]) >= 0 && keys.indexOf(x[1]) >= 0 && !seen[x[0]] && !seen[x[1]] && (seen[x[0]] = seen[x[1]] = 1));
   keys.forEach(k => { if (!seen[k]) pairs.push([k, null, p.ex.find(x => x.k === k).rest]); });
+  // Paren följer ordningen i programmet (Ändra programmet) – den som ligger först blir 1:an
+  const pos = k => keys.indexOf(k), first = pr => pr[1] ? Math.min(pos(pr[0]), pos(pr[1])) : pos(pr[0]);
+  for (let i = 0; i < pairs.length; i++) if (pairs[i][1] && pos(pairs[i][1]) < pos(pairs[i][0])) pairs[i] = [pairs[i][1], pairs[i][0], pairs[i][2]];
+  pairs.sort((a, b) => first(a) - first(b));
   if (!Array.isArray(porder) || !porder.length) return pairs;
   const out = porder.map(k => pairs.find(pr => pr[0] === k)).filter(Boolean);
   pairs.forEach(pr => { if (out.indexOf(pr) < 0) out.push(pr); });
@@ -4792,7 +4847,8 @@ function ssCardHTML(){
   return '<div class="card ss-card">' + (readOnly ? '' : '<button type="button" class="btn fk-go" data-fk="open">▶ ' + (started ? "Fortsätt passet – ett set i taget" : "Kör passet – ett set i taget") + '</button><small class="fk-hint">Bild, vikt och vila på en skärm. Uppvärmningen räknas ut åt dig.</small>') +
     '<label class="mn-sw"><span><b>⚡ Snabbläge – supersets</b><small>' +
     (on ? 'Ett set av 1:an, direkt till 2:an, vila sen. Övningarna tar ca <b>' + b + ' min</b> i stället för ' + a + '.' : 'Kör övningarna i par med mindre vila – ca ' + b + ' min i stället för ' + a + '. Bra när du har bråttom.') +
-    '</small></span><input type="checkbox" data-ss' + (on ? " checked" : "") + ' aria-label="Snabbläge med supersets"><i></i></label></div>';
+    '</small></span><input type="checkbox" data-ss' + (on ? " checked" : "") + ' aria-label="Snabbläge med supersets"><i></i></label>' +
+    (readOnly ? '' : '<button type="button" class="exlink pr-link" data-pr="open">✏️ Ändra övningar, set och reps</button>') + '</div>';
 }
 const ssTag = (html, t) => html.replace('<h3 class="ex-n">', '<h3 class="ex-n"><span class="ss-tag">' + t + '</span> ').replace(/<span class="tag num">Vila [^<]*<\/span>/, '');
 function passExHTML(){
@@ -4825,8 +4881,9 @@ function ssAfterSet(ex){
 }
 function exLinksHTML(ex){
   if (ex.alt){
-    const d = (BUSY[ex.k] || []).find(x => x.n === ex.alt) || {}, base = PROGRAM[draft.type].ex.find(e => e.k === ex.k);
-    return '<div class="alt-on"><span>🔁 <b>Bytt i dag</b> – ' + (d.how ? esc(d.how) : '') + ' Loggas för sig.</span><button type="button" class="btn sm ghost" data-alt-off="' + ex.k + '">Tillbaka till ' + esc(SHORT[ex.k] || (base && base.n) || "") + '</button></div>';
+    const d = (BUSY[ex.k] || []).find(x => x.n === ex.alt) || {}, base = PROGRAM[draft.type].ex.find(e => e.k === ex.k), nm = esc(SHORT[ex.k] || (base && base.n) || "");
+    const perm = prAltOf(draft.type, ex.k) === ex.alt;
+    return '<div class="alt-on"><span>🔁 <b>' + (perm ? 'Ditt byte' : 'Bytt i dag') + '</b> – ' + (d.how ? esc(d.how) : '') + (perm ? ' Ändras under Program → Ändra övningar.' : ' Loggas för sig.') + '</span><button type="button" class="btn sm ghost" data-alt-off="' + ex.k + '">' + (perm ? 'Kör ' + nm + ' i dag' : 'Tillbaka till ' + nm) + '</button></div>';
   }
   return '<div class="ex-links">' + (KEYMAP[ex.k] ? '<a class="exlink" href="#program/' + KEYMAP[ex.k] + '">Teknik, bild och video →</a>' : '') +
     (BUSY[ex.k] && !readOnly ? '<button type="button" class="exlink bz-link" data-busy="' + ex.k + '">Upptagen? Byt →</button>' : '') + '</div>';
@@ -5237,7 +5294,7 @@ function vkData(ws){
   const D = {A, B, past, gym: ORDER.filter(k => types[k]).length, prs: ss.reduce((a, s) => a + (s.prs || []).length, 0), sets: ss.reduce((a, s) => a + (s.exercises || []).reduce((b, e) => b + (e.sets || []).length, 0), 0)};
   const mins = ss.filter(s => s.min).map(s => s.min); D.min = mins.length ? Math.round(mins.reduce((a, b) => a + b, 0) / mins.length) : null;
   // gympass kvar enligt schemat
-  D.left = []; for (let d = new Date(ws); iso(d) < B; d = addDays(d, 1)){ const k = BY_DOW[d.getDay()]; if (k && !types[k] && iso(d) >= tdy && d >= START) D.left.push({k, d}); }
+  D.left = []; for (let d = new Date(ws); iso(d) < B; d = addDays(d, 1)){ const k = gymOn(d); if (k && !types[k] && iso(d) >= tdy && d >= START) D.left.push({k, d}); }
   // vikten: snittet av vägningarna i veckan mot veckan innan
   const avg = (a, b) => { const w = weights.filter(x => x.date >= a && x.date < b); return w.length ? w.reduce((s, x) => s + x.kg, 0) / w.length : null; };
   D.w = avg(A, B); D.w0 = avg(iso(addDays(ws, -7)), A);
@@ -5256,7 +5313,7 @@ function vkData(ws){
 // Det viktigaste att göra nästa vecka – bara ett råd
 function vkTip(D){
   if (D.past && D.gym < 4) return {e: "🏋️", t: "Alla fyra passen", d: "Du körde " + D.gym + " av 4. Det är passen som bygger musklerna – lägg dem som fasta tider i Dagsschema, och kör snabbläget med supersets en dag du har bråttom."};
-  if (!D.past && D.left.length) return {e: "🏋️", t: D.left.length === 1 ? "Ett pass kvar" : D.left.length + " pass kvar", d: D.left.map(x => DOW[x.d.getDay()] + "dag " + PROGRAM[x.k].name).join(", ") + ". Kör passet set för set så går det fort."};
+  if (!D.past && D.left.length) return {e: "🏋️", t: D.left.length === 1 ? "Ett pass kvar" : D.left.length + " pass kvar", d: D.left.map(x => DAYL[x.d.getDay()] + " " + PROGRAM[x.k].name).join(", ") + ". Kör passet set för set så går det fort."};
   if (D.w != null && D.w0 != null){
     const dw = D.w - D.w0;
     if (dw < .1) return {e: "🍽", t: "Ät mer", d: (dw < -.05 ? "Vikten gick ner (" : "Vikten stod still (") + vkKg(dw) + "). Ät upp till kalorimålet varje dag – drick alla shakeglas och ta en matlåda extra till lunch."};
@@ -5294,6 +5351,397 @@ document.addEventListener("click", e => {
   const p = e.target.closest("[data-vkplan]");
   if (p) menyOpen(p.dataset.vkplan);
 });
+
+
+/* ---------- Flytta passet: missat eller kan inte i dag – välj ny dag, resten av veckan skjuts så att det blir fyra pass (14 nov 2026) ---------- */
+// Flyttarna gäller bara veckan de gjordes i: {"2026-11-09": {"oA": "2026-11-13", "uB": "skip"}}
+const FLYTT_KEY = "gymschema.flytt.v1";
+let flytt = (() => { const v = store(FLYTT_KEY); return v && typeof v === "object" && !Array.isArray(v) ? v : {}; })();
+const flyttSave = () => store(FLYTT_KEY, flytt);
+const flWk = d => iso(weekStart(typeof d === "string" ? parseIso(d) : d));
+// Vilket gympass som ligger på dagen, med veckans flyttar
+function gymOn(d){
+  d = typeof d === "string" ? parseIso(d) : d;
+  if (d < START) return null;
+  const ds = iso(d), mv = flytt[flWk(d)] || {};
+  for (const t in mv) if (mv[t] === ds) return t;
+  const t = BY_DOW[d.getDay()];
+  return t && !mv[t] ? t : null;
+}
+const flyttIn = d => { const ds = typeof d === "string" ? d : iso(d), mv = flytt[flWk(ds)] || {}; return Object.keys(mv).some(t => mv[t] === ds); };
+const flDefault = (wk, t) => { const ws = parseIso(wk); for (let i = 0; i < 7; i++){ const d = addDays(ws, i); if (BY_DOW[d.getDay()] === t) return iso(d); } return null; };
+const flDone = wk => { const ws = parseIso(wk), we = addDays(ws, 7), out = {}; sessions.forEach(s => { const d = parseIso(s.date); if (d >= ws && d < we) out[s.type] = s.date; }); return out; };
+// Veckans plan: pass → datum ("skip" = hoppas över)
+function flPlan(wk){ const mv = flytt[wk] || {}, out = {}; ORDER.forEach(t => { out[t] = mv[t] || flDefault(wk, t); }); return out; }
+// Flytta passet "type" till "to": krockar det, skjuts det som låg där till nästa lediga dag – finns ingen hoppas det över
+function flMove(wk, type, to){
+  const plan = flPlan(wk), done = flDone(wk), ws = parseIso(wk), end = addDays(ws, 7), tdy = iso(today());
+  plan[type] = to;
+  const busy = s => Object.values(done).indexOf(s) >= 0 || ORDER.some(t => !done[t] && plan[t] === s);
+  const hit = ORDER.find(t => t !== type && !done[t] && plan[t] === to);
+  if (hit && to !== "skip"){
+    let nd = null;
+    for (let d = addDays(parseIso(to), 1); d < end; d = addDays(d, 1)){ const s = iso(d); if (s >= tdy && !busy(s)){ nd = s; break; } }
+    plan[hit] = nd || "skip";
+  }
+  return plan;
+}
+function flMissed(){
+  const t = today(), wk = flWk(t), plan = flPlan(wk), done = flDone(wk), td = iso(t);
+  return ORDER.filter(k => !done[k] && plan[k] && plan[k] !== "skip" && plan[k] < td && parseIso(plan[k]) >= START).map(k => ({k, ds: plan[k]}));
+}
+// hela namnen – "tor" + "dag" blir fel
+const DAYL = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
+const flDay = ds => DAYL[parseIso(ds).getDay()];
+function flyttBannerHTML(){
+  if (justSaved || today() < START) return "";
+  const m = flMissed()[0]; if (!m) return "";
+  return '<div class="banner warn fl-ban"><span>↪</span><span><b>' + esc(PROGRAM[m.k].name) + ' blev inte av i ' + flDay(m.ds) + 's.</b> Flytta det, så blir det ändå fyra pass i veckan.</span><button type="button" class="btn sm" data-fl="' + m.k + '">Flytta</button></div>';
+}
+function flyttPillHTML(){
+  if (!draft || justSaved || today() < START) return "";
+  const td = iso(today()), wk = flWk(td), plan = flPlan(wk), done = flDone(wk);
+  if (done[draft.type] || plan[draft.type] !== td || draft.sets && PROGRAM[draft.type].ex.some(e => draft.sets[e.k].some(x => x.done))) return "";
+  return '<button class="pill fl-pill" type="button" data-fl="' + draft.type + '">↪ Flytta</button>';
+}
+/* ---------- bladet ---------- */
+let flK = null, flTo = null;
+function flHTML(){
+  const td = iso(today()), wk = flWk(td), ws = parseIso(wk), done = flDone(wk), cur = flPlan(wk), plan = flTo ? flMove(wk, flK, flTo) : cur;
+  const days = []; for (let i = 0; i < 7; i++){ const d = addDays(ws, i); if (iso(d) >= td && d >= START) days.push(iso(d)); }
+  const on = ds => ORDER.find(t => plan[t] === ds);
+  const rows = Array.from({length: 7}, (_, i) => {
+    const d = addDays(ws, i), ds = iso(d), k = ORDER.find(t => plan[t] === ds) || null, was = ORDER.find(t => cur[t] === ds) || null, did = ORDER.find(t => done[t] === ds);
+    const lbl = did ? PROGRAM[did].name + " ✓" : k && !done[k] ? PROGRAM[k].name : RUN_DAYS[d.getDay()] ? "Löpning" : "Vila";
+    const changed = flTo && (k || null) !== (was || null) && !did;
+    return '<div class="fl-row' + (ds < td ? " past" : "") + (ds === td ? " now" : "") + (changed ? " ch" : "") + '"><b>' + MENY_DS[i] + ' ' + d.getDate() + '</b><span>' + esc(lbl) + (changed && k ? ' <i>↪ flyttat</i>' : '') + '</span></div>';
+  }).join("");
+  const skipped = ORDER.filter(t => !done[t] && plan[t] === "skip");
+  return '<div class="sh-top"><b>Flytta passet</b><button type="button" class="sh-x" data-flx="close" aria-label="Stäng">×</button></div>' +
+    '<div><div class="lead">' + menyWeekLabel(wk) + '</div><h2 class="h2">' + esc(PROGRAM[flK].name) + '</h2></div>' +
+    '<p class="lead">Vilken dag kör du det i stället? Ligger det redan ett pass där flyttas det till nästa lediga dag.</p>' +
+    '<div class="sp-days fl-days">' + days.map(ds => { const d = parseIso(ds), o = on(ds);
+      return '<button type="button" data-flto="' + ds + '" aria-pressed="' + (flTo === ds) + '"><b>' + (ds === td ? "I dag" : MENY_DS[(d.getDay() + 6) % 7]) + '</b><span>' + (o && o !== flK && !done[o] ? PROGRAM[o].ab : ds === cur[flK] ? "nu" : "–") + '</span></button>'; }).join("") + '</div>' +
+    '<div class="card fl-list">' + rows + '</div>' +
+    (skipped.length ? '<div class="gm-v warn"><span aria-hidden="true">!</span><span>' + skipped.map(t => esc(PROGRAM[t].name)).join(" och ") + ' får inte plats och hoppas över den här veckan. Välj en tidigare dag om du vill hinna allt.</span></div>' : '') +
+    '<div class="hem-two"><button type="button" class="btn" data-flx="save"' + (flTo ? '' : ' disabled') + '>Spara</button><button type="button" class="btn ghost" data-flx="skip">Hoppa över i veckan</button></div>' +
+    (flytt[wk] && Object.keys(flytt[wk]).length ? '<button type="button" class="exlink" data-flx="reset">Återställ veckan till vanliga dagar</button>' : '');
+}
+function flSheet(k){
+  if (k){ flK = k; flTo = null; }
+  let o = $("flOv");
+  if (!o){ o = document.createElement("div"); o.id = "flOv"; o.className = "sheet"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Flytta passet"); document.body.appendChild(o); }
+  o.innerHTML = '<div class="sh-in">' + flHTML() + '</div>'; o.hidden = false; document.documentElement.classList.add("noscroll");
+}
+function flClose(){ const o = $("flOv"); if (o) o.hidden = true; document.documentElement.classList.remove("noscroll"); }
+function flApply(plan){
+  const wk = flWk(today()), done = flDone(wk), mv = {};
+  ORDER.forEach(t => { if (done[t]) { if (flytt[wk] && flytt[wk][t]) mv[t] = flytt[wk][t]; return; } if (plan[t] !== flDefault(wk, t)) mv[t] = plan[t]; });
+  if (Object.keys(mv).length) flytt[wk] = mv; else delete flytt[wk];
+  Object.keys(flytt).forEach(k => { if (k < iso(addDays(parseIso(wk), -21))) delete flytt[k]; });
+  flyttSave();
+  // dagens pass: har inget börjats får dagens plan bestämma vilket pass som visas
+  const tk = gymOn(today()), started = draft && PROGRAM[draft.type].ex.some(e => draft.sets[e.k].some(x => x.done));
+  if (!started){ selType = tk || nextScheduled().k; draft = newDraft(selType); persistDraft(); }
+  renderStrip(); if (view === "pass") renderPass(); else if (view === "vanor" && typeof renderVanor === "function") renderVanor();
+  if (typeof ntSoon === "function") ntSoon();
+}
+document.addEventListener("click", e => {
+  const o = e.target.closest("[data-fl]");
+  if (o){ flSheet(o.dataset.fl); return; }
+  const t = e.target.closest("[data-flto]");
+  if (t){ flTo = t.dataset.flto; flSheet(); return; }
+  const b = e.target.closest("[data-flx]"); if (!b) return;
+  const a = b.dataset.flx, wk = flWk(today());
+  if (a === "close"){ flClose(); return; }
+  if (a === "save" && flTo){ const plan = flMove(wk, flK, flTo); flApply(plan); flClose(); const sk = ORDER.filter(t => plan[t] === "skip" && !flDone(wk)[t]);
+    toast("↪ " + PROGRAM[flK].name + " på " + flDay(flTo).toLowerCase() + (sk.length ? " – " + PROGRAM[sk[0]].ab + " hoppas över" : "")); return; }
+  if (a === "skip"){ const plan = flPlan(wk); plan[flK] = "skip"; flApply(plan); flClose(); toast(PROGRAM[flK].name + " hoppas över den här veckan"); return; }
+  if (a === "reset"){ delete flytt[wk]; flyttSave(); flApply(flPlan(wk)); flClose(); toast("Vanliga dagar igen"); return; }
+});
+
+
+/* ---------- Videon i appen: alla teknikvideor spelas i en spelare i appen i stället för att YouTube öppnas (14 nov 2026) ---------- */
+// Gäller varje länk med klassen "yt" – i Kör passet, Program, uppvärmningen, mage, stretch och boxningen. youtube-nocookie = ingen spårning förrän du trycker play.
+const ytId = u => { const m = String(u || "").match(/(?:[?&]v=|youtu\.be\/|\/embed\/|\/shorts\/)([\w-]{11})/); return m ? m[1] : null; };
+const ytOverlayOpen = () => Array.from(document.querySelectorAll(".sheet,.scan,.guide")).some(o => o.id !== "ytOv" && !o.hidden);
+function ytOpen(url, title){
+  const id = ytId(url); if (!id) return false;
+  let o = $("ytOv");
+  if (!o){ o = document.createElement("div"); o.id = "ytOv"; o.className = "sheet yt-ov"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); document.body.appendChild(o); }
+  o.setAttribute("aria-label", title || "Video");
+  o.innerHTML = '<div class="sh-in"><div class="sh-top"><b class="yt-t">' + esc(title || "Video") + '</b><button type="button" class="sh-x" data-ytx aria-label="Stäng videon">×</button></div>' +
+    '<div class="yt-frame"><iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&playsinline=1&rel=0&modestbranding=1" title="' + esc(title || "Video") + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>' +
+    '<p class="small">Spelas i appen. Fungerar inte videon: <a class="exlink" href="' + esc(url) + '" target="_blank" rel="noopener">öppna den i YouTube</a>.</p></div>';
+  o.hidden = false; document.documentElement.classList.add("noscroll");
+  return true;
+}
+function ytClose(){ const o = $("ytOv"); if (!o) return; o.hidden = true; o.innerHTML = ""; if (!ytOverlayOpen()) document.documentElement.classList.remove("noscroll"); }
+document.addEventListener("click", e => {
+  if (e.target.closest("[data-ytx]")){ ytClose(); return; }
+  const a = e.target.closest("a.yt"); if (!a) return;
+  let title = a.dataset.ytTitle || (a.textContent || "").replace(/^\s*▶\s*/, "").replace(/^(Video|Se videon)\s*(:\s*|–\s*)?/, "").trim();
+  if (!title){ const li = a.closest("li"), sp = li && li.querySelector("span,b"); if (sp) title = sp.textContent.trim(); }
+  if (!title && a.id === "gVid" && $("gName")) title = $("gName").textContent.trim();
+  if (ytOpen(a.getAttribute("href") || a.href, title || "Video")) e.preventDefault();
+}, true);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("ytOv") && !$("ytOv").hidden){ e.preventDefault(); ytClose(); } });
+
+
+/* ---------- Ändra programmet själv: set, reps, vila, ordning, byt övning för alltid, pausa och lägg till (14 nov 2026) ---------- */
+// Sparas på telefonen: {over: {list: [...], ex: {k: {sets, lo, hi, rest}}, alt: {k: "namn"}, ar: {k: {lo, hi}}}, under: {...}}
+// list = övningarna i ordning. Saknas en från originalet är den pausad, finns en från det andra passet är den tillagd.
+// Byten loggas med eget namn precis som "Upptagen? Byt", så historiken och förslagen för originalet blir inte fel.
+const PROG_KEY = "gymschema.prog.v1";
+const PR_LIST = {over: OVER_EX, under: UNDER_EX};
+const PR_NAME = {over: "Över", under: "Ben + över"};
+const PR_DAYS = {over: "ons och lör", under: "tor och sön"};
+const PROG_BASE = {over: OVER_EX.map(e => Object.assign({}, e)), under: UNDER_EX.map(e => Object.assign({}, e))};
+let prog = (() => { const v = store(PROG_KEY); return v && typeof v === "object" && !Array.isArray(v) ? v : {}; })();
+const prSave = () => store(PROG_KEY, prog);
+const prOther = kind => kind === "over" ? "under" : "over";
+const prType = kind => kind === "over" ? "oA" : "uA";
+const prBase = (kind, k) => PROG_BASE[kind].find(e => e.k === k) || PROG_BASE[prOther(kind)].find(e => e.k === k) || null;
+const prInBase = (kind, k) => PROG_BASE[kind].some(e => e.k === k);
+const prP = kind => prog[kind] || (prog[kind] = {});
+function prKeys(kind){
+  const p = prog[kind];
+  return p && Array.isArray(p.list) && p.list.length ? p.list.filter((k, i, a) => a.indexOf(k) === i && !!prBase(kind, k)) : PROG_BASE[kind].map(e => e.k);
+}
+const prAlt = (kind, k) => { const p = prog[kind], a = p && p.alt && p.alt[k]; return a && (BUSY[k] || []).some(d => d.n === a) ? a : null; };
+function prAltOf(type, k){ return prAlt(ssKind(type), k); }
+// Lägger in ändringarna i OVER_EX/UNDER_EX (samma listor som PROGRAM använder) – live = mitt i appen, då gäller en lätt vecka direkt
+function prApply(kind, live){
+  const L = PR_LIST[kind], ov = (prog[kind] && prog[kind].ex) || {};
+  const objs = prKeys(kind).map(k => {
+    const b = prBase(kind, k), o = L.find(e => e.k === k) || Object.assign({}, b), x = ov[k] || {};
+    ["sets", "lo", "hi", "rest"].forEach(f => { o[f] = x[f] != null ? x[f] : b[f]; });
+    if (o.sets0 != null || (live && typeof dlActive === "function" && dlActive())){ o.sets0 = o.sets; if (dlActive()) o.sets = Math.min(o.sets0, 2); }
+    return o;
+  });
+  L.splice(0, L.length, ...objs);
+}
+prApply("over"); prApply("under");
+// Reps för ett byte för alltid
+const _altEx0 = altEx;
+altEx = function(k, name, base){
+  const r = _altEx0(k, name, base);
+  const kind = base && OVER_EX.indexOf(base) >= 0 ? "over" : base && UNDER_EX.indexOf(base) >= 0 ? "under" : draft ? ssKind(draft.type) : null;
+  const ar = kind && prAlt(kind, k) === name && prog[kind].ar && prog[kind].ar[k];
+  if (ar){ r.lo = ar.lo; r.hi = ar.hi; }
+  return r;
+};
+const prNewSet = (ex, sug) => Object.assign({w: ex.unit === "kg" || ex.unit === "hjalp" ? sug.val : null, s: ex.unit === "sek" ? sug.val : null, r: ex.pre ? ex.hi : null, done: false}, ex.lr ? {wR: sug.valR == null ? null : sug.valR, rR: null} : {});
+// Nya pass får bytena direkt
+const _newDraft0 = newDraft;
+newDraft = function(type){
+  const d = _newDraft0(type), kind = ssKind(type);
+  PROGRAM[type].ex.forEach(ex => {
+    const a = prAlt(kind, ex.k); if (!a) return;
+    d.alt = d.alt || {}; d.alt[ex.k] = a;
+    const e2 = altEx(ex.k, a, ex), sug = suggestion(e2);
+    d.sets[ex.k] = Array.from({length: ex.sets}, () => prNewSet(e2, sug));
+  });
+  return d;
+};
+const prDone = (kind, k) => !!(draft && ssKind(draft.type) === kind && draft.sets[k] && draft.sets[k].some(x => x.done));
+const prStarted = kind => !!(draft && ssKind(draft.type) === kind && Object.keys(draft.sets).some(k => draft.sets[k].some(x => x.done)));
+// Passet i Pass-fliken följer med: nya övningar får set, antalet set ändras, det som redan är gjort ligger kvar
+function prSync(kind){
+  if (!draft || readOnly || ssKind(draft.type) !== kind) return;
+  PR_LIST[kind].forEach(ex => {
+    const e2 = exA(ex), arr = draft.sets[ex.k];
+    if (!Array.isArray(arr)){ const sug = suggestion(e2); draft.sets[ex.k] = Array.from({length: ex.sets}, () => prNewSet(e2, sug)); return; }
+    while (arr.length < ex.sets){ const pv = arr[arr.length - 1] || {}; arr.push(Object.assign({w: pv.w == null ? null : pv.w, s: pv.s == null ? null : pv.s, r: null, done: false}, e2.lr ? {wR: pv.wR == null ? null : pv.wR, rR: null} : {})); }
+    if (arr.length > ex.sets) draft.sets[ex.k] = arr.filter((x, i) => i < ex.sets || x.done);
+  });
+  Object.keys(draft.sets).forEach(k => { if (!PR_LIST[kind].some(e => e.k === k) && !draft.sets[k].some(x => x.done)) delete draft.sets[k]; });
+  persistDraft();
+}
+// Byte för alltid: gäller i dag också om övningen inte är påbörjad
+function prTodayAlt(kind, k, name){
+  if (!draft || readOnly || ssKind(draft.type) !== kind || !draft.sets[k] || prDone(kind, k)) return false;
+  draft.alt = draft.alt || {}; if (name) draft.alt[k] = name; else delete draft.alt[k];
+  bzReset(k); persistDraft(); return true;
+}
+function prChangedEx(kind, k){ const p = prog[kind] || {}; return !!((p.ex && p.ex[k] && Object.keys(p.ex[k]).length) || (p.alt && p.alt[k]) || (p.ar && p.ar[k])); }
+function prChanged(kind){
+  if (!prog[kind]) return false;
+  const keys = prKeys(kind);
+  return keys.join() !== PROG_BASE[kind].map(e => e.k).join() || keys.some(k => prChangedEx(kind, k));
+}
+const prRange = (lo, hi) => lo === hi ? String(lo) : lo + "–" + hi;
+const prRest = s => s < 120 ? s + " s" : String(+(s / 60).toFixed(1)).replace(".", ",") + " min";
+const prSets = ex => ex.sets0 != null ? ex.sets0 : ex.sets;
+const prDose = ex => prSets(ex) + " × " + prRange(ex.lo, ex.hi) + (ex.unit === "sek" ? " sek" : "") + (ex.per ? " " + ex.per : "") + " · vila " + prRest(ex.rest);
+// Tid för övningarna – samma räkning som passets tid
+const prEst = list => list.reduce((t, e, i) => t + prSets(e) * (e.lr ? 70 : 40) + (prSets(e) - 1) * e.rest + (i < list.length - 1 ? 75 : 0), 0);
+const PR_MIN0 = {over: 60, under: 70};
+const prMinutes = kind => Math.max(10, Math.round(PR_MIN0[kind] + (prEst(PR_LIST[kind]) - prEst(PROG_BASE[kind])) / 60));
+const prMin = (sec, def) => PR_LIST[sec] && prChanged(sec) ? "ca " + prMinutes(sec) + " min" : def;
+/* ---------- Program-fliken visar ditt upplägg ---------- */
+function prGuideItems(sec){
+  if (!PR_LIST[sec]) return GUIDE.filter(g => g.section === sec);
+  const out = [];
+  PR_LIST[sec].forEach(ex => {
+    const gk = KEYMAP[ex.k], g = GUIDE.find(x => x.key === gk && x.section === sec) || GUIDE.find(x => x.key === gk && PR_LIST[x.section]); if (!g) return;
+    const alt = prAlt(sec, ex.k), e2 = alt ? altEx(ex.k, alt, ex) : ex, d = alt ? (BUSY[ex.k] || []).find(x => x.n === alt) : null;
+    const same = !alt && !prChangedEx(sec, ex.k) && g.section === sec;
+    out.push(Object.assign({}, g, {i: out.length + 1, name: alt || g.name, dose: same ? g.dose : prDose(e2), altOf: alt ? g.name : null, altHow: d ? d.how : null}));
+  });
+  return out;
+}
+function prSecFor(gk){
+  const hit = GUIDE.find(g => g.key === gk); if (!hit) return null;
+  if (!PR_LIST[hit.section]) return hit.section;
+  const inL = s => PR_LIST[s].some(e => KEYMAP[e.k] === gk);
+  return inL(hit.section) ? hit.section : inL(prOther(hit.section)) ? prOther(hit.section) : hit.section;
+}
+const prLead = (sec, def) => PR_LIST[sec] && prChanged(sec) ? "Ditt eget upplägg – " + PR_LIST[sec].length + " övningar. Tryck på en övning för bild, steg för steg, vanliga fel och video." : def;
+const prBtnHTML = sec => PR_LIST[sec] && !readOnly ? '<button type="button" class="btn ghost sm pr-open" data-pr="open" data-prk="' + sec + '">✏️ Ändra övningar, set och reps</button>' : '';
+const prAltNoteHTML = g => g.altHow ? '<div class="pr-altnote">🔁 <b>Du kör ' + esc(g.name) + '</b> i stället för ' + esc(g.altOf) + '. ' + esc(g.altHow) + ' Bilden och stegen nedan visar ' + esc(g.altOf) + ' – samma muskler.</div>' : '';
+/* ---------- bladet ---------- */
+let prK = "over", prOpen = null, prArm = false;
+const PR_REPS = [[3, 5], [4, 6], [5, 8], [6, 8], [6, 10], [8, 10], [8, 12], [10, 12], [10, 15], [12, 15], [15, 20], [20, 25]];
+const PR_SEK = [[20, 30], [30, 45], [45, 60], [60, 90]];
+const PR_FIX = [6, 8, 10, 12, 15, 20];
+const PR_RESTS = [45, 60, 75, 90, 120, 150, 180, 240];
+function prRepOpts(ex){
+  let o = ex.unit === "sek" ? PR_SEK : ex.lo === ex.hi ? PR_FIX.map(v => [v, v]) : PR_REPS;
+  if (!o.some(x => x[0] === ex.lo && x[1] === ex.hi)) o = o.concat([[ex.lo, ex.hi]]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  return o.map(x => '<option value="' + x[0] + '-' + x[1] + '"' + (x[0] === ex.lo && x[1] === ex.hi ? ' selected' : '') + '>' + prRange(x[0], x[1]) + (ex.unit === "sek" ? " s" : "") + '</option>').join("");
+}
+function prRestOpts(v){
+  const o = PR_RESTS.indexOf(v) >= 0 ? PR_RESTS : PR_RESTS.concat([v]).sort((a, b) => a - b);
+  return o.map(x => '<option value="' + x + '"' + (x === v ? ' selected' : '') + '>' + prRest(x) + '</option>').join("");
+}
+function prRowHTML(kind, ex, i, n){
+  const alt = prAlt(kind, ex.k), e2 = alt ? altEx(ex.k, alt, ex) : ex, ch = prChangedEx(kind, ex.k), added = !prInBase(kind, ex.k), open = prOpen === ex.k, sets = prSets(ex), nm = alt || ex.n;
+  return '<div class="card pr-ex' + (ch || added ? ' pr-mod' : '') + '" data-k="' + ex.k + '">' +
+    '<div class="pr-h"><span class="pr-n num">' + (i + 1) + '</span><div class="pr-t"><b>' + esc(nm) + '</b><small>' + (alt ? 'i stället för ' + esc(SHORT[ex.k] || ex.n) + ' · ' : added ? 'från ' + PR_NAME[prOther(kind)] + ' · ' : '') + esc(prDose(e2)) + '</small></div>' +
+    '<div class="pr-mv"><button type="button" data-pr="up" aria-label="Flytta upp ' + esc(nm) + '"' + (i === 0 ? ' disabled' : '') + '>↑</button><button type="button" data-pr="down" aria-label="Flytta ner ' + esc(nm) + '"' + (i === n - 1 ? ' disabled' : '') + '>↓</button></div></div>' +
+    '<div class="pr-ctl"><div class="pr-f"><span>Set</span><div class="pr-step"><button type="button" data-pr="sets" data-d="-1" aria-label="Färre set"' + (sets <= 1 ? ' disabled' : '') + '>−</button><b class="num">' + sets + '</b><button type="button" data-pr="sets" data-d="1" aria-label="Fler set"' + (sets >= 6 ? ' disabled' : '') + '>+</button></div></div>' +
+      '<label class="pr-f"><span>' + (e2.unit === "sek" ? "Sekunder" : "Reps") + '</span><select data-pr="reps" aria-label="Reps för ' + esc(nm) + '">' + prRepOpts(e2) + '</select></label>' +
+      '<label class="pr-f"><span>Vila</span><select data-pr="rest" aria-label="Vila för ' + esc(nm) + '">' + prRestOpts(ex.rest) + '</select></label></div>' +
+    '<div class="pr-act">' + (BUSY[ex.k] ? '<button type="button" class="exlink" data-pr="swap" aria-expanded="' + open + '">' + (alt ? "Byt tillbaka eller annan →" : "Byt övning för alltid →") + '</button>' : '') +
+      '<button type="button" class="exlink" data-pr="pause">' + (added ? "Ta bort" : "Pausa") + '</button>' +
+      (ch ? '<button type="button" class="exlink" data-pr="exreset">↺ Som förut</button>' : '') + '</div>' +
+    (open ? '<div class="pr-alts">' + [null].concat(BUSY[ex.k]).map(d => { const on = (d ? d.n : null) === alt;
+      return '<button type="button" class="bz-alt' + (on ? " on" : "") + '" data-pr="alt" data-n="' + (d ? esc(d.n) : "") + '" aria-pressed="' + on + '"><b>' + esc(d ? d.n : ex.n) + (on ? " ✓" : "") + '</b><small>' + (d ? esc(d.how) : "Originalet i programmet") + '</small></button>'; }).join("") + '</div>' : '') +
+    '</div>';
+}
+function prHTML(){
+  const kind = prK, L = PR_LIST[kind], keys = L.map(e => e.k);
+  const paused = PROG_BASE[kind].filter(e => keys.indexOf(e.k) < 0), addable = PROG_BASE[prOther(kind)].filter(e => keys.indexOf(e.k) < 0 && !prInBase(kind, e.k));
+  const same = draft && !readOnly && ssKind(draft.type) === kind, started = prStarted(kind);
+  const st = same && !started ? 'Gäller direkt – också ' + esc(PROGRAM[draft.type].name) + ' som ligger i Pass-fliken.'
+    : same ? 'Du är mitt i ' + esc(PROGRAM[draft.type].name) + ': set, reps och vila ändras direkt. Övningar du redan kört byts och pausas från nästa pass.'
+    : !draft && !readOnly && gymOn(today()) && ssKind(gymOn(today())) === kind ? 'Gäller redan i dagens pass (' + esc(PROGRAM[gymOn(today())].name) + ').'
+    : 'Gäller från nästa ' + PR_NAME[kind] + '-pass.';
+  const nSets = L.reduce((a, e) => a + prSets(e), 0);
+  return '<div class="sh-top"><b>Ändra programmet</b><button type="button" class="sh-x" data-pr="close" aria-label="Stäng">×</button></div>' +
+    '<div class="seg pr-seg" role="group" aria-label="Vilket pass">' + ["over", "under"].map(x => '<button type="button" data-pr="kind" data-kind="' + x + '" aria-pressed="' + (x === kind) + '">' + PR_NAME[x] + '</button>').join("") + '</div>' +
+    '<p class="lead">Båda ' + PR_NAME[kind] + '-passen (' + PR_DAYS[kind] + ') har de här övningarna. Allt sparas direkt på telefonen.</p>' +
+    '<div class="gm-v"><span aria-hidden="true">i</span><span>' + st + '</span></div>' +
+    L.map((ex, i) => prRowHTML(kind, ex, i, L.length)).join("") +
+    (paused.length ? '<div class="pr-sub">Pausade – tryck för att ta tillbaka</div><div class="pr-chips">' + paused.map(e => '<button type="button" class="pr-chip" data-pr="add" data-k="' + e.k + '">+ ' + esc(SHORT[e.k] || e.n) + '</button>').join("") + '</div>' : '') +
+    (addable.length && L.length < 12 ? '<div class="pr-sub">Lägg till från ' + PR_NAME[prOther(kind)] + '</div><div class="pr-chips">' + addable.map(e => '<button type="button" class="pr-chip" data-pr="add" data-k="' + e.k + '">+ ' + esc(SHORT[e.k] || e.n) + '</button>').join("") + '</div>' : '') +
+    '<div class="card pr-sum"><span>' + L.length + ' övningar · ' + nSets + ' set</span><b class="num">ca ' + prMinutes(kind) + ' min</b></div>' +
+    (prChanged(kind) ? '<button type="button" class="btn ghost" data-pr="reset">' + (prArm ? "Tryck igen – tillbaka till originalet" : "Återställ " + PR_NAME[kind] + " till originalet") + '</button>' : '');
+}
+function prSheet(kind){
+  if (kind){ prK = kind; prOpen = null; prArm = false; }
+  let o = $("prOv");
+  const fresh = !o || o.hidden;
+  if (!o){ o = document.createElement("div"); o.id = "prOv"; o.className = "sheet"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Ändra programmet"); document.body.appendChild(o); }
+  const y = o.scrollTop;
+  o.innerHTML = '<div class="sh-in">' + prHTML() + '</div>'; o.hidden = false; o.scrollTop = fresh ? 0 : y; document.documentElement.classList.add("noscroll");
+}
+function prClose(){ const o = $("prOv"); if (o){ o.hidden = true; o.innerHTML = ""; } document.documentElement.classList.remove("noscroll"); }
+function prRefresh(){ if (view === "pass") renderPass(); else if (view === "program") renderProgram(); }
+// Städa bort det som är som originalet, spara, lägg in och rita om
+function prCommit(kind, msg){
+  const p = prog[kind];
+  if (p){
+    ["ex", "alt", "ar"].forEach(f => { if (!p[f]) return; Object.keys(p[f]).forEach(k => { const v = p[f][k]; if (v == null || v === "" || (typeof v === "object" && !Object.keys(v).length)) delete p[f][k]; }); if (!Object.keys(p[f]).length) delete p[f]; });
+    if (p.list && p.list.join() === PROG_BASE[kind].map(e => e.k).join()) delete p.list;
+    if (!Object.keys(p).length) delete prog[kind];
+  }
+  prSave(); prApply(kind, true); prSync(kind); prSheet(); prRefresh();
+  if (msg) toast(msg);
+}
+function prSetNum(kind, k, f, v){
+  const b = prBase(kind, k), p = prP(kind); p.ex = p.ex || {}; const x = p.ex[k] || (p.ex[k] = {});
+  if (v === b[f]) delete x[f]; else x[f] = v;
+}
+function prDo(a, kind, k, el){
+  const L = PR_LIST[kind], ex = L.find(e => e.k === k), keys = prKeys(kind), i = keys.indexOf(k), p = prP(kind), nm = ex ? (prAlt(kind, k) || SHORT[k] || ex.n) : (SHORT[k] || k);
+  if (a === "sets"){ const v = Math.max(1, Math.min(6, prSets(ex) + (+el.dataset.d))); prSetNum(kind, k, "sets", v); prCommit(kind); return; }
+  if (a === "up" || a === "down"){
+    const j = i + (a === "up" ? -1 : 1); if (i < 0 || j < 0 || j >= keys.length) return;
+    keys.splice(j, 0, keys.splice(i, 1)[0]); p.list = keys;
+    if (draft && ssKind(draft.type) === kind && !prStarted(kind)){ delete draft.order; delete draft.porder; }
+    prCommit(kind); return;
+  }
+  if (a === "swap"){ prOpen = prOpen === k ? null : k; prSheet(); return; }
+  if (a === "alt"){
+    const n = el.dataset.n || null; p.alt = p.alt || {}; if ((p.alt[k] || null) === n){ prOpen = null; prSheet(); return; }
+    if (n) p.alt[k] = n; else delete p.alt[k];
+    if (p.ar) delete p.ar[k];
+    prOpen = null; prSave(); prApply(kind, true); const now = prTodayAlt(kind, k, n);
+    prCommit(kind, n ? "🔁 " + (SHORT[k] || ex.n) + " → " + n + (now ? " – från och med i dag" : " från nästa pass") : "Tillbaka till " + (SHORT[k] || ex.n) + (now ? "" : " från nästa pass"));
+    return;
+  }
+  if (a === "pause"){
+    if (prDone(kind, k)){ toast("Du har redan kört set i " + nm + " i dag – ta bort den efter passet"); return; }
+    if (keys.length <= 1){ toast("Minst en övning måste vara kvar"); return; }
+    keys.splice(i, 1); p.list = keys;
+    prCommit(kind, prInBase(kind, k) ? nm + " pausad – ta tillbaka den längst ner när du vill" : nm + " borttagen"); return;
+  }
+  if (a === "add"){
+    if (keys.indexOf(k) >= 0 || keys.length >= 12) return;
+    if (prInBase(kind, k)){ const bi = PROG_BASE[kind].findIndex(e => e.k === k), at = keys.findIndex(x => { const xi = PROG_BASE[kind].findIndex(e => e.k === x); return xi > bi; }); keys.splice(at < 0 ? keys.length : at, 0, k); }
+    else keys.push(k);
+    p.list = keys;
+    prCommit(kind, (SHORT[k] || prBase(kind, k).n) + (prInBase(kind, k) ? " är tillbaka" : " tillagd sist")); return;
+  }
+  if (a === "exreset"){
+    const had = prAlt(kind, k);
+    if (p.ex) delete p.ex[k]; if (p.alt) delete p.alt[k]; if (p.ar) delete p.ar[k];
+    prSave(); prApply(kind, true); if (had) prTodayAlt(kind, k, null);
+    prCommit(kind, (SHORT[k] || ex.n) + " som förut"); return;
+  }
+}
+function prReset(kind){
+  const gone = Object.keys((draft && draft.sets) || {}).filter(k => prDone(kind, k) && !prInBase(kind, k));
+  if (gone.length){ prArm = false; prSheet(); toast("Du har kört " + (SHORT[gone[0]] || gone[0]) + " i dag – återställ efter passet"); return; }
+  const alts = Object.keys((prog[kind] && prog[kind].alt) || {});
+  delete prog[kind]; prArm = false; prOpen = null;
+  prSave(); prApply(kind, true); alts.forEach(k => prTodayAlt(kind, k, null));
+  prCommit(kind, PR_NAME[kind] + " är som originalet igen");
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-pr]"); if (!b || b.tagName === "SELECT") return;
+  const a = b.dataset.pr;
+  if (a === "open"){ prSheet(b.dataset.prk || (draft ? ssKind(draft.type) : "over")); return; }
+  if (a === "close"){ prClose(); return; }
+  if (a === "kind"){ prSheet(b.dataset.kind); return; }
+  if (a === "reset"){ if (!prArm){ prArm = true; prSheet(); return; } prReset(prK); return; }
+  const row = b.closest(".pr-ex"), k = b.dataset.k || (row && row.dataset.k); if (!k) return;
+  prArm = false; prDo(a, prK, k, b);
+});
+document.addEventListener("change", e => {
+  const t = e.target; if (!t || t.tagName !== "SELECT" || !t.dataset.pr || !t.closest("#prOv")) return;
+  const kind = prK, k = t.closest(".pr-ex").dataset.k, ex = PR_LIST[kind].find(x => x.k === k); if (!ex) return;
+  if (t.dataset.pr === "rest"){ prSetNum(kind, k, "rest", +t.value); prCommit(kind); return; }
+  if (t.dataset.pr === "reps"){
+    const v = t.value.split("-").map(Number), alt = prAlt(kind, k), p = prP(kind);
+    if (alt){ const d = (BUSY[k] || []).find(x => x.n === alt) || {}, lo0 = d.lo || ex.lo, hi0 = d.hi || ex.hi; p.ar = p.ar || {}; if (v[0] === lo0 && v[1] === hi0) delete p.ar[k]; else p.ar[k] = {lo: v[0], hi: v[1]}; }
+    else { prSetNum(kind, k, "lo", v[0]); prSetNum(kind, k, "hi", v[1]); }
+    prCommit(kind);
+  }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !e.defaultPrevented && $("prOv") && !$("prOv").hidden) prClose(); });
 
 
 /* ---------- Dela passet: en bild (1080 × 1350) att lägga på story, TikTok eller skicka till en kompis (14 nov 2026) ---------- */
@@ -5559,7 +6007,7 @@ function ntEvents(){
       out.push({id: "bed30-" + ds, at: b - 30 * 60e3, title: "Läggdags om 30 min 🌙", body: "Släck " + bed.hm + " så får du 10 timmar till " + wake + ". Bocka av vanorna och lägg undan mobilen.", url: "./#vanor"});
       out.push({id: "bed-" + ds, at: b, title: "Dags att sova 😴", body: "Släck nu – då får du 10 timmar till " + wake + ".", url: "./#vanor"});
     }
-    const gk = d >= START ? BY_DOW[dow] : null;
+    const gk = gymOn(d);   // med veckans flyttar
     if (gk && ntSet("gym").on && !(ds === ti && sessions.some(s => s.date === ti)))
       out.push({id: "gym-" + ds, at: at(d, ntSet("gym").t), title: "Gymdag: " + PROGRAM[gk].name + " 💪", body: PROGRAM[gk].ex.length + " övningar i dag. Passet ligger under Pass.", url: "./#pass"});
     if (RUN_DAYS[dow] && ntSet("run").on && !(ds === ti && gmOn() && gm && gmRunOn(ti).length))
@@ -5721,7 +6169,7 @@ document.addEventListener("change", e => {
 document.addEventListener("input", e => { if (e.target && e.target.id === "ntUrl"){ nt.url = e.target.value.trim(); ntSave(); } });
 
 /* ---------- Start ---------- */
-const BUILD = "14 nov 01.18", BUILD_NOTE = "Formcheck med slowmotion, veckokoll och påminnelse för varje shakeglas";
+const BUILD = "14 nov 11.49", BUILD_NOTE = "Flytta passet, videon i appen och ändra programmet själv";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
