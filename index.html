@@ -1108,6 +1108,51 @@ button.exlink{border:0;background:none;font-family:inherit;cursor:pointer;text-a
 .mt-in input{width:68px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:17px;font-weight:800;text-align:center}
 .mt-in i{font-style:normal;font-size:12px;font-weight:700;color:var(--muted)}
 .mt-next .btn{flex:0 0 auto;white-space:nowrap}
+/* Vanor: tillskott, vatten, serier, måltidsrytm */
+.hx{display:flex;flex-direction:column;gap:6px;margin:-4px 0 4px;padding:10px 12px;border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
+.su-it{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:6px 2px;cursor:pointer}
+.su-it .hchk{width:22px;height:22px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center;color:transparent;font-size:13px;font-weight:900;flex:0 0 auto}
+.su-it[aria-pressed="true"] .hchk{background:var(--green);border-color:var(--green);color:#fff}
+.su-it b{font-size:14.5px;display:block}
+.su-it small{font-size:12.5px;color:var(--muted)}
+.su-it[aria-pressed="true"] b{text-decoration:line-through;text-decoration-color:var(--muted)}
+.su-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px;padding:10px;align-items:center}
+.su-row input{height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;padding:0 10px;min-width:0}
+.su-row input[data-spf="n"]{grid-column:1 / 2;font-weight:700}
+.su-row input[data-spf="dose"]{grid-column:1 / 2;grid-row:2}
+.su-row input[type="time"]{grid-column:2;grid-row:1 / 3;align-self:center}
+.su-row .sh-x{grid-column:3;grid-row:1 / 3;align-self:center;margin:0}
+.vw-gl{display:flex;flex-wrap:wrap;gap:5px}
+.vw-gl i{width:16px;height:22px;border-radius:3px 3px 6px 6px;border:2px solid #3B82F6;opacity:.45}
+.vw-gl i.on{background:#3B82F6;opacity:1}
+.vw-gl i.x{border-style:dashed}
+.vw-ctl{display:flex;align-items:center;gap:10px}
+.vw-ctl span{flex:1;display:flex;flex-direction:column;min-width:0}
+.vw-ctl b{font-size:15px}
+.vw-ctl small{font-size:12px;color:var(--muted)}
+.vw-ctl button{height:40px;min-width:40px;border:0;border-radius:12px;background:var(--surface2);color:var(--ink);font:inherit;font-size:18px;font-weight:800}
+.vw-ctl button:disabled{opacity:.35}
+.vw-ctl .vw-add{background:#3B82F6;color:#fff;font-size:14.5px;padding:0 14px}
+.hstreak{display:inline-block;margin-left:6px;font-size:12px;font-weight:800;color:var(--warn);white-space:nowrap}
+.mr-line{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.35;font-weight:600;background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:8px 10px;margin-top:8px}
+.hx-s{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 10px}
+.hx-s .exlink{grid-column:1 / -1;margin-top:2px}
+.su-it{padding:5px 0;align-items:flex-start}
+.su-it b{font-size:14px;line-height:1.25}
+.su-it small{font-size:12px;line-height:1.3}
+/* Guide */
+.brand .gu-btn{order:3;flex:0 0 auto;align-self:center;width:30px;height:30px;border-radius:50%;border:0;background:var(--surface2);color:var(--ink);font:inherit;font-size:16px;font-weight:900;line-height:1;cursor:pointer}
+.brand .wk{margin-left:auto}
+.gu-q{height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:16px;padding:0 12px}
+.gu-sec{display:flex;flex-direction:column;gap:8px}
+.gu-it{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px}
+.gu-e{font-size:20px;width:28px;text-align:center}
+.gu-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.gu-t b{font-size:14.5px}
+.gu-t small{font-size:12.5px;color:var(--muted);line-height:1.35}
+.gu-it .btn{white-space:nowrap}
+.gu-hl{outline:3px solid #2E6BFF;outline-offset:3px;animation:guPulse 1s ease-in-out 3}
+@keyframes guPulse{0%,100%{outline-color:#2E6BFF}50%{outline-color:#9DB8FF}}
 /* Löpväder */
 .wx-card{display:flex;flex-direction:column;gap:10px}
 .wx-best{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:2px;align-items:end}
@@ -1222,7 +1267,7 @@ button.exlink{border:0;background:none;font-family:inherit;cursor:pointer;text-a
   <header class="top">
     <div class="brand">
       <div class="logo" aria-label="GymSchema">Gym<span>Schema</span></div>
-      <div class="wk num" id="wk">Vecka 1</div>
+      <button type="button" class="gu-btn" data-gu="open" aria-label="Guide – allt i appen">?</button><div class="wk num" id="wk">Vecka 1</div>
     </div>
     <div class="strip" id="strip" aria-label="Veckans dagar"></div>
   </header>
@@ -2285,6 +2330,13 @@ class LocalDB {
     malSave();
     (Array.isArray(data.bodyMeasures) ? data.bodyMeasures : []).forEach(x => { if (x && /^\d{4}-\d{2}-\d{2}$/.test(x.d) && !matt.some(y => y.d === x.d)){ matt.push(x); n++; } });
     matt.sort((a, b) => a.d < b.d ? -1 : 1); mattSave();
+    const sx = data.supplements && typeof data.supplements === "object" ? data.supplements : {};
+    if (Array.isArray(sx.items) && sx.items.length && !store(SUPP_KEY)) supp.items = sx.items.filter(x => x && x.id && x.n);
+    Object.keys(sx.log && typeof sx.log === "object" ? sx.log : {}).forEach(d => { if (/^\d{4}-\d{2}-\d{2}$/.test(d) && !supp.log[d]){ supp.log[d] = sx.log[d]; n++; } });
+    suppSave();
+    const wx2 = data.water && typeof data.water === "object" ? data.water : {};
+    Object.keys(wx2).forEach(d => { if (/^\d{4}-\d{2}-\d{2}$/.test(d) && typeof wx2[d] === "number" && !vat[d]){ vat[d] = wx2[d]; n++; } });
+    vatSave();
     menySave(); store(RXFAV_KEY, rxFav); rxLogSave(); ladSave();
     foodSave();
     this._save("sessions"); this._save("weights"); return n;
@@ -2303,7 +2355,7 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}, program: prog, goals: mal, bodyMeasures: matt};
+  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}, program: prog, goals: mal, bodyMeasures: matt, supplements: supp, water: vat};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
@@ -2565,6 +2617,8 @@ function habitDone(date, hb){
   const flag = !!(habits[date] && habits[date][hb.k]);
   if (hb.k === "somn") return flag || gmAuto(date, hb);
   if (hb.k === "prot" || hb.k === "shake") return flag || foodAuto(date, hb);
+  if (hb.k === "vatten") return flag || vatAuto(date);
+  if (hb.k === "tillskott") return flag || suppAuto(date);
   if (hb.k !== "pass") return flag;
   const plan = habitPlan(date);
   if (plan.kind === "gym") return flag || sessions.some(s => s.date === date);
@@ -2591,8 +2645,8 @@ function renderVanor(){
   const rows = HABITS.map(hb => {
     const done = habitDone(habitDate, hb), plan = hb.auto ? habitPlan(habitDate) : null;
     const dots = Array.from({length: 7}, (_, i) => iso(addDays(parseIso(habitDate), i - 6))).map(d => '<i class="' + (habitDone(d, hb) ? 'on' : '') + (d === habitDate ? ' cur' : '') + '"></i>').join("");
-    const gn = gmHabitNote(habitDate, hb) || foodHabitNote(habitDate, hb);
-    return '<button type="button" class="hrow' + (hb.auto ? ' auto' : '') + '" data-h="' + hb.k + '" aria-pressed="' + done + '"><span class="hchk" aria-hidden="true">✓</span><span class="ht"><b>' + esc(plan ? plan.n : hb.n) + '</b><small>' + (gn ? '<span class="gm-hn">' + esc(gn) + '</span>' : esc(plan ? plan.h : hb.h)) + '</small><span class="hdots">' + dots + '<small>7 dagar</small></span></span></button>';
+    const gn = gmHabitNote(habitDate, hb) || foodHabitNote(habitDate, hb) || vanNote(habitDate, hb);
+    return '<button type="button" class="hrow' + (hb.auto ? ' auto' : '') + '" data-h="' + hb.k + '" aria-pressed="' + done + '"><span class="hchk" aria-hidden="true">✓</span><span class="ht"><b>' + esc(plan ? plan.n : hb.n) + vanStreakHTML(hb) + '</b><small>' + (gn ? '<span class="gm-hn">' + esc(gn) + '</span>' : esc(plan ? plan.h : hb.h)) + '</small><span class="hdots">' + dots + '<small>7 dagar</small></span></span></button>' + vanExtraHTML(hb, habitDate);
   }).join("");
   el.innerHTML = primeHTML() + ntRowHTML() + '<div class="hhead"><div><div class="lead">' + (isT ? "Bocka av på kvällen" : "Du kan fylla i 14 dagar bakåt") + '</div><h2 class="h2">' + esc(title) + '</h2></div>' +
     '<div class="hnav"><button type="button" data-hnav="-1" aria-label="Föregående dag"' + (habitDate <= min ? ' disabled' : '') + '>‹</button><button type="button" data-hnav="1" aria-label="Nästa dag"' + (isT ? ' disabled' : '') + '>›</button></div></div>' +
@@ -3197,7 +3251,7 @@ function foodRender(){ if (view === "vikt" && kroppSeg === "mat") renderVikt(); 
 document.addEventListener("click", e => {
   const nav = e.target.closest("[data-fnav]"), gl = e.target.closest("[data-fgl]"), act = e.target.closest("[data-food]"), q = e.target.closest("[data-fquick]"), del = e.target.closest("[data-fdel]");
   if (nav){ foodDate = iso(addDays(parseIso(foodDate), +nav.dataset.fnav)); foodManual = false; foodMsg = ""; foodRender(); return; }
-  if (gl){ shakeGl[foodDate] = Math.max(0, Math.min(8, (shakeGl[foodDate] || 0) + +gl.dataset.fgl)); if (!shakeGl[foodDate]) delete shakeGl[foodDate]; foodSave(); foodRender(); return; }
+  if (gl){ shakeGl[foodDate] = Math.max(0, Math.min(8, (shakeGl[foodDate] || 0) + +gl.dataset.fgl)); if (!shakeGl[foodDate]) delete shakeGl[foodDate]; if (+gl.dataset.fgl > 0 && typeof mrMark === "function") mrMark(foodDate); foodSave(); foodRender(); if (typeof ntSoon === "function") ntSoon(); return; }
   if (q){ const x = foodRecent()[+q.dataset.fquick]; if (x) foodAdd(x); foodRender(); return; }
   if (del){ foodLog[foodDate] = (foodLog[foodDate] || []).filter(x => x.id !== del.dataset.fdel); if (!foodLog[foodDate].length) delete foodLog[foodDate]; foodSave(); foodRender(); return; }
   if (act){ if (act.dataset.food === "manual"){ foodManual = !foodManual; foodRender(); if (foodManual) setTimeout(() => { const i = $("fdN"); if (i) i.focus(); }, 50); } else scanOpen(); }
@@ -4169,6 +4223,7 @@ function kcalCardHTML(t){
     '<div class="fd-big"><div><div class="stat-l">Kalorier</div><b class="num' + (t.kcal >= g.goal ? " ok" : "") + '">' + gmSteps(t.kcal) + '</b><small>av ' + gmSteps(g.goal) + '</small><div class="fd-bar kc"><i style="width:' + pk + '%"></i></div></div>' +
       '<div><div class="stat-l">Protein</div><b class="num' + (t.p >= PROT_GOAL ? " ok" : "") + '">' + t.p + '</b><small>av ' + PROT_GOAL + ' g</small><div class="fd-bar"><i style="width:' + pp + '%"></i></div></div></div>' +
     '<div class="kc-eq"><b>Mål ' + gmSteps(g.goal) + ' kcal</b> = ' + eq + '</div>' +
+    (isT && typeof mrLineHTML === "function" ? mrLineHTML(t, g) : '') +
     (g.acts.length ? '<div class="kc-acts">' + g.acts.map(x => '<span>⌚ ' + esc(kcLabel(x.a)) + ' <b class="num">+' + gmSteps(x.kc) + '</b></span>').join("") + '</div>' : '') +
     (g.adj ? '<div class="small">Vågen: ' + (g.tr >= 0 ? "+" : "−") + fmt(Math.abs(g.tr), 1) + ' kg i månaden de senaste 4 veckorna, målet är ' + malSign(kcGain()) + ' kg. Därför ' + (g.adj > 0 ? "mer" : "mindre") + ' mat.</div>' : '') +
     (!gmOn() ? '<div class="small">Koppla Garmin under Framsteg så läggs det du bränner på klockan till målet.</div>' : isT && !g.acts.length ? '<div class="small">Det du bränner på klockan i dag läggs till målet när passet synkat.</div>' : '') +
@@ -6115,6 +6170,289 @@ document.addEventListener("click", e => {
 });
 
 
+/* ---------- Vanor: tillskott som checklista, vatten i glas, dagar i rad per vana och måltidsrytm (14 nov 2026) ---------- */
+// supp = {items: [{id, n, dose, t}], log: {"2026-11-14": {kreatin: 1}}} · vat = {"2026-11-14": 5} (glas à 2,5 dl) · mealTs = {"2026-11-14": [ts, …]} (shakeglasen)
+const SUPP_KEY = "gymschema.supp.v1", VAT_KEY = "gymschema.vatten.v1", MEALTS_KEY = "gymschema.mealts.v1";
+const SUPP_DEF = [{id: "kreatin", n: "Kreatin", dose: "5 g i shaken", t: "09:00"}, {id: "selen", n: "Selen", dose: "i shaken", t: "09:00"},
+  {id: "puori", n: "Puori", dose: "i shaken", t: "09:00"}, {id: "dvit", n: "D-pärla", dose: "till första glaset", t: "09:00"}, {id: "magnesium", n: "Magnesium", dose: "på kvällen", t: "20:30"}];
+let supp = (() => { const v = store(SUPP_KEY); const o = v && typeof v === "object" && !Array.isArray(v) ? v : {}; if (!Array.isArray(o.items)) o.items = SUPP_DEF.map(x => Object.assign({}, x)); if (!o.log || typeof o.log !== "object") o.log = {}; return o; })();
+let vat = (() => { const v = store(VAT_KEY); return v && typeof v === "object" && !Array.isArray(v) ? v : {}; })();
+let mealTs = (() => { const v = store(MEALTS_KEY); return v && typeof v === "object" && !Array.isArray(v) ? v : {}; })();
+const suppSave = () => store(SUPP_KEY, supp), vatSave = () => store(VAT_KEY, vat);
+const hmNorm = t => { const m = String(t || "").match(/^(\d{1,2})[:.](\d{2})$/); return m ? pad(Math.min(23, +m[1])) + ":" + m[2] : null; };
+const hmShow = t => String(t).replace(":", ".");
+
+/* ---------- tillskott ---------- */
+const suppDone = (date, id) => !!(supp.log[date] && supp.log[date][id]);
+const suppAuto = date => supp.items.length > 0 && supp.items.every(x => suppDone(date, x.id));
+function suppSet(date, id, on){
+  const d = supp.log[date] || (supp.log[date] = {});
+  if (on) d[id] = Date.now(); else delete d[id];
+  if (!Object.keys(d).length) delete supp.log[date];
+  Object.keys(supp.log).forEach(k => { if (k < iso(addDays(today(), -60))) delete supp.log[k]; });
+  suppSave();
+}
+const suppSorted = () => supp.items.slice().sort((a, b) => ntMin(a.t) - ntMin(b.t));
+function suppHTML(date){
+  const items = suppSorted();
+  return '<div class="hx hx-s">' + items.map(x => { const on = suppDone(date, x.id);
+      return '<button type="button" class="su-it" data-supp="' + esc(x.id) + '" aria-pressed="' + on + '"><span class="hchk" aria-hidden="true">✓</span><span><b>' + esc(x.n) + '</b><small>' + esc(x.dose ? x.dose + " · " : "") + hmShow(x.t) + '</small></span></button>'; }).join("") +
+    (readOnly ? '' : '<button type="button" class="exlink" data-supp-edit>Ändra tillskott och tider</button>') + '</div>';
+}
+// Påminnelsetexten för en tid: det som inte är bockat den dagen
+function suppAt(date, hm){
+  const m = ntMin(hm), list = supp.items.filter(x => ntMin(x.t) === m && !suppDone(date, x.id));
+  if (!list.length) return "";
+  const names = list.map(x => x.n + (x.dose ? " (" + x.dose + ")" : ""));
+  return names.length === 1 ? names[0] : names.slice(0, -1).join(", ") + " och " + names[names.length - 1];
+}
+/* bladet där tillskotten ändras */
+let spEdit = null;
+function spSheetHTML(){
+  return '<div class="sh-top"><b>Tillskott</b><button type="button" class="sh-x" data-suppx="close" aria-label="Stäng">×</button></div>' +
+    '<p class="lead">Namn, hur du tar det och när. Påminnelsen kommer på tiden – det som ligger på samma tid som shaken kommer med i shake-påminnelsen.</p>' +
+    spEdit.map((x, i) => '<div class="card su-row"><input data-suppf="n" data-i="' + i + '" value="' + esc(x.n) + '" placeholder="Namn" aria-label="Namn"><input data-suppf="dose" data-i="' + i + '" value="' + esc(x.dose || "") + '" placeholder="Hur, t.ex. 5 g i shaken" aria-label="Hur du tar det">' +
+      '<input type="time" data-suppf="t" data-i="' + i + '" value="' + esc(x.t) + '" aria-label="Tid"><button type="button" class="sh-x" data-suppx="del" data-i="' + i + '" aria-label="Ta bort ' + esc(x.n) + '">×</button></div>').join("") +
+    '<button type="button" class="btn ghost" data-suppx="add">+ Lägg till</button><button type="button" class="btn" data-suppx="save">Spara</button>';
+}
+function spSheet(){
+  let o = $("suppOv");
+  if (!o){ o = document.createElement("div"); o.id = "suppOv"; o.className = "sheet"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Tillskott"); document.body.appendChild(o); }
+  o.innerHTML = '<div class="sh-in">' + spSheetHTML() + '</div>'; o.hidden = false; document.documentElement.classList.add("noscroll");
+}
+function spClose(){ const o = $("suppOv"); if (o){ o.hidden = true; o.innerHTML = ""; } document.documentElement.classList.remove("noscroll"); spEdit = null; }
+
+/* ---------- vatten ---------- */
+const VAT_GL = 2.5;   // dl per glas
+const vatGoal = date => { const k = habitPlan(date).kind; return k === "gym" ? 12 : k === "run" ? 10 : 8; };
+const vatAuto = date => (vat[date] || 0) >= vatGoal(date);
+function vatHTML(date){
+  const n = vat[date] || 0, g = vatGoal(date), l = String(+(n * VAT_GL / 10).toFixed(2)).replace(".", ",");
+  return '<div class="hx hx-w"><div class="vw-gl" aria-hidden="true">' + Array.from({length: Math.max(g, n)}, (_, i) => '<i class="' + (i < n ? "on" : "") + (i >= g ? " x" : "") + '"></i>').join("") + '</div>' +
+    '<div class="vw-ctl"><button type="button" data-vw="-1" aria-label="Ett glas mindre"' + (n ? '' : ' disabled') + '>−</button><span><b class="num">' + n + ' av ' + g + ' glas</b><small>' + l + ' liter · mål ' + String(g * VAT_GL / 10).replace(".", ",") + ' l ' + (g === 12 ? "på gymdagar" : g === 10 ? "på löpdagen" : "på vilodagar") + '</small></span><button type="button" class="vw-add" data-vw="1" aria-label="Ett glas till">+ Glas</button></div></div>';
+}
+
+/* ---------- dagar i rad per vana – en frysdag per vecka räddar serien ---------- */
+function vanStreak(hb){
+  let d = today(), n = 0; const frozen = {};
+  if (!habitDone(iso(d), hb)) d = addDays(d, -1);   // dagen är inte slut än
+  for (let i = 0; i < 400 && d >= START; i++, d = addDays(d, -1)){
+    const ds = iso(d);
+    if (habitDone(ds, hb)){ n++; continue; }
+    const wk = iso(weekStart(d));
+    if (frozen[wk]) break;   // andra missen samma vecka – serien tar slut
+    frozen[wk] = ds;         // veckans frysdag
+  }
+  return {n, frozenThisWeek: !!frozen[iso(weekStart(today()))] && n > 0};
+}
+function vanStreakHTML(hb){
+  const s = vanStreak(hb);
+  if (s.n < 2) return "";
+  return ' <span class="hstreak" title="' + s.n + ' dagar i rad' + (s.frozenThisWeek ? ' – veckans frysdag är använd' : '') + '">🔥 ' + s.n + (s.frozenThisWeek ? ' ❄️' : '') + '</span>';
+}
+function vanNote(date, hb){
+  if (hb.k === "vatten"){ const n = vat[date] || 0; return n ? "Vatten: " + n + " av " + vatGoal(date) + " glas" + (n >= vatGoal(date) ? " ✓" : "") : ""; }
+  if (hb.k === "tillskott"){ const c = supp.items.filter(x => suppDone(date, x.id)).length; return c ? "Tillskott: " + c + " av " + supp.items.length + (c >= supp.items.length ? " ✓" : "") : ""; }
+  return "";
+}
+function vanExtraHTML(hb, date){
+  if (hb.k === "tillskott") return suppHTML(date);
+  if (hb.k === "vatten") return vatHTML(date);
+  return "";
+}
+
+/* ---------- måltidsrytm: ät var 3,5:e timme när du ligger efter med kalorierna ---------- */
+const MR_GAP = 3.5 * 3600e3, MR_LAST = 20 * 60;   // inga påminnelser efter 20.00
+function mrMark(date){ if (date !== iso(today())) return; const a = mealTs[date] || (mealTs[date] = []); a.push(Date.now()); Object.keys(mealTs).forEach(k => { if (k < iso(addDays(today(), -7))) delete mealTs[k]; }); store(MEALTS_KEY, mealTs); }
+function mrLast(date){
+  const ts = (foodLog[date] || []).map(x => x.ts || 0).concat(mealTs[date] || []).filter(t => t > 0);
+  return ts.length ? Math.max.apply(null, ts) : null;
+}
+const mrAt = (d, min) => { const x = new Date(d); x.setHours(Math.floor(min / 60), min % 60, 0, 0); return x.getTime(); };
+// Hur mycket du borde ha ätit vid en tid: rak linje från en timme efter väckningen till 21.00
+function mrExpected(date, ts){
+  const d = parseIso(date), w = ntMin(gmWake()) + 60, end = 21 * 60, m = (ts - mrAt(d, 0)) / 60e3;
+  return kcalGoal(date).goal * Math.max(0, Math.min(1, (m - w) / Math.max(60, end - w)));
+}
+// Nästa måltid: 3,5 timmar efter senaste maten eller shakeglaset (inget loggat: en halvtimme efter väckningen + 3,5 h)
+function mrNext(date){
+  const d = parseIso(date), last = mrLast(date) || mrAt(d, ntMin(gmWake()) + 30);
+  return last + MR_GAP;
+}
+function mrEvents(){
+  const out = [], date = iso(today()), now = Date.now(), t = foodTotals(date), eaten = t.fk + t.sk;
+  // bara när du faktiskt loggar maten (något de senaste tre dagarna) – annars vet appen inte om du ligger efter
+  if (![0, 1, 2, 3].some(i => { const d = iso(addDays(today(), -i)); return (foodLog[d] || []).length || shakeGl[d]; })) return out;
+  let at = mrNext(date);
+  // shakeglas som ändå ska drickas strax efter räknas som måltiden – då ingen extra påminnelse
+  const sh = [];
+  if (ntSet("shake").on){ const n = Math.max(1, Math.min(6, foodSet.glasses || 3)), t1 = ntMin(ntSet("shake").t), gap = n > 1 ? Math.max(60, Math.min(240, Math.floor((20 * 60 - t1) / (n - 1)))) : 0;
+    for (let g = (shakeGl[date] || 0); g < n; g++) sh.push(mrAt(today(), t1 + g * gap)); }
+  for (let i = 0; i < 4 && at <= mrAt(today(), MR_LAST); i++, at += MR_GAP){
+    if (at < now + 60e3) continue;
+    if (sh.some(x => x >= at - 30 * 60e3 && x <= at + 90 * 60e3)) continue;
+    const behind = Math.round(mrExpected(date, at) - eaten);
+    if (behind < 250) continue;
+    const sn = mrSnack(behind);
+    out.push({id: "rytm-" + date + "-" + Math.round(at / 60e3), at, title: "Dags att äta 🍽", body: "Det har gått 3,5 timmar. Du ligger ca " + gmSteps(Math.round(behind / 50) * 50) + " kcal efter – " + (sn ? "t.ex. " + sn.n + " (" + sn.nu.kcal + " kcal)." : "ett mellanmål eller ett shakeglas."), url: "./#vikt/mat"});
+  }
+  return out;
+}
+function mrSnack(kcal){
+  const list = (typeof RX !== "undefined" ? RX : []).filter(r => r.c === "mellan" && r.m <= 10);
+  if (!list.length) return null;
+  return list.slice().sort((a, b) => Math.abs(a.nu.kcal - Math.min(600, kcal)) - Math.abs(b.nu.kcal - Math.min(600, kcal)))[Math.floor(Date.now() / 864e5) % Math.min(3, list.length)];
+}
+function mrLineHTML(t, g){
+  const date = iso(today()), now = Date.now(), eaten = t.fk + t.sk, behind = Math.round(mrExpected(date, now) - eaten), nx = mrNext(date);
+  if (behind < 250 || new Date(now).getHours() >= 21) return "";
+  const late = nx <= now;
+  return '<div class="mr-line"><span aria-hidden="true">⏰</span><span>' + (late ? "<b>Ät nu</b> – det har gått mer än 3,5 timmar sedan sist" : "<b>Ät nästa gång senast " + pad(new Date(nx).getHours()) + "." + pad(new Date(nx).getMinutes()) + "</b>") + '. Du ligger ca ' + gmSteps(Math.round(behind / 50) * 50) + ' kcal efter för den här tiden på dagen.</span></div>';
+}
+
+/* ---------- klick ---------- */
+// raden "Tillskott" bockar allt, raden "Vatten" när målet är nått: säg varför (fångas före Vanor-flikens egen klick)
+document.addEventListener("click", e => {
+  const row = e.target.closest('#v-vanor [data-h="tillskott"], #v-vanor [data-h="vatten"]'); if (!row) return;
+  const k = row.dataset.h, flag = !!(habits[habitDate] && habits[habitDate][k]);
+  if (k === "tillskott" && !flag && suppAuto(habitDate)){ e.stopPropagation(); toast("Alla tillskott är bockade – avbocka i listan"); return; }
+  if (k === "vatten" && !flag && vatAuto(habitDate)){ e.stopPropagation(); toast("Bockad automatiskt – " + (vat[habitDate] || 0) + " glas"); return; }
+  if (k === "tillskott" && !flag) supp.items.forEach(x => suppSet(habitDate, x.id, true));
+  if (k === "tillskott" && flag) supp.items.forEach(x => suppSet(habitDate, x.id, false));
+}, true);
+document.addEventListener("click", e => {
+  const sp = e.target.closest("[data-supp]");
+  if (sp){ const id = sp.dataset.supp, on = !suppDone(habitDate, id); suppSet(habitDate, id, on); renderVanor(); renderStrip();
+    if (on && suppAuto(habitDate)) toast("Alla tillskott ✓"); if (typeof ntSoon === "function") ntSoon(); return; }
+  if (e.target.closest("[data-supp-edit]")){ spEdit = supp.items.map(x => Object.assign({}, x)); spSheet(); return; }
+  const vw = e.target.closest("[data-vw]");
+  if (vw){ const n = Math.max(0, Math.min(30, (vat[habitDate] || 0) + (+vw.dataset.vw))), was = vatAuto(habitDate);
+    if (n) vat[habitDate] = n; else delete vat[habitDate];
+    Object.keys(vat).forEach(k => { if (k < iso(addDays(today(), -60))) delete vat[k]; });
+    vatSave(); renderVanor(); renderStrip(); if (!was && vatAuto(habitDate)) toast("💧 Vattenmålet nått – " + String(n * VAT_GL / 10).replace(".", ",") + " liter"); return; }
+  const x = e.target.closest("[data-suppx]"); if (!x || !spEdit) return;
+  const a = x.dataset.suppx;
+  if (a === "close"){ spClose(); return; }
+  if (a === "del"){ spEdit.splice(+x.dataset.i, 1); spSheet(); return; }
+  if (a === "add"){ spEdit.push({id: "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), n: "", dose: "", t: "09:00"}); spSheet(); const ins = document.querySelectorAll('#suppOv [data-suppf="n"]'); if (ins.length) ins[ins.length - 1].focus(); return; }
+  if (a === "save"){
+    const items = spEdit.map(y => ({id: y.id, n: String(y.n || "").trim().slice(0, 40), dose: String(y.dose || "").trim().slice(0, 40), t: hmNorm(y.t) || "09:00"})).filter(y => y.n);
+    supp.items = items; suppSave(); spClose(); if (view === "vanor") renderVanor(); renderStrip(); if (typeof ntSoon === "function") ntSoon();
+    toast("💊 " + items.length + " tillskott sparade"); return;
+  }
+});
+document.addEventListener("input", e => { const f = e.target && e.target.dataset && e.target.dataset.suppf; if (!f || !spEdit) return; const it = spEdit[+e.target.dataset.i]; if (it) it[f] = e.target.value; });
+
+
+/* ---------- Guide: allt i appen på ett ställe, med "Visa var" som hoppar dit och lyser upp det (14 nov 2026) ---------- */
+// go = fliken (adressen), sel = det som lyses upp, alt = reserv, open = öppna kortet först, miss = när det inte syns just nu
+const GU = [
+  ["Pass", [
+    ["📅", "Veckan högst upp", "Måndag till söndag: gympassen Ö1, B1, Ö2 och B2, löpning på tisdagen och vila. Klara pass får en bock.", "pass", "#strip"],
+    ["🏋️", "Dagens pass", "Övningarna med set, vikt och reps. Appen föreslår vikten från förra gången och säger när det är dags att öka.", "pass", "#v-pass .sess-head"],
+    ["▶", "Kör passet – ett set i taget", "Ett set åt gången med bild, vikt, reps och vila på en skärm. Uppvärmningsseten räknas ut åt dig.", "pass", '#v-pass [data-fk="open"]'],
+    ["⏱", "Vila med timer och röst", "Bocka ett set så startar vilan. Rösten säger när det är dags och vad nästa set är.", "pass", "#v-pass article.ex .set [data-chk]"],
+    ["⚡", "Snabbläge – supersets", "Övningarna i par med mindre vila när du har bråttom.", "pass", "#v-pass .ss-card .mn-sw"],
+    ["🔁", "Upptagen? Byt", "Kör något annat först, fråga om du får köra mellan, eller byt övning i dag.", "pass", "#v-pass .bz-link"],
+    ["✏️", "Ändra programmet", "Set, reps, vila och ordning, byt en övning för alltid, pausa eller lägg till.", "pass", "#v-pass .pr-link"],
+    ["↪", "Flytta passet", "Kan du inte i dag, eller missade du ett pass? Välj ny dag så blir det ändå fyra pass i veckan.", "pass", "#v-pass .fl-pill, #v-pass .fl-ban", "", "Knappen syns i passet på en gymdag innan du börjat, och som banner dagen efter ett missat pass."],
+    ["🎯", "Målet under övningen", "Har du ett mål för övningen står det i passet hur mycket som är kvar.", "pass", "#v-pass .mal-hint", "", "Syns när du satt ett mål under Framsteg → Mål."],
+    ["🔥", "Uppvärmning, mage och stretch", "Guidade med timer och bilder före och efter övningarna.", "pass", "#v-pass section.rcard"],
+    ["💾", "Spara passet", "Sedan kommer rekord, XP, passets tid och en bild att dela.", "pass", "#v-pass .savebar"],
+    ["⌚", "Garmin och live puls", "Sömn, HRV och löprundor från klockan, och pulsen live i en bubbla.", "pass", "#gmPass"],
+    ["🪟", "Gardinen", "Stäng och öppna SwitchBot-gardinen direkt i appen.", "pass", "#hemRow"],
+    ["🌦", "Löpväder", "På löpdagen: bästa timmen att springa, vad du ska ha på dig och risk för halka.", "pass", "#wxCard", "", "Kortet syns på tisdagar – löpdagen."]
+  ]],
+  ["Vanor", [
+    ["⭐", "Prime-nivåer", "XP för gym, löpning, boxning, vanor och sömn – 15 nivåer till Prime self.", "vanor", "#primeCard"],
+    ["🔔", "Påminnelser i mobilen", "Läggdags, gym, shake, tillskott, middag, vägning, måltidsrytm och kroppsmått – även när appen är stängd.", "vanor", "#ntRow"],
+    ["✓", "Vanorna", "Bocka av på kvällen. Sömnen, proteinet och shaken bockas av sig själva från klockan och Mat.", "vanor", "#v-vanor .hlist"],
+    ["🔥", "Dagar i rad", "Varje vana har sin serie. En missad dag i veckan räddas av veckans frysdag ❄️.", "vanor", "#v-vanor .hstreak", "#v-vanor .hlist"],
+    ["💊", "Tillskott", "Bocka varje tillskott. Namn, tider och påminnelser ändrar du själv.", "vanor", "#v-vanor .hx-s"],
+    ["💧", "Vatten", "Ett tryck per glas. 2 liter på vilodagar, 3 på gymdagar.", "vanor", "#v-vanor .hx-w"]
+  ]],
+  ["Boxning", [
+    ["🥊", "Boxning med timer", "Ronder, vila och siffror som ropas ut – säck eller skuggboxning.", "boxning", "#v-boxning .card"],
+    ["📷", "Kameran som tränare", "Räknar armhävningar och knäböj och säger till om garden åker ner.", "boxning", "#v-boxning .card.coach"]
+  ]],
+  ["Framsteg", [
+    ["📊", "Veckokoll", "Hur veckan gick och det viktigaste att göra nästa vecka.", "framsteg", "#vkCard"],
+    ["🤖", "Coachen", "Kopierar dina senaste fyra veckor och öppnar Claude med en färdig fråga.", "framsteg", "#coachCard"],
+    ["🫀", "Muskelkartan", "Vilka muskler som fått set den här veckan.", "framsteg", "#v-framsteg .mmap"],
+    ["🎯", "Mål", "Mål per övning – till exempel chins utan hjälp – med stapel, prognos och fest när du klarar det.", "framsteg", "#malCard"],
+    ["🏆", "Rekord", "Bästa setet i varje övning och veckor i rad med alla fyra passen.", "framsteg", "#v-framsteg .rk"],
+    ["📈", "Grafer och prognos", "Kurvan för varje övning och när du når nästa vikt i din egen takt.", "framsteg", "#v-framsteg .chips"],
+    ["🗓", "Månadens sammanfattning", "En bild i storyformat med månadens siffror – att spara eller skicka.", "framsteg", "#wrapCard"]
+  ]],
+  ["Kropp", [
+    ["⚖️", "Vikt och prognos", "Väg dig 2–3 morgnar i veckan. Takt, graf och när du når målet.", "vikt/vikt", "#wForm"],
+    ["🎯", "Viktmål med datum", "Till exempel 80 kg till juni – appen säger om det är realistiskt och ställer in maten.", "vikt/vikt", "#v-vikt .vm"],
+    ["📏", "Kroppsmått", "Midja, bröst, arm och lår en gång i månaden – muskler eller fett?", "vikt/vikt", "#v-vikt .mt"],
+    ["🥤", "Shake-storlek", "Råd om shaken ska bli större eller mindre utifrån vågen.", "vikt/vikt", "#v-vikt .shakeadv", "", "Syns när du vägt dig några gånger."],
+    ["🔥", "Kalorier och protein", "Dagens mål räknas från vikten, klockan och viktmålet.", "vikt/mat", "#kcCard"],
+    ["⏰", "Måltidsrytm", "Ligger du efter säger appen när du ska äta nästa gång – och skickar en påminnelse.", "vikt/mat", "#v-vikt .mr-line", "#kcCard"],
+    ["🍽", "Vad ska jag äta? och 140 recept", "Förslag för resten av dagen och recept utan socker – sök, filtrera och logga en portion med ett tryck.", "vikt/mat", "#fdIdeas"],
+    ["🥛", "Shaken i glas", "Bocka varje glas – kalorierna och proteinet räknas.", "vikt/mat", "#v-vikt .fd-shake"],
+    ["▦", "Skanna streckkod", "Skanna förpackningen så hämtas kalorier och protein.", "vikt/mat", "#v-vikt .fd-add"],
+    ["📅", "Veckomeny och inköpslista", "Veckans middagar, inköpslista per avdelning och laga-läge steg för steg.", "vikt/mat/meny", ""],
+    ["📷", "Progressbilder", "Samma ställe och ljus varje vecka, före och nu sida vid sida.", "vikt/bilder", "#v-vikt .card.coach"],
+    ["🧍", "Hållning", "AI:n i telefonen mäter hållningen från sidan och framifrån.", "vikt/hallning", "#v-vikt .card.coach"]
+  ]],
+  ["Program och historik", [
+    ["📋", "Programmet med bild", "Varje övning med bild, steg för steg, vanliga fel och video.", "program", "#v-program details.gcard:not(.groutine)"],
+    ["▶", "Videon i appen", "Teknikvideorna spelas direkt i appen – ingen YouTube.", "program", "#v-program details.gcard:not(.groutine) .glinks a.yt", "", "", "#v-program details.gcard:not(.groutine)"],
+    ["🎥", "Formcheck", "Filma setet och se det i slowmotion bredvid nyckeln och vanliga fel.", "program", "#v-program details.gcard:not(.groutine) .fc-slot", "#v-program details.gcard:not(.groutine) .gfig", "", "#v-program details.gcard:not(.groutine)"],
+    ["💾", "Historik och backup", "Alla pass, och en backup-fil att spara om du byter mobil.", "historik", "#bkOut"]
+  ]]
+];
+let guQ = "";
+const guNorm = t => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+function guHTML(){
+  const q = guNorm(guQ).trim(), n = GU.reduce((a, s) => a + s[1].length, 0);
+  const secs = GU.map((s, si) => { const its = s[1].map((x, i) => ({x, i})).filter(o => !q || guNorm(o.x[1] + " " + o.x[2] + " " + s[0]).indexOf(q) >= 0);
+    return its.length ? '<div class="gu-sec"><div class="pr-sub">' + esc(s[0]) + '</div>' + its.map(o => '<div class="card gu-it"><span class="gu-e" aria-hidden="true">' + o.x[0] + '</span><span class="gu-t"><b>' + esc(o.x[1]) + '</b><small>' + esc(o.x[2]) + '</small></span><button type="button" class="btn sm ghost" data-gu="go" data-s="' + si + '" data-i="' + o.i + '">Visa var</button></div>').join("") + '</div>' : ''; }).join("");
+  return '<div class="sh-top"><b>Allt i appen</b><button type="button" class="sh-x" data-gu="close" aria-label="Stäng">×</button></div>' +
+    '<p class="lead">' + n + ' saker appen kan. Tryck <b>Visa var</b> så hoppar appen dit och lyser upp det.</p>' +
+    '<input type="search" id="guQ" class="gu-q" placeholder="Sök – t.ex. vatten, mål eller video" value="' + esc(guQ) + '" autocomplete="off" aria-label="Sök i guiden">' +
+    '<div id="guList">' + (secs || '<div class="small">Inget som matchar – testa ett annat ord.</div>') + '</div>';
+}
+function guOpen(){
+  let o = $("guOv");
+  if (!o){ o = document.createElement("div"); o.id = "guOv"; o.className = "sheet"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Allt i appen"); document.body.appendChild(o); }
+  o.innerHTML = '<div class="sh-in">' + guHTML() + '</div>'; o.hidden = false; o.scrollTop = 0; document.documentElement.classList.add("noscroll");
+}
+function guClose(){ const o = $("guOv"); if (o){ o.hidden = true; o.innerHTML = ""; } document.documentElement.classList.remove("noscroll"); }
+// Hoppa till rätt flik, öppna kortet om det behövs, skrolla dit och lys upp
+function guGo(x){
+  const go = x[3], sel = x[4], alt = x[5], miss = x[6], open = x[7];
+  guClose();
+  if (location.hash.slice(1) === go) show(go); else location.hash = go;
+  if (!sel) return;
+  setTimeout(() => {
+    if (open){ const c = document.querySelector(open); if (c) c.open = true; }
+    const vis = q => { const y = q && document.querySelector(q); return y && y.getClientRects().length && y.offsetHeight > 0 ? y : null; };
+    const el = vis(sel) || vis(alt);
+    if (!el){ window.scrollTo({top: 0}); toast(miss || "Det syns inte just nu"); return; }
+    el.scrollIntoView({block: "center", behavior: "smooth"});
+    document.querySelectorAll(".gu-hl").forEach(y => y.classList.remove("gu-hl"));
+    el.classList.add("gu-hl"); setTimeout(() => el.classList.remove("gu-hl"), 3200);
+  }, 450);
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-gu]"); if (!b) return;
+  const a = b.dataset.gu;
+  if (a === "open"){ guQ = ""; guOpen(); return; }
+  if (a === "close"){ guClose(); return; }
+  if (a === "go"){ const s = GU[+b.dataset.s], x = s && s[1][+b.dataset.i]; if (x) guGo(x); }
+});
+document.addEventListener("input", e => {
+  if (!e.target || e.target.id !== "guQ") return;
+  guQ = e.target.value; const l = $("guList"); if (!l) return;
+  const tmp = document.createElement("div"); tmp.innerHTML = guHTML(); const nl = tmp.querySelector("#guList"); if (nl) l.innerHTML = nl.innerHTML;
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !e.defaultPrevented && $("guOv") && !$("guOv").hidden) guClose(); });
+
+
 /* ---------- Dela passet: en bild (1080 × 1350) att lägga på story, TikTok eller skicka till en kompis (14 nov 2026) ---------- */
 // Bilden ritas direkt när passet sparats, så att Dela-knappen kan öppna delningen på en gång (iPhone kräver det).
 const DL_COL = {red: "#FF5B52", blue: "#6B95FF", yellow: "#FFC93A", green: "#3CCB7C"};
@@ -6332,13 +6670,15 @@ document.addEventListener("click", e => {
 // Appen räknar ut notiserna för 7 dagar framåt och skickar listan till workern (KV). Workerns cron kollar varje
 // minut och skickar det som är dags med web push. Fungerar när GymSchema ligger på hemskärmen (iOS 16.4+).
 const NT_KEY = "gymschema.push.v1";
-const NT_DEF = {bed: {on: true}, gym: {on: true, t: "10:00"}, run: {on: true, t: "10:00"}, shake: {on: true, t: "09:00"}, hall: {on: true, t: "18:00"}, middag: {on: true, t: "16:30"}, vag: {on: true}, vecka: {on: true, t: "18:30"}, matt: {on: true}};
+const NT_DEF = {bed: {on: true}, gym: {on: true, t: "10:00"}, run: {on: true, t: "10:00"}, shake: {on: true, t: "09:00"}, hall: {on: true, t: "18:00"}, middag: {on: true, t: "16:30"}, vag: {on: true}, vecka: {on: true, t: "18:30"}, matt: {on: true}, supp: {on: true}, rytm: {on: true}};
 const NT_ROWS = [["bed", "🌙", "Läggdags", "30 min innan och när det är dags – tiden räknas från sömnskulden"], ["gym", "🏋️", "Gymdag", "Ons, tor, lör och sön"],
   ["run", "🏃", "Löpdag", "Tisdagar, med tips om löpvädret"], ["shake", "🥤", "Shaken", "En per glas – första på tiden du väljer, sen var fjärde timme (senast 20.00)"], ["hall", "🧍", "Hållning + fascia", "Varje dag"],
   ["middag", "🍽", "Middag", "Vad du lagar i kväll enligt veckomenyn – och kvällen innan om något ska ligga i blöt eller marineras"],
   ["vag", "⚖️", "Vägning", "Måndag och torsdag, en kvart efter att du vaknat – då ställer appen in kalorierna rätt"],
   ["vecka", "📊", "Veckokoll", "Söndag kväll – hur veckan gick och det viktigaste nästa vecka"],
-  ["matt", "📏", "Kroppsmått", "En morgon i månaden, när det gått fyra veckor sedan sist"]];
+  ["matt", "📏", "Kroppsmått", "En morgon i månaden, när det gått fyra veckor sedan sist"],
+  ["supp", "💊", "Tillskott", "På tiderna under Vanor → Tillskott – bara det du inte bockat av. Det som tas med shaken kommer i shake-påminnelsen"],
+  ["rytm", "⏰", "Måltidsrytm", "3,5 timmar efter senaste maten eller shakeglaset – bara när du ligger efter med kalorierna, inte efter 20.00"]];
 const NT_MSG = {net: "Fick ingen kontakt med mellanhanden. Är du uppkopplad, och stämmer adressen?", old: "Mellanhanden har fortfarande den gamla koden. Gör steg 1 och tryck Deploy.",
   kv: "Lagringen är inte kopplad än – gör steg 2.", taken: "Mellanhanden är redan kopplad till en annan installation av appen. Stäng av påminnelserna där först.",
   worker: "Mellanhanden svarade konstigt. Kolla att hela koden är inklistrad och att du tryckt Deploy.", perm: "Notiser är avstängda för GymSchema. Slå på dem i Inställningar → Notiser → GymSchema och tryck igen.",
@@ -6390,7 +6730,7 @@ function ntEvents(){
       for (let g = 0; g < n; g++){
         if (ds === ti && (shakeGl[ti] || 0) > g) continue;
         out.push({id: (g ? "shake" + (g + 1) : "shake") + "-" + ds, at: at(d, ntHm(t1 + g * gap)), title: n > 1 ? "Shake – glas " + (g + 1) + " av " + n + " 🥤" : "Shaken 🥤",
-          body: (g === 0 ? "Mixa dagens shake – " + gmSteps(foodSet.size) + " kcal. " : "") + per.kcal + " kcal och " + per.p + " g protein i glaset. Bocka det under Mat.", url: "./#vikt/mat"});
+          body: (g === 0 ? "Mixa dagens shake – " + gmSteps(foodSet.size) + " kcal. " : "") + per.kcal + " kcal och " + per.p + " g protein i glaset. Bocka det under Mat." + (g === 0 && ntSet("supp").on && typeof suppAt === "function" && suppAt(ds, ntSet("shake").t) ? " Tillskott: " + suppAt(ds, ntSet("shake").t) + "." : ""), url: "./#vikt/mat"});
       }
     }
     if (ntSet("hall").on && !(ds === ti && habits[ti] && habits[ti].hall))
@@ -6418,6 +6758,17 @@ function ntEvents(){
     if (a < now + 60e3){ d = addDays(d, 1); a = at(d, gmWake()) + 20 * 60e3; }
     if ((d - t0) / 864e5 < 7) out.push({id: "matt-" + iso(d), at: a, title: "Kroppsmått i dag 📏", body: matt.length ? "Fyra veckor sedan sist. Midja, bröst, arm och lår före frukost – då ser du om det är muskler eller fett." : "Mät midja, bröst, arm och lår före frukost – en gång i månaden visar om det du går upp är muskler eller fett.", url: "./#vikt/vikt"});
   }
+  // tillskotten: en påminnelse per tid (det som ligger på shakens tid följer med shake-påminnelsen)
+  if (ntSet("supp").on && typeof supp !== "undefined") for (let i = 0; i < 7; i++){
+    const d = addDays(t0, i), ds = iso(d), times = {};
+    supp.items.forEach(x => { times[ntMin(x.t)] = 1; });
+    Object.keys(times).map(Number).forEach(m => {
+      if (ntSet("shake").on && m === ntMin(ntSet("shake").t)) return;
+      const txt = suppAt(ds, ntHm(m)); if (!txt) return;
+      out.push({id: "supp-" + ds + "-" + m, at: at(d, ntHm(m)), title: "Tillskott 💊", body: txt + ". Bocka av under Vanor.", url: "./#vanor"});
+    });
+  }
+  if (ntSet("rytm").on && typeof mrEvents === "function") mrEvents().forEach(e => out.push(e));
   if (typeof ckPushEvents === "function") ckPushEvents().forEach(e => out.push(e));
   if (nt.ct && nt.ct > now) out.push({id: "crontest-" + nt.ct, at: nt.ct, title: "Schemat funkar också ✓", body: "Den här kom från schemat i Cloudflare. Nu kommer påminnelserna av sig själva.", url: "./#vanor"});
   return out.filter(e => e.at > now + 30e3).sort((a, b) => a.at - b.at);
@@ -6547,7 +6898,7 @@ document.addEventListener("change", e => {
 document.addEventListener("input", e => { if (e.target && e.target.id === "ntUrl"){ nt.url = e.target.value.trim(); ntSave(); } });
 
 /* ---------- Start ---------- */
-const BUILD = "14 nov 12.05", BUILD_NOTE = "Mål per övning, viktmål med datum, kroppsmått och 30 nya frukostar och mellanmål";
+const BUILD = "14 nov 12.19", BUILD_NOTE = "Tillskott och vatten under Vanor, dagar i rad, måltidsrytm – och ? högst upp visar allt appen kan";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;

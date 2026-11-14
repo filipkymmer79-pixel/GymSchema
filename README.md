@@ -2,6 +2,8 @@
 
 Filips gymschema – program 2.1. Öppna https://filipkymmer79-pixel.github.io/GymSchema/ i Safari på mobilen och välj *Dela → Lägg till på hemskärmen*.
 
+**?** högst upp öppnar en guide över allt appen kan – 45 saker sorterade efter flik, med sökning (även utan å, ä och ö). *Visa var* hoppar till rätt flik, öppnar kortet om det behövs och lyser upp stället. Det som bara syns ibland (löpvädret på tisdagar, Flytta passet) säger när det syns.
+
 ### Programmet
 
 Överkroppen först, benen korta och tunga. **Över** onsdag och lördag (chins, hantelbänkpress, kabelrodd, axelpress, sidolyft, hantelshrugs, bicepscurl, face pulls). **Ben + över** torsdag och söndag: benpress, vadpress (i benpressen direkt efter), hip thrust och rumänska marklyft, sedan lutande hantelpress, sidolyft, triceps över huvudet med rep i kabel och bicepscurl, sist plankan och dead bug. Uppvärmningen före benen har 3 × 5 upphopp för skelettet. Löpning i pratfart en gång i veckan, på tisdagen (30–40 min). Måndag och fredag är vilodagar. Högst upp i appen syns hela veckan, måndag till söndag: gympassen (Ö1, B1, Ö2, B2), *Löp* på tisdagen och *Vila · hållning* på måndag och fredag. Gympassen bockas när de sparas, vilodagen när hållningen är avbockad under **Vanor** och tisdagen när löprundan finns (från klockan eller avbockad under Vanor). Varje övning har bild, steg för steg, vanliga fel och video under **Program**.
@@ -40,7 +42,7 @@ Under Garmin-rutan i **Pass** finns raden **Gardinen** med knapparna **Stäng** 
 
 ### Påminnelser i mobilen
 
-Notiser när det är läggdags (30 minuter innan och när det är dags – tiden räknas från sömnskulden), gymdag, löpdag, shake, hållning, middag, vägning och veckokoll, även när appen är stängd. Shaken kommer som en påminnelse per glas – första på tiden du väljer, sedan var fjärde timme (senast 20.00) – och glas som redan är bockade under Mat hoppas över. Veckokollen kommer söndag kväll. Vägningen kommer måndag och torsdag en kvart efter väckningstiden (om du inte redan vägt dig), eftersom kalorimålet behöver minst fyra vägningar på två veckor. Middagsnotisen säger vad du lagar i kväll enligt veckomenyn, och kvällen innan kommer en till om något ska förberedas (ärtorna i blöt till ärtsoppan, marinad över natten). Timers i laga-läget på mer än ett par minuter kommer också som notis, så de hörs när mobilen är låst. Slås på under **Vanor → Påminnelser i mobilen**; tider och vilka som ska komma ställs in där. Det är web push, som på iPhone kräver att GymSchema är öppnad från hemskärmen (iOS 16.4 eller senare).
+Notiser när det är läggdags (30 minuter innan och när det är dags – tiden räknas från sömnskulden), gymdag, löpdag, shake, hållning, middag, vägning, veckokoll, tillskott, måltidsrytm och kroppsmått, även när appen är stängd. Shaken kommer som en påminnelse per glas – första på tiden du väljer, sedan var fjärde timme (senast 20.00) – och glas som redan är bockade under Mat hoppas över. Veckokollen kommer söndag kväll. Vägningen kommer måndag och torsdag en kvart efter väckningstiden (om du inte redan vägt dig), eftersom kalorimålet behöver minst fyra vägningar på två veckor. Middagsnotisen säger vad du lagar i kväll enligt veckomenyn, och kvällen innan kommer en till om något ska förberedas (ärtorna i blöt till ärtsoppan, marinad över natten). Timers i laga-läget på mer än ett par minuter kommer också som notis, så de hörs när mobilen är låst. Slås på under **Vanor → Påminnelser i mobilen**; tider och vilka som ska komma ställs in där. Det är web push, som på iPhone kräver att GymSchema är öppnad från hemskärmen (iOS 16.4 eller senare).
 
 Notiserna skickas av samma Cloudflare Worker som gardinen ([`gymschema-worker.js`](gymschema-worker.js)). Appen räknar ut notiserna för sju dagar framåt och skickar listan dit varje gång den öppnas och något ändrats; workern sparar den i KV (bindningen `GS`) och en Cron Trigger som körs varje minut skickar det som är dags. Notiserna krypteras enligt RFC 8291 (aes128gcm) och signeras med VAPID (RFC 8292) – nyckelparet skapas av workern första gången och ligger i KV. Workern sparar bara notisschemat och telefonens notisadress, och tar bara emot ändringar med appens nyckel eller från samma notisadress. Ett tryck på en notis öppnar rätt flik i appen.
 
@@ -82,6 +84,13 @@ På löpdagen (tisdag) visar Pass bästa timmen att springa i Umeå (07–21): t
 ### Prime-nivåer
 
 Överst i Vanor: XP för det som tar dig mot Prime self – gympass 100, löprunda 50 + 10 per km (max 200), boxning 50, kameratränaren 20, varje vana 10, perfekt dag +50 och 10 h sömn enligt klockan +20. 15 nivåer från Start till Prime self (sedan ★2, ★3 …), streaks för perfekta dagar, socker, alkohol, sömn och gymveckor, och en XP-rad efter sparat pass. Allt räknas ur det som redan loggas; dagar äldre än 14 dagar sparas i en liggare (följer med i backupen) så att XP inte försvinner när Garmin-datan rullar ut.
+
+### Vanor: tillskott, vatten och dagar i rad
+
+- **💊 Tillskott** som checklista under vanan: kreatin, selen och Puori i shaken, D-pärlan till första glaset och magnesium på kvällen – var och en med tid. Bocka dem en och en, eller tryck på raden *Tillskott* så bockas alla. Vanan bockas av sig själv när alla är tagna. *Ändra tillskott och tider* lägger till, tar bort och flyttar. Påminnelsen kommer på tiden; det som ligger på shakens tid kommer med i shake-påminnelsen i stället för som en egen notis.
+- **💧 Vatten** i glas à 2,5 dl: *+ Glas* för varje glas. Målet är 8 glas (2 liter) på vilodagar, 10 på löpdagen och 12 (3 liter) på gymdagar, och vanan bockas av sig själv när målet är nått.
+- **🔥 Dagar i rad** för varje vana står bredvid namnet. En missad dag i veckan räddas av veckans frysdag (❄️ visar att den är använd) – två missar samma vecka och serien börjar om.
+- **⏰ Måltidsrytm**: ligger du efter med kalorierna för tiden på dagen (rak linje från en timme efter väckningen till 21.00) står *Ät nästa gång senast …* under kalorierna i Mat – 3,5 timmar efter senaste maten eller shakeglaset – och en påminnelse kommer då med ett mellanmål som passar. Inga påminnelser efter 20.00, inte när ett shakeglas ändå ska drickas strax efter, och bara när du loggat mat de senaste dagarna.
 
 ### Bilder och hållning
 
