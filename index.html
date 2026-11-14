@@ -966,6 +966,56 @@ span.mn-go{padding:10px 4px;background:none!important;color:var(--good)!importan
 .rk-t b{font-size:14.5px;font-weight:800}
 .rk-t small{font-size:12px;color:var(--muted);line-height:1.3}
 .rk-v{font-family:var(--display);font-weight:800;font-size:19px;white-space:nowrap}
+/* Formcheck */
+.scan.fc{z-index:96;gap:10px}
+.fc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:42px;font-size:17px}
+.fc-top .sh-x{background:rgba(255,255,255,.14);color:#fff}
+.fc-live,.fc-play{position:relative;border-radius:18px;overflow:hidden;background:#000;flex:0 0 auto}
+.fc-live video,.fc-play video{display:block;width:100%;max-height:62vh;object-fit:contain;background:#000}
+.fc-count{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:150px;color:#fff;text-shadow:0 4px 24px rgba(0,0,0,.6)}
+.fc-rec{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.55);font-weight:800;font-variant-numeric:tabular-nums}
+.fc-rec i{width:12px;height:12px;border-radius:50%;background:#FF3B30;animation:ckpulse .8s ease-in-out infinite alternate}
+.fc-note{margin:0;font-size:13.5px;line-height:1.45;color:#A0A8B3}
+.fc-delay,.fc-speed{display:flex;gap:6px;flex-wrap:wrap}
+.fc-delay button,.fc-speed button{border:0;border-radius:999px;padding:9px 14px;font:inherit;font-size:14px;font-weight:800;background:rgba(255,255,255,.12);color:#fff}
+.fc-delay button[aria-pressed="true"],.fc-speed button[aria-pressed="true"]{background:#fff;color:#0B0D12}
+.fc-speed button{min-width:56px}
+.scan .btn.fc-go,.scan .btn.fc-stop{background:#FF3B30;color:#fff;width:100%;justify-content:center;font-size:18px;padding:16px}
+.fc-ref{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;align-items:center}
+.fc-fig{border-radius:12px;overflow:hidden;background:var(--fig-bg)}
+.fc-fig svg{display:block;width:100%;height:auto}
+.fc-cue b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#A0A8B3;margin-bottom:2px}
+.fc-cue span{font-family:var(--display);font-weight:700;font-size:18px;line-height:1.15}
+.fc-check{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.07)}
+.fc-check > b{font-size:14px}
+.fc-mi{display:flex;flex-direction:column;gap:1px}
+.fc-mi span{font-weight:800;font-size:14px;color:#FFB4AE}
+.fc-mi small{font-size:13px;color:#C9CED6;line-height:1.35}
+.fc-saved{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.fc-saved video{width:100%;max-height:60vh;border-radius:14px;background:#000}
+.fc-saved .hem-two{margin-top:0}
+.fc-first{align-self:flex-start;margin-top:2px}
+.fk-links{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fk-film{border:0;border-radius:999px;padding:5px 11px;font:inherit;font-size:12px;font-weight:800;background:var(--ink);color:var(--bg)}
+.fk-wl{list-style:none;margin:4px 0;padding:0;display:flex;flex-direction:column}
+.fk-wl li{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.fk-wl li:first-child{border-top:0}
+.fk-wl small{color:var(--muted);font-size:13px;text-align:right}
+/* Veckokoll */
+.card.vk{display:flex;flex-direction:column;gap:10px}
+.vk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.vk-t{display:flex;flex-direction:column;gap:2px;padding:10px;border-radius:12px;background:var(--surface2);min-width:0}
+.vk-t b{font-family:var(--display);font-weight:900;font-size:24px;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vk-t small{font-size:11.5px;color:var(--muted);font-weight:700;line-height:1.25}
+.vk-t.ok b{color:var(--good)}
+.vk-t.no b{color:var(--warn)}
+.vk-tip{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;padding:12px 14px;border-radius:14px;background:var(--ink);color:var(--bg)}
+.vk-tip > span{font-size:24px;line-height:1.2}
+.vk-tip small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+.vk-tip b{display:block;font-size:17px;font-weight:800;margin-top:1px}
+.vk-tip p{margin:3px 0 0;font-size:13.5px;line-height:1.45;opacity:.85}
+.vk .btn{margin:0}
+@media (max-width:380px){.vk-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* Löpväder */
 .wx-card{display:flex;flex-direction:column;gap:10px}
 .wx-best{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:2px;align-items:end}
@@ -1936,7 +1986,7 @@ function renderProg(){
   for (let n = nNow - 7; n <= nNow; n++){ if (n < 1){ rows.push({n, v: 0, cur: false}); continue; } const ws = addDays(w0, (n - 1) * 7), we = addDays(ws, 7); let v = 0; sessions.forEach(s => { const d = parseIso(s.date); if (d >= ws && d < we) v += s.volume || 0; }); rows.push({n, v, cur: n === nNow}); }
   const totalSessions = sessions.length;
   el.innerHTML = '<div><div class="lead">Hur du blir starkare</div><h2 class="h2">Framsteg</h2></div>' +
-    coachHTML() + gmProgHTML() + (typeof muscleMapHTML === "function" ? muscleMapHTML() : "") + recordsHTML() +
+    vkHTML() + coachHTML() + gmProgHTML() + (typeof muscleMapHTML === "function" ? muscleMapHTML() : "") + recordsHTML() +
     '<div class="chips" role="group" aria-label="Välj övning">' + EXERCISES.filter(e => !e.old || sessions.some(s => setsOf(s, e.k))).map(e => '<button class="chip" type="button" data-ex="' + e.k + '" aria-pressed="' + (e.k === progEx) + '" style="--c:var(--' + e.c + ')"><span class="dot"></span>' + esc(SHORT[e.k] || e.n) + '</button>').join("") + '</div>' +
     body +
     '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><b>Volym per vecka</b><span class="lead num">' + totalSessions + ' pass totalt</span></div>' +
@@ -2210,7 +2260,7 @@ function renderProgram(){
       return '<details class="gcard" id="g-' + g.key + '" style="--c:' + c + '"' + (programSub === g.key ? ' open' : '') + '><summary><span class="gnum">' + g.i + '</span><span style="min-width:0"><span class="gname">' + esc(g.name) + '</span><br><span class="gdose">' + esc(g.dose) + '</span></span><span class="gchev">›</span></summary>' +
         '<div class="gbody">' +
         '<div class="glinks">' + (g.video ? '<a class="yt" href="' + g.video + '" target="_blank" rel="noopener">▶ Video' + (g.video_label ? ' – ' + esc(g.video_label) : '') + '</a>' : '<span class="tag">Osteopatens instruktion</span>') + '</div>' +
-        '<div class="gfig">' + g.svg + '</div>' +
+        '<div class="gfig">' + g.svg + '</div>' + '<div class="fc-slot" data-gk="' + g.key + '"></div>' +
         '<div class="gleg"><i style="background:var(--fig-ghost)"></i>start <i style="background:var(--fig-ink)"></i>slutläge <i style="background:' + c + ';opacity:.5"></i>där du ska känna det</div>' +
         '<div class="gmus">' + g.mm + '<div><div class="gsec" style="margin:0 0 4px">Känn det i</div>' + mus + '</div></div>' +
         '<div class="gcue"><b>Nyckeln</b><span>' + esc(g.cue) + '</span></div>' +
@@ -2221,6 +2271,7 @@ function renderProgram(){
         (g.swap.length ? '<div class="gsec">' + (g.section === "abs" || ["plank", "dead_bug"].includes(g.key) ? "Lättare variant" : "Byt om maskinen är upptagen") + '</div><div class="gswap">' + g.swap.map(x => '<span>' + esc(x) + '</span>').join("") + '</div>' : '') +
         '</div></details>';
     }).join("") + post;
+  fcFill();
   if (programSub){ const t = $("g-" + programSub); if (t) setTimeout(() => jumpTo(t), 50); programSub = null; }
 }
 /* Uppvärmning, mage och stretch som kort i Program-fliken – samma innehåll och timer-guide som i Pass-fliken */
@@ -4386,7 +4437,7 @@ function shopHTML(){
     '<div><div class="lead">' + menyWeekLabel(wk) + '</div><h2 class="h2">Inköpslista</h2></div>' +
     '<div class="sp-days" role="group" aria-label="Handla till de här dagarna">' + MENY_DS.map((dn, i) => { const r = RXM[m.d[i]]; return '<button type="button" data-sp="day" data-i="' + i + '" aria-pressed="' + !!days[i] + '"' + (r ? '' : ' disabled') + '><b>' + dn + '</b><span aria-hidden="true">' + (r ? r.e : "–") + '</span></button>'; }).join("") + '</div>' +
     (buyN ? '<div class="sp-sum"><span><b class="num">' + left + '</b> av ' + buyN + ' varor kvar</span>' + (left < buyN ? '<button type="button" class="exlink" data-sp="reset">Avmarkera alla</button>' : '') + '</div>' + secs +
-      '<button type="button" class="btn" data-sp="copy">Kopiera till Handla i Dagsschema</button>' +
+      '<div class="mn-btns"><button type="button" class="btn" data-sp="copy">Kopiera till Handla</button><button type="button" class="btn ghost" data-sp="share">📤 Dela listan</button></div>' +
       '<p class="small">Bocka av det du redan har eller lagt i korgen. Mängderna räknas på ' + shopPortTxt() + '. Kolla att bröd, tortillor och currypasta är utan socker och rapsolja.</p>'
       : '<div class="card rx-empty"><b>Inga dagar valda.</b><span>Tryck på dagarna ovanför för att handla till dem.</span></div>');
 }
@@ -4471,6 +4522,9 @@ document.addEventListener("click", e => {
   else if (a === "day"){ const d = shopDays(wk).slice(); d[+b.dataset.i] = d[+b.dataset.i] ? 0 : 1; m.days = d; }
   else if (a === "reset"){ m.chk = {}; }
   else if (a === "copy"){ const txt = shopText(wk); if (!txt){ toast("Allt är redan avbockat"); return; } coachCopy(txt); toast("Kopierat – klistra in under Handla i Dagsschema"); return; }
+  else if (a === "share"){ const txt = shopText(wk); if (!txt){ toast("Allt är redan avbockat"); return; }
+    const body = "Inköpslista " + menyWeekLabel(wk) + "\n" + txt.split("\n").map(l => l.indexOf("# ") === 0 ? "\n" + l.slice(2).toUpperCase() : "• " + l).join("\n");
+    if (navigator.share){ navigator.share({title: "Inköpslista", text: body}).catch(() => {}); } else { coachCopy(body); toast("Kopierat – klistra in där du vill"); } return; }
   menySave(); rxSheet();
 });
 document.addEventListener("click", e => {
@@ -4890,7 +4944,8 @@ function fkFigHTML(ex){
   if (!g) return ex.alt ? '<div class="fk-alt">🔁 ' + esc(((BUSY[ex.k] || []).find(x => x.n === ex.alt) || {}).how || "Bytt övning i dag") + '</div>' : '';
   return '<div class="fk-fig" style="--c:' + fkSecColor(g) + '">' + g.svg + '</div>' +
     '<div class="gcue fk-cue" style="--c:' + fkSecColor(g) + '"><b>Nyckeln</b><span>' + esc(g.cue) + '</span></div>' +
-    (g.video ? '<a class="yt fk-yt" href="' + g.video + '" target="_blank" rel="noopener">▶ Video' + (g.video_label ? ' – ' + esc(g.video_label) : '') + '</a>' : '');
+    '<div class="fk-links">' + (g.video ? '<a class="yt fk-yt" href="' + g.video + '" target="_blank" rel="noopener">▶ Video' + (g.video_label ? ' – ' + esc(g.video_label) : '') + '</a>' : '') +
+      (typeof fcCan === "function" && fcCan() ? '<button type="button" class="fk-film" data-fc-open="' + ex.k + '">🎥 Filma setet</button>' : '') + '</div>';
 }
 function fkSetHTML(steps, at){
   const s = steps[at], ex = exByK(s.k), total = steps.filter(x => !x.w).length, done = steps.filter(x => !x.w && fkDone(x)).length;
@@ -4933,19 +4988,27 @@ function fkRestHTML(steps, at){
     '<div class="hem-two fk-rb"><button type="button" class="btn ghost" data-fk="plus">+30 s</button><button type="button" class="btn" data-fk="go">Kör nu ›</button></div></div>' +
     (ex ? '<div class="card fk-next"><div class="stat-l">Nästa</div><div class="fk-nx">' + (g ? '<div class="fk-mini" style="--c:' + fkSecColor(g) + '">' + g.svg + '</div>' : '') + '<div>' + (s.tag ? '<span class="ss-tag">' + s.tag + '</span> ' : '') + '<b>' + esc(ex.alt || ex.n) + '</b><small>' + esc(nx) + '</small></div></div></div>' : '');
 }
+function fkWarmHTML(){
+  const r = ROUTINES[RFOR[draft.type].w];
+  return '<div class="fk-fin"><div class="lead">Först</div><div class="fk-big">' + esc(r.name) + '</div><p class="lead">Ca ' + r.min + ' minuter med timer och bilder – sen börjar seten.</p>' +
+    '<ol class="fk-wl">' + r.steps.map(st => '<li><b>' + esc(st.n) + '</b><small>' + esc(doseText(st)) + '</small></li>').join("") + '</ol>' +
+    '<button type="button" class="btn" data-fk="warm">▶ Starta uppvärmningen</button><button type="button" class="btn ghost" data-fk="nowarm">Jag är redan varm – till seten</button></div>';
+}
 function fkDoneHTML(){
   const p = PROGRAM[draft.type], min = draft.t0 ? Math.max(1, Math.round((Date.now() - draft.t0) / 60000)) : null;
   return '<div class="fk-fin"><div class="fk-big">Alla set klara! 💪</div><p class="lead">' + esc(p.name) + (min ? ' · ' + min + ' min hittills' : '') + '. Spara passet så räknas rekorden och veckan.</p>' +
     '<button type="button" class="btn" data-fk="save">Spara passet</button>' + (RFOR[draft.type].a && !draft.abs ? '<button type="button" class="btn ghost" data-fk="abs">▶ Mage först · ca ' + ROUTINES[RFOR[draft.type].a].min + ' min</button>' : '') +
+    (!draft.stretch ? '<button type="button" class="btn ghost" data-fk="stretch">▶ Stretcha först · ca ' + ROUTINES[RFOR[draft.type].s].min + ' min</button>' : '') +
     '<button type="button" class="btn ghost" data-fk="close">Tillbaka till passet</button></div>';
 }
 function fkHTML(){
   const steps = fkSteps(), at = fkCur(steps), p = PROGRAM[draft.type], resting = !$("timer").hidden && tEnd > Date.now();
   const min = draft.t0 ? Math.max(1, Math.round((Date.now() - draft.t0) / 60000)) : 0, total = steps.filter(x => !x.w).length, done = steps.filter(x => !x.w && fkDone(x)).length;
-  fkMode = at >= steps.length ? "fin" : resting ? "rest" : "set";
+  const noneDone = PROGRAM[draft.type].ex.every(e => !draft.sets[e.k].some(x => x.done)) && !(draft.wu && Object.keys(draft.wu).length);
+  fkMode = at >= steps.length ? "fin" : resting ? "rest" : !draft.warm && !draft.wuSkip && noneDone && fkPos == null ? "warm" : "set";
   return '<div class="fk-in"><div class="ck-top fk-top"><button type="button" class="sh-x ck-x" data-fk="close" aria-label="Stäng">×</button><div class="ck-t"><b>' + esc(p.name) + '</b><small id="fkSub">' + done + ' av ' + total + ' set' + (min ? ' · ' + min + ' min' : '') + (ssOn() ? ' · supersets' : '') + '</small></div><span></span></div>' +
     '<div class="fk-prog" aria-hidden="true"><i style="width:' + Math.round(done / Math.max(1, total) * 100) + '%"></i></div>' +
-    (fkMode === "fin" ? fkDoneHTML() : fkMode === "rest" ? fkRestHTML(steps, at) : fkSetHTML(steps, at)) + '</div>';
+    (fkMode === "fin" ? fkDoneHTML() : fkMode === "rest" ? fkRestHTML(steps, at) : fkMode === "warm" ? fkWarmHTML() : fkSetHTML(steps, at)) + '</div>';
 }
 function fkRender(){
   let o = $("fkOv");
@@ -4958,7 +5021,7 @@ function fkClose(){ const o = $("fkOv"); if (o) o.hidden = true; clearInterval(f
 function fkTick(){
   if (!fkOpenNow() || !draft){ clearInterval(fkIv); fkIv = 0; return; }
   const resting = !$("timer").hidden && tEnd > Date.now(), steps = fkSteps(), at = fkCur(steps);
-  const mode = at >= steps.length ? "fin" : resting ? "rest" : "set";
+  const mode = at >= steps.length ? "fin" : resting ? "rest" : fkMode === "warm" ? "warm" : "set";
   if (mode !== fkMode){ fkRender(); return; }
   if (mode === "rest"){ const c = $("fkClock"); if (c) c.textContent = mmss((tEnd - Date.now()) / 1000); }
   if (fkHold && !fkHold.fired){
@@ -4980,6 +5043,9 @@ document.addEventListener("click", e => {
   if (a === "plus"){ $("tplus").click(); fkRender(); return; }
   if (a === "go"){ stopTimer(); fkRender(); return; }
   if (a === "abs"){ fkClose(); openGuide("a"); return; }
+  if (a === "stretch"){ fkClose(); openGuide("s"); return; }
+  if (a === "warm"){ fkClose(); openGuide("w"); return; }
+  if (a === "nowarm"){ draft.wuSkip = 1; persistDraft(); fkRender(); return; }
   if (a === "save"){ const sb = $("saveBtn"); if (sb && !sb.disabled){ sb.click(); setTimeout(() => { if (justSaved) fkClose(); }, 400); } return; }
   if (!s) return;
   const ex = exByK(s.k);
@@ -5035,6 +5101,199 @@ function recordsHTML(){
     '<div class="rk-list">' + rows.join("") + '</div><div class="small">Bästa setet i varje övning (lätta veckor och byten räknas inte). Tryck för kurvan.</div></div>';
 }
 document.addEventListener("click", e => { const b = e.target.closest(".rk-row"); if (!b) return; setTimeout(() => { const c = document.querySelector("#v-framsteg .chips"); if (c) c.scrollIntoView({block: "start", behavior: "smooth"}); }, 60); });
+
+
+/* ---------- Formcheck: filma setet och titta i slowmotion bredvid bilden och vanliga fel (14 nov 2026) ---------- */
+// Klippet sparas bara på telefonen, i samma lagring som progressbilderna – det senaste per övning. Det följer inte med i backupen.
+let FC = null;
+const fcCan = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && "MediaRecorder" in window);
+const fcMime = () => ["video/mp4", "video/webm;codecs=vp9", "video/webm"].find(t => { try { return MediaRecorder.isTypeSupported(t); } catch(e){ return false; } }) || "";
+const fcName = k => { const ex = draft ? exByK(k) : null; return (ex && (ex.alt || SHORT[k])) || SHORT[k] || (EXMAP[k] && EXMAP[k].n) || k; };
+function fcEl(){
+  let o = $("fcOv");
+  if (!o){ o = document.createElement("div"); o.id = "fcOv"; o.className = "scan fc"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Formcheck"); document.body.appendChild(o); }
+  return o;
+}
+function fcOpen(k){
+  if (!fcCan()){ toast("Den här telefonen kan inte filma i appen"); return; }
+  FC = {k, facing: "environment", phase: "live", speed: .5, delay: 5, err: ""};
+  const o = fcEl(); o.hidden = false; document.documentElement.classList.add("noscroll"); ensureAudio(); keepAwake();
+  fcRender(); fcStart();
+}
+async function fcStart(){
+  fcStopStream();
+  try {
+    const st = await navigator.mediaDevices.getUserMedia({video: {facingMode: FC.facing, width: {ideal: 720}, height: {ideal: 1280}}, audio: false});
+    if (!FC){ st.getTracks().forEach(t => t.stop()); return; }
+    FC.stream = st; const v = $("fcVid"); if (v){ v.srcObject = st; v.muted = true; await v.play().catch(() => {}); }
+  } catch(e){ if (FC){ FC.err = "Kameran gick inte att starta. Tillåt kameran för GymSchema under Inställningar på telefonen."; fcRender(); } }
+}
+function fcStopStream(){ if (FC && FC.stream){ try { FC.stream.getTracks().forEach(t => t.stop()); } catch(e){} FC.stream = null; } }
+function fcClose(){
+  if (!FC) return;
+  clearInterval(FC.cd);
+  try { if (FC.rec && FC.rec.state !== "inactive"){ FC.rec.onstop = null; FC.rec.stop(); } } catch(e){}
+  fcStopStream(); if (FC.url) URL.revokeObjectURL(FC.url); FC = null;
+  const o = $("fcOv"); if (o){ o.hidden = true; o.innerHTML = ""; }
+  if (!(typeof fkOpenNow === "function" && fkOpenNow()) && !($("rxOv") && !$("rxOv").hidden)) document.documentElement.classList.remove("noscroll");
+  if (view === "program") fcFill();
+}
+function fcGuide(k){ const g = KEYMAP[k] ? GUIDE.find(x => x.key === KEYMAP[k]) : null; return g; }
+function fcHTML(){
+  const g = fcGuide(FC.k), name = fcName(FC.k);
+  const top = '<div class="fc-top"><b>Formcheck · ' + esc(name) + '</b><button type="button" class="sh-x" data-fc="close" aria-label="Stäng">×</button></div>';
+  if (FC.phase === "play"){
+    return top + '<div class="fc-play"><video id="fcPlay" src="' + FC.url + '" data-size="' + (FC.blob ? FC.blob.size : 0) + '" playsinline muted loop autoplay></video></div>' +
+      '<div class="fc-speed" role="group" aria-label="Hastighet">' + [[.25, "¼"], [.5, "½"], [1, "1×"]].map(s => '<button type="button" data-fc="speed" data-s="' + s[0] + '" aria-pressed="' + (FC.speed === s[0]) + '">' + s[1] + '</button>').join("") + '</div>' +
+      (g ? '<div class="fc-ref"><div class="fc-fig" style="--c:' + fkSecColor(g) + '">' + g.svg + '</div><div class="fc-cue"><b>Nyckeln</b><span>' + esc(g.cue) + '</span></div></div>' +
+        (g.mistakes.length ? '<div class="fc-check"><b>Kolla det här i klippet</b>' + g.mistakes.map(m => '<div class="fc-mi"><span>' + esc(m[0]) + '</span><small>' + esc(m[1]) + '</small></div>').join("") + '</div>' : '') : '') +
+      '<div class="scan-btns"><button type="button" class="btn" data-fc="save">Spara klippet</button><button type="button" class="btn ghost" data-fc="again">Filma igen</button></div>' +
+      '<p class="fc-note">Klippet sparas bara på telefonen – det senaste för varje övning. Du hittar det under Program.</p>';
+  }
+  const live = '<div class="fc-live"><video id="fcVid" playsinline muted autoplay style="' + (FC.facing === "user" ? "transform:scaleX(-1)" : "") + '"></video>' +
+    (FC.phase === "count" ? '<div class="fc-count" id="fcN">' + FC.n + '</div>' : '') +
+    (FC.phase === "rec" ? '<div class="fc-rec"><i></i><span id="fcT">0:00</span></div>' : '') + '</div>';
+  if (FC.err) return top + '<div class="gm-v warn"><span aria-hidden="true">!</span><span>' + esc(FC.err) + '</span></div>';
+  if (FC.phase === "rec") return top + live + '<div class="scan-btns"><button type="button" class="btn fc-stop" data-fc="stop">■ Stopp</button></div>';
+  if (FC.phase === "count") return top + live + '<div class="scan-btns"><button type="button" class="btn ghost" data-fc="cancel">Avbryt</button></div>';
+  return top + live +
+    '<p class="fc-note">Ställ mobilen så att hela kroppen syns – från sidan för de flesta övningar. Filmen startar efter nedräkningen, så du hinner ställa dig.</p>' +
+    '<div class="fc-delay" role="group" aria-label="Nedräkning">' + [5, 10].map(n => '<button type="button" data-fc="delay" data-n="' + n + '" aria-pressed="' + (FC.delay === n) + '">' + n + ' s</button>').join("") + '<button type="button" data-fc="flip">↺ Byt kamera</button></div>' +
+    '<div class="scan-btns"><button type="button" class="btn fc-go" data-fc="go">● Filma om ' + FC.delay + ' s</button></div>';
+}
+function fcRender(){
+  const o = fcEl(), had = $("fcVid"), stream = FC && FC.stream;
+  o.innerHTML = fcHTML();
+  const v = $("fcVid"); if (v && stream){ v.srcObject = stream; v.play().catch(() => {}); }
+  const p = $("fcPlay"); if (p){ p.playbackRate = FC.speed; p.defaultPlaybackRate = FC.speed; p.play().catch(() => {}); }
+}
+function fcRec(){
+  if (!FC || !FC.stream){ toast("Kameran är inte igång"); return; }
+  const type = fcMime();
+  try { FC.rec = new MediaRecorder(FC.stream, type ? {mimeType: type} : undefined); } catch(e){ toast("Telefonen kan inte filma här"); return; }
+  FC.chunks = [];
+  FC.rec.ondataavailable = e => { if (FC && e.data && e.data.size) FC.chunks.push(e.data); };
+  FC.rec.onstop = () => { if (!FC) return; const b = new Blob(FC.chunks, {type: (FC.rec && FC.rec.mimeType) || type || "video/webm"}); FC.blob = b; FC.url = URL.createObjectURL(b); fcStopStream(); FC.phase = "play"; fcRender(); };
+  FC.rec.start(250); FC.t0 = performance.now(); FC.phase = "rec"; beep1(); fcRender();
+  FC.cd = setInterval(() => { const s = (performance.now() - FC.t0) / 1000, el = $("fcT"); if (el) el.textContent = mmss(s); if (s >= 45) fcStopRec(); }, 250);
+}
+function fcStopRec(){ if (!FC) return; clearInterval(FC.cd); try { FC.rec.stop(); } catch(e){} beep1(); }
+function fcCount(){
+  FC.phase = "count"; FC.n = FC.delay; fcRender(); say(FC.delay === 10 ? "Tio sekunder" : "Fem sekunder");
+  FC.cd = setInterval(() => {
+    if (!FC) return;
+    FC.n--; const el = $("fcN");
+    if (FC.n <= 0){ clearInterval(FC.cd); say("Kör"); fcRec(); return; }
+    if (el) el.textContent = FC.n;
+    if (FC.n <= 3) say(["", "ett", "två", "tre"][FC.n]); else beep1();
+  }, 1000);
+}
+async function fcSave(){
+  if (!FC || !FC.blob) return;
+  try { await PDB.put({id: "form-" + FC.k, kind: "form", k: FC.k, name: fcName(FC.k), ts: Date.now(), date: iso(today()), type: FC.blob.type, blob: FC.blob}); toast("Sparat – klippet finns under Program → " + fcName(FC.k)); fcClose(); }
+  catch(e){ toast("Kunde inte spara klippet på telefonen"); }
+}
+// Program-fliken: det senaste klippet under bilden på varje övning
+let fcUrls = {};
+async function fcFill(){
+  const slots = Array.from(document.querySelectorAll(".fc-slot")); if (!slots.length) return;
+  let all = []; try { all = (await PDB.all()).filter(p => p.kind === "form"); } catch(e){}
+  slots.forEach(sl => {
+    const gk = sl.dataset.gk, ks = Object.keys(KEYMAP).filter(k => KEYMAP[k] === gk), clip = all.filter(c => ks.indexOf(c.k) >= 0).sort((a, b) => b.ts - a.ts)[0];
+    const k = clip ? clip.k : ks[0];
+    if (clip){ if (fcUrls[clip.id + clip.ts] == null) fcUrls[clip.id + clip.ts] = URL.createObjectURL(clip.blob); }
+    sl.innerHTML = (clip ? '<div class="fc-saved"><div class="gsec" style="margin:0">Din formcheck · ' + esc(dLong(clip.date)) + '</div><video src="' + fcUrls[clip.id + clip.ts] + '" playsinline muted loop controls></video>' +
+      '<div class="hem-two"><button type="button" class="btn sm" data-fc-open="' + k + '">🎥 Filma igen</button><button type="button" class="btn sm ghost" data-fc-del="' + clip.id + '">Ta bort klippet</button></div></div>'
+      : (fcCan() && k ? '<button type="button" class="btn sm ghost fc-first" data-fc-open="' + k + '">🎥 Filma din teknik och jämför</button>' : ''));
+    const v = sl.querySelector("video"); if (v){ v.playbackRate = .5; v.defaultPlaybackRate = .5; }
+  });
+}
+document.addEventListener("click", async e => {
+  const op = e.target.closest("[data-fc-open]");
+  if (op){ fcOpen(op.dataset.fcOpen); return; }
+  const del = e.target.closest("[data-fc-del]");
+  if (del){ try { await PDB.del(del.dataset.fcDel); } catch(x){} toast("Klippet är borttaget"); fcFill(); return; }
+  const b = e.target.closest("[data-fc]"); if (!b || !FC) return;
+  const a = b.dataset.fc;
+  if (a === "close") fcClose();
+  else if (a === "go"){ ensureAudio(); fcCount(); }
+  else if (a === "cancel"){ clearInterval(FC.cd); FC.phase = "live"; fcRender(); }
+  else if (a === "stop") fcStopRec();
+  else if (a === "delay"){ FC.delay = +b.dataset.n; fcRender(); }
+  else if (a === "flip"){ FC.facing = FC.facing === "user" ? "environment" : "user"; fcRender(); fcStart(); }
+  else if (a === "speed"){ FC.speed = +b.dataset.s; const p = $("fcPlay"); if (p){ p.playbackRate = FC.speed; p.defaultPlaybackRate = FC.speed; } b.parentNode.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); }
+  else if (a === "again"){ if (FC.url) URL.revokeObjectURL(FC.url); FC.url = null; FC.blob = null; FC.phase = "live"; fcRender(); fcStart(); }
+  else if (a === "save") fcSave();
+});
+
+
+/* ---------- Veckokoll i Framsteg: hur veckan gick och det viktigaste att göra nästa vecka (14 nov 2026) ---------- */
+// Måndag och tisdag visas förra veckan, resten av veckan den här. Målet är +1 kg i månaden, ungefär +0,25 kg i veckan.
+let vkOff = null;
+function vkData(ws){
+  const A = iso(ws), B = iso(addDays(ws, 7)), tdy = iso(today()), end = B <= tdy ? B : iso(addDays(today(), 1)), past = B <= tdy;
+  const ss = sessions.filter(s => s.date >= A && s.date < B), types = {};
+  ss.forEach(s => { types[s.type] = 1; });
+  const D = {A, B, past, gym: ORDER.filter(k => types[k]).length, prs: ss.reduce((a, s) => a + (s.prs || []).length, 0), sets: ss.reduce((a, s) => a + (s.exercises || []).reduce((b, e) => b + (e.sets || []).length, 0), 0)};
+  const mins = ss.filter(s => s.min).map(s => s.min); D.min = mins.length ? Math.round(mins.reduce((a, b) => a + b, 0) / mins.length) : null;
+  // gympass kvar enligt schemat
+  D.left = []; for (let d = new Date(ws); iso(d) < B; d = addDays(d, 1)){ const k = BY_DOW[d.getDay()]; if (k && !types[k] && iso(d) >= tdy && d >= START) D.left.push({k, d}); }
+  // vikten: snittet av vägningarna i veckan mot veckan innan
+  const avg = (a, b) => { const w = weights.filter(x => x.date >= a && x.date < b); return w.length ? w.reduce((s, x) => s + x.kg, 0) / w.length : null; };
+  D.w = avg(A, B); D.w0 = avg(iso(addDays(ws, -7)), A);
+  // maten: bara dagar där något är loggat
+  const days = [];
+  for (let d = new Date(ws); iso(d) < end; d = addDays(d, 1)){ const ds = iso(d), ft = foodTotals(ds); if (ft.n || ft.glasses) days.push({kcal: ft.kcal, p: ft.p, goal: kcalGoal(ds).goal}); }
+  D.fd = days.length;
+  if (days.length){ D.kcal = Math.round(days.reduce((a, x) => a + x.kcal, 0) / days.length); D.goal = Math.round(days.reduce((a, x) => a + x.goal, 0) / days.length); D.p = Math.round(days.reduce((a, x) => a + x.p, 0) / days.length); }
+  // vanorna
+  let hs = 0, hn = 0; for (let d = new Date(ws); iso(d) < end; d = addDays(d, 1)){ if (d < START) continue; hs += dayScore(iso(d)); hn += HABITS.length; }
+  D.hab = hn ? Math.round(hs / hn * 100) : null;
+  // sömnen från klockan
+  if (typeof gmOn === "function" && gmOn() && gm && gm.w){ const sl = gm.w.filter(r => r.d >= A && r.d < B && r.sl); D.sleep = sl.length ? sl.reduce((a, r) => a + r.sl, 0) / sl.length : null; }
+  return D;
+}
+// Det viktigaste att göra nästa vecka – bara ett råd
+function vkTip(D){
+  if (D.past && D.gym < 4) return {e: "🏋️", t: "Alla fyra passen", d: "Du körde " + D.gym + " av 4. Det är passen som bygger musklerna – lägg dem som fasta tider i Dagsschema, och kör snabbläget med supersets en dag du har bråttom."};
+  if (!D.past && D.left.length) return {e: "🏋️", t: D.left.length === 1 ? "Ett pass kvar" : D.left.length + " pass kvar", d: D.left.map(x => DOW[x.d.getDay()] + "dag " + PROGRAM[x.k].name).join(", ") + ". Kör passet set för set så går det fort."};
+  if (D.w != null && D.w0 != null){
+    const dw = D.w - D.w0;
+    if (dw < .1) return {e: "🍽", t: "Ät mer", d: (dw < -.05 ? "Vikten gick ner (" : "Vikten stod still (") + vkKg(dw) + "). Ät upp till kalorimålet varje dag – drick alla shakeglas och ta en matlåda extra till lunch."};
+    if (dw > .7) return {e: "⚖️", t: "Lite långsammare", d: "+" + fmt(dw, 1) + " kg på en vecka går för fort – mycket blir fett. Håll dig till kalorimålet, inte över."};
+  }
+  if (D.fd >= 3 && D.p < PROT_GOAL - 10) return {e: "🥚", t: "Mer protein", d: "Snitt " + D.p + " g om dagen, målet är " + PROT_GOAL + " g. Kvarg, ägg eller en matlåda med kyckling fixar det."};
+  if (D.fd >= 3 && D.kcal < D.goal - 250) return {e: "🍽", t: "Ät upp till målet", d: "Snitt " + gmSteps(D.kcal) + " kcal om dagen, målet är " + gmSteps(D.goal) + ". Det som fattas är skillnaden mellan att gå upp och att stå still."};
+  if (D.sleep != null && D.sleep < 9 * 3600) return {e: "🌙", t: "Mer sömn", d: "Snitt " + gmH(D.sleep) + " per natt. Musklerna byggs när du sover – släck en halvtimme tidigare."};
+  return {e: "✅", t: "Fortsätt exakt så här", d: "Passen, maten och sömnen sitter. Öka vikterna när appen säger till."};
+}
+const vkKg = dw => Math.abs(dw) < .05 ? "±0 kg" : (dw > 0 ? "+" : "−") + fmt(Math.abs(dw), 1) + " kg";
+function vkTile(v, l, good){ return '<div class="vk-t' + (good === true ? " ok" : good === false ? " no" : "") + '"><b class="num">' + v + '</b><small>' + l + '</small></div>'; }
+function vkHTML(){
+  if (!sessions.length && !weights.length) return "";
+  const t = today(), hasPrev = addDays(weekStart(t), -1) >= START, dflt = hasPrev && (t.getDay() === 1 || t.getDay() === 2) ? -1 : 0, off = vkOff == null || (vkOff === -1 && !hasPrev) ? dflt : vkOff, ws = addDays(weekStart(t), off * 7);
+  if (addDays(ws, 6) < START) return "";
+  const D = vkData(ws), tip = vkTip(D), dw = D.w != null && D.w0 != null ? D.w - D.w0 : null;
+  const tiles = [vkTile(D.gym + "/4", "gympass", D.gym >= 4 ? true : D.past ? false : null), vkTile(D.prs, D.prs === 1 ? "rekord" : "rekord", D.prs > 0 ? true : null),
+    dw != null ? vkTile(vkKg(dw), "vikt mot veckan innan", dw >= .1 && dw <= .7 ? true : false) : vkTile(D.w != null ? fmt(D.w, 1) + " kg" : "–", D.w != null ? "vikt" : "väg dig mån och tor", null),
+    D.fd ? vkTile(gmSteps(D.kcal), "kcal om dagen av " + gmSteps(D.goal), D.kcal >= D.goal - 150) : vkTile("–", "kcal – logga maten", null),
+    D.fd ? vkTile(D.p + " g", "protein om dagen", D.p >= PROT_GOAL - 10) : null,
+    D.sleep != null ? vkTile(gmH(D.sleep), "sömn per natt", D.sleep >= 9 * 3600) : null,
+    D.hab != null ? vkTile(D.hab + " %", "av vanorna", D.hab >= 80) : null].filter(Boolean);
+  const label = off === 0 ? "Den här veckan" : "Förra veckan";
+  const nextWk = iso(addDays(weekStart(t), 7)), showPlan = t.getDay() === 0 || t.getDay() >= 5;
+  return '<div class="card vk" id="vkCard"><div class="gm-top"><b>Veckokoll</b><span class="lead">' + label + ' · ' + menyWeekLabel(iso(ws)) + '</span></div>' +
+    (hasPrev ? '<div class="bxseg"><button type="button" data-vk="-1" aria-pressed="' + (off === -1) + '">Förra veckan</button><button type="button" data-vk="0" aria-pressed="' + (off === 0) + '">Den här veckan</button></div>' : '') +
+    '<div class="vk-grid">' + tiles.join("") + '</div>' +
+    '<div class="vk-tip"><span aria-hidden="true">' + tip.e + '</span><div><small>' + (off === 0 && !D.past ? "Det viktigaste nu" : "Det viktigaste nästa vecka") + '</small><b>' + esc(tip.t) + '</b><p>' + esc(tip.d) + '</p></div></div>' +
+    (showPlan && off === 0 ? '<button type="button" class="btn sm ghost" data-vkplan="' + nextWk + '">📅 Planera nästa veckas middagar</button>' : '') + '</div>';
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-vk]");
+  if (b){ vkOff = +b.dataset.vk; const c = $("vkCard"); if (c) c.outerHTML = vkHTML(); return; }
+  const p = e.target.closest("[data-vkplan]");
+  if (p) menyOpen(p.dataset.vkplan);
+});
 
 
 /* ---------- Dela passet: en bild (1080 × 1350) att lägga på story, TikTok eller skicka till en kompis (14 nov 2026) ---------- */
@@ -5254,11 +5513,12 @@ document.addEventListener("click", e => {
 // Appen räknar ut notiserna för 7 dagar framåt och skickar listan till workern (KV). Workerns cron kollar varje
 // minut och skickar det som är dags med web push. Fungerar när GymSchema ligger på hemskärmen (iOS 16.4+).
 const NT_KEY = "gymschema.push.v1";
-const NT_DEF = {bed: {on: true}, gym: {on: true, t: "10:00"}, run: {on: true, t: "10:00"}, shake: {on: true, t: "09:00"}, hall: {on: true, t: "18:00"}, middag: {on: true, t: "16:30"}, vag: {on: true}};
+const NT_DEF = {bed: {on: true}, gym: {on: true, t: "10:00"}, run: {on: true, t: "10:00"}, shake: {on: true, t: "09:00"}, hall: {on: true, t: "18:00"}, middag: {on: true, t: "16:30"}, vag: {on: true}, vecka: {on: true, t: "18:30"}};
 const NT_ROWS = [["bed", "🌙", "Läggdags", "30 min innan och när det är dags – tiden räknas från sömnskulden"], ["gym", "🏋️", "Gymdag", "Ons, tor, lör och sön"],
-  ["run", "🏃", "Löpdag", "Tisdagar, med tips om löpvädret"], ["shake", "🥤", "Shaken", "Varje dag"], ["hall", "🧍", "Hållning + fascia", "Varje dag"],
+  ["run", "🏃", "Löpdag", "Tisdagar, med tips om löpvädret"], ["shake", "🥤", "Shaken", "En per glas – första på tiden du väljer, sen var fjärde timme (senast 20.00)"], ["hall", "🧍", "Hållning + fascia", "Varje dag"],
   ["middag", "🍽", "Middag", "Vad du lagar i kväll enligt veckomenyn – och kvällen innan om något ska ligga i blöt eller marineras"],
-  ["vag", "⚖️", "Vägning", "Måndag och torsdag, en kvart efter att du vaknat – då ställer appen in kalorierna rätt"]];
+  ["vag", "⚖️", "Vägning", "Måndag och torsdag, en kvart efter att du vaknat – då ställer appen in kalorierna rätt"],
+  ["vecka", "📊", "Veckokoll", "Söndag kväll – hur veckan gick och det viktigaste nästa vecka"]];
 const NT_MSG = {net: "Fick ingen kontakt med mellanhanden. Är du uppkopplad, och stämmer adressen?", old: "Mellanhanden har fortfarande den gamla koden. Gör steg 1 och tryck Deploy.",
   kv: "Lagringen är inte kopplad än – gör steg 2.", taken: "Mellanhanden är redan kopplad till en annan installation av appen. Stäng av påminnelserna där först.",
   worker: "Mellanhanden svarade konstigt. Kolla att hela koden är inklistrad och att du tryckt Deploy.", perm: "Notiser är avstängda för GymSchema. Slå på dem i Inställningar → Notiser → GymSchema och tryck igen.",
@@ -5304,8 +5564,15 @@ function ntEvents(){
       out.push({id: "gym-" + ds, at: at(d, ntSet("gym").t), title: "Gymdag: " + PROGRAM[gk].name + " 💪", body: PROGRAM[gk].ex.length + " övningar i dag. Passet ligger under Pass.", url: "./#pass"});
     if (RUN_DAYS[dow] && ntSet("run").on && !(ds === ti && gmOn() && gm && gmRunOn(ti).length))
       out.push({id: "run-" + ds, at: at(d, ntSet("run").t), title: RUN_DAYS[dow] + " 🏃", body: "Pratfart. Kolla löpvädret i appen – bästa timmen och vad du ska ha på dig.", url: "./#pass"});
-    if (ntSet("shake").on && !(ds === ti && (shakeGl[ti] || 0) > 0))
-      out.push({id: "shake-" + ds, at: at(d, ntSet("shake").t), title: "Shaken 🥤", body: "Mixa dagens shake – " + gmSteps(foodSet.size) + " kcal i " + foodSet.glasses + " glas.", url: "./#vikt"});
+    if (ntSet("shake").on){
+      // ett per glas: första på vald tid, sen var fjärde timme (tätare om det blir för sent) – glas som redan är bockade i dag hoppas över
+      const n = Math.max(1, Math.min(6, foodSet.glasses || 3)), t1 = ntMin(ntSet("shake").t), gap = n > 1 ? Math.max(60, Math.min(240, Math.floor((20 * 60 - t1) / (n - 1)))) : 0, per = shakePer();
+      for (let g = 0; g < n; g++){
+        if (ds === ti && (shakeGl[ti] || 0) > g) continue;
+        out.push({id: (g ? "shake" + (g + 1) : "shake") + "-" + ds, at: at(d, ntHm(t1 + g * gap)), title: n > 1 ? "Shake – glas " + (g + 1) + " av " + n + " 🥤" : "Shaken 🥤",
+          body: (g === 0 ? "Mixa dagens shake – " + gmSteps(foodSet.size) + " kcal. " : "") + per.kcal + " kcal och " + per.p + " g protein i glaset. Bocka det under Mat.", url: "./#vikt/mat"});
+      }
+    }
     if (ntSet("hall").on && !(ds === ti && habits[ti] && habits[ti].hall))
       out.push({id: "hall-" + ds, at: at(d, ntSet("hall").t), title: "Hållning + fascia · 12 min 🧍", body: "Hållningspasset och 2 min fascia-håll per sida.", url: "./#vanor"});
     if (ntSet("middag").on){
@@ -5318,6 +5585,8 @@ function ntEvents(){
       if (prep) out.push({id: "prep-" + ds + "-" + y.r.id, at: at(d, "20:00"), title: "I morgon: " + y.r.n + " 🌙", body: (rxPrepMust(y.r) ? "Gör det här i kväll: " : "Tips för i kväll: ") + prep, url: "./#vikt/mat/meny"});
     }
   }
+  // veckokoll söndag kväll
+  if (ntSet("vecka").on) for (let i = 0; i < 7; i++){ const d = addDays(t0, i); if (d.getDay() === 0) out.push({id: "vecka-" + iso(d), at: at(d, ntSet("vecka").t), title: "Veckokoll 📊", body: "Se hur veckan gick, det viktigaste nästa vecka – och planera middagarna.", url: "./#framsteg"}); }
   // vägning mån och tor, en kvart efter väckningen – kalorimålet behöver minst 4 vägningar på 2 veckor
   if (ntSet("vag").on) for (let i = 0; i < 7; i++){
     const d = addDays(t0, i), ds = iso(d), dow = d.getDay();
@@ -5385,7 +5654,7 @@ async function ntDisable(){
 function ntNext(){ const e = nt.on ? ntEvents().find(x => !/^crontest/.test(x.id)) : null; if (!e) return ""; const d = new Date(e.at), ds = iso(d); return e.title.replace(/ [^\wåäöÅÄÖ.:+\-–]+$/u, "") + " · " + (ds === iso(today()) ? "i dag" : ds === iso(addDays(today(), 1)) ? "i morgon" : dLong(ds)) + " " + pad(d.getHours()) + "." + pad(d.getMinutes()); }
 function ntRowHTML(){
   return '<button type="button" class="card nt-row" id="ntRow" data-nt="open"><span class="nt-ic" aria-hidden="true">🔔</span><span class="nt-tx"><b>Påminnelser i mobilen</b><small>' +
-    (nt.on ? (nt.err ? esc(nt.err) : "På · nästa: " + esc(ntNext())) : "Läggdags, gymdag, löpdag, shake, hållning, middag och vägning – slå på") + '</small></span><span class="rx-go" aria-hidden="true">›</span></button>';
+    (nt.on ? (nt.err ? esc(nt.err) : "På · nästa: " + esc(ntNext())) : "Läggdags, gymdag, löpdag, shake, hållning, middag, vägning och veckokoll – slå på") + '</small></span><span class="rx-go" aria-hidden="true">›</span></button>';
 }
 function ntSheet(){
   let o = $("ntOv");
@@ -5410,7 +5679,7 @@ function ntSheetHTML(){
   }
   const st = ntStat ? ntStat.code : "", s1 = st === "ok" || st === "kv", s2 = st === "ok", s3 = s2 && ntStat.cron && Date.now() - ntStat.cron < 2 * 3600e3;
   const chk = ok => ok ? '<span class="nt-ok">✓</span>' : '';
-  return top + '<p class="lead">Notiser när det är läggdags, gymdag, löpdag, shake, hållning, middag och vägning – även när appen är stängd. De skickas av samma gratis mellanhand på Cloudflare som gardinen. Tar ca 5 minuter.</p>' +
+  return top + '<p class="lead">Notiser när det är läggdags, gymdag, löpdag, shakeglas, hållning, middag, vägning och veckokoll – även när appen är stängd. De skickas av samma gratis mellanhand på Cloudflare som gardinen. Tar ca 5 minuter.</p>' +
     (!ntHome() ? '<div class="gm-v warn"><span aria-hidden="true">!</span><span>På iPhone fungerar notiser bara när GymSchema är öppnad från hemskärmen. Lägg den där först om du inte redan gjort det.</span></div>' : '') + msg +
     '<ol class="card nt-steps">' +
       '<li><span class="nt-n">1</span><div><b>Uppdatera mellanhanden ' + chk(s1) + '</b><p>Cloudflare → <b>Workers &amp; Pages</b> → din worker → <b>Edit code</b>. Markera allt, klistra in den nya koden och tryck <b>Deploy</b>. Gardinen fortsätter fungera som vanligt.</p>' +
@@ -5452,7 +5721,7 @@ document.addEventListener("change", e => {
 document.addEventListener("input", e => { if (e.target && e.target.id === "ntUrl"){ nt.url = e.target.value.trim(); ntSave(); } });
 
 /* ---------- Start ---------- */
-const BUILD = "14 nov 01.01", BUILD_NOTE = "Kör passet set för set, dela passet som bild och matlådor till veckan";
+const BUILD = "14 nov 01.18", BUILD_NOTE = "Formcheck med slowmotion, veckokoll och påminnelse för varje shakeglas";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
