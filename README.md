@@ -4,6 +4,19 @@ Filips gymschema – program 2.1. Öppna https://filipkymmer79-pixel.github.io/G
 
 **?** högst upp öppnar en guide över allt appen kan – 52 saker sorterade efter flik, med sökning (även utan å, ä och ö). *Visa var* hoppar till rätt flik, öppnar kortet om det behövs och lyser upp stället. Det som bara syns ibland (löpvädret på tisdagar, Flytta passet) säger när det syns.
 
+### Utseendet
+
+15 november 2026 fick hela appen ny design. Inga funktioner ändrades – samma flikar, knappar och texter.
+
+- **Svart huvud** med veckan och viktskivorna, i både ljust och mörkt läge – och samma svarta överdel på varje blad (Recept, Flytta passet, Kör passet, guiderna). Under det ligger en vit duk med rundad överkant, grå paneler och vita brickor i panelerna (mörkt läge: svart duk, panelerna ett steg ljusare, brickorna två). Remsan bakom telefonens klocka är svart, så klockan syns även i ljust läge. Det som ligger still har inga skuggor – bara vilotimern och toasten svävar.
+- **Ett typsnitt**, Archivo, där bredden visar vad texten är: bred för skärmens rubrik, normal bredd för text, smal för siffror och koder (Ö1, 0/3, 2:30). Inga versaler. Typsnittet är inbäddat i själva sidan, så det finns i samma stund som appen öppnas och ingenting flyttar sig när det kommer – ingenting hämtas från Google Fonts längre. De ovanliga tecknen ligger i `vendor/archivo-var-ext.woff2`. Big Shoulders Display finns kvar för bilderna man delar (månadens sammanfattning, passbilden) och hämtas först då.
+- **Ikoner i stället för emoji** i knappar, rubriker och rader ([Phosphor Icons](https://github.com/phosphor-icons/phosphor-core), MIT-licens). Texten är orörd: tecknet står kvar i texten, så sökning, kopiering och uppläsning fungerar som förut, men det visas som en linjeikon i textens färg. Maträtternas bilder i recepten och veckomenyn är kvar som de var.
+- **Färg** kommer från passens skivor (röd, blå, gul och grön för passen, orange för löpning, lila för vila), Atletblockens färger och tillstånd: grönt för klart, rött för fel, gult för varning.
+- Flikarna längst ner är genomskinliga, och fliken man står på har en platta bakom ikonen. En flik eller ett blad tonas in mjukt; är *Minska rörelse* på i telefonen händer det direkt.
+- Så är det byggt: ett lager sist i stilmallen gör om färger, typsnitt och former, bygget tar bort versaler och spärrad text ur den gamla stilmallen, och ett litet skript byter tecknen mot ikoner i samma stund som appen ritar (ett hundratal ikoner).
+- Licenser: `vendor/archivo-OFL.txt` och `vendor/bigshoulders-OFL.txt` (SIL Open Font License), `vendor/phosphor-LICENSE.txt` (MIT).
+- Kontrollerat i Chromium i ljust och mörkt läge på 320, 390 och 430 px, alla flikar och blad. Inte provat på en riktig iPhone.
+
 ### Programmet
 
 Överkroppen först, benen korta och tunga. **Över** onsdag och lördag (chins, hantelbänkpress, kabelrodd, axelpress, sidolyft, hantelshrugs, bicepscurl, face pulls). **Ben + över** torsdag och söndag: benpress, vadpress (i benpressen direkt efter), hip thrust och rumänska marklyft, sedan lutande hantelpress, sidolyft, triceps över huvudet med rep i kabel och bicepscurl, sist plankan och dead bug. Tisdagen är löpdag: lugn jogg till en backe, Starka ben, backhopp och sprint, och lugn jogg hem (se *Atletprogrammet* nedan). Måndag och fredag är vilodagar från gymmet. Upphoppen i uppvärmningen före benen togs bort 14 november 2026 – spänsten i Atletprogrammet ersätter dem. Högst upp i appen syns hela veckan, måndag till söndag: gympassen (Ö1, B1, Ö2, B2), *Löp* på tisdagen och *Vila · hållning* på måndag och fredag. Gympassen bockas när de sparas, vilodagen när hållningen är avbockad under **Vanor** och tisdagen när löprundan finns (från klockan eller avbockad under Vanor). Varje övning har bild, steg för steg, vanliga fel och video under **Program**.
