@@ -411,6 +411,10 @@ var SHAKE = (function () {
   // Nutrients per 100 g. Standard values (Livsmedelsverket / USDA, rounded):
   // the same table the recipe sheet was calculated from, so energy and protein agree with it.
   // The milk's carbohydrate follows the pack of a lactose-free milk drink, which is lower than ordinary milk.
+  // The keso (cottage cheese) has energy, protein, fat, carbohydrate and salt from the Keso 4 % pack, and vitamins and
+  // minerals from Livsmedelsverket's analysed cottage cheese (copper, manganese and choline from USDA).
+  // The orange juice follows an ordinary Swedish pack (45 kcal, 9 g sugars, 28 mg vitamin C per 100 g);
+  // potassium and folate from a pack that declares them, the rest from USDA.
   var KEYS = ["kcal", "prot", "carb", "fat", "fiber", "sugar", "vitA", "vitD", "vitE", "vitK", "vitC",
     "B1", "B2", "niacin", "B6", "folate", "B12", "Ca", "P", "Mg", "Fe", "Zn", "Cu", "I", "Se", "K", "Na", "Mn",
     "choline", "EPADHA"];
@@ -419,11 +423,13 @@ var SHAKE = (function () {
     milk15:  { kcal: 38, prot: 3.0, carb: 2.5, fat: 1.5, sugar: 2.4, vitA: 18, vitD: 1.0, vitE: 0.04, vitK: 0.2, vitC: 1, B1: 0.04, B2: 0.16, niacin: 0.1, B6: 0.04, folate: 5, B12: 0.4, Ca: 120, P: 95, Mg: 11, Fe: 0.03, Zn: 0.4, Cu: 0.01, I: 15, Se: 1.5, K: 150, Na: 40, Mn: 0.003, choline: 15 },
     smp:     { kcal: 358, prot: 36, carb: 52, fat: 0.8, sugar: 52, vitA: 10, vitK: 0.1, vitC: 3, B1: 0.4, B2: 1.55, niacin: 0.95, B6: 0.36, folate: 50, B12: 4.0, Ca: 1250, P: 970, Mg: 110, Fe: 0.3, Zn: 4.0, Cu: 0.04, I: 140, Se: 15, K: 1700, Na: 535, Mn: 0.02, choline: 169 },
     yog:     { kcal: 133, prot: 5.0, carb: 4.0, fat: 10, sugar: 4.0, vitA: 95, vitD: 0.1, vitE: 0.2, vitK: 0.5, vitC: 0.5, B1: 0.04, B2: 0.2, niacin: 0.15, B6: 0.05, folate: 10, B12: 0.5, Ca: 110, P: 100, Mg: 11, Fe: 0.1, Zn: 0.5, Cu: 0.02, I: 20, Se: 2, K: 140, Na: 40, Mn: 0.004, choline: 15 },
+    keso:    { kcal: 93, prot: 13, carb: 1.6, fat: 4.0, sugar: 1.6, vitA: 45, vitE: 0.1, B1: 0.01, B2: 0.16, niacin: 0.08, folate: 30, B12: 0.6, Ca: 50, P: 134, Mg: 5, Zn: 0.3, Cu: 0.03, I: 5, K: 54, Na: 328, Mn: 0.002, choline: 18 },
     oat:     { kcal: 380, prot: 14, carb: 58, fat: 7, fiber: 10, sugar: 1, vitE: 1.0, vitK: 2, B1: 0.6, B2: 0.1, niacin: 1.0, B6: 0.12, folate: 50, Ca: 54, P: 410, Mg: 140, Fe: 4.3, Zn: 3.6, Cu: 0.4, I: 1, Se: 5, K: 400, Na: 2, Mn: 3.6, choline: 40 },
     whey:    { kcal: 400, prot: 80, carb: 6, fat: 5, sugar: 4, vitA: 10, B1: 0.1, B2: 0.8, niacin: 0.3, B6: 0.1, folate: 10, B12: 1.0, Ca: 400, P: 300, Mg: 60, Fe: 0.5, Zn: 1.0, Cu: 0.05, I: 30, Se: 15, K: 500, Na: 200, choline: 50 },
     blue:    { kcal: 53, prot: 0.7, carb: 10, fat: 0.5, fiber: 2.4, sugar: 9, vitA: 3, vitE: 0.6, vitK: 19, vitC: 7, B1: 0.03, B2: 0.04, niacin: 0.4, B6: 0.05, folate: 6, Ca: 10, P: 12, Mg: 6, Fe: 0.3, Zn: 0.1, Cu: 0.06, Se: 0.1, K: 70, Na: 1, Mn: 0.3, choline: 6 },
     currant: { kcal: 60, prot: 1.4, carb: 8, fat: 0.4, fiber: 5, sugar: 7, vitA: 12, vitE: 1.0, vitK: 5, vitC: 150, B1: 0.05, B2: 0.05, niacin: 0.3, B6: 0.066, folate: 10, Ca: 55, P: 59, Mg: 24, Fe: 1.5, Zn: 0.27, Cu: 0.086, Se: 1, K: 322, Na: 2, Mn: 0.26, choline: 10 },
     spinach: { kcal: 29, prot: 3.6, carb: 1.3, fat: 0.6, fiber: 2.9, sugar: 0.5, vitA: 580, vitE: 2.0, vitK: 372, vitC: 6, B1: 0.08, B2: 0.17, niacin: 0.5, B6: 0.15, folate: 140, Ca: 129, P: 48, Mg: 72, Fe: 1.9, Zn: 0.6, Cu: 0.14, I: 2, Se: 1.3, K: 346, Na: 74, Mn: 0.85, choline: 20 },
+    juice:   { kcal: 45, prot: 0.7, carb: 9, fiber: 0.4, sugar: 9, vitA: 10, vitE: 0.04, vitC: 28, B1: 0.09, B2: 0.03, niacin: 0.4, B6: 0.04, folate: 28, Ca: 11, P: 17, Mg: 11, Fe: 0.2, Zn: 0.05, Cu: 0.04, Se: 0.1, K: 180, Na: 1, Mn: 0.014, choline: 6 },
     banana:  { kcal: 89, prot: 1.1, carb: 20.2, fat: 0.33, fiber: 2.6, sugar: 12.2, vitA: 3, vitE: 0.1, vitK: 0.5, vitC: 8.7, B1: 0.031, B2: 0.073, niacin: 0.665, B6: 0.367, folate: 20, Ca: 5, P: 22, Mg: 27, Fe: 0.26, Zn: 0.15, Cu: 0.078, Se: 1, K: 358, Na: 1, Mn: 0.27, choline: 9.8 },
     honey:   { kcal: 305, prot: 0.3, carb: 82, sugar: 82, vitC: 0.5, B2: 0.04, B6: 0.02, folate: 2, Ca: 6, P: 4, Mg: 2, Fe: 0.4, Zn: 0.2, Cu: 0.04, K: 52, Na: 4, Mn: 0.08, choline: 2 },
     salt:    { Na: 39000 },
@@ -434,6 +440,7 @@ var SHAKE = (function () {
   // One entry per thing that goes in the mixer, in the order it goes in.
   //   g     grams in one household unit       step  smallest amount that is practical to measure
   //   The whey is Star Nutrition Whey-80 Naturell, measured with a decilitre: the pack gives 37 g as about 1 dl.
+  //   The keso goes in by the decilitre as well: a 250 g tub is 2½ dl.
   //   vol   how much room one gram takes once mixed, in ml
   //   tint  how strongly it colours the shake (berries stain far more than milk does)
   var ING = [
@@ -441,11 +448,14 @@ var SHAKE = (function () {
     { key: "water",   name: "Vatten",                 short: "vatten",       buy: "",                            unit: "dl",    g: 100,  step: 0.5, vol: 1.0, color: "#DCE9F0", tint: 0.4 },
     { key: "smp",     name: "Skummjölkspulver",       short: "mjölkpulver",  buy: "Skummjölkspulver",            unit: "msk",   g: 7.5,  step: 1,   vol: 0.6, color: "#EDE0C0", tint: 1 },
     { key: "yog",     name: "Grekisk yoghurt 10 %",   short: "yoghurt",      buy: "Grekisk yoghurt 10 %",        unit: "dl",    g: 100,  step: 0.5, vol: 1.0, color: "#FBF8F1", tint: 1 },
+    { key: "keso",    name: "Keso 4 %",               short: "keso",         buy: "Keso naturell 4 %",           unit: "dl",    g: 100,  step: 0.5, vol: 1.0, color: "#FFF3D6", tint: 1 },
     { key: "oat",     name: "Havremjöl",              short: "havremjöl",    buy: "Havremjöl",                   unit: "dl",    g: 50,   step: 0.5, vol: 1.2, color: "#D6BF94", tint: 1.4 },
     { key: "whey",    name: "Whey-80 Naturell",       short: "whey",         buy: "Star Nutrition Whey-80 Naturell", unit: "dl", g: 37, step: 0.5, vol: 0.8, color: "#E9D79C", tint: 1 },
     { key: "blue",    name: "Blåbär, frysta",         short: "blåbär",       buy: "Blåbär, frysta",              unit: "dl",    g: 60,   step: 0.5, vol: 1.0, color: "#5A36B8", tint: 120 },
     { key: "currant", name: "Svarta vinbär, frysta",  short: "vinbär",       buy: "Svarta vinbär, frysta",       unit: "dl",    g: 65,   step: 0.5, vol: 1.0, color: "#6E1F86", tint: 120 },
     { key: "spinach", name: "Spenat, fryst hackad",   short: "spenat",       buy: "Spenat, fryst hackad",        unit: "dl",    g: 65,   step: 0.5, vol: 1.0, color: "#2F6B3A", tint: 8 },
+    { key: "juice",   name: "Apelsinjuice",           short: "juice",        buy: "Apelsinjuice, 100 % juice",   unit: "dl",    g: 104,  step: 0.5, vol: 1.0, color: "#F2A531", tint: 3 },
+    // The banana left the recipe 15 Nov 2026. The entry stays so that a shake mixed before then still shows.
     { key: "banana",  name: "Banan",                  short: "banan",        buy: "Bananer",                     unit: "st",    g: 120,  step: 0.5, vol: 1.0, color: "#F0DA78", tint: 1 },
     { key: "honey",   name: "Honung",                 short: "honung",       buy: "Honung",                      unit: "msk",   g: 21,   step: 0.5, vol: 0.7, color: "#D9981E", tint: 1 },
     { key: "salt",    name: "Salt",                   short: "salt",         buy: "",                            unit: "krm",   g: 1.2,  step: 1,   vol: 0,   color: "#FFFFFF", tint: 0 },
@@ -454,19 +464,23 @@ var SHAKE = (function () {
   var BY = {};
   ING.forEach(function (it) { it.stepG = it.g * it.step; BY[it.key] = it; });
 
-  // The three sizes, in household units. 3 000 and 2 000 are the two recipe sheets; 2 500 sits halfway.
-  // The sheets had the whey in scoops (60, 45 and 30 g). In decilitres it is the nearest half: 1½, 1 and 1 dl.
+  // The four sizes, in household units. 2 700 is the everyday one: the same figure the gym app counts the shake as.
+  // Since 15 Nov 2026 there is no banana. A tub of keso (cottage cheese) and a decilitre of orange juice came in.
+  // The keso brings 32 g of protein, so the milk powder was halved (8 to 4 msk) and the whey is 1 dl in every size:
+  // protein stays near 5 g per 100 kcal, with less calcium and lactose than before.
+  // No salt in the recipe, because the keso is salted. build() puts the pinch back when the keso is out.
   var SIZES = {
-    3000: { milk: 5,   smp: 8, yog: 4,   oat: 4, whey: 1.5, blue: 2,   currant: 1, spinach: 1, banana: 2,   honey: 1, salt: 1, oil: 5 },
-    2500: { milk: 3.5, smp: 8, yog: 3.5, oat: 3, whey: 1,   blue: 1.5, currant: 1, spinach: 1, banana: 1.5, honey: 1, salt: 1, oil: 5 },
-    2000: { milk: 2,   smp: 8, yog: 3,   oat: 2, whey: 1,   blue: 1,   currant: 1, spinach: 1, banana: 1,   honey: 1, salt: 1, oil: 5 }
+    3000: { milk: 5,   smp: 4, yog: 3.5, keso: 2.5, oat: 5,   whey: 1, blue: 2,   currant: 1, spinach: 1, juice: 1, honey: 1, oil: 5 },
+    2700: { milk: 3,   smp: 4, yog: 3.5, keso: 2.5, oat: 4,   whey: 1, blue: 2,   currant: 1, spinach: 1, juice: 1, honey: 1, oil: 5 },
+    2500: { milk: 2.5, smp: 4, yog: 3,   keso: 2.5, oat: 3.5, whey: 1, blue: 1.5, currant: 1, spinach: 1, juice: 1, honey: 1, oil: 5 },
+    2000: { milk: 1,   smp: 4, yog: 2.5, keso: 2,   oat: 2,   whey: 1, blue: 1,   currant: 1, spinach: 1, juice: 1, honey: 1, oil: 5 }
   };
+  var STANDARD = 2700;
 
   // What may be turned up or down to get back to the energy target when something is missing,
   // how far (in steps above the recipe), and how reluctantly (higher = moved less).
   var FLEX = {
     oat:    { up: 2, down: 0, w: 0.25 },
-    banana: { up: 2, down: 0, w: 0.30 },
     yog:    { up: 3, down: 2, w: 0.30 },
     oil:    { up: 2, down: 0, w: 0.35 },
     whey:   { up: 2, down: 0, w: 0.50 },
@@ -535,7 +549,7 @@ var SHAKE = (function () {
     }
     // Niacin equivalents: niacin itself plus what the body makes from tryptophan (about 1.1 % of protein, 60:1).
     t.NE = t.niacin + (t.prot * 0.011 * 1000) / 60;
-    t.lactose = (FOODS.smp.sugar * grams(n, "smp") + FOODS.yog.sugar * grams(n, "yog")) / 100;
+    t.lactose = (FOODS.smp.sugar * grams(n, "smp") + FOODS.yog.sugar * grams(n, "yog") + FOODS.keso.sugar * grams(n, "keso")) / 100;
     t.addedSugar = FOODS.honey.sugar * grams(n, "honey") / 100;
     t.saltG = t.Na * 2.5 / 1000;
     return t;
@@ -549,7 +563,7 @@ var SHAKE = (function () {
   // Start from the chosen size, take out what is missing, then walk in small measurable steps
   // towards the energy target. Calcium and lactose never go above what the plain recipe has.
   function build(s) {
-    var size = SIZES[s.size] ? s.size : 3000;
+    var size = SIZES[s.size] ? s.size : STANDARD;
     milkNow = s.milk15 ? FOODS.milk15 : FOODS.milk;
     var plain = toSteps(SIZES[size]);
     var plainT = totals(plain), plainVol = volumeDl(plain);
@@ -562,7 +576,7 @@ var SHAKE = (function () {
     var noSmp = !!s.noSmp || !!missing.smp;
     if (noSmp) {
       base.smp = 0;
-      if (!missing.whey) base.whey += 2;           // one more decilitre of whey stands in for the powder
+      if (!missing.whey) base.whey += 1;           // half a decilitre of whey stands in for the powder
     }
     if (s.honey === false || missing.honey) base.honey = 0;
     ING.forEach(function (it) {
@@ -571,6 +585,7 @@ var SHAKE = (function () {
         base[it.key] = 0;
       }
     });
+    if (!base.keso) base.salt = 1;   // the keso is salted; without it the pinch that lifts the berries is back
     var thickSteps = Math.max(2, Math.round(plainVol / 9) * 2);   // about one dl per nine
     if (s.thick === -1) base.water += thickSteps;
     if (s.thick === 1) {
@@ -584,7 +599,7 @@ var SHAKE = (function () {
       lo[key] = Math.max(0, base[key] - FLEX[key].down);
       hi[key] = base[key] + FLEX[key].up;
       if (key === "milk" && s.thick === 1) hi[key] = base[key];   // thicker means the milk stays down
-      if (key === "whey" && noSmp) hi[key] = base[key];           // the extra decilitre is already in
+      if (key === "whey" && noSmp) hi[key] = base[key];           // the extra half decilitre is already in
     });
 
     var caCap = Math.max(plainT.Ca, 2300) + 10;
@@ -653,8 +668,8 @@ var SHAKE = (function () {
   }
 
   // Split the day's amounts over the rounds so every round can be measured with ordinary spoons and cups.
-  // Honey and salt go in the first round only; it all ends up in the same jug.
-  var ONCE = { honey: 1, salt: 1 };
+  // Honey, salt and the splash of juice go in the first round only; it all ends up in the same jug.
+  var ONCE = { honey: 1, salt: 1, juice: 1 };
   function perRound(recipe) {
     var out = [], r, R = recipe.rounds;
     for (r = 0; r < R; r++) out.push({});
@@ -685,7 +700,7 @@ var SHAKE = (function () {
     return "#" + ch(r) + ch(g) + ch(b);
   }
 
-  return { ING: ING, BY: BY, FOODS: FOODS, SIZES: SIZES, REF: REF, SUPPS: SUPPS, CA_LIMIT: CA_LIMIT,
+  return { ING: ING, BY: BY, FOODS: FOODS, SIZES: SIZES, STANDARD: STANDARD, REF: REF, SUPPS: SUPPS, CA_LIMIT: CA_LIMIT,
     build: build, perRound: perRound, totals: totals, volumeDl: volumeDl, grams: grams, blend: blend, toSteps: toSteps };
 })();
 /* ---------- The screens. Everything is kept on the phone only. ---------- */
@@ -693,6 +708,7 @@ var SHAKE = (function () {
   "use strict";
   var S = SHAKE;
   var KEY = "shake.v1";
+  var REV = 2;   // 2: the recipe without banana (15 Nov 2026). The size moves to the everyday 2 700 once.
   var NB = " ";
   var WEEKDAYS = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
   var MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
@@ -709,18 +725,20 @@ var SHAKE = (function () {
   /* ---------- What is remembered ---------- */
   function fresh() {
     return {
-      v: 1, tab: "today", perGlass: false,
-      settings: { size: 3000, thick: 0, honey: true, noSmp: false, milk15: false, mixer: 1.5, grams: false, missing: {}, supps: { puori: true, selen: true, dpearl: true, kreatin: true } },
+      v: 1, rev: REV, tab: "today", perGlass: false,
+      settings: { size: S.STANDARD, thick: 0, honey: true, noSmp: false, milk15: false, mixer: 1.5, grams: false, missing: {}, supps: { puori: true, selen: true, dpearl: true, kreatin: true } },
       day: null, history: [], shop: { days: 7, have: {} }
     };
   }
+  var moved = false;
   function load() {
     var st = fresh(), raw, k;
     try { raw = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { raw = null; }
     if (!raw || raw.v !== 1) return st;
     for (k in st.settings) if (raw.settings && raw.settings[k] !== undefined) st.settings[k] = raw.settings[k];
-    if (!S.SIZES[st.settings.size]) st.settings.size = 3000;
+    if (!S.SIZES[st.settings.size]) st.settings.size = S.STANDARD;
     if (!st.settings.missing || typeof st.settings.missing !== "object") st.settings.missing = {};
+    if (raw.rev !== REV) { st.settings.size = S.STANDARD; delete st.settings.missing.banana; moved = true; }
     if (!st.settings.supps || typeof st.settings.supps !== "object") st.settings.supps = { puori: true, selen: true, dpearl: true, kreatin: true };
     if (raw.day && raw.day.plan && raw.day.plan.rounds) st.day = raw.day;
     if (Array.isArray(raw.history)) st.history = raw.history.slice(-90);
@@ -731,6 +749,7 @@ var SHAKE = (function () {
   }
   var state = load();
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* works without it, just forgets */ } }
+  if (moved) save();
 
   /* ---------- Words and numbers ---------- */
   function nf(v, dec) {
@@ -777,7 +796,7 @@ var SHAKE = (function () {
   /* ---------- Today's batch, written down once when mixing starts ---------- */
   function makePlan(settings) {
     var rec = S.build(settings), per = S.perRound(rec), supps = settings.supps || {};
-    var spinach = !!rec.steps.spinach, R = per.length;
+    var spinach = !!rec.steps.spinach, curds = !!rec.steps.keso, R = per.length;
     var plan = {
       size: rec.size, kcal: rec.totals.kcal, prot: rec.totals.prot, volume: rec.volume, glasses: rec.glasses,
       mixerDl: rec.mixerDl, color: S.blend(rec.steps), dpearl: supps.dpearl !== false, steps: rec.steps, rounds: []
@@ -790,13 +809,13 @@ var SHAKE = (function () {
         });
       }
       function supp(key) { return { key: key, supp: true, name: SUPP_ROW[key].name, short: ({ puori: "Puori", selen: "selen", kreatin: "kreatin" })[key], amount: SUPP_ROW[key].amount, note: SUPP_ROW[key].note, dl: 0, color: "transparent" }; }
-      var a = rows(["milk", "water", "smp"]), b = rows(["yog", "oat", "whey"]), c = rows(["blue", "currant", "spinach", "banana"]);
+      var a = rows(["milk", "water", "smp"]), b = rows(["yog", "keso", "oat", "whey"]), c = rows(["blue", "currant", "spinach", "juice", "banana"]);
       var d = rows(["honey", "salt"]), e = rows(["oil"]), steps = [];
       if (ri === 0 && supps.selen !== false) d.push(supp("selen"));
       if (ri === 0 && supps.kreatin !== false) d.push(supp("kreatin"));
       if (ri === 0 && supps.puori !== false) e.push(supp("puori"));
       var powder = a.some(function (r) { return r.key === "smp"; });
-      var frozen = c.some(function (r) { return r.key !== "banana"; });
+      var frozen = c.some(function (r) { return r.key !== "banana" && r.key !== "juice"; });
       var honey = d.some(function (r) { return r.key === "honey"; });
       var berries = c.filter(function (r) { return r.key === "blue" || r.key === "currant"; }).length === 2;
 
@@ -805,13 +824,14 @@ var SHAKE = (function () {
         tip: powder ? "Mixa ner pulvret innan något annat åker i, annars klumpar det sig." : "" });
       if (b.length) steps.push({ id: "b", rows: b, timer: c.length ? 0 : 30, title: cap(listOf(b.map(function (r) { return r.short; }))), tip: "" });
       if (c.length) steps.push({ id: "c", rows: c, timer: 30,
-        title: berries ? cap(listOf(["bär"].concat(c.filter(function (r) { return r.key === "spinach" || r.key === "banana"; }).map(function (r) { return r.short; })))) : cap(listOf(c.map(function (r) { return r.short; }))),
+        title: berries ? cap(listOf(["bär"].concat(c.filter(function (r) { return r.key !== "blue" && r.key !== "currant"; }).map(function (r) { return r.short; })))) : cap(listOf(c.map(function (r) { return r.short; }))),
         tip: frozen ? "Bär och spenat rakt från frysen." : "" });
       if (d.length) steps.push({ id: "d", rows: d, timer: 0, title: cap(listOf(d.map(function (r) { return r.short; }))),
         tip: honey ? "Rör ut honungen i en matsked varmt vatten först." : "" });
       steps.push({ id: "e", rows: e, timer: 90,
         title: e.length ? (e[0].key === "oil" ? "Olivoljan sist" : "Puori sist") : "Mixa slätt",
-        tip: spinach ? "Högsta hastighet. Spenaten ska vara helt borta." : "Högsta hastighet tills den är helt slät." });
+        tip: spinach && curds ? "Högsta hastighet. Spenaten och kesokornen ska vara helt borta." : spinach ? "Högsta hastighet. Spenaten ska vara helt borta." :
+          curds ? "Högsta hastighet. Kesokornen ska vara helt borta." : "Högsta hastighet tills den är helt slät." });
       steps.push(ri < R - 1
         ? { id: "f", rows: [], timer: 0, title: "Häll över i kannan", tip: "En kanna som rymmer minst " + trim1(Math.ceil(rec.volume / 5) * 0.5) + " liter. Mixern behöver inte sköljas emellan." }
         : { id: "f", rows: [], timer: 0, last: true, title: R > 1 ? "Häll över och ställ i kylen" : "Ställ i kylen",
@@ -1054,7 +1074,8 @@ var SHAKE = (function () {
     shownKeys.forEach(function (it) {
       var k = it.key, n = rec.steps[k] || 0, out = !!s.missing[k] || (k === "honey" && s.honey === false) || (k === "smp" && s.noSmp), d = n - (rec.plain[k] || 0);
       var toggle = k === "salt" || k === "water" ? "<span></span>" : '<button type="button" class="out" data-act="out" data-k="' + k + '" aria-pressed="' + !!s.missing[k] + '" aria-label="' + esc(nameOf(k)) + ' är slut">Slut</button>';
-      var note = k === "water" && s.missing.milk ? "I stället för mjölken" : k === "water" ? "Gör den tunnare" : k === "honey" && s.honey === false && !s.missing[k] ? "Avstängd i receptet" : k === "smp" && s.noSmp && !s.missing[k] ? "Avstängt i receptet" : "";
+      var note = k === "water" && s.missing.milk ? "I stället för mjölken" : k === "water" ? "Gör den tunnare" : k === "honey" && s.honey === false && !s.missing[k] ? "Avstängd i receptet" : k === "smp" && s.noSmp && !s.missing[k] ? "Avstängt i receptet" :
+        k === "keso" && n * it.stepG === 250 ? "1 burk à 250" + NB + "g" : k === "salt" ? "I stället för saltet i keson" : "";
       html += '<li class="row has-toggle' + (out ? " is-out" : "") + '"><span class="dot" style="--c:' + it.color + '"></span>' +
         '<span class="row-name">' + esc(nameOf(k)) + (note ? "<small>" + note + "</small>" : "") + "</span>" +
         '<span class="row-amt">' + (n ? shown(k, n) : "–") + (n && d && rec.plain[k] ? '<span class="delta">' + (d > 0 ? "+" : "−") + halves(Math.abs(d) * it.step) + NB + it.unit + "</span>" : "") + "</span>" + toggle + "</li>";
@@ -1128,13 +1149,14 @@ var SHAKE = (function () {
   function changed(s) {
     var k;
     for (k in s.missing) if (s.missing[k]) return true;
-    return s.size !== 3000 || s.thick !== 0 || s.honey === false || s.noSmp || s.milk15;
+    return s.size !== S.STANDARD || s.thick !== 0 || s.honey === false || s.noSmp || s.milk15;
   }
   function notesFor(rec, s) {
     var t = rec.totals, out = [], ca = Math.round(t.Ca / 10) * 10;
     if (rec.short) out.push("<b>Når " + kc(t.kcal) + " av " + kc(rec.target) + NB + "kcal.</b> Det som är slut gick inte att ersätta helt utan att shaken blir för tjock eller kalciumet för högt.");
     if (t.Ca >= 0.85 * S.CA_LIMIT) out.push("<b>Kalcium " + nf(ca, 0) + NB + "mg, nära maxgränsen " + nf(S.CA_LIMIT, 0) + ".</b> Inga kalciumtillskott och ingen extra mjölk vid sidan av." + (rec.steps.smp ? " Äter du mycket ost eller annat mejeri till middag: stäng av mjölkpulvret den dagen." : ""));
-    if (t.lactose >= 30 && rec.steps.smp) out.push("<b>Laktos ungefär " + nf(t.lactose, 0) + NB + "g</b>, det mesta från mjölkpulvret. Krånglar magen: stäng av mjölkpulvret.");
+    if (t.lactose >= 30 && rec.steps.smp) out.push("<b>Laktos ungefär " + nf(t.lactose, 0) + NB + "g</b>, från " + listOf(["mjölkpulvret"].concat(rec.steps.yog ? ["yoghurten"] : [], rec.steps.keso ? ["keson"] : [])) +
+      ". Krånglar magen: stäng av mjölkpulvret" + (rec.steps.keso ? " och ta laktosfri keso" : "") + ".");
     if (t.prot < 0.8 * rec.plainTotals.prot) out.push("<b>Protein " + nf(t.prot, 0) + NB + "g i dag</b>, mindre än de vanliga " + nf(rec.plainTotals.prot, 0) + ".");
     if (s.missing.oat) out.push("<b>Havregryn fungerar lika bra.</b> Mixa dem torra till mjöl först och låt havremjölet stå kvar i receptet.");
     return out;
@@ -1143,7 +1165,7 @@ var SHAKE = (function () {
     var s = state.settings, rec = S.build(s), t = rec.totals, html = "", day = state.day;
     if (day && day.date === today()) html += '<p class="alert"><span>Dagens shake är redan ' + (day.mixedAt ? "mixad" : "påbörjad") + ". Det du ändrar här gäller nästa.</span></p>";
     var thickSteps = Math.max(2, Math.round(S.volumeDl(rec.plain) / 9) * 2) / 2;
-    html += '<div class="block"><h2 class="h2">Storlek</h2>' + seg("size", s.size, [[2000, "2" + NB + "000"], [2500, "2" + NB + "500"], [3000, "3" + NB + "000"]], "Storlek") +
+    html += '<div class="block"><h2 class="h2">Storlek</h2>' + seg("size", s.size, [[2000, "2" + NB + "000"], [2500, "2" + NB + "500"], [2700, "2" + NB + "700"], [3000, "3" + NB + "000"]], "Storlek") +
       '<p class="hint">' + kc(rec.plainTotals.kcal) + NB + "kcal och " + nf(rec.plainTotals.prot, 0) + NB + "g protein, i " + COUNT[rec.glasses] + " glas." +
       (s.size === 3000 ? " Går vikten upp mer än ett kilo i veckan: kör 2" + NB + "000 varannan dag." : "") +
       (s.size !== 3000 ? " Långpass (mer än 10" + NB + "km): ta nästa storlek den dagen – löpningen tar annars energin som skulle bli muskler." : "") + "</p></div>";
@@ -1151,7 +1173,7 @@ var SHAKE = (function () {
       '<p class="hint">' + (s.thick === -1 ? halves(thickSteps) + NB + "dl vatten till. Samma kalorier." : s.thick === 1 ? halves(thickSteps) + NB + "dl mindre " + (s.missing.milk ? "vatten" : "mjölk") + ". Kalorierna hålls ungefär lika." : "Som i receptet.") + "</p></div>";
     html += '<div class="block switches">' +
       '<button type="button" class="switch" data-act="honey" aria-pressed="' + (s.honey !== false && !s.missing.honey) + '"><span><b>Honung</b><small>1 msk ger 17 g tillsatt socker. Av betyder noll.</small></span><span class="knob"></span></button>' +
-      '<button type="button" class="switch" data-act="smp" aria-pressed="' + (!s.noSmp && !s.missing.smp) + '"><span><b>Mjölkpulver</b><small>Av: 1 dl whey tar dess plats. Snällare mot magen och mycket mindre kalcium.</small></span><span class="knob"></span></button></div>';
+      '<button type="button" class="switch" data-act="smp" aria-pressed="' + (!s.noSmp && !s.missing.smp) + '"><span><b>Mjölkpulver</b><small>Av: ½ dl whey tar dess plats. Snällare mot magen och mindre kalcium.</small></span><span class="knob"></span></button></div>';
     html += '<div class="block"><h2 class="h2">Mjölk</h2>' + seg("milk", s.milk15 ? 1 : 0, [[0, "3" + NB + "%, röd"], [1, "1,5" + NB + "%, grön"]], "Vilken mjölk") +
       '<p class="hint">Laktosfri i båda fallen.' + (rec.steps.milk ? " Den gröna ger ungefär " + kc(S.grams(rec.steps, "milk") * 0.13) + NB + "kcal mindre om dagen." : "") + "</p></div>";
 
@@ -1205,7 +1227,7 @@ var SHAKE = (function () {
       html += "</div>";
     });
     html += '<p class="key"><span><i></i>shaken</span><span><i class="extra"></i>tillskotten</span><span><i class="need"></i>hela dagsbehovet</span></p>';
-    html += '<p class="hint">Dagsbehov enligt de nordiska näringsrekommendationerna 2023 för män 18–24 år. Värdena är standardvärden. Vasslen är räknad som en vanlig 80-vassle; havremjöl och yoghurt skiljer sig mellan märken.</p>';
+    html += '<p class="hint">Dagsbehov enligt de nordiska näringsrekommendationerna 2023 för män 18–24 år. Värdena är standardvärden. Vasslen är räknad som en vanlig 80-vassle; havremjöl och yoghurt skiljer sig mellan märken. Keson och apelsinjuicen är räknade efter förpackningen.</p>';
     $("view-nutrition").innerHTML = html;
   }
 
@@ -1216,7 +1238,8 @@ var SHAKE = (function () {
     S.ING.forEach(function (it) {
       var n = rec.steps[it.key] || 0, g = n * it.stepG * days, text;
       if (!n || !it.buy) return;
-      if (it.key === "milk") text = trim1(Math.ceil(n * it.step * days / 5 - 1e-9) / 2) + NB + "liter";
+      if (it.key === "milk" || it.key === "juice") text = trim1(Math.ceil(n * it.step * days / 5 - 1e-9) / 2) + NB + "liter";
+      else if (it.key === "keso") { var tubs = Math.ceil(g / 250 - 1e-9); text = tubs + NB + (tubs === 1 ? "burk" : "burkar") + " à 250" + NB + "g"; }
       else if (it.key === "banana") text = Math.ceil(n * it.step * days - 1e-9) + NB + "st";
       else if (it.key === "oil") text = halves(Math.ceil(g / 0.915 / 50 - 1e-9) / 2) + NB + "dl";
       else text = weight(g);
@@ -1243,7 +1266,8 @@ var SHAKE = (function () {
     html += '<div class="block"><button type="button" class="btn primary" data-act="copy">Kopiera listan</button>' +
       '<p class="status" id="shopStatus" role="status">' + (status || "") + "</p>" +
       '<p class="hint">Klistra in den under Handla i Dagsschema, eller var du vill.</p></div>';
-    html += '<p class="alert"><span><b>Bananerna:</b> köp dem mogna, skala och frys i halvor. Då håller de hela veckan, och shaken blir tjockare och kallare.</span></p>';
+    if (rec.steps.keso) html += '<p class="alert"><span><b>Keson:</b> naturell, 4' + NB + '%. Den finns också laktosfri, med samma näringsvärde.</span></p>';
+    if (rec.steps.juice) html += '<p class="alert"><span><b>Juicen:</b> ta en där det står 100' + NB + '% juice. Nektar och fruktdryck är utspädda och har oftast tillsatt socker eller sötningsmedel.</span></p>';
     $("view-shop").innerHTML = html;
   }
   function copy(text, done) {
@@ -1312,7 +1336,7 @@ var SHAKE = (function () {
       case "mixer": s.mixer = +v; save(); render(); return;
       case "milk": s.milk15 = v === "1"; save(); render(); return;
       case "grams": s.grams = v === "1"; save(); render(); return;
-      case "reset": s.size = 3000; s.thick = 0; s.honey = true; s.noSmp = false; s.milk15 = false; s.missing = {}; save(); render(); window.scrollTo(0, 0); return;
+      case "reset": s.size = S.STANDARD; s.thick = 0; s.honey = true; s.noSmp = false; s.milk15 = false; s.missing = {}; save(); render(); window.scrollTo(0, 0); return;
       case "per": state.perGlass = v === "1"; save(); render(); return;
       case "days": state.shop.days = Math.min(14, Math.max(1, state.shop.days + (+v))); save(); render(); return;
       case "have": if (state.shop.have[k]) delete state.shop.have[k]; else state.shop.have[k] = true; save(); render(); return;

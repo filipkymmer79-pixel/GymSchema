@@ -185,11 +185,23 @@ Fliken **Handla** är en egen lista för inköp, med samma format. Varor läggs 
 Dagens shake som app: https://filipkymmer79-pixel.github.io/GymSchema/shake/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*.
 
 - **Idag** visar receptet i lager i kannan och allt som ska tas fram. Tryck *Slut* på det som saknas, så räknas resten om. **Börja mixa** går igenom omgångarna steg för steg med timers, och efteråt bockas glasen av ett i taget.
-- **Recept** ställer in storlek (2 000, 2 500 eller 3 000 kcal), tjocklek, honung, mjölkpulver, mjölksort, mixerkannans storlek och mått eller gram.
+- **Recept** ställer in storlek (2 000, 2 500, 2 700 eller 3 000 kcal – 2 700 är grundreceptet), tjocklek, honung, mjölkpulver, mjölksort, mixerkannans storlek och mått eller gram.
 - **Näring** visar näringsvärdet och hur stor del av dagsbehovet som shaken och tillskotten täcker.
 - **Handla** räknar ut vad som går åt för 1–14 dagar. **Kopiera listan** ger en lista som går att klistra in under Handla i Dagsschema.
 
-Allt sparas bara på telefonen. Näringsvärdena är standardvärden per 100 g (Livsmedelsverket och USDA), och dagsbehoven kommer från de nordiska näringsrekommendationerna 2023. Vasslen är Star Nutrition Whey-80 Naturell och mäts i dl (37 g per dl enligt påsen): 1½ dl i 3 000, 1 dl i 2 500 och 2 000. Typsnittet är Sofia Sans, under SIL Open Font License (`shake/fonts/LICENSE.txt`).
+Allt sparas bara på telefonen. Näringsvärdena är standardvärden per 100 g (Livsmedelsverket och USDA), och dagsbehoven kommer från de nordiska näringsrekommendationerna 2023. Vasslen är Star Nutrition Whey-80 Naturell och mäts i dl (37 g per dl enligt påsen): 1 dl i alla storlekar. Keson är räknad efter förpackningen (Keso 4 %: 93 kcal, 13 g protein och 0,82 g salt per 100 g) med vitaminer och mineraler från Livsmedelsverket, och apelsinjuicen efter förpackningen (45 kcal och 28 mg C-vitamin per 100 g). Typsnittet är Sofia Sans, under SIL Open Font License (`shake/fonts/LICENSE.txt`).
+
+### Receptet sedan 15 november 2026
+
+- **2 700 kcal är grundreceptet** – samma siffra som GymSchema räknar shaken som under Mat: 2 704 kcal, 133 g protein, ca 16 dl i fyra glas (två omgångar i en mixer på 1,5 liter). En telefon som hade den gamla versionen flyttas en gång till 2 700. Övriga val ligger kvar, och en shake som redan är påbörjad eller mixad följer sitt gamla recept.
+- **Bananen är borta** ur alla storlekar. I stället är det **keso** (cottage cheese 4 %; 2½ dl = en burk à 250 g, 2 dl i 2 000) och **1 dl apelsinjuice**.
+- Keson ger 32 g protein. Därför är mjölkpulvret halverat till 4 msk och vasslen 1 dl i alla storlekar: proteinet ligger kvar runt 5 g per 100 kcal, kalciumet gick från ca 2 300 till ca 1 650 mg (kalciumvarningen visas inte längre på grundreceptet) och laktosen från ca 47 till ca 34 g. Stänger man av mjölkpulvret tar ½ dl whey dess plats.
+- **Inget salt i receptet**, eftersom keson är saltad. Är keson *Slut* kommer saltet (1 krm) tillbaka av sig självt och resten räknas om som vanligt. Keso och juice skruvas aldrig upp för att fylla ut kalorier.
+- Keson går i med yoghurten, och sista mixningen säger att kesokornen ska vara helt borta. Juicen går i med bären, hela decilitern i första omgången.
+- C-vitaminet täcktes redan av vinbären (ca 115 mg, hela dagsbehovet); juicen lyfter det till ca 145 mg. Utan bananen täcker shaken ca 50 % av B6 (3 000 med banan låg på ca 110 %) och 94 % av kaliumet – resten kommer från maten.
+- De fyra storlekarna ger 2 010, 2 500, 2 700 och 3 000 kcal med 100, 125, 133 och 146 g protein.
+- Handla räknar keso i burkar à 250 g och juice i liter, och rådet om att frysa bananer är bytt mot råd om keso (finns laktosfri) och juice (100 % juice, inte nektar).
+- Kontrollerat med uträkning för alla storlekar, inställningar och varje ingrediens som slut (6 624 kombinationer), och i Chromium på 320, 390 och 430 px: alla flikar, hela mixningen, glasen, flytten från den gamla versionen och en shake som påbörjats i den gamla. Inte provat på en riktig iPhone.
 
 ## Telefon-AI-planen
 
