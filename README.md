@@ -17,6 +17,10 @@ Filips gymschema – program 2.1. Öppna https://filipkymmer79-pixel.github.io/G
 - Licenser: `vendor/archivo-OFL.txt` och `vendor/bigshoulders-OFL.txt` (SIL Open Font License), `vendor/phosphor-LICENSE.txt` (MIT).
 - Kontrollerat i Chromium i ljust och mörkt läge på 320, 390 och 430 px, alla flikar och blad. Inte provat på en riktig iPhone.
 
+### Nya versioner kommer av sig själva
+
+En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt. Sedan 15 november 2026 frågar appen därför efter `version.json` varje gång den tas fram. Finns en nyare version laddar den om sig själv och visar *Uppdaterad ✓* – men bara just när appen tas fram och inget pågår: inte medan vilotimern går, ett blad eller en guide är öppen, boxningen är i gång eller man skriver. Det sker högst en gång per version, så det kan inte bli en slinga, och bockade set ligger kvar efteråt. Första gången behöver appen stängas helt en gång (svep bort den i appväxlaren) för att den här funktionen ska komma in.
+
 ### Programmet
 
 Överkroppen först, benen korta och tunga. **Över** onsdag och lördag (chins, hantelbänkpress, kabelrodd, axelpress, sidolyft, hantelshrugs, bicepscurl, face pulls). **Ben + över** torsdag och söndag: benpress, vadpress (i benpressen direkt efter), hip thrust och rumänska marklyft, sedan lutande hantelpress, sidolyft, triceps över huvudet med rep i kabel och bicepscurl, sist plankan och dead bug. Tisdagen är löpdag: lugn jogg till en backe, Starka ben, backhopp och sprint, och lugn jogg hem (se *Atletprogrammet* nedan). Måndag och fredag är vilodagar från gymmet. Upphoppen i uppvärmningen före benen togs bort 14 november 2026 – spänsten i Atletprogrammet ersätter dem. Högst upp i appen syns hela veckan, måndag till söndag: gympassen (Ö1, B1, Ö2, B2), *Löp* på tisdagen och *Vila · hållning* på måndag och fredag. Gympassen bockas när de sparas, vilodagen när hållningen är avbockad under **Vanor** och tisdagen när löprundan finns (från klockan eller avbockad under Vanor). Varje övning har bild, steg för steg, vanliga fel och video under **Program**.

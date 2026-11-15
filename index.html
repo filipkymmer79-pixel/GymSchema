@@ -8306,8 +8306,44 @@ try {
   ikScan(document.body);
 } catch(e){}
 
+
+/* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
+// En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
+// När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
+// och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
+const UPD_TS = 202611150934, UPD_KEY = "gymschema.upd";
+let updAt = 0, updWant = 0, updTouch = 0;
+function updBusy(){
+  if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
+  if (Array.from(document.querySelectorAll(".sheet,.scan,.guide,.boxrun,.at-view")).some(e => e.getClientRects().length)) return true;
+  const a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return true;
+  return Date.now() - updTouch < 5000;
+}
+function updApply(){
+  if (!updWant || document.visibilityState !== "visible") return;
+  let tried = ""; try { tried = sessionStorage.getItem(UPD_KEY) || ""; } catch(e){ return; }   // går försöket inte att minnas laddas inget om
+  if (tried === String(updWant) || updBusy()) return;                                          // pågår något: nästa gång appen tas fram
+  try { sessionStorage.setItem(UPD_KEY, String(updWant)); } catch(e){ return; }
+  location.reload();
+}
+async function updCheck(){
+  if (document.visibilityState !== "visible") return;
+  if (updWant){ updApply(); return; }
+  if (Date.now() - updAt < 60000) return;
+  updAt = Date.now();
+  try {
+    const r = await fetch("version.json", {cache: "no-store"}); if (!r.ok) return;
+    const j = await r.json(); if (!j || !(j.ts > UPD_TS)) return;
+    updWant = j.ts; updApply();
+  } catch(e){}
+}
+document.addEventListener("pointerdown", () => { updTouch = Date.now(); }, {passive: true, capture: true});
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") updCheck(); });
+window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
+setTimeout(updCheck, 4000);
+
 /* ---------- Start ---------- */
-const BUILD = "15 nov 09.00", BUILD_NOTE = "Ny design i hela appen: svart huvud, ljusa paneler och ikoner";
+const BUILD = "15 nov 09.34", BUILD_NOTE = "Ny design i hela appen: svart huvud, ljusa paneler och ikoner";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
