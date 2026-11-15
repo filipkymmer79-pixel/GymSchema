@@ -1,4 +1,4 @@
-<!doctype html><html lang="sv"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>GymSchema</title>
+<!doctype html><html lang="sv" data-theme="dark"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>GymSchema</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="GymSchema">
@@ -1975,15 +1975,342 @@ a,summary,label,[role="button"]{touch-action:manipulation}
 .ik-sneaker{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M255.8,162.93l0-.31A43.94,43.94,0,0,0,226,125.36l-56.62-20.2-.24-.09a20,20,0,0,1-11.92-10.78L134.06,40l-.06-.16A20.06,20.06,0,0,0,108.89,29.2L33.17,56.73A20.07,20.07,0,0,0,20,75.53V192a20,20,0,0,0,20,20H236a20,20,0,0,0,20-20V167.06C256,165.67,255.93,164.3,255.8,162.93ZM113.53,53.05l6,14L103.9,72.72a12,12,0,1,0,8.2,22.55L129,89.14l4.54,10.63-13.6,5A12,12,0,0,0,124,128a11.79,11.79,0,0,0,4.1-.73l19.57-7.11a43.86,43.86,0,0,0,13.8,7.64L218.09,148l.23.08a19.89,19.89,0,0,1,6.84,3.91H44V78.33ZM44,188V176H232v12Z'/%3E%3C/svg%3E")}
 .ik-wind{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M24,104a12,12,0,0,1,0-24h96a12,12,0,0,0,0-24,15.07,15.07,0,0,0-10.26,4.45,12,12,0,0,1-17-16.9A39.34,39.34,0,0,1,120,32a36,36,0,0,1,0,72ZM208,68a39.34,39.34,0,0,0-27.3,11.55,12,12,0,0,0,17,16.9A15.07,15.07,0,0,1,208,92a12,12,0,0,1,0,24H32a12,12,0,0,0,0,24H208a36,36,0,0,0,0-72Zm-56,84H40a12,12,0,0,0,0,24H152a12,12,0,0,1,0,24,15.11,15.11,0,0,1-10.27-4.45,12,12,0,1,0-17,16.9A39.34,39.34,0,0,0,152,224a36,36,0,0,0,0-72Z'/%3E%3C/svg%3E")}
 .ik-flashlight{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M184,12H72A20,20,0,0,0,52,32V77.33a20.12,20.12,0,0,0,4,12L76,116V224a20,20,0,0,0,20,20h64a20,20,0,0,0,20-20V116l20-26.67a20.12,20.12,0,0,0,4-12V32A20,20,0,0,0,184,12Zm-4,24V52H76V36Zm-20,66.67a20.12,20.12,0,0,0-4,12V220H100V114.67a20.12,20.12,0,0,0-4-12L76,76H180ZM140,120v32a12,12,0,0,1-24,0V120a12,12,0,0,1,24,0Z'/%3E%3C/svg%3E")}
+
+/* ================= Ringen (15 nov 2026) =================
+   Helt ny form på appen. Alltid svart (html har data-theme="dark"). Högst upp på varje flik: datum, flikens rubrik och en stor ring
+   som visar det viktigaste just nu (ringen.js). Veckan är sju ringar under ringen på Pass. Flikraden svävar längst ner.
+   Färgen kommer från viktskivorna: dagens pass ger dagens färg (--c) åt ringen och den stora knappen.
+   Filen läggs efter redesign.css och tar över huvudet, flikraden, korten och bladen. Ingen funktion ändras här. */
+
+:root[data-theme="dark"]{
+  --atl:#45D7E8; --on-atl:#03191C;
+  --card:#121316; --hair:rgba(255,255,255,.07); --track:#26282D;
+  --r:26px;
+  --tabs-h:64px; --tabs-b:max(12px,calc(env(safe-area-inset-bottom,0px) - 8px));
+  --float:0 14px 34px rgba(0,0,0,.6);
+  --surface:var(--card);
+}
+html,body{background:#000}
+.app{padding-bottom:calc(var(--tabs-h) + var(--tabs-b) + 28px)}
+body.timer-on .app{padding-bottom:calc(var(--tabs-h) + var(--tabs-b) + 112px)}
+
+/* ---------- Huvudet: datum, rubrik, ring ---------- */
+.top{position:static;background:transparent;margin:0;padding:8px 2px 0;box-shadow:none;clip-path:none;border:0;color:var(--ink)}
+.top::after{display:none}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:36px}
+.logo,.wk{display:none}
+.rg-date{font-size:13.5px;font-weight:600;color:var(--muted);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand .gu-btn{width:36px;height:36px;border-radius:50%;background:#1A1B1E;color:var(--ink);font-weight:800;font-size:16px;flex:0 0 auto;margin:0}
+.rg-title{margin:2px 0 0;font-family:var(--body);font-stretch:116%;font-weight:800;font-size:33px;line-height:1.05;letter-spacing:-.03em;text-wrap:balance;overflow-wrap:anywhere}
+.rg-title.long{font-size:28px}
+#rgHero{margin-top:14px}
+
+.rg-hero{background:var(--card);border-radius:30px;padding:18px 18px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;align-items:center;box-shadow:inset 0 0 0 1px var(--hair)}
+.rg-rw{position:relative;line-height:0}
+.rg-svg{display:block}
+.rg-tr{fill:none;stroke:var(--track)}
+.rg-arc{fill:none;stroke-linecap:round}
+.rg-in{position:absolute;inset:0;display:grid;place-items:center;text-align:center;line-height:1}
+.rg-in b{display:block;font-stretch:66%;font-weight:800;font-size:30px;line-height:1;letter-spacing:0}
+.rg-in small{display:block;margin-top:3px;font-size:11px;font-weight:600;color:var(--muted)}
+.rg-in .ik{width:34px;height:34px;color:var(--c)}
+.rg-st{display:grid;gap:11px;min-width:0}
+.rg-st b{display:block;font-stretch:66%;font-weight:800;font-size:27px;line-height:1}
+.rg-st small{display:block;margin-top:2px;font-size:12px;font-weight:600;color:var(--muted);line-height:1.25}
+.rg-st .k1 b{color:var(--c)}
+.rg-st .k2 b{color:var(--atl)}
+.rg-cta{grid-column:1 / -1;margin-top:10px;height:56px;border:0;border-radius:28px;background:var(--c);color:var(--onc);font-weight:800;font-size:17px;letter-spacing:-.01em;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s ease}
+.rg-cta:active{transform:scale(.975)}
+.rg-cta .ikw{display:flex;align-items:center;gap:8px}
+
+/* ---------- Veckan: sju ringar (bara på Pass) ---------- */
+.strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0;margin-top:14px}
+:root:not([data-view="pass"]) .strip{display:none}
+.strip .day{display:grid;justify-items:center;align-content:start;gap:5px;padding:8px 0 9px;border-radius:16px;background:transparent;border:0;opacity:1}
+.strip .day.today{background:#16171A}
+.strip .day-d{font-size:11px;font-weight:600;color:var(--faint);line-height:1}
+.strip .day-s{font-stretch:66%;font-weight:800;font-size:15px;line-height:1;color:#A3A8B1}
+.strip .day.today .day-d,.strip .day.today .day-s{color:var(--ink)}
+.strip .plate{width:30px;height:30px;border:0;background:none;display:block;border-radius:0;line-height:0}
+.strip .plate::after,.strip .day.done .plate::after{display:none}
+.strip .day.done .plate{background:none}
+.strip .day-x{font-size:9.5px;font-weight:600;color:var(--faint);margin-top:-2px}
+.strip .day.skip{opacity:.35}
+
+/* ---------- Flikraden svävar ---------- */
+.tabs{left:14px;right:14px;bottom:var(--tabs-b);height:var(--tabs-h);max-width:532px;margin-inline:auto;padding:0 8px;border:1px solid rgba(255,255,255,.09);border-radius:32px;background:rgba(28,29,33,.86);-webkit-backdrop-filter:saturate(1.8) blur(22px);backdrop-filter:saturate(1.8) blur(22px);box-shadow:var(--float)}
+.tabs-in{height:100%;max-width:none;align-items:center}
+.tab{display:grid;justify-items:center;gap:2px;padding:6px 0;font-size:9.5px;font-weight:600;color:#6B707A}
+.tab svg{display:none}
+.tab::before{content:"";width:23px;height:23px;background:currentColor;-webkit-mask:var(--i) center/contain no-repeat;mask:var(--i) center/contain no-repeat;transition:transform .12s ease}
+.tab[aria-current="page"]{color:var(--ink);font-weight:600}
+.tab[aria-current="page"]::before{-webkit-mask-image:var(--if);mask-image:var(--if)}
+.tab:active::before{transform:scale(.88)}
+#t-pass{--i:var(--tab-pass);--if:var(--tab-pass-f)}
+#t-vanor{--i:var(--tab-vanor);--if:var(--tab-vanor-f)}
+#t-boxning{--i:var(--tab-boxning);--if:var(--tab-boxning-f)}
+#t-framsteg{--i:var(--tab-framsteg);--if:var(--tab-framsteg-f)}
+#t-vikt{--i:var(--tab-vikt);--if:var(--tab-vikt-f)}
+#t-historik{--i:var(--tab-historik);--if:var(--tab-historik-f)}
+#t-program{--i:var(--tab-program);--if:var(--tab-program-f)}
+
+/* ---------- Det som svävar ovanför flikraden ---------- */
+.timer{bottom:calc(var(--tabs-h) + var(--tabs-b) + 10px);background:rgba(34,36,41,.92);color:var(--ink);-webkit-backdrop-filter:saturate(1.8) blur(22px);backdrop-filter:saturate(1.8) blur(22px);border:1px solid rgba(255,255,255,.1);border-radius:28px}
+
+/* ---------- Vyerna ---------- */
+.view{gap:12px;padding-top:16px}
+.card,.ex,.rcard,.hcard,.gcard{box-shadow:inset 0 0 0 1px var(--hair)}
+
+@media (max-width:360px){
+  .rg-hero{padding:16px 14px 14px;gap:6px 14px}
+  .rg-title{font-size:29px}
+  .rg-title.long{font-size:25px}
+  .rg-st b{font-size:24px}
+  .tabs{left:8px;right:8px;padding:0 4px}
+}
+
+/* ================= Pass ================= */
+/* Ordningen: gardinen (en knapp man trycker på varje dag) och klockans siffror direkt under veckan, sedan dagens block,
+   sedan själva passet. Är klockan inte kopplad är Garmin-rutan bara ett erbjudande – då står den efter dagens block. */
+#v-pass > *{order:3}
+#v-pass > .banner,#v-pass > .wx-card{order:0}
+#v-pass > .gm-card,#v-pass > .hem{order:1}
+#v-pass > .at-card{order:2}
+#v-pass > .gm-card:has(.gm-x){order:3}
+#v-pass > .donecard{order:0}
+
+/* Atlet i dag: en lista i ett kort i stället för kort i kort */
+.at-card{background:transparent;box-shadow:none;padding:0;border-radius:0;gap:10px;margin-top:4px}
+.at-card .at-top{padding:0 4px}
+.at-card .at-top .lead{font-size:12.5px;font-weight:600;color:var(--muted)}
+.at-card .at-h{font-size:20px}
+.at-card > .at-bar{height:4px;margin:0 4px;background:var(--track)}
+.at-card > .at-bar i{background:var(--atl)}
+.at-card .at-blocks{background:var(--card);border-radius:24px;box-shadow:inset 0 0 0 1px var(--hair);padding:2px 16px;gap:0}
+.at-card .at-blk{background:transparent;border-width:0;border-radius:0;padding:14px 0;gap:10px;box-shadow:0 -1px 0 var(--hair)}
+.at-card .at-blk:first-child{box-shadow:none}
+.at-card .at-blk::before{display:none}
+.at-card .at-blk *{--surface:var(--p1);--surface2:var(--f1);--fig-bg:var(--p1)}
+.at-card .at-bh{grid-template-columns:28px minmax(0,1fr) auto auto;gap:12px}
+.at-card div.at-bh{grid-template-columns:28px minmax(0,1fr)}
+.at-card .at-num{width:28px;height:28px;background:transparent;box-shadow:inset 0 0 0 2px #3A3D45;color:var(--muted);font-size:14px}
+.at-card .at-blk.alldone .at-num{background:var(--good);box-shadow:none;color:#03150A}
+.at-card .at-blk:nth-child(1 of :not(.alldone)) .at-num{background:var(--day);box-shadow:none;color:var(--on-day)}
+.at-card .at-blk:nth-child(1 of :not(.alldone)) .at-bt b{color:var(--day)}
+.at-card .at-blk.alldone .at-bt b{color:var(--muted)}
+.at-card .at-bt b{font-size:16px}
+.at-card .at-bt small{display:flex;align-items:center;gap:6px}
+.at-card .at-bt small::before{content:"";flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:var(--c)}
+.at-card .at-foot,.at-card > .exlink,.at-card > .gt-line{margin-inline:4px}
+
+/* Passets rubrik: en rubrik bland andra – namnet står redan högst upp */
+.sess-head{margin-top:10px;padding:0 4px}
+.sess-head .lead{font-size:12.5px;font-weight:600}
+.sess-head .h2{font-stretch:normal;font-weight:700;font-size:20px;letter-spacing:-.015em;margin:0}
+.picker{background:var(--card);box-shadow:inset 0 0 0 1px var(--hair);border-radius:22px;padding:5px;order:3}
+.pick{border-radius:17px}
+
+/* Kör passet: dagens färg, som knappen i ringen */
+.btn.fk-go{background:var(--pc);color:var(--on-pc);font-weight:800}
+
+/* Övningen: en ring runt räknaren, runda bockar i passets färg */
+.ex{padding:18px 16px 14px;transition:box-shadow .25s}
+.ex-h{align-items:center}
+.ex .count{flex:0 0 auto;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:16px;color:var(--muted);position:relative;isolation:isolate;
+  background:conic-gradient(var(--pc) calc(var(--p,0) * 1turn),var(--track) 0)}
+.ex .count::before{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--card);z-index:-1}
+.ex .count.full{color:var(--pc)}
+.ex.full{background:var(--card);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--pc) 55%,transparent)}
+.ex.full .ex-n{color:var(--ink)}
+.set.done,.ex.full .set.done{background:color-mix(in srgb,var(--pc) 10%,transparent)}
+.chk{width:44px;height:44px;border-radius:50%;background:transparent;box-shadow:inset 0 0 0 2px #3A3D45;color:#555962}
+.set.done .chk{background:var(--pc);box-shadow:none;color:var(--on-pc)}
+.sugg.up{background:color-mix(in srgb,var(--good) 16%,transparent)}
+
+/* Spara: räknaren i passets färg */
+.savebar .sum-a{color:var(--pc)}
+
+/* ================= Ringarna på övriga flikar ================= */
+.rg-sg{fill:none;stroke-linecap:butt}
+.rg-st .c-red b{color:var(--red)}
+.rg-st .c-green b{color:var(--green)}
+.rg-st .c-blue b{color:var(--blue)}
+.rg-3 .rg-in b{font-size:19px}
+.rg-3 .rg-in small{font-size:10px;margin-top:2px}
+.rg-dup{display:none!important}
+/* Flikens namn står i huvudet – samma rubrik en gång till i fliken behövs inte */
+#v-boxning > div:first-child:not([class]),#v-framsteg > div:first-child:not([class]),#v-historik > div:first-child:not([class]){display:none}
+/* I en flik är ringen ett kort bland de andra (Kropp: under valet Vikt/Mat) */
+.view > .rg-hero{margin:2px 0}
+
+/* Historik: åtta veckor */
+.rg-hist{display:block;padding:18px 14px 14px}
+.rg-hh{display:flex;gap:28px;padding:0 4px}
+.rg-hh b{display:block;font-stretch:66%;font-weight:800;font-size:30px;line-height:1}
+.rg-hh small{display:block;margin-top:3px;font-size:12px;font-weight:600;color:var(--muted)}
+.rg-weeks{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));margin-top:16px}
+.rg-wk{display:grid;justify-items:center;gap:4px;padding:8px 0 7px;border-radius:14px;min-width:0}
+.rg-wk.now{background:#1B1C20}
+.rg-wk .rg-svg{grid-area:1 / 1;width:min(34px,100%);height:auto}
+.rg-wk b{grid-area:1 / 1;align-self:center;font-stretch:66%;font-weight:800;font-size:13px;line-height:1;color:var(--muted)}
+.rg-wk.now b{color:var(--ink)}
+.rg-wk small{font-size:10.5px;font-weight:600;color:var(--faint)}
+.rg-wk.now small{color:var(--ink)}
+.rg-cap{display:block;margin:10px 4px 0;font-size:12px;color:var(--faint);line-height:1.35}
+
+/* Vanor: ringen säger dagens siffror; raden under är veckan som ringar. Vanorna först, nivån efter. */
+#v-vanor > *{order:5}
+#v-vanor > .hhead{order:1;padding:0 4px;margin-top:6px}
+#v-vanor > .hhead + .card{order:2;padding:12px 8px 10px}
+#v-vanor > .hlist{order:3}
+#v-vanor > .hhead .h2{font-stretch:normal;font-weight:700;font-size:20px;letter-spacing:-.015em;margin:0}
+#v-vanor > .hhead .lead{font-size:12.5px;font-weight:600}
+#v-vanor .hsum{display:none}
+.hweek{margin:0;padding:0;border:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0}
+.hw{display:grid;justify-items:center;gap:5px;padding:7px 0 6px;border-radius:14px;position:relative}
+.hw.cur{background:#1F2125}
+.hw .rg-svg{grid-area:1 / 1}
+.hw i{grid-area:1 / 1;width:38px;height:38px;border:0!important;background:transparent!important;display:grid;place-items:center;font-style:normal;font-stretch:66%;font-weight:800;font-size:14px;color:var(--muted);box-shadow:none}
+.hw i.full{color:var(--green)}
+.hw.cur i{color:var(--ink)}
+.hw span{font-size:11px;font-weight:600;color:var(--faint)}
+.hw.cur span{color:var(--ink)}
+
+/* Kropp: ringen säger siffrorna – raden med samma siffror i kortet under behövs inte */
+#v-vikt > .card > .stats:first-child{display:none}
+#v-vikt > .card > .stats:first-child + div{margin-top:0!important}
+#v-vikt #kcCard .fd-big{display:none}
+#v-vikt > div:not([class]) .h2,#v-vikt .fd-head .h2{font-stretch:normal;font-weight:700;font-size:20px;letter-spacing:-.015em;margin:0}
+
+/* Boxning: knappen står i ringen */
+#v-boxning .bxgo{display:none}
+/* Historik: passen först, backupen sist */
+#v-historik > .card{order:9}
+/* Program: flikens egen rubrik är en rubrik bland andra */
+#v-program .h2{font-stretch:normal;font-weight:700;font-size:20px;letter-spacing:-.015em}
+
+/* ================= Det som pågår: vila, guide, boxning ================= */
+/* Vilan på Pass: liten ring i passets färg */
+.ring .bgc{stroke:var(--track)}
+.ring .fgc{stroke:var(--pc)}
+.timer .tb{background:rgba(255,255,255,.1);color:var(--ink)}
+.timer.go{background:var(--pc);color:var(--on-pc);border-color:transparent}
+.timer.go .tb{background:rgba(0,0,0,.14);color:var(--on-pc)}
+/* Kör passet: stapeln och knappen i passets färg, vilan som en stor ring */
+.fk-prog{background:var(--track)}
+.fk-prog i{background:var(--pc)}
+.btn.fk-ok{background:var(--pc);color:var(--on-pc);font-weight:800}
+.fk-rest{padding:18px 0 6px;gap:14px}
+.rg-rest{position:relative;width:min(240px,64vw);aspect-ratio:1}
+.rg-rest .rg-svg{width:100%;height:100%}
+.rg-rarc{fill:none;stroke:var(--pc);stroke-linecap:round}
+.rg-rin{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:2px;text-align:center}
+.rg-rest .fk-clock{font-size:clamp(58px,19vw,76px)}
+.rg-rest .fk-rl{max-width:150px;font-size:13px;font-weight:600}
+/* Guiden (uppvärmning, mage, stretch) */
+.g-ring .bgc{stroke:var(--track)}
+.g-ring .fgc{stroke:var(--pc)}
+/* Boxningen: svart, och ronden är en ring – röd när du kör, blå när du vilar */
+.boxrun,.boxrun.round,.boxrun.round.end10,.boxrun.rest,.boxrun.done{background:#000}
+.boxrun{--bx:var(--ink)}
+.boxrun.round{--bx:var(--red)}
+.boxrun.round.end10{--bx:var(--run)}
+.boxrun.rest{--bx:var(--blue)}
+.boxrun.done{--bx:var(--green)}
+.rg-bx{position:relative;width:min(300px,78vw);aspect-ratio:1}
+.rg-bx .rg-svg{width:100%;height:100%}
+.rg-btr{fill:none;stroke:#1E2024}
+.rg-barc{fill:none;stroke:var(--bx);stroke-linecap:round;transition:stroke-dasharray .2s linear,stroke .3s ease}
+.rg-bin{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:4px}
+.rg-bx .bx-phase{font-size:clamp(20px,6vw,26px);color:var(--bx);transition:color .3s ease}
+.rg-bx .bx-time{font-size:clamp(72px,24vw,104px);line-height:.95}
+.boxrun .bx-bar{display:none}
+.bx-btns button{border-radius:999px;background:#1E2024}
+.bx-btns button.solid{background:var(--ink);color:#000}
+
+/* ================= Omgång 2: listor i stället för kort i rad, runda bockar ================= */
+/* Rubriker i flikarna är rubriker bland andra – flikens namn står högst upp */
+.view .h2{font-stretch:normal;font-weight:700;font-size:20px;line-height:1.2;letter-spacing:-.015em}
+.view .ghead .h2,.view .at-h2{font-size:22px}
+
+/* Sparat pass: ringen är hel, siffrorna står bredvid den */
+#v-pass .donecard > .stats{display:none}
+.rg-done .rg-in small{color:var(--c)}
+
+/* Vanor: en lista, runda bockar */
+.hlist{background:var(--card);border-radius:24px;box-shadow:inset 0 0 0 1px var(--hair);gap:0;overflow:hidden}
+.hrow{background:transparent;border-radius:0;box-shadow:none;padding:14px 16px 14px 14px;grid-template-columns:36px minmax(0,1fr);gap:14px;position:relative}
+.hrow + .hrow,.hx + .hrow{box-shadow:0 -1px 0 var(--hair)}
+.hrow[aria-pressed="true"]{background:transparent}
+.hrow[aria-pressed="true"] .ht b{color:var(--muted)}
+.hchk{width:36px;height:36px;border-radius:50%;border:0;background:transparent;box-shadow:inset 0 0 0 2px #3A3D45;font-size:17px}
+.hrow[aria-pressed="true"] .hchk{background:var(--green);box-shadow:none;color:#03150A}
+.hrow.auto .hchk{box-shadow:none;border:2px dashed #4A4E57}
+.hrow.auto[aria-pressed="true"] .hchk{border:0}
+.hx{margin:-2px 14px 14px 64px;padding:12px 14px;border-radius:16px;background:var(--p1);box-shadow:none}
+.su-it .hchk{width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #4A4E57;border:0}
+.su-it[aria-pressed="true"] .hchk{background:var(--green);box-shadow:none;color:#03150A}
+.hw.cur i{box-shadow:none}
+
+/* Framsteg: rådet i veckokollen är en mörk ruta med färgad ikon */
+.vk-tip{background:var(--p1);color:var(--ink);border-radius:18px;padding:14px}
+.vk-tip > span{color:var(--day)}
+.vk-tip small{opacity:1;color:var(--muted);font-weight:600}
+.vk-tip p{opacity:1;color:var(--muted)}
+
+/* Historik: en lista; passets kod står i en ring i passets färg */
+.hist{background:var(--card);border-radius:24px;box-shadow:inset 0 0 0 1px var(--hair);gap:0;overflow:hidden}
+.hcard{background:transparent;border-radius:0;box-shadow:none}
+.hcard + .hcard{box-shadow:0 -1px 0 var(--hair)}
+.hcard > button{padding:14px 16px}
+.badge{background:transparent;box-shadow:inset 0 0 0 3.5px var(--c);color:var(--ink);font-size:15px;width:42px;height:42px}
+.hbody{padding:0 16px 16px}
+
+/* Guiden: fasen och prickarna i passets färg */
+.g-phase{color:var(--pc)}
+.g-dots i.ok{background:var(--pc)}
+
+/* Program: passets delar som en ring med förklaring */
+.rg-prog .rg-leg{display:grid;gap:2px;min-width:0}
+.rg-go{all:unset;box-sizing:border-box;display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:9px;align-items:center;min-height:36px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rg-go i{width:10px;height:10px;border-radius:50%}
+.rg-go span{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rg-go b{font-stretch:66%;font-weight:800;font-size:17px;color:var(--muted)}
+.rg-go:active{opacity:.6}
+.rg-go:focus-visible{outline:2.5px solid var(--ink);outline-offset:2px;border-radius:10px}
+
+/* ================= Omgång 3: småsaker ================= */
+/* Atlet: tomma bildrutor (innan klippen är importerade) är lugna brickor, bockarna är ringar */
+.at-th{background:var(--p1)}
+img.at-th:not(.has){color:transparent}
+.at-chk{border:0;box-shadow:inset 0 0 0 2px #3A3D45;color:transparent}
+.at-chk[aria-pressed="true"]{background:var(--good);box-shadow:none;color:#03150A}
+.at-card .at-imp,.at-imp{border-radius:20px}
+
+/* Rutor som säger till om något (flytta pass, importera klipp): lugn mörk ruta, färgen sitter i ikonen */
+.banner,.at-imp{background:var(--card);box-shadow:inset 0 0 0 1px var(--hair);border-radius:20px}
+.banner.info{background:var(--card)}
+.banner > .ik:first-child,.banner > gs-w:first-child > .ik,.at-imp > span:first-child{color:var(--warn)}
+.banner.info > .ik:first-child,.banner.info > gs-w:first-child > .ik{color:var(--day)}
+.at-card .at-imp{background:var(--card)}
+.rg-cta:focus-visible{outline:2.5px solid var(--ink);outline-offset:3px}
+@media (max-width:360px){.tab{font-size:9px;letter-spacing:-.015em}}
+/* En vilo- eller löpdag är den stora ringen Atlet i dag – då har strecket under rubriken samma färg som ringen */
+:root[data-hero="vila"] .at-card > .at-bar i{background:var(--day)}
+/* En bildruta utan bild (klippen inte importerade än) ritas som en lugn bricka – inte som en trasig bild med ram */
+img.at-th:not([src]){content:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E")}
+#rgHero{border-radius:30px}
+
+:root{--tab-pass:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M244,116V88a20,20,0,0,0-20-20H208V64a20,20,0,0,0-20-20H164a20,20,0,0,0-20,20v52H112V64A20,20,0,0,0,92,44H68A20,20,0,0,0,48,64v4H32A20,20,0,0,0,12,88v28a12,12,0,0,0,0,24v28a20,20,0,0,0,20,20H48v4a20,20,0,0,0,20,20H92a20,20,0,0,0,20-20V140h32v52a20,20,0,0,0,20,20h24a20,20,0,0,0,20-20v-4h16a20,20,0,0,0,20-20V140a12,12,0,0,0,0-24ZM36,164V92H48v72Zm52,24H72V68H88Zm96,0H168V68h16Zm36-24H208V92h12Z'/%3E%3C/svg%3E");--tab-pass-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M200,64V192a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V136H104v56a16,16,0,0,1-16,16H72a16,16,0,0,1-16-16V64A16,16,0,0,1,72,48H88a16,16,0,0,1,16,16v56h48V64a16,16,0,0,1,16-16h16A16,16,0,0,1,200,64ZM36,72H32A16,16,0,0,0,16,88v32H8.27A8.18,8.18,0,0,0,0,127.47,8,8,0,0,0,8,136h8v32a16,16,0,0,0,16,16h4a4,4,0,0,0,4-4V76A4,4,0,0,0,36,72Zm220,55.47a8.18,8.18,0,0,0-8.25-7.47H240V88a16,16,0,0,0-16-16h-4a4,4,0,0,0-4,4V180a4,4,0,0,0,4,4h4a16,16,0,0,0,16-16V136h8A8,8,0,0,0,256,127.47Z'/%3E%3C/svg%3E");--tab-vanor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M228,128a12,12,0,0,1-12,12H128a12,12,0,0,1,0-24h88A12,12,0,0,1,228,128ZM128,76h88a12,12,0,0,0,0-24H128a12,12,0,0,0,0,24Zm88,104H128a12,12,0,0,0,0,24h88a12,12,0,0,0,0-24ZM79.51,39.51,56,63l-7.51-7.52a12,12,0,0,0-17,17l16,16a12,12,0,0,0,17,0l32-32a12,12,0,0,0-17-17Zm0,64L56,127l-7.51-7.52a12,12,0,1,0-17,17l16,16a12,12,0,0,0,17,0l32-32a12,12,0,0,0-17-17Zm0,64L56,191l-7.51-7.52a12,12,0,1,0-17,17l16,16a12,12,0,0,0,17,0l32-32a12,12,0,0,0-17-17Z'/%3E%3C/svg%3E");--tab-vanor-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z'/%3E%3C/svg%3E");--tab-boxning:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M168,12H120A60.08,60.08,0,0,0,60.13,68H56a36,36,0,0,0-36,36v29.19a20.13,20.13,0,0,0,4.38,12.5,11.46,11.46,0,0,0,.94,1L60,181v35a20,20,0,0,0,20,20H192a20,20,0,0,0,20-20V177.68l15.23-53.3a20.07,20.07,0,0,0,.77-5.5V72A60.07,60.07,0,0,0,168,12Zm36,106.32L188.46,172.7A12.28,12.28,0,0,0,188,176v36H84V176a12,12,0,0,0-3.56-8.53L44,131.45V104A12,12,0,0,1,56,92h4v12a12,12,0,0,0,24,0V72a36,36,0,0,1,36-36h48a36,36,0,0,1,36,36ZM166.66,162l-9,6,9,6a12,12,0,1,1-13.32,20L136,182.42,118.66,194a12,12,0,0,1-13.32-20l9-6-9-6a12,12,0,0,1,13.32-20L136,153.58,153.34,142a12,12,0,1,1,13.32,20Z'/%3E%3C/svg%3E");--tab-boxning-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M168,16H120A56,56,0,0,0,64,72v31.73A8.17,8.17,0,0,1,56.53,112,8,8,0,0,1,48,104V78.7a4,4,0,0,0-5.63-3.65A32,32,0,0,0,24,104v29.19a16.14,16.14,0,0,0,3.5,10q.3.36.63.69L64,179.34V216a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V177.12l15.38-53.84a16,16,0,0,0,.62-4.4V72A56,56,0,0,0,168,16Zm3.58,168.84a8,8,0,0,1-7.16,14.32L136,184.94l-28.42,14.22a8,8,0,1,1-7.16-14.32L118.11,176l-17.69-8.84a8,8,0,1,1,7.16-14.32L136,167.06l28.42-14.22a8,8,0,1,1,7.16,14.32L153.89,176Z'/%3E%3C/svg%3E");--tab-framsteg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M236,208a12,12,0,0,1-12,12H32a12,12,0,0,1-12-12V48a12,12,0,0,1,24,0v99l43.51-43.52a12,12,0,0,1,17,0L128,127l43-43H160a12,12,0,0,1,0-24h40a12,12,0,0,1,12,12v40a12,12,0,0,1-24,0V101l-51.51,51.52a12,12,0,0,1-17,0L96,129,44,181v15H224A12,12,0,0,1,236,208Z'/%3E%3C/svg%3E");--tab-framsteg-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM200,192H56a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v76.69l34.34-34.35a8,8,0,0,1,11.32,0L128,132.69,172.69,88H144a8,8,0,0,1,0-16h48a8,8,0,0,1,8,8v48a8,8,0,0,1-16,0V99.31l-50.34,50.35a8,8,0,0,1-11.32,0L104,131.31l-40,40V176H200a8,8,0,0,1,0,16Z'/%3E%3C/svg%3E");--tab-vikt:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M243.14,131.54l-32-80h0a12,12,0,0,0-13.73-7.25L140,57V40a12,12,0,0,0-24,0V62.37L53.4,76.29a12,12,0,0,0-8.54,7.25h0l0,0v0l-32,79.92A12,12,0,0,0,12,168c0,12.13,6.2,22.43,17.45,29A55,55,0,0,0,56,204a55,55,0,0,0,26.55-7C93.8,190.43,100,180.13,100,168a12,12,0,0,0-.86-4.46L72.38,96.65,116,87V204H104a12,12,0,0,0,0,24h48a12,12,0,0,0,0-24H140V81.63l40.42-9-23.56,58.9A12,12,0,0,0,156,136c0,12.13,6.2,22.43,17.45,29a53.78,53.78,0,0,0,53.1,0C237.8,158.43,244,148.13,244,136A12,12,0,0,0,243.14,131.54ZM56,180c-3.71,0-18-1.87-19.81-10.18L56,120.31l19.81,49.51C74,178.13,59.71,180,56,180Zm144-32c-3.71,0-18-1.87-19.81-10.18L200,88.31l19.81,49.51C218,146.13,203.71,148,200,148Z'/%3E%3C/svg%3E");--tab-vikt-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M239.43,133l-32-80A8,8,0,0,0,200,48a8.27,8.27,0,0,0-1.73.21L136,62V40a8,8,0,0,0-16,0V65.58L54.27,80.21A8,8,0,0,0,48.57,85l-32,80a7.92,7.92,0,0,0-.57,3c0,23.31,24.54,32,40,32s40-8.69,40-32a7.92,7.92,0,0,0-.57-3L66.92,93.77,120,82V208H104a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16H136V78.42L187,67.1,160.57,133a7.92,7.92,0,0,0-.57,3c0,23.31,24.54,32,40,32s40-8.69,40-32A7.92,7.92,0,0,0,239.43,133Zm-160,35H32.62L56,109.54Zm97.24-32L200,77.54,223.38,136Z'/%3E%3C/svg%3E");--tab-historik:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M140,80v41.21l34.17,20.5a12,12,0,1,1-12.34,20.58l-40-24A12,12,0,0,1,116,128V80a12,12,0,0,1,24,0ZM128,28A99.38,99.38,0,0,0,57.24,57.34c-4.69,4.74-9,9.37-13.24,14V64a12,12,0,0,0-24,0v40a12,12,0,0,0,12,12H72a12,12,0,0,0,0-24H57.77C63,86,68.37,80.22,74.26,74.26a76,76,0,1,1,1.58,109,12,12,0,0,0-16.48,17.46A100,100,0,1,0,128,28Z'/%3E%3C/svg%3E");--tab-historik-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M224,128A96,96,0,0,1,62.11,197.82a8,8,0,1,1,11-11.64A80,80,0,1,0,71.43,71.43C67.9,75,64.58,78.51,61.35,82L77.66,98.34A8,8,0,0,1,72,112H32a8,8,0,0,1-8-8V64a8,8,0,0,1,13.66-5.66L50,70.7c3.22-3.49,6.54-7,10.06-10.55A96,96,0,0,1,224,128ZM128,72a8,8,0,0,0-8,8v48a8,8,0,0,0,3.88,6.86l40,24a8,8,0,1,0,8.24-13.72L136,123.47V80A8,8,0,0,0,128,72Z'/%3E%3C/svg%3E");--tab-program:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M108,108a12,12,0,0,1,12-12h56a12,12,0,0,1,0,24H120A12,12,0,0,1,108,108Zm68,28H120a12,12,0,0,0,0,24h56a12,12,0,0,0,0-24Zm52-88V208a20,20,0,0,1-20,20H48a20,20,0,0,1-20-20V48A20,20,0,0,1,48,28H208A20,20,0,0,1,228,48ZM52,204H68V52H52ZM204,52H92V204H204Z'/%3E%3C/svg%3E");--tab-program-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM80,208H48V48H80Zm96-56H112a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Zm0-32H112a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Z'/%3E%3C/svg%3E")}
 </style>
 
 <div class="app">
   <header class="top">
     <div class="brand">
-      <div class="logo" aria-label="GymSchema">Gym<span>Schema</span></div>
+      <div class="rg-date" id="rgDate"></div><div class="logo" aria-label="GymSchema">Gym<span>Schema</span></div>
       <button type="button" class="gu-btn" data-gu="open" aria-label="Guide – allt i appen">?</button><div class="wk num" id="wk">Vecka 1</div>
     </div>
-    <div class="strip" id="strip" aria-label="Veckans dagar"></div>
+    <h1 class="rg-title" id="rgTitle"></h1><div id="rgHero" hidden></div><div class="strip" id="strip" aria-label="Veckans dagar"></div>
   </header>
 
   <main>
@@ -3172,7 +3499,7 @@ function routineCardHTML(key, kind){
     '<ol class="rsteps">' + list.map(st => '<li><div class="rs-h"><b>' + esc(st.n) + '</b><span class="dose">' + esc(doseText(st)) + '</span></div><div class="rs-c">' + esc(st.cue) + '</div>' + (st.tip ? '<div class="rs-t">' + esc(st.tip) + '</div>' : '') + (st.v ? '<a class="yt" href="' + YT(st.v) + '" target="_blank" rel="noopener">▶ Video</a>' : '') + '</li>').join("") + '</ol></div></details>';
 }
 function jumpTo(t){
-  const top = document.querySelector(".top"), off = top ? top.getBoundingClientRect().height + 10 : 10;
+  const off = 14;
   window.scrollTo({top: Math.max(0, t.getBoundingClientRect().top + window.scrollY - off), behavior: "smooth"});
 }
 $("v-program").addEventListener("click", e => {
@@ -4655,12 +4982,12 @@ function hrtInsets(){
 }
 function hrtBounds(p){
   const s = hrtInsets(), tabs = document.querySelector(".tabs"), m = 10;
-  return {x0: m, x1: innerWidth - p.offsetWidth - m, y0: s.t + m, y1: innerHeight - p.offsetHeight - (tabs ? tabs.offsetHeight : s.b) - m};
+  return {x0: m, x1: innerWidth - p.offsetWidth - m, y0: s.t + m, y1: innerHeight - p.offsetHeight - (tabs ? innerHeight - tabs.getBoundingClientRect().top : s.b) - m};
 }
 function hrtPlace(p){
   const b = hrtBounds(p), pos = store(HRT_POS);
   let y = pos && typeof pos.y === "number" ? pos.y * innerHeight : null;
-  if (y == null){ const top = document.querySelector(".top"); y = top ? top.getBoundingClientRect().bottom + 12 : 120; }
+  if (y == null) y = 120;
   p.style.left = Math.round(pos && pos.side === "l" ? b.x0 : b.x1) + "px";
   p.style.top = Math.round(Math.max(b.y0, Math.min(b.y1, y))) + "px";
 }
@@ -7082,7 +7409,8 @@ document.addEventListener("input", e => { const f = e.target && e.target.dataset
 // go = fliken (adressen), sel = det som lyses upp, alt = reserv, open = öppna kortet först, miss = när det inte syns just nu
 const GU = [
   ["Pass", [
-    ["📅", "Veckan högst upp", "Måndag till söndag: gympassen Ö1, B1, Ö2 och B2, löpning på tisdagen och vila. Klara pass får en bock.", "pass", "#strip"],
+    ["🎯", "Ringen högst upp", "Den yttre ringen är seten i dagens pass, den inre turkosa är Atlet i dag. Knappen under öppnar Kör passet. Varje flik har sin egen ring.", "pass", "#rgHero"],
+    ["📅", "Veckan som ringar", "Måndag till söndag under ringen: gympassen Ö1, B1, Ö2 och B2, löpning på tisdagen och vila. Klara dagar har hel ring, dagens ring fylls på under dagen.", "pass", "#strip"],
     ["🏋️", "Dagens pass", "Övningarna med set, vikt och reps. Appen föreslår vikten från förra gången och säger när det är dags att öka.", "pass", "#v-pass .sess-head"],
     ["▶", "Kör passet – ett set i taget", "Ett set åt gången med bild, vikt, reps och vila på en skärm. Uppvärmningsseten räknas ut åt dig.", "pass", '#v-pass [data-fk="open"]'],
     ["⏱", "Vila med timer och röst", "Bocka ett set så startar vilan. Rösten säger när det är dags och vad nästa set är.", "pass", "#v-pass article.ex .set [data-chk]"],
@@ -8307,11 +8635,272 @@ try {
 } catch(e){}
 
 
+/* ---------- Ringen (15 nov 2026): ny form på hela appen ---------- */
+// Alltid svart. Högst upp på varje flik står datumet, flikens rubrik och en stor ring som visar det viktigaste just nu.
+// Veckan ritas som sju ringar under ringen på Pass, och flikraden svävar längst ner.
+// Ingen logik ändras: modulen läser samma data som resten av appen och ritar om huvudet när något ändras.
+const RG_TABS = {vanor: "Vanor", boxning: "Boxning", framsteg: "Framsteg", vikt: "Kropp", historik: "Historik", program: "Program"};
+let rgArcs = {}, rgShown = "";
+const rgReduce = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } };
+const rgCap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const rgP = (a, n) => n > 0 ? Math.max(0, Math.min(1, a / n)) : 0;
+
+// En eller flera ringar i samma bild, ytterst först. rings: [{id, p (0–1), c (färg), w (tjocklek)}]
+function rgRings(size, rings, gap){
+  const m = size / 2; let r = m, out = '<svg class="rg-svg" width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '" aria-hidden="true">';
+  rings.forEach(g => {
+    r -= g.w / 2;
+    const c = 2 * Math.PI * r, p = Math.max(0, Math.min(1, g.p || 0)), at = 'cx="' + m + '" cy="' + m + '" r="' + r.toFixed(2) + '" stroke-width="' + g.w + '"';
+    if (g.seg){   // en bit per rond, med ett litet mellanrum
+      const gapL = g.seg > 1 ? Math.min(7, c / g.seg * .3) : 0, segL = c / g.seg - gapL;
+      out += '<circle class="rg-sg" ' + at + ' transform="rotate(' + (-90 + gapL / 2 / c * 360).toFixed(2) + ' ' + m + ' ' + m + ')" style="stroke:' + g.c + ';stroke-dasharray:' + segL.toFixed(2) + ' ' + gapL.toFixed(2) + '"/>';
+    } else
+    out += '<circle class="rg-tr" ' + at + '/><circle class="rg-arc" data-arc="' + g.id + '" data-c="' + c.toFixed(1) + '" ' + at + ' transform="rotate(-90 ' + m + ' ' + m + ')" style="stroke:' + g.c + ';stroke-dasharray:' + (c * p).toFixed(1) + ' ' + c.toFixed(1) + (p <= 0 ? ';opacity:0' : '') + '"/>';
+    r -= g.w / 2 + (gap == null ? 4 : gap);
+  });
+  return out + '</svg>';
+}
+// Ringarna fylls på från sitt förra läge (eller från noll första gången fliken visas) – slutläget står alltid i stilen
+function rgAnim(root){
+  const red = rgReduce();
+  root.querySelectorAll(".rg-arc").forEach(a => {
+    const id = a.dataset.arc, now = a.style.strokeDasharray, was = rgArcs[id], empty = parseFloat(now) <= 0;
+    rgArcs[id] = now;
+    if (red || was === now || !a.animate || (empty && (!was || parseFloat(was) <= 0))) return;   // en tom ring som förblir tom ritas bara
+    const from = was || ("0 " + a.dataset.c);
+    try { a.animate([{strokeDasharray: from, opacity: 1}, {strokeDasharray: now, opacity: 1}], {duration: was ? 520 : 900, easing: "cubic-bezier(.22,1,.36,1)"}); } catch(e){}
+  });
+}
+const rgStat = (v, l, cls) => '<div' + (cls ? ' class="' + cls + '"' : '') + '><b class="num">' + v + '</b><small>' + l + '</small></div>';
+// Hjälten: ring(ar) till vänster med en siffra i mitten, tre rader siffror till höger och (ibland) en knapp under
+function rgHero(o){
+  return '<section class="rg-hero' + (o.cls ? " " + o.cls : "") + '" style="' + (o.style || "") + '" aria-label="' + esc(o.label) + '">' +
+    '<div class="rg-rw">' + rgRings(o.size || 148, o.rings, o.gap) + '<div class="rg-in"><div><b class="num">' + o.mid[0] + '</b><small>' + o.mid[1] + '</small></div></div></div>' +
+    '<div class="rg-st">' + o.stats.join("") + '</div>' + (o.foot || "") + '</section>';
+}
+
+/* ----- Pass: set i passet (ytterst) och Atlet i dag (innerst) ----- */
+function rgPassState(){
+  const t = today(), pre = t < START, tk = pre ? null : gymOn(t);
+  if (justSaved || !draft) return {mode: "saved", type: justSaved ? justSaved.type : selType, p: justSaved ? 1 : 0};
+  const pr = PROGRAM[draft.type]; let tot = 0, done = 0;
+  pr.ex.forEach(ex => { tot += ex.sets; done += (draft.sets[ex.k] || []).filter(x => x.done).length; });
+  const day = pre ? null : atDay(t), ac = day ? atDayCount(day) : [0, 0];
+  const saved = sessions.find(s => s.date === iso(t) && s.type === draft.type) || null;
+  const mode = saved && !done ? "done" : (tk || done || pre) ? "pass" : "rest";
+  return {mode, tk, pre, pr, tot, done, day, ac, saved, p: mode === "done" ? 1 : mode === "pass" ? rgP(done, tot) : rgP(ac[0], ac[1])};
+}
+function rgPass(){
+  const s = rgPassState(), t = today();
+  if (s.mode === "saved"){
+    if (!justSaved) return {title: s.type ? PROGRAM[s.type].name : "Pass", hero: ""};
+    const r = justSaved, day = t < START ? null : atDay(t), ac = day ? atDayCount(day) : [0, 0], nPr = (r.prs || []).length;
+    return {title: PROGRAM[r.type].name, hero: rgHero({label: "Passet är sparat", cls: "rg-done", style: sessColor(r.type), rings: [{id: "p-set", p: 1, c: "var(--c)", w: 15}].concat(ac[1] ? [{id: "p-atl", p: rgP(ac[0], ac[1]), c: "var(--atl)", w: 9}] : []), mid: ["✓", "sparat"],
+      stats: [rgStat(r.sets, "set", "k1"), rgStat(fmt(r.volume, 0) + " kg", "volym"), rgStat(nPr, nPr === 1 ? "nytt rekord" : "nya rekord")]})};
+  }
+  const atl = s.ac[1] ? [{id: "p-atl", p: rgP(s.ac[0], s.ac[1]), c: "var(--atl)", w: 9}] : [];
+  if (s.mode === "rest"){
+    const run = RUN_DAYS[t.getDay()], nx = nextScheduled(), when = nx.i === 0 ? "i dag" : nx.i === 1 ? "i morgon" : DAYL[nx.d.getDay()];
+    return {title: run ? "Löpdag" : "Vilodag", hero: rgHero({label: "Dagen i dag", cls: "rg-vila", style: run ? "--c:var(--run);--onc:var(--on-run)" : "--c:var(--rest);--onc:var(--on-rest)",
+      rings: [{id: "p-day", p: s.p, c: "var(--c)", w: 15}], mid: [s.ac[0] + "/" + s.ac[1], "klart"],
+      stats: [rgStat(Math.round(s.p * 100) + " %", "av Atlet i dag", "k1"), rgStat(atDayMin(s.day) + " min", s.day.blocks.length + " block"), rgStat(esc(PROGRAM[nx.k].ab), "nästa pass · " + when)]})};
+  }
+  const c = sessColor(draft.type), min = passMinutes(draft.type, ssOn());
+  if (s.mode === "done"){
+    const n = (s.saved.exercises || []).reduce((a, e) => a + (e.sets || []).length, 0), mins = s.saved.min || s.saved.mins;
+    return {title: s.pr.name, hero: rgHero({label: "Dagens pass är sparat", cls: "rg-done", style: c, rings: [{id: "p-set", p: 1, c: "var(--c)", w: 15}].concat(atl), mid: ["✓", "sparat"],
+      stats: [rgStat(n, "set loggade", "k1"), s.ac[1] ? rgStat(s.ac[0] + "/" + s.ac[1], "Atlet i dag", "k2") : "", mins ? rgStat(mins + " min", "tog passet") : rgStat(s.pr.ex.length, "övningar")]})};
+  }
+  return {title: s.pr.name, hero: rgHero({label: "Dagens pass", style: c, rings: [{id: "p-set", p: s.p, c: "var(--c)", w: 15}].concat(atl), mid: [s.done + "/" + s.tot, "set"],
+    stats: [rgStat(Math.round(s.p * 100) + " %", "av passet", "k1"), s.ac[1] ? rgStat(s.ac[0] + "/" + s.ac[1], "Atlet i dag", "k2") : "", rgStat(min + " min", s.pr.ex.length + " övningar")],
+    foot: readOnly ? "" : '<button type="button" class="rg-cta" data-fk="open">▶ ' + (s.done ? "Fortsätt passet" : "Kör passet") + '</button>'})};
+}
+// Veckan: varje dag en ring. Klara dagar är hela, i dag visar hur långt dagen kommit.
+function rgStrip(){
+  const st = $("strip"); if (!st) return;
+  const p = rgPassState(), tp = p.mode === "saved" ? 1 : p.p;
+  st.querySelectorAll(".day").forEach((d, i) => {
+    const pl = d.querySelector(".plate"); if (!pl) return;
+    const done = d.classList.contains("done"), isT = d.classList.contains("today");
+    const p = done ? 1 : isT ? tp : 0, key = p.toFixed(3);
+    if (pl.dataset.rg === key) return;
+    pl.dataset.rg = key; pl.innerHTML = rgRings(30, [{id: "w" + i, p, c: "var(--c)", w: 5}]); rgAnim(pl);
+  });
+}
+// En liten ring runt räknaren på varje övning (0/4 … 4/4)
+function rgExRings(){
+  document.querySelectorAll("#v-pass .ex").forEach(card => {
+    const c = card.querySelector("[data-count]"); if (!c) return;
+    const m = /^(\d+)\/(\d+)$/.exec(c.textContent.trim()); if (!m) return;
+    card.style.setProperty("--p", String(rgP(+m[1], +m[2])));
+  });
+}
+
+/* ----- Vanor: dagens bockar, serien och veckan ----- */
+function rgVanor(){
+  const tot = HABITS.length, sc = dayScore(habitDate), t = iso(today()), streak = habitStreak();
+  const lab = habitDate === t ? "i dag" : habitDate === iso(addDays(today(), -1)) ? "i går" : dLabel(habitDate);
+  let hs = 0, hn = 0; for (let d = weekStart(today()); iso(d) <= t; d = addDays(d, 1)){ if (d < START) continue; hs += dayScore(iso(d)); hn += tot; }
+  const lv = document.querySelector("#primeCard .pr-lv > b"), nm = document.querySelector("#primeCard .pr-lv > span > b");
+  return {title: "Vanor", hero: rgHero({label: "Vanorna " + lab, style: "--c:var(--green);--onc:var(--on-green)", rings: [{id: "v-day", p: rgP(sc, tot), c: "var(--c)", w: 15}], mid: [sc + "/" + tot, lab],
+    stats: [rgStat(streak + (streak === 1 ? " dag" : " dagar"), "perfekta i rad", streak ? "k1" : ""), rgStat(hn ? Math.round(hs / hn * 100) + " %" : "–", "av vanorna i veckan"), lv ? rgStat("Nivå " + esc(lv.textContent), nm ? esc(nm.textContent) : "Prime") : ""]})};
+}
+// … och de sju dagarna under: en ring per dag
+function rgVanorWeek(){
+  const tot = HABITS.length;
+  document.querySelectorAll("#v-vanor .hweek .hw").forEach((hw, i) => {
+    const el = hw.querySelector("i"); if (!el || hw.querySelector(".rg-svg")) return;
+    const tx = el.textContent.trim(), p = el.classList.contains("full") ? 1 : rgP(+tx || 0, tot);
+    el.insertAdjacentHTML("beforebegin", rgRings(38, [{id: "vw" + i, p, c: "var(--green)", w: 5}]));
+  });
+  const w = document.querySelector("#v-vanor .hweek"); if (w) rgAnim(w);
+}
+/* ----- Boxning: en bit per rond ----- */
+function rgBox(){
+  const c = boxCfg;
+  return {title: "Boxning", hero: rgHero({label: "Boxningspasset", style: "--c:var(--red);--onc:var(--on-red)", rings: [{id: "b-r", seg: c.rounds, c: "var(--c)", w: 15}], mid: [c.rounds, c.rounds === 1 ? "rond" : "ronder"],
+    stats: [rgStat(bxMin(c) + " min", "hela passet", "k1"), rgStat(c.round / 60 + " min", "per rond"), rgStat(c.rest >= 60 ? c.rest / 60 + " min" : c.rest + " s", "vila emellan")],
+    foot: '<button type="button" class="rg-cta" data-rg-click="#v-boxning [data-bxgo]">▶ Starta · ' + c.rounds + (c.rounds === 1 ? " rond" : " ronder") + '</button>'})};
+}
+/* ----- Framsteg: veckans tre ringar – gympass, vanor, mat ----- */
+function rgFram(){
+  if (!sessions.length && !weights.length) return {title: "Framsteg", hero: ""};
+  const t = today(), hasPrev = addDays(weekStart(t), -1) >= START, dflt = hasPrev && (t.getDay() === 1 || t.getDay() === 2) ? -1 : 0, off = vkOff == null || (vkOff === -1 && !hasPrev) ? dflt : vkOff, ws = addDays(weekStart(t), off * 7);
+  if (addDays(ws, 6) < START) return {title: "Framsteg", hero: ""};
+  const D = vkData(ws), wn = Math.max(1, Math.round((ws - weekStart(START)) / 864e5 / 7) + 1);
+  return {title: "Framsteg", hero: rgHero({label: off === 0 ? "Den här veckan" : "Förra veckan", cls: "rg-3", rings: [{id: "f-gym", p: rgP(D.gym, 4), c: "var(--red)", w: 13}, {id: "f-hab", p: (D.hab || 0) / 100, c: "var(--green)", w: 13}, {id: "f-mat", p: D.fd ? rgP(D.kcal, D.goal) : 0, c: "var(--blue)", w: 13}], gap: 3,
+    mid: ["v. " + wn, off === 0 ? "nu" : "förra"],
+    stats: [rgStat(D.gym + "/4", "gympass", "c-red"), rgStat(D.hab != null ? D.hab + " %" : "–", "av vanorna", "c-green"), rgStat(D.fd ? gmSteps(D.kcal) : "–", D.fd ? "kcal om dagen av " + gmSteps(D.goal) : "kcal – logga maten", "c-blue")]})};
+}
+// samma tre siffror står i Veckokollens rutor – där visas bara det ringarna inte säger
+function rgFramDups(){
+  document.querySelectorAll("#vkCard .vk-t").forEach(tl => { const sm = tl.querySelector("small"); if (sm && /^(gympass|av vanorna|kcal )/.test(sm.textContent)) tl.classList.add("rg-dup"); });
+}
+/* ----- Kropp: vikten mot målet, eller dagens mat ----- */
+function rgKropp(){
+  if (kroppSeg === "vikt"){
+    const cur = vmCur(); if (cur == null) return "";
+    const g = mal.vikt && mal.vikt.by ? mal.vikt : null, goal = g ? g.kg : GOAL_KG, kg0 = g && g.kg0 != null ? g.kg0 : weights[0].kg;
+    const p = Math.abs(goal - kg0) < .05 ? (Math.abs(goal - cur) < .3 ? 1 : 0) : Math.max(0, Math.min(1, (cur - kg0) / (goal - kg0)));
+    const first = weights[0].kg, since = parseIso(weights[weights.length - 1].date).getTime() - 28 * 864e5, rec = weights.filter(w => parseIso(w.date).getTime() >= since);
+    let rate = null; if (rec.length >= 2){ const a = rec[0], b = rec[rec.length - 1], days = (parseIso(b.date) - parseIso(a.date)) / 864e5; if (days >= 6) rate = (b.kg - a.kg) / days * 30; }
+    return rgHero({label: "Vikten mot målet", style: "--c:var(--blue);--onc:var(--on-blue)", rings: [{id: "k-kg", p, c: "var(--c)", w: 15}], mid: [fmt(cur), "kg nu"],
+      stats: [rgStat(fmt(Math.max(0, Math.abs(goal - cur))) + " kg", "kvar till " + fmt(goal), "k1"), rgStat(rate == null ? "–" : malSign(rate), "kg i månaden"), rgStat(malSign(cur - first), "kg sedan start")]});
+  }
+  if (kroppSeg === "mat"){
+    const ft = foodTotals(foodDate), g = kcalGoal(foodDate), left = Math.max(0, g.goal - ft.kcal);
+    return rgHero({label: "Dagens mat", style: "--c:var(--run);--onc:var(--on-run)", rings: [{id: "k-kc", p: rgP(ft.kcal, g.goal), c: "var(--c)", w: 15}, {id: "k-pr", p: rgP(ft.p, PROT_GOAL), c: "var(--blue)", w: 9}], mid: [gmSteps(ft.kcal), "kcal"],
+      stats: [rgStat(gmSteps(left), "kcal kvar av " + gmSteps(g.goal), "k1"), rgStat(ft.p + " g", "protein av " + PROT_GOAL + " g", "c-blue"), rgStat(ft.n + (ft.glasses ? " + " + ft.glasses : ""), ft.glasses ? "saker + glas shake" : ft.n === 1 ? "sak loggad" : "saker loggade")]});
+  }
+  return "";
+}
+let rgKroppWas = "";
+function rgKroppPut(){
+  const seg = document.querySelector("#v-vikt .kseg"); if (!seg) return;
+  let h = ""; try { h = rgKropp(); } catch(e){}
+  const old = document.querySelector("#v-vikt > .rg-hero");
+  if (old){ if (rgKroppWas === h) return; old.remove(); }   // bara kalorirutan ritades om (kcalPaint): byt ringen om siffrorna ändrats
+  rgKroppWas = h;
+  if (h){ seg.insertAdjacentHTML("afterend", h); rgAnim($("v-vikt")); }
+}
+/* ----- Program: passets delar som en ring – varje del så lång som den tar ----- */
+function rgProgPut(){
+  const v = $("v-program"), box = v.querySelector(".gorder"), seg = v.querySelector(".seg"); if (!box || !seg || v.querySelector(".rg-hero")) return;
+  const parts = Array.from(box.querySelectorAll(".go")).map(b => { const sm = b.querySelector("small"), sp = b.querySelector("span"), m = /(\d+)\s*min/.exec(sm ? sm.textContent : ""); return {n: sp ? sp.textContent.trim() : "", m: m ? +m[1] : 0, c: b.style.getPropertyValue("--c") || "var(--ink)", j: b.dataset.gjump || ""}; });
+  const tot = parts.reduce((a, x) => a + x.m, 0); if (!tot || parts.length < 2) return;
+  const size = 148, w = 15, r = (size - w) / 2, c = 2 * Math.PI * r, m = size / 2, gap = 5; let acc = 0, arcs = "";
+  parts.forEach(x => { const len = Math.max(2, c * x.m / tot - gap); arcs += '<circle class="rg-sg" cx="' + m + '" cy="' + m + '" r="' + r + '" stroke-width="' + w + '" transform="rotate(' + (-90 + 360 * acc / tot + gap / 2 / c * 360).toFixed(2) + ' ' + m + ' ' + m + ')" style="stroke:' + esc(x.c) + ';stroke-dasharray:' + len.toFixed(2) + ' ' + c.toFixed(2) + '"/>'; acc += x.m; });
+  seg.insertAdjacentHTML("afterend", '<section class="rg-hero rg-prog" aria-label="Passets ordning">' +
+    '<div class="rg-rw"><svg class="rg-svg" width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '" aria-hidden="true">' + arcs + '</svg><div class="rg-in"><div><b class="num">' + tot + '</b><small>min i allt</small></div></div></div>' +
+    '<div class="rg-leg">' + parts.map(x => '<button type="button" class="rg-go" data-gjump="' + esc(x.j) + '"><i style="background:' + esc(x.c) + '"></i><span>' + esc(x.n) + '</span><b class="num">' + x.m + ' min</b></button>').join("") + '</div></section>');
+  box.hidden = true; const lab = v.querySelector(".gorder-l"); if (lab) lab.hidden = true;
+}
+/* ----- Historik: de senaste åtta veckorna, en ring per vecka (fyra pass = hel ring) ----- */
+function rgHist(){
+  if (!sessions.length) return {title: "Historik", hero: ""};
+  const w0 = weekStart(today()); let cells = "";
+  for (let i = 7; i >= 0; i--){
+    const ws = addDays(w0, -7 * i), A = iso(ws), B = iso(addDays(ws, 7)), n = sessions.filter(x => x.date >= A && x.date < B).length;
+    cells += '<div class="rg-wk' + (i === 0 ? " now" : "") + '">' + rgRings(34, [{id: "h" + i, p: rgP(n, 4), c: i === 0 ? "var(--day)" : "var(--ink)", w: 5}]) + '<b class="num">' + n + '</b><small>' + ws.getDate() + "/" + (ws.getMonth() + 1) + '</small></div>';
+  }
+  const vol = sessions.reduce((a, x) => a + (x.volume || 0), 0);
+  return {title: "Historik", hero: '<section class="rg-hero rg-hist" aria-label="De senaste åtta veckorna"><div class="rg-hh"><div><b class="num">' + sessions.length + '</b><small>pass sparade</small></div><div><b class="num">' + (vol >= 10000 ? fmt(vol / 1000, 1) + " ton" : fmt(vol, 0) + " kg") + '</b><small>lyft totalt</small></div></div><div class="rg-weeks">' + cells + '</div><small class="rg-cap">Pass per vecka, de senaste åtta veckorna. Fyra pass ger en hel ring.</small></section>'};
+}
+
+/* ----- Kör passet: vilan är en stor ring som töms ----- */
+function rgFkRest(){
+  const r = document.querySelector("#fkOv .fk-rest"); if (!r || r.querySelector(".rg-rest")) return;
+  const clock = $("fkClock"), lab = r.querySelector(".fk-rl"); if (!clock) return;
+  const size = 240, w = 14, rad = (size - w) / 2, c = 2 * Math.PI * rad, m = size / 2, left = Math.max(0, tEnd - Date.now()), frac = Math.max(0, Math.min(1, left / (tTotal || 1)));
+  const box = document.createElement("div"); box.className = "rg-rest";
+  box.innerHTML = '<svg class="rg-svg" viewBox="0 0 ' + size + ' ' + size + '" aria-hidden="true"><circle class="rg-tr" cx="' + m + '" cy="' + m + '" r="' + rad + '" stroke-width="' + w + '"/><circle class="rg-rarc" cx="' + m + '" cy="' + m + '" r="' + rad + '" stroke-width="' + w + '" transform="rotate(-90 ' + m + ' ' + m + ')" style="stroke-dasharray:0 ' + c.toFixed(1) + '"/></svg><div class="rg-rin"></div>';
+  r.insertBefore(box, r.firstChild);
+  const inn = box.querySelector(".rg-rin"); if (lab) inn.appendChild(lab); inn.appendChild(clock);
+  const arc = box.querySelector(".rg-rarc");
+  try { arc.animate([{strokeDasharray: (c * frac).toFixed(1) + " " + c.toFixed(1)}, {strokeDasharray: "0 " + c.toFixed(1)}], {duration: Math.max(1, left), easing: "linear", fill: "both"}); } catch(e){ arc.style.strokeDasharray = (c * frac).toFixed(1) + " " + c.toFixed(1); }
+}
+/* ----- Boxningen: tiden står i en ring som fylls under ronden ----- */
+function rgBoxRing(){
+  const o = $("boxrun"), t = $("bxTime"), bar = $("bxBar"); if (!o || !t || !bar) return;
+  const size = 300, w = 14, rad = (size - w) / 2, c = 2 * Math.PI * rad, m = size / 2;
+  let arc = o.querySelector(".rg-barc");
+  if (!arc){
+    const box = document.createElement("div"); box.className = "rg-bx";
+    box.innerHTML = '<svg class="rg-svg" viewBox="0 0 ' + size + ' ' + size + '" aria-hidden="true"><circle class="rg-btr" cx="' + m + '" cy="' + m + '" r="' + rad + '" stroke-width="' + w + '"/><circle class="rg-barc" cx="' + m + '" cy="' + m + '" r="' + rad + '" stroke-width="' + w + '" transform="rotate(-90 ' + m + ' ' + m + ')"/></svg><div class="rg-bin"></div>';
+    t.parentNode.insertBefore(box, t.parentNode.firstChild);
+    const inn = box.querySelector(".rg-bin"), ph = $("bxPhase"); if (ph) inn.appendChild(ph); inn.appendChild(t);
+    arc = box.querySelector(".rg-barc");
+  }
+  const f = Math.max(0, Math.min(1, (parseFloat(bar.style.width) || 0) / 100));
+  arc.style.strokeDasharray = (c * f).toFixed(1) + " " + c.toFixed(1); arc.style.opacity = f > 0 ? "1" : "0";
+}
+
+// Dagens färg (--day): passets skiva en gymdag, annars löpning eller vila. Passets färg (--pc): det pass som är valt på Pass.
+function rgColors(){
+  const root = document.documentElement, t = today(), k = t < START ? null : gymOn(t);
+  const day = k ? PROGRAM[k].c : RUN_DAYS[t.getDay()] ? "run" : "rest", pc = draft ? PROGRAM[draft.type].c : justSaved ? PROGRAM[justSaved.type].c : k ? PROGRAM[k].c : "yellow";
+  if (root.dataset.day !== day){ root.dataset.day = day; root.style.setProperty("--day", "var(--" + day + ")"); root.style.setProperty("--on-day", "var(--on-" + day + ")"); }
+  if (root.dataset.pc !== pc){ root.dataset.pc = pc; root.style.setProperty("--pc", "var(--" + pc + ")"); root.style.setProperty("--on-pc", "var(--on-" + pc + ")"); }
+}
+function rgPaint(){
+  const root = document.documentElement, top = document.querySelector(".top"); if (!top || !$("rgHero")) return;
+  if (root.dataset.view !== view) root.dataset.view = view;
+  rgColors();
+  const t = today(), date = rgCap(DAYL[t.getDay()]) + " " + t.getDate() + " " + MON[t.getMonth()] + " · vecka " + weekInfo().n;
+  if ($("rgDate").textContent !== date) $("rgDate").textContent = date;
+  let o = {title: RG_TABS[view] || "", hero: ""};
+  try { o = view === "pass" ? rgPass() : view === "vanor" ? rgVanor() : view === "boxning" ? rgBox() : view === "framsteg" ? rgFram() : view === "historik" ? rgHist() : o; } catch(e){ o = {title: RG_TABS[view] || "Pass", hero: ""}; }
+  const h1 = $("rgTitle");
+  if (h1.textContent !== o.title){ h1.textContent = o.title; h1.classList.toggle("long", o.title.length > 15); }
+  const hero = $("rgHero"), kind = /rg-vila/.test(o.hero.slice(0, 60)) ? "vila" : "";
+  if (root.dataset.hero !== kind) root.dataset.hero = kind;
+  if (rgShown !== o.hero){ rgShown = o.hero; hero.innerHTML = o.hero; hero.hidden = !o.hero; rgAnim(hero); }
+  if (view === "pass") rgExRings(); else if (view === "vanor") rgVanorWeek(); else if (view === "framsteg") rgFramDups(); else if (view === "vikt") rgKroppPut(); else if (view === "program") rgProgPut();
+}
+// En knapp i huvudet som trycker på en knapp i fliken (fliken lyssnar bara på sitt eget innehåll)
+document.addEventListener("click", e => { const b = e.target.closest("[data-rg-click]"); if (!b) return; const t = document.querySelector(b.dataset.rgClick); if (t) t.click(); });
+
+// Koppla in: efter varje omritning ritas huvudet om
+const rgAfter = (f, after) => function(){ const r = f.apply(this, arguments); try { after(); } catch(e){} return r; };
+renderStrip = rgAfter(renderStrip, rgStrip);
+renderPass = rgAfter(renderPass, () => { rgPaint(); rgStrip(); });
+updateSummary = rgAfter(updateSummary, () => { if (view === "pass"){ rgPaint(); rgStrip(); } });
+atRefresh = rgAfter(atRefresh, rgPaint);
+renderVanor = rgAfter(renderVanor, rgPaint); renderBox = rgAfter(renderBox, rgPaint); renderProg = rgAfter(renderProg, rgPaint);
+renderVikt = rgAfter(renderVikt, rgPaint); renderHist = rgAfter(renderHist, rgPaint); renderProgram = rgAfter(renderProgram, rgPaint);
+atGmPaint = rgAfter(atGmPaint, rgPaint);                                   // klockans data kan bocka joggblocken
+kcalPaint = rgAfter(kcalPaint, () => { if (view === "vikt") rgKroppPut(); });   // … och ändra dagens kalorimål
+document.addEventListener("click", e => { if (e.target.closest("[data-vk]") && view === "framsteg") rgPaint(); });   // Veckokollen byter vecka utan att rita om fliken
+fkRender = rgAfter(fkRender, rgFkRest);
+bxLoop = rgAfter(bxLoop, rgBoxRing);
+show = (sh => function(v){ rgArcs = {}; rgShown = "\u0000"; return sh.apply(this, arguments); })(show);
+
+
 /* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611150934, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611151314, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -8343,7 +8932,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "15 nov 09.34", BUILD_NOTE = "Ny design i hela appen: svart huvud, ljusa paneler och ikoner";
+const BUILD = "15 nov 13.14", BUILD_NOTE = "Helt ny design: Ringen";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;

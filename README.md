@@ -2,20 +2,32 @@
 
 Filips gymschema – program 2.1. Öppna https://filipkymmer79-pixel.github.io/GymSchema/ i Safari på mobilen och välj *Dela → Lägg till på hemskärmen*.
 
-**?** högst upp öppnar en guide över allt appen kan – 52 saker sorterade efter flik, med sökning (även utan å, ä och ö). *Visa var* hoppar till rätt flik, öppnar kortet om det behövs och lyser upp stället. Det som bara syns ibland (löpvädret på tisdagar, Flytta passet) säger när det syns.
+**?** högst upp öppnar en guide över allt appen kan – 53 saker sorterade efter flik, med sökning (även utan å, ä och ö). *Visa var* hoppar till rätt flik, öppnar kortet om det behövs och lyser upp stället. Det som bara syns ibland (löpvädret på tisdagar, Flytta passet) säger när det syns.
 
 ### Utseendet
 
-15 november 2026 fick hela appen ny design. Inga funktioner ändrades – samma flikar, knappar och texter.
+15 november 2026 gjordes hela appen om till designen *Ringen*. Inga funktioner ändrades – samma flikar, knappar och texter – men uppbyggnaden är ny.
 
-- **Svart huvud** med veckan och viktskivorna, i både ljust och mörkt läge – och samma svarta överdel på varje blad (Recept, Flytta passet, Kör passet, guiderna). Under det ligger en vit duk med rundad överkant, grå paneler och vita brickor i panelerna (mörkt läge: svart duk, panelerna ett steg ljusare, brickorna två). Remsan bakom telefonens klocka är svart, så klockan syns även i ljust läge. Det som ligger still har inga skuggor – bara vilotimern och toasten svävar.
-- **Ett typsnitt**, Archivo, där bredden visar vad texten är: bred för skärmens rubrik, normal bredd för text, smal för siffror och koder (Ö1, 0/3, 2:30). Inga versaler. Typsnittet är inbäddat i själva sidan, så det finns i samma stund som appen öppnas och ingenting flyttar sig när det kommer – ingenting hämtas från Google Fonts längre. De ovanliga tecknen ligger i `vendor/archivo-var-ext.woff2`. Big Shoulders Display finns kvar för bilderna man delar (månadens sammanfattning, passbilden) och hämtas först då.
+- **Alltid svart.** Svart duk, mörka kort och ljus text, oavsett om telefonen står i ljust eller mörkt läge.
+- **En ring högst upp på varje flik.** Överst står datum och vecka, sedan flikens rubrik (på Pass: dagens pass, *Vilodag* eller *Löpdag*) och ett kort med en ring och tre siffror bredvid:
+  - *Pass*: den yttre ringen är bockade set i passet, den inre (turkos) är Atlet i dag. Knappen under ringen öppnar *Kör passet*. En vilo- eller löpdag är ringen Atlet i dag, och nästa pass står bredvid. När passet är sparat är ringen hel.
+  - *Vanor*: dagens bockar, perfekta dagar i rad, veckan och nivån. De sju dagarna under är också ringar.
+  - *Boxning*: en bit per rond, med startknappen under.
+  - *Framsteg*: tre ringar för veckan – gympass, vanor och mat. Veckokollen under visar bara det ringarna inte säger.
+  - *Kropp*: vikten mot målet, eller dagens kalorier (ytterst) och protein (innerst).
+  - *Historik*: de senaste åtta veckorna, en ring per vecka – fyra pass ger en hel ring.
+  - *Program*: passets delar som en ring där varje del är så lång som den tar. Raderna bredvid hoppar till delen.
+- **Dagens färg** kommer från passets skiva och går igen i ringen, den stora knappen, bockarna och vilotimern: röd, blå, gul eller grön en gymdag, orange en löpdag och lila en vilodag.
+- **Veckan** är sju ringar under ringen på Pass: klara dagar är hela, och dagens ring visar hur långt dagen kommit.
+- **Flikraden svävar** längst ner, rundad och genomskinlig, med ritade ikoner.
+- **Listor i stället för kort i kort**: Atlet i dag, vanorna och historiken är var sin lista, och bockarna är runda.
+- **Det som pågår är ringar**: vilan i *Kör passet* är en stor ring som töms, boxningsronden en ring som fylls, och varje övning har en liten ring runt räknaren (0/4 … 4/4).
+- **Ett typsnitt**, Archivo, där bredden visar vad texten är: bred för flikens rubrik, normal bredd för text, smal för siffror och koder (Ö1, 0/3, 2:30). Inga versaler. Typsnittet är inbäddat i själva sidan, så det finns i samma stund som appen öppnas – ingenting hämtas från Google Fonts. De ovanliga tecknen ligger i `vendor/archivo-var-ext.woff2`. Big Shoulders Display finns kvar för bilderna man delar (månadens sammanfattning, passbilden) och hämtas först då.
 - **Ikoner i stället för emoji** i knappar, rubriker och rader ([Phosphor Icons](https://github.com/phosphor-icons/phosphor-core), MIT-licens). Texten är orörd: tecknet står kvar i texten, så sökning, kopiering och uppläsning fungerar som förut, men det visas som en linjeikon i textens färg. Maträtternas bilder i recepten och veckomenyn är kvar som de var.
-- **Färg** kommer från passens skivor (röd, blå, gul och grön för passen, orange för löpning, lila för vila), Atletblockens färger och tillstånd: grönt för klart, rött för fel, gult för varning.
-- Flikarna längst ner är genomskinliga, och fliken man står på har en platta bakom ikonen. En flik eller ett blad tonas in mjukt; är *Minska rörelse* på i telefonen händer det direkt.
-- Så är det byggt: ett lager sist i stilmallen gör om färger, typsnitt och former, bygget tar bort versaler och spärrad text ur den gamla stilmallen, och ett litet skript byter tecknen mot ikoner i samma stund som appen ritar (ett hundratal ikoner).
+- Ringarna fylls på mjukt när en flik öppnas eller något bockas. Är *Minska rörelse* på i telefonen står de rätt direkt.
+- Så är det byggt: ett lager sist i stilmallen gör om färger och former, och ett skript ritar datum, rubrik och ring efter varje omritning. Skriptet läser samma data som resten av appen och ändrar ingen logik.
 - Licenser: `vendor/archivo-OFL.txt` och `vendor/bigshoulders-OFL.txt` (SIL Open Font License), `vendor/phosphor-LICENSE.txt` (MIT).
-- Kontrollerat i Chromium i ljust och mörkt läge på 320, 390 och 430 px, alla flikar och blad. Inte provat på en riktig iPhone.
+- Kontrollerat i Chromium på 320, 390 och 430 px, alla flikar och blad, med telefonen i både ljust och mörkt läge. Inte provat på en riktig iPhone.
 
 ### Nya versioner kommer av sig själva
 
@@ -23,7 +35,7 @@ En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte
 
 ### Programmet
 
-Överkroppen först, benen korta och tunga. **Över** onsdag och lördag (chins, hantelbänkpress, kabelrodd, axelpress, sidolyft, hantelshrugs, bicepscurl, face pulls). **Ben + över** torsdag och söndag: benpress, vadpress (i benpressen direkt efter), hip thrust och rumänska marklyft, sedan lutande hantelpress, sidolyft, triceps över huvudet med rep i kabel och bicepscurl, sist plankan och dead bug. Tisdagen är löpdag: lugn jogg till en backe, Starka ben, backhopp och sprint, och lugn jogg hem (se *Atletprogrammet* nedan). Måndag och fredag är vilodagar från gymmet. Upphoppen i uppvärmningen före benen togs bort 14 november 2026 – spänsten i Atletprogrammet ersätter dem. Högst upp i appen syns hela veckan, måndag till söndag: gympassen (Ö1, B1, Ö2, B2), *Löp* på tisdagen och *Vila · hållning* på måndag och fredag. Gympassen bockas när de sparas, vilodagen när hållningen är avbockad under **Vanor** och tisdagen när löprundan finns (från klockan eller avbockad under Vanor). Varje övning har bild, steg för steg, vanliga fel och video under **Program**.
+Överkroppen först, benen korta och tunga. **Över** onsdag och lördag (chins, hantelbänkpress, kabelrodd, axelpress, sidolyft, hantelshrugs, bicepscurl, face pulls). **Ben + över** torsdag och söndag: benpress, vadpress (i benpressen direkt efter), hip thrust och rumänska marklyft, sedan lutande hantelpress, sidolyft, triceps över huvudet med rep i kabel och bicepscurl, sist plankan och dead bug. Tisdagen är löpdag: lugn jogg till en backe, Starka ben, backhopp och sprint, och lugn jogg hem (se *Atletprogrammet* nedan). Måndag och fredag är vilodagar från gymmet. Upphoppen i uppvärmningen före benen togs bort 14 november 2026 – spänsten i Atletprogrammet ersätter dem. Under ringen på Pass syns hela veckan, måndag till söndag: gympassen (Ö1, B1, Ö2, B2), *Löp* på tisdagen och *Vila · hållning* på måndag och fredag. Gympassen bockas när de sparas, vilodagen när hållningen är avbockad under **Vanor** och tisdagen när löprundan finns (från klockan eller avbockad under Vanor). Varje övning har bild, steg för steg, vanliga fel och video under **Program**.
 
 Version 2.1 kom 12 november 2026: dagarna flyttades en dag, lårcurl utgick, biceps och triceps fick fler set och löpningen gick ner till en gång i veckan. Gamla pass behåller sina namn i historiken (Under-passen före 12 november heter fortfarande Under). Samma kväll kom hantelshrugs in på Över-dagarna, 2 × 10–12 efter sidolyften, för trapezius (musklerna mellan nacken och axlarna). 14 november byttes sidolyft i maskin mot **sidolyft i kabel, en arm i taget** (låg trissa, ett handtag) på båda passen – gymmet har ingen sidolyftsmaskin. Den loggas per arm som bicepscurlen (höger först), 3 × 12–20: plattorna väger 5 kg, så man bygger reps länge innan nästa platta. Gamla pass med sidolyft i maskin ligger kvar i historiken.
 
