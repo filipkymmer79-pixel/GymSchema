@@ -8,7 +8,8 @@ Filips gymschema – program 2.1. Öppna https://filipkymmer79-pixel.github.io/G
 
 16 november 2026 fick appen designen *Bento*: rutor i olika storlek, som widgetarna på telefonens hemskärm. Filip valde den bland förslagen, och den ersatte *Ringen* från dagen innan (alltid svart, en ring per flik). Inga funktioner ändrades – samma flikar, knappar och texter.
 
-- **Alltid ljust.** Ljusgrå botten, vita rutor med stora runda hörn och svart text, oavsett om telefonen står i ljust eller mörkt läge. Det som är klart blir svart.
+- **Ljust som standard.** Ljusgrå botten, vita rutor med stora runda hörn och svart text, oavsett om telefonen står i ljust eller mörkt läge. Det som är klart blir svart.
+- **☾ Mörkt läge** (sedan 17 november, högst upp under **?**): mörk botten, rutorna ett steg ljusare, och det som är klart eller valt blir vitt med svart text. Passets färger är desamma. Valet sparas på telefonen och sätts innan sidan ritas, så att den inte blinkar ljust först. Telefonens egen inställning följs inte.
 - **En stor ruta högst upp på varje flik.** Överst står datum och vecka. Sedan kommer en stor färgad ruta med flikens rubrik, och under den små rutor med siffrorna:
   - *Pass*: dagens pass i passets färg, hur många set som är klara med en stapel, och en rund knapp som öppnar *Kör passet*. Under: *Klart* (svart), *Näst på tur* (nästa set med vikten), *Atlet i dag* (ett streck per block) och *Hållningen*. Passets minuter står i den stora rutan. En vilodag är rutan lila och en löpdag orange – då visar den Atlet i dag, och knappen rullar ner till blocken. När passet är sparat står volym och rekord i rutorna.
   - *Vanor*: dagens bockar, perfekta dagar i rad och veckan.
@@ -160,7 +161,8 @@ På löpdagen (tisdag) visar Pass bästa timmen att springa i Umeå (07–21): t
 
 ### Bilder och hållning
 
-- **Bilder** (under Kropp): progressbilder framifrån, från sidan och bakifrån. Kameran räknar ner tio sekunder och visar förra bilden genomskinlig så att du ställer dig likadant. Före och nu sida vid sida, med vikten de dagarna, och alla bilder som film. Bilderna sparas bara på telefonen (IndexedDB) och följer inte med i backupen.
+- **Bilder** (under Kropp): progressbilder framifrån, från sidan och bakifrån. Kameran räknar ner tio sekunder och visar förra bilden genomskinlig så att du ställer dig likadant. Före och nu sida vid sida, med vikten de dagarna, och alla bilder som film. Bilderna sparas bara på telefonen (IndexedDB) och följer inte med i backupen. Ett tryck på en bild öppnar den: tryck igen för att zooma in där du trycker, nyp för mer och dra för att flytta. **Spara bilden** öppnar telefonens dela-blad, där bilden kan sparas i Bilder.
+- **Varför jag tränar** (i Framsteg): egna skäl i några rader, och egna bilder – till exempel en lapp med livsmål eller en visionstavla – som sparas bara i telefonen (inte i backupen och aldrig i repot). Bilderna visas bara i mörkt läge. En dag när orken tryter – ett missat gympass de senaste tre dagarna, eller en gymdag efter kl. 18 utan ett enda set – står en påminnelse överst i passet: *Tung dag? Kom ihåg varför du tränar.*
 - **Hållning** (under Kropp): AI:n [MediaPipe Pose](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker) körs i telefonen och hittar öra, axel, höft, knä och fotled. Från sidan mäts hur långt örat sitter framför axeln och axeln framför höften (i cm, utifrån din längd), framifrån om axlar, höfter och huvud står snett. Mätningarna sparas och visas som trend. Det är en mätning med kameran, ingen diagnos. Bibliotek och modell hämtas första gången från jsDelivr och Google.
 
 ### Kameran som tränare
