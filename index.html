@@ -2443,6 +2443,20 @@ img.at-th:not([src]){content:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3
 .at-panel.warn{border-left:0;position:relative}
 .at-panel.warn::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:4px;border-radius:0 4px 4px 0;background:var(--at-exp)}
 
+/* Hållningen (16 nov): en ruta varje dag på Pass, med en rund knapp som kör passet; klar = svart ruta med bock */
+.bt-hh{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-width:0;margin:-4px -6px 0 0}
+.bt-hh .bt-l{padding-top:4px}
+.bt-mini{flex:0 0 46px;width:46px;height:46px;border:0;border-radius:50%;background:#111214;color:#FFFFFF;display:grid;place-items:center;padding:0;cursor:pointer;transition:transform .12s ease}
+.bt-mini svg{width:22px;height:22px}
+.bt-mini:active{transform:scale(.94)}
+.bt-mini:focus-visible{outline:2.5px solid var(--ink);outline-offset:3px;border-radius:50%}
+.bt-t.dark .bt-mini{background:#FFFFFF;color:#111214}
+/* Guiden: teckningen för hållningsövningen ovanför timern */
+.g-fig{width:min(100%,360px);margin:6px auto 2px;border-radius:20px;overflow:hidden;background:var(--fig-bg)}
+.g-fig svg{display:block;width:100%;height:auto}
+.guide.g-timed .g-fig{width:min(100%,250px)}
+@media (max-height:700px){.guide.g-timed .g-fig{width:min(100%,190px)}}
+
 :root{--tab-pass:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M244,116V88a20,20,0,0,0-20-20H208V64a20,20,0,0,0-20-20H164a20,20,0,0,0-20,20v52H112V64A20,20,0,0,0,92,44H68A20,20,0,0,0,48,64v4H32A20,20,0,0,0,12,88v28a12,12,0,0,0,0,24v28a20,20,0,0,0,20,20H48v4a20,20,0,0,0,20,20H92a20,20,0,0,0,20-20V140h32v52a20,20,0,0,0,20,20h24a20,20,0,0,0,20-20v-4h16a20,20,0,0,0,20-20V140a12,12,0,0,0,0-24ZM36,164V92H48v72Zm52,24H72V68H88Zm96,0H168V68h16Zm36-24H208V92h12Z'/%3E%3C/svg%3E");--tab-pass-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M200,64V192a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V136H104v56a16,16,0,0,1-16,16H72a16,16,0,0,1-16-16V64A16,16,0,0,1,72,48H88a16,16,0,0,1,16,16v56h48V64a16,16,0,0,1,16-16h16A16,16,0,0,1,200,64ZM36,72H32A16,16,0,0,0,16,88v32H8.27A8.18,8.18,0,0,0,0,127.47,8,8,0,0,0,8,136h8v32a16,16,0,0,0,16,16h4a4,4,0,0,0,4-4V76A4,4,0,0,0,36,72Zm220,55.47a8.18,8.18,0,0,0-8.25-7.47H240V88a16,16,0,0,0-16-16h-4a4,4,0,0,0-4,4V180a4,4,0,0,0,4,4h4a16,16,0,0,0,16-16V136h8A8,8,0,0,0,256,127.47Z'/%3E%3C/svg%3E");--tab-vanor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M228,128a12,12,0,0,1-12,12H128a12,12,0,0,1,0-24h88A12,12,0,0,1,228,128ZM128,76h88a12,12,0,0,0,0-24H128a12,12,0,0,0,0,24Zm88,104H128a12,12,0,0,0,0,24h88a12,12,0,0,0,0-24ZM79.51,39.51,56,63l-7.51-7.52a12,12,0,0,0-17,17l16,16a12,12,0,0,0,17,0l32-32a12,12,0,0,0-17-17Zm0,64L56,127l-7.51-7.52a12,12,0,1,0-17,17l16,16a12,12,0,0,0,17,0l32-32a12,12,0,0,0-17-17Zm0,64L56,191l-7.51-7.52a12,12,0,1,0-17,17l16,16a12,12,0,0,0,17,0l32-32a12,12,0,0,0-17-17Z'/%3E%3C/svg%3E");--tab-vanor-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z'/%3E%3C/svg%3E");--tab-boxning:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M168,12H120A60.08,60.08,0,0,0,60.13,68H56a36,36,0,0,0-36,36v29.19a20.13,20.13,0,0,0,4.38,12.5,11.46,11.46,0,0,0,.94,1L60,181v35a20,20,0,0,0,20,20H192a20,20,0,0,0,20-20V177.68l15.23-53.3a20.07,20.07,0,0,0,.77-5.5V72A60.07,60.07,0,0,0,168,12Zm36,106.32L188.46,172.7A12.28,12.28,0,0,0,188,176v36H84V176a12,12,0,0,0-3.56-8.53L44,131.45V104A12,12,0,0,1,56,92h4v12a12,12,0,0,0,24,0V72a36,36,0,0,1,36-36h48a36,36,0,0,1,36,36ZM166.66,162l-9,6,9,6a12,12,0,1,1-13.32,20L136,182.42,118.66,194a12,12,0,0,1-13.32-20l9-6-9-6a12,12,0,0,1,13.32-20L136,153.58,153.34,142a12,12,0,1,1,13.32,20Z'/%3E%3C/svg%3E");--tab-boxning-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M168,16H120A56,56,0,0,0,64,72v31.73A8.17,8.17,0,0,1,56.53,112,8,8,0,0,1,48,104V78.7a4,4,0,0,0-5.63-3.65A32,32,0,0,0,24,104v29.19a16.14,16.14,0,0,0,3.5,10q.3.36.63.69L64,179.34V216a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V177.12l15.38-53.84a16,16,0,0,0,.62-4.4V72A56,56,0,0,0,168,16Zm3.58,168.84a8,8,0,0,1-7.16,14.32L136,184.94l-28.42,14.22a8,8,0,1,1-7.16-14.32L118.11,176l-17.69-8.84a8,8,0,1,1,7.16-14.32L136,167.06l28.42-14.22a8,8,0,1,1,7.16,14.32L153.89,176Z'/%3E%3C/svg%3E");--tab-framsteg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M236,208a12,12,0,0,1-12,12H32a12,12,0,0,1-12-12V48a12,12,0,0,1,24,0v99l43.51-43.52a12,12,0,0,1,17,0L128,127l43-43H160a12,12,0,0,1,0-24h40a12,12,0,0,1,12,12v40a12,12,0,0,1-24,0V101l-51.51,51.52a12,12,0,0,1-17,0L96,129,44,181v15H224A12,12,0,0,1,236,208Z'/%3E%3C/svg%3E");--tab-framsteg-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM200,192H56a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v76.69l34.34-34.35a8,8,0,0,1,11.32,0L128,132.69,172.69,88H144a8,8,0,0,1,0-16h48a8,8,0,0,1,8,8v48a8,8,0,0,1-16,0V99.31l-50.34,50.35a8,8,0,0,1-11.32,0L104,131.31l-40,40V176H200a8,8,0,0,1,0,16Z'/%3E%3C/svg%3E");--tab-vikt:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M243.14,131.54l-32-80h0a12,12,0,0,0-13.73-7.25L140,57V40a12,12,0,0,0-24,0V62.37L53.4,76.29a12,12,0,0,0-8.54,7.25h0l0,0v0l-32,79.92A12,12,0,0,0,12,168c0,12.13,6.2,22.43,17.45,29A55,55,0,0,0,56,204a55,55,0,0,0,26.55-7C93.8,190.43,100,180.13,100,168a12,12,0,0,0-.86-4.46L72.38,96.65,116,87V204H104a12,12,0,0,0,0,24h48a12,12,0,0,0,0-24H140V81.63l40.42-9-23.56,58.9A12,12,0,0,0,156,136c0,12.13,6.2,22.43,17.45,29a53.78,53.78,0,0,0,53.1,0C237.8,158.43,244,148.13,244,136A12,12,0,0,0,243.14,131.54ZM56,180c-3.71,0-18-1.87-19.81-10.18L56,120.31l19.81,49.51C74,178.13,59.71,180,56,180Zm144-32c-3.71,0-18-1.87-19.81-10.18L200,88.31l19.81,49.51C218,146.13,203.71,148,200,148Z'/%3E%3C/svg%3E");--tab-vikt-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M239.43,133l-32-80A8,8,0,0,0,200,48a8.27,8.27,0,0,0-1.73.21L136,62V40a8,8,0,0,0-16,0V65.58L54.27,80.21A8,8,0,0,0,48.57,85l-32,80a7.92,7.92,0,0,0-.57,3c0,23.31,24.54,32,40,32s40-8.69,40-32a7.92,7.92,0,0,0-.57-3L66.92,93.77,120,82V208H104a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16H136V78.42L187,67.1,160.57,133a7.92,7.92,0,0,0-.57,3c0,23.31,24.54,32,40,32s40-8.69,40-32A7.92,7.92,0,0,0,239.43,133Zm-160,35H32.62L56,109.54Zm97.24-32L200,77.54,223.38,136Z'/%3E%3C/svg%3E");--tab-historik:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M140,80v41.21l34.17,20.5a12,12,0,1,1-12.34,20.58l-40-24A12,12,0,0,1,116,128V80a12,12,0,0,1,24,0ZM128,28A99.38,99.38,0,0,0,57.24,57.34c-4.69,4.74-9,9.37-13.24,14V64a12,12,0,0,0-24,0v40a12,12,0,0,0,12,12H72a12,12,0,0,0,0-24H57.77C63,86,68.37,80.22,74.26,74.26a76,76,0,1,1,1.58,109,12,12,0,0,0-16.48,17.46A100,100,0,1,0,128,28Z'/%3E%3C/svg%3E");--tab-historik-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M224,128A96,96,0,0,1,62.11,197.82a8,8,0,1,1,11-11.64A80,80,0,1,0,71.43,71.43C67.9,75,64.58,78.51,61.35,82L77.66,98.34A8,8,0,0,1,72,112H32a8,8,0,0,1-8-8V64a8,8,0,0,1,13.66-5.66L50,70.7c3.22-3.49,6.54-7,10.06-10.55A96,96,0,0,1,224,128ZM128,72a8,8,0,0,0-8,8v48a8,8,0,0,0,3.88,6.86l40,24a8,8,0,1,0,8.24-13.72L136,123.47V80A8,8,0,0,0,128,72Z'/%3E%3C/svg%3E");--tab-program:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M108,108a12,12,0,0,1,12-12h56a12,12,0,0,1,0,24H120A12,12,0,0,1,108,108Zm68,28H120a12,12,0,0,0,0,24h56a12,12,0,0,0,0-24Zm52-88V208a20,20,0,0,1-20,20H48a20,20,0,0,1-20-20V48A20,20,0,0,1,48,28H208A20,20,0,0,1,228,48ZM52,204H68V52H52ZM204,52H92V204H204Z'/%3E%3C/svg%3E");--tab-program-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM80,208H48V48H80Zm96-56H112a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Zm0-32H112a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Z'/%3E%3C/svg%3E")}
 </style>
 
@@ -3614,6 +3628,8 @@ function renderProgram(){
       steps.map((x, i) => '<button type="button" class="go" data-gjump="' + x.j + '" style="--c:' + x.c + '"><b>' + (i + 1) + '</b><span>' + esc(x.n) + '</span><small>' + esc(x.m) + '</small></button>').join("") + '</div>';
     pre = routineCardHTML(rs.w, "w");
     post = (rs.a ? routineCardHTML(rs.a, "a") : "") + routineCardHTML(rs.s, "s");
+  } else if (gSection === "hall"){
+    pre = '<div class="card gstart"><div class="gnote">Alla ' + HALL_N + ' övningar i ordning, med bild och timer där det är ett håll. När du är klar bockas Hållning + fascia av under Vanor.</div><button class="btn" type="button" data-gguide="hall" data-gkind="h">▶ Kör hållningen med timer · ' + HALL_MIN + ' min</button></div>';
   } else if (gSection === "abs"){
     pre = '<div class="card gstart"><div class="gnote">Två varv av alla tre, 30 sek vila mellan varven. Görs direkt efter sista övningen på Över – sen stretch.</div><button class="btn" type="button" data-gguide="absOver" data-gkind="a">▶ Kör magen med timer · 6 min</button></div>';
   }
@@ -3813,7 +3829,7 @@ const HABITS = [
   {k: "socker", n: "Inget socker", h: "Godis, läsk, energidryck, bakverk. Frukt, bär, mjölk och havregryn räknas inte – de ska du äta."},
   {k: "porr", n: "Ingen porr", h: "Din regel. Bocka av ärligt på kvällen."},
   {k: "pass", n: "Dagens träning", auto: true},
-  {k: "hall", n: "Hållning + fascia · 20 min", h: "Hållningspasset och 2 min fascia-håll per sida. Finns under Program → Hållning."},
+  {k: "hall", n: "Hållning + fascia · 20 min", h: "Hållningspasset och 2 min fascia-håll per sida. Kör det från rutan Hållningen på Pass – då bockas det här av sig självt."},
   {k: "shake", n: "Shaken", h: "Dagssatsen i Shake-appen – drick alla glas, även vilodagar. Långpass över 10 km: nästa storlek."},
   {k: "prot", n: "125 g protein", h: "Shaken plus maten. Kvarg, ägg, kyckling, fisk."},
   {k: "tillskott", n: "Tillskott", h: "Kreatin, selen och Puori i shaken, D-pärlan till första glaset. Magnesium på kvällen."},
@@ -7597,6 +7613,7 @@ const GU = [
     ["✏️", "Ändra programmet", "Set, reps, vila och ordning, byt en övning för alltid, pausa eller lägg till.", "pass", "#v-pass .pr-link"],
     ["↪", "Flytta passet", "Kan du inte i dag, eller missade du ett pass? Välj ny dag så blir det ändå fyra pass i veckan.", "pass", "#v-pass .fl-pill, #v-pass .fl-ban", "", "Knappen syns i passet på en gymdag innan du börjat, och som banner dagen efter ett missat pass."],
     ["🎯", "Målet under övningen", "Har du ett mål för övningen står det i passet hur mycket som är kvar.", "pass", "#v-pass .mal-hint", "", "Syns när du satt ett mål under Framsteg → Mål."],
+    ["🧍", "Hållningen varje dag", "Egen ruta på Pass varje dag. Knappen kör alla övningarna i ordning med bild och timer, och bockar av Hållning + fascia under Vanor när du är klar.", "pass", "#rgHero .bt-hall"],
     ["🔥", "Uppvärmning, mage och stretch", "Guidade med timer och bilder före och efter övningarna.", "pass", "#v-pass section.rcard"],
     ["💾", "Spara passet", "Sedan kommer rekord, XP, passets tid och en bild att dela.", "pass", "#v-pass .savebar"],
     ["⌚", "Garmin och live puls", "Sömn, HRV och löprundor från klockan, och pulsen live i en bubbla.", "pass", "#gmPass"],
@@ -7908,7 +7925,8 @@ function atBlockHTML(b, i, day, firstOpen, where){
   const noteH = note ? '<p class="at-note">' + esc(note) + '</p>' : "";
   if (!b.ex){
     let act = "";
-    if (b.id === "hallning") act = (readOnly ? '' : '<button type="button" class="at-bcheck" data-at="blk" data-b="hallning" data-d="' + date + '" aria-pressed="' + all + '">' + (all ? "Klart ✓" : "Markera klart") + '</button>') + '<a class="exlink" href="#program/thoracic_ext">Hållningsövningarna →</a>';
+    // 16 nov: Kör hållningen – hela passet med bild och timer (hallning.js); bocken sätts när guiden är klar
+    if (b.id === "hallning") act = (readOnly || all || date !== iso(today()) ? '' : '<button type="button" class="btn sm" data-bt-hall>▶ Kör hållningen</button>') + (readOnly ? '' : '<button type="button" class="at-bcheck" data-at="blk" data-b="hallning" data-d="' + date + '" aria-pressed="' + all + '">' + (all ? "Klart ✓" : "Markera klart") + '</button>') + '<a class="exlink" href="#program/thoracic_ext">Hållningsövningarna →</a>';
     else if (b.id === "over" || b.id === "ben_over") act = all ? '<span class="at-ok">Passet är sparat ✓</span>' : isT && where === "pass" ? '<button type="button" class="at-bcheck" data-at="topass">Passet står här nedanför ↓</button>' : '<a class="exlink" href="#pass">Öppna passet →</a>';
     else if (b.id === "uppv_ben") act = all ? '<span class="at-ok">Uppvärmningen är gjord ✓</span>' : isT && where === "pass" ? (draft && RFOR[draft.type].w === "warmLow" && !readOnly && !justSaved ? '<button type="button" class="at-bcheck" data-rstart="w">▶ Starta uppvärmningen</button>' : '<button type="button" class="at-bcheck" data-at="topass">Passet står här nedanför ↓</button>') : '<a class="exlink" href="#pass">Öppna passet →</a>';
     else { const auto = !dn["blk:" + b.id] && atBlkAuto(b, date);
@@ -8815,6 +8833,57 @@ try {
 } catch(e){}
 
 
+/* ---------- Hållningen varje dag (16 nov 2026) ---------- */
+// Filip: "hållningspasset är som gömt – det ska ju finnas med varje dag". Nu har det en egen ruta på Pass varje dag (bento.js),
+// en knapp i blocket Hållningen i Atlet i dag och en i Program → Hållning. Alla tre kör hållningspasset i samma guide som
+// uppvärmningen – i programmets ordning, med teckningen för varje övning och timer där det är ett håll.
+// När guiden är klar bockas Hållning + fascia av under Vanor (samma bock som blocket och vilodagen i veckan).
+const HALL_MIN = 20;
+ROUTINES.hall = (() => {
+  const vid = u => { const m = /[?&]v=([\w-]{6,})/.exec(u || ""); return m ? m[1] : null; };
+  const steps = [];
+  GUIDE.filter(g => g.section === "hall").forEach(g => {
+    const base = {n: g.name, cue: g.cue, tip: g.adjust || "", v: vid(g.video), fig: g.svg, key: g.key};
+    let m;
+    if ((m = /^(\d+) × (\d+) sekunder per sida/.exec(g.dose)) && +m[1] <= 3){   // 2 × 30 sekunder per sida → två omgångar, timer per sida
+      const r = +m[1]; for (let i = 1; i <= r; i++) steps.push(Object.assign({}, base, {t: +m[2], sides: 2, dose: (r > 1 ? "Omgång " + i + " av " + r + " · " : "") + m[2] + " sekunder per sida"}));
+    } else if ((m = /^(\d+) × (\d+)–(\d+) sekunder$/.exec(g.dose)) && +m[1] <= 3 && +m[2] >= 15){  // 2 × 20–30 sekunder → två omgångar, timern på den lägre siffran (korta håll som kort fot, 10 × 5–10 s, gör du i egen takt)
+      const r = +m[1]; for (let i = 1; i <= r; i++) steps.push(Object.assign({}, base, {t: +m[2], dose: (r > 1 ? "Omgång " + i + " av " + r + " · " : "") + m[2] + "–" + m[3] + " sekunder"}));
+    } else if ((m = /^(\d+) min per sida/.exec(g.dose))){              // fascia-hållet: 2 min per sida
+      steps.push(Object.assign({}, base, {t: +m[1] * 60, sides: 2, dose: m[1] + " min per sida"}));
+    } else steps.push(Object.assign({}, base, {dose: g.dose}));        // reps och andetag: du säger själv när du är klar
+  });
+  return {name: "Hållningen", min: HALL_MIN, steps};
+})();
+const HALL_N = GUIDE.filter(g => g.section === "hall").length;
+const hallDone = date => !!(habits[date] && habits[date].hall);
+function hallStart(){ if (typeof closeGuide === "function" && G) closeGuide(); openGuide("h", "hall"); }
+
+// Teckningen i guiden: hållningsövningarna har en bild för varje steg (uppvärmningen och stretchen har ingen)
+(function(){
+  const ring = $("gRingWrap"); if (!ring || $("gFig")) return;
+  const f = document.createElement("div"); f.className = "g-fig"; f.id = "gFig"; f.hidden = true; f.setAttribute("aria-hidden", "true");
+  ring.parentNode.insertBefore(f, ring);
+})();
+renderGuide = (f => function(){
+  const r = f.apply(this, arguments);
+  try { const st = gStep(), box = $("gFig"), g = $("guide");
+    if (box){ const key = st && st.fig ? st.key : ""; if (box.dataset.k !== key){ box.dataset.k = key; box.innerHTML = key ? st.fig.replace(/id="([^"]+)"/g, 'id="$1-g"').replace(/url\(#([^)]+)\)/g, "url(#$1-g)") : ""; } box.hidden = !key; }
+    if (g){ g.classList.toggle("g-hall", !!(G && G.key === "hall")); g.classList.toggle("g-timed", !!(st && st.t)); }
+  } catch(e){}
+  return r;
+})(renderGuide);
+// Klar: bocka Hållning + fascia för i dag, och rita om det som visar bocken
+gFinish = (f => function(){
+  const hall = !!(G && G.key === "hall");
+  if (hall){ const t = iso(today()), day = habits[t] || (habits[t] = {}); day.hall = true; store("lyftloggen.habits.v1", habits); }
+  const r = f.apply(this, arguments);
+  if (hall){ try { renderStrip(); atRefresh(); if (view === "vanor") renderVanor(); if (typeof ntSoon === "function") ntSoon(); } catch(e){} }
+  return r;
+})(gFinish);
+document.addEventListener("click", e => { const b = e.target.closest("[data-bt-hall]"); if (!b) return; e.preventDefault(); hallStart(); });
+
+
 /* ---------- Bento (16 nov 2026): rutor i olika storlek ---------- */
 // Ljus grå botten med vita rutor, som widgetarna på hemskärmen. Högst upp på varje flik: datumet och en stor färgad ruta
 // med flikens rubrik och det viktigaste just nu, sedan små rutor med siffrorna. På Pass är veckan en egen ruta.
@@ -8850,7 +8919,8 @@ function btAtBars(day){
   let cur = false;
   return '<div class="bt-bars" aria-hidden="true">' + day.blocks.map(b => { const c = atBlkCount(b, day.date), done = c[1] > 0 && c[0] >= c[1]; let k = done ? "on" : ""; if (!done && !cur){ cur = true; k = "now"; } return '<i class="' + k + '"></i>'; }).join("") + '</div>';
 }
-const btAtNext = day => day ? day.blocks.find(b => { const c = atBlkCount(b, day.date); return !(c[1] > 0 && c[0] >= c[1]); }) || null : null;
+// Näst på tur i Atlet: hållningen räknas inte här – den har en egen ruta
+const btAtNext = day => day ? day.blocks.find(b => { if (b.id === "hallning") return false; const c = atBlkCount(b, day.date); return !(c[1] > 0 && c[0] >= c[1]); }) || null : null;
 
 /* ----- Pass ----- */
 function rgPassState(){
@@ -8881,36 +8951,44 @@ function btNextSet(){
 function btAtTile(s){
   return s.ac[1] ? btTile({l: "Atlet i dag", v: s.ac[0] + "/" + s.ac[1], extra: btAtBars(s.day)}) : "";
 }
+// Hållningen: en egen ruta varje dag (16 nov) – knappen kör hela hållningspasset med bild och timer (hallning.js). Klar = svart ruta med bock.
+function btHallTile(){
+  if (typeof HALL_N === "undefined") return "";
+  const done = hallDone(iso(today()));
+  return '<section class="bt-t bt-hall' + (done ? ' dark' : '') + '" aria-label="Hållningen">' +
+    '<div class="bt-hh"><span class="bt-l">Hållningen</span>' + (done ? '<span class="bt-mini bt-ok" aria-hidden="true">' + BT_CHECK + '</span>' : readOnly ? '' : '<button type="button" class="bt-mini" data-bt-hall aria-label="Kör hållningen">' + BT_PLAY + '</button>') + '</div>' +
+    '<div class="bt-v"><b class="num">' + (done ? 'Klar' : HALL_MIN + ' min') + '</b><small>' + (done ? 'bockad i dag' : HALL_N + ' övningar') + '</small></div></section>';
+}
 function rgPass(){
   const s = rgPassState(), t = today();
   if (s.mode === "saved"){
     if (!justSaved){ const k = s.type || nextScheduled().k; return btHero({c: PROGRAM[k].c, chip: "Pass", code: PROGRAM[k].ab, title: PROGRAM[k].name}); }
     const r = justSaved, day = t < START ? null : atDay(t), ac = day ? atDayCount(day) : [0, 0], nPr = (r.prs || []).length;
     return btHero({c: PROGRAM[r.type].c, cls: "bt-done", chip: "Sparat", code: PROGRAM[r.type].ab, title: PROGRAM[r.type].name, label: "Passet är sparat", foot: r.sets + " set klara", p: 1, btn: '<span class="bt-play bt-ok" aria-hidden="true">' + BT_CHECK + '</span>'}) +
-      btGrid([btTile({l: "Volym", v: fmt(r.volume, 0) + " kg", s: "lyft i dag", cls: "dark"}), btTile({l: "Rekord", v: nPr, s: nPr === 1 ? "nytt rekord" : "nya rekord"}), ac[1] ? btTile({l: "Atlet i dag", v: ac[0] + "/" + ac[1], extra: btAtBars(day), cls: "wide"}) : ""]);
+      btGrid([btTile({l: "Volym", v: fmt(r.volume, 0) + " kg", s: "lyft i dag", cls: "dark"}), btTile({l: "Rekord", v: nPr, s: nPr === 1 ? "nytt rekord" : "nya rekord"}), ac[1] ? btTile({l: "Atlet i dag", v: ac[0] + "/" + ac[1], extra: btAtBars(day)}) : btTile({l: "Set", v: r.sets, s: "klara i dag"}), btHallTile()]);
   }
   if (s.mode === "rest"){
     const run = RUN_DAYS[t.getDay()], nx = nextScheduled(), when = nx.i === 0 ? "i dag" : nx.i === 1 ? "i morgon" : DAYL[nx.d.getDay()], nb = btAtNext(s.day);
     return btHero({c: run ? "run" : "rest", chip: rgCap(DAYL[t.getDay()]), title: run ? "Löpdag" : "Vilodag", label: "Dagen i dag",
-        foot: s.ac[0] + " av " + s.ac[1] + " klart i Atlet", p: s.p, btn: '<button type="button" class="bt-play" data-bt-jump="#v-pass .at-card" aria-label="Till dagens block">' + BT_DOWN + '</button>'}) +
+        foot: s.ac[0] + " av " + s.ac[1] + " klart i Atlet · " + atDayMin(s.day) + " min", p: s.p, btn: '<button type="button" class="bt-play" data-bt-jump="#v-pass .at-card" aria-label="Till dagens block">' + BT_DOWN + '</button>'}) +
       btGrid([btTile({l: "Klart", v: btPct(s.p), s: "av Atlet i dag", cls: "dark big"}),
         nb ? btTile({l: "Näst på tur", v: esc(nb.name), s: nb.min + " min" + (nb.place ? " · " + esc(nb.place) : ""), cls: "txt"}) : btTile({l: "Näst på tur", v: "Allt klart", s: "för i dag", cls: "txt"}),
-        btTile({l: "Atlet tar", v: atDayMin(s.day) + " min", s: s.day.blocks.length + " block"}),
+        btHallTile(),
         btTile({l: "Nästa pass", v: esc(PROGRAM[nx.k].ab), s: esc(PROGRAM[nx.k].name) + " · " + when})]);
   }
   const min = passMinutes(draft.type, ssOn()), k = draft.type;
   if (s.mode === "done"){
     const n = (s.saved.exercises || []).reduce((a, e) => a + (e.sets || []).length, 0), mins = s.saved.min || s.saved.mins;
     return btHero({c: PROGRAM[k].c, cls: "bt-done", chip: "Sparat i dag", code: PROGRAM[k].ab, title: s.pr.name, label: "Dagens pass är sparat", foot: n + " set loggade", p: 1, btn: '<span class="bt-play bt-ok" aria-hidden="true">' + BT_CHECK + '</span>'}) +
-      btGrid([btTile({l: "Volym", v: fmt(s.saved.volume || 0, 0) + " kg", s: "lyft i dag", cls: "dark"}), mins ? btTile({l: "Tid", v: mins + " min", s: "tog passet"}) : btTile({l: "Övningar", v: s.pr.ex.length, s: "i passet"}), btAtTile(s) && btAtTile(s).replace('class="bt-t"', 'class="bt-t wide"')]);
+      btGrid([btTile({l: "Volym", v: fmt(s.saved.volume || 0, 0) + " kg", s: "lyft i dag", cls: "dark"}), mins ? btTile({l: "Tid", v: mins + " min", s: "tog passet"}) : btTile({l: "Övningar", v: s.pr.ex.length, s: "i passet"}), btAtTile(s) || btTile({l: "Set", v: n, s: "loggade"}), btHallTile()]);
   }
   const nx = btNextSet(), when = s.pre ? "Första passet" : s.tk === k ? "Dagens pass" : "Pass";
-  return btHero({c: PROGRAM[k].c, chip: when, code: PROGRAM[k].ab, title: s.pr.name, label: when, foot: s.done + " av " + s.tot + " set", p: s.p,
+  return btHero({c: PROGRAM[k].c, chip: when, code: PROGRAM[k].ab, title: s.pr.name, label: when, foot: s.done + " av " + s.tot + " set · ca " + min + " min", p: s.p,
       btn: readOnly ? "" : '<button type="button" class="bt-play" data-fk="open" aria-label="' + (s.done ? "Fortsätt passet" : "Kör passet") + '">' + BT_PLAY + '</button>'}) +
     btGrid([btTile({l: "Klart", v: btPct(s.p), s: "av passet", cls: "dark big"}),
       nx ? btTile({l: "Näst på tur", v: esc(nx.n), s: nx.sub, cls: "txt"}) : btTile({l: "Näst på tur", v: "Spara passet", s: "allt är klart", cls: "txt"}),
       btAtTile(s) || btTile({l: "Övningar", v: s.pr.ex.length, s: "i passet"}),
-      btTile({l: "Passet tar", v: min + " min", s: s.pr.ex.length + " övningar"})]);
+      btHallTile()]);
 }
 // Veckan: en egen ruta under de små. Klara dagar är svarta med en bock, i dag har dagens färg, missade dagar är streckade.
 function rgStrip(){
@@ -9091,7 +9169,7 @@ show = (sh => function(v){ rgShown = "\u0000"; return sh.apply(this, arguments);
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611161550, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611161623, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -9123,7 +9201,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "16 nov 15.50", BUILD_NOTE = "Ny design: Bento – ljusa rutor i olika storlek";
+const BUILD = "16 nov 16.23", BUILD_NOTE = "Hållningen har en egen ruta på Pass varje dag, med bild och timer";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
