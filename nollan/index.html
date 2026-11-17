@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nollan</title>
+<meta name="description" content="Hitta nollan i kopplingsdosan och koppla in NSPanel till taklampan.">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nollan">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#E8E9ED" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D0E11" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&amp;display=swap">
+<style>
+/* Bento, the same system as GymSchema and Idag: grey ground, white tiles with big round corners, black ink.
+   Colour only as whole tiles. Here the big tile's colour is the answer's state:
+   blue = not found yet, yellow = according to the colours, green = measured, red = stop. One typeface, Manrope.
+   The chips and the sketch use the real colours of the wires, because that is what you look at in the box. */
+:root{
+  --ground:#E8E9ED; --tile:#FFFFFF; --inset:#F1F2F5;
+  --ink:#111214; --on-ink:#FFFFFF; --muted:#555862;
+  --line:#E4E5EA; --edge:#C3C5CC; --track:#DADBE0;
+  --blue:#6E9BFF; --yellow:#FFC93A; --green:#3DCB8A; --red:#FF6B6B;
+  --warn:#7A4500; --warn-bg:#FFF1D8; --bad:#C42B2B;
+  --new-wire:#2F6FE4;
+  --float:0 10px 28px rgba(17,18,20,.16),0 1px 3px rgba(17,18,20,.10);
+  --font:"Manrope",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --r:26px;
+  --day:var(--blue);
+  --is-dark:0;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not(.look-light){
+    --ground:#0D0E11; --tile:#1B1D22; --inset:#25272D;
+    --ink:#F2F3F5; --on-ink:#111214; --muted:#A9ADB6;
+    --line:#2A2D33; --edge:#4A4E57; --track:#34363D;
+    --warn:#F2A33A; --warn-bg:#33240D; --bad:#FF7070;
+    --new-wire:#6E9BFF;
+    --float:0 10px 28px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.45);
+    --is-dark:1;
+    color-scheme:dark;
+  }
+}
+:root.look-dark{
+  --ground:#0D0E11; --tile:#1B1D22; --inset:#25272D;
+  --ink:#F2F3F5; --on-ink:#111214; --muted:#A9ADB6;
+  --line:#2A2D33; --edge:#4A4E57; --track:#34363D;
+  --warn:#F2A33A; --warn-bg:#33240D; --bad:#FF7070;
+  --new-wire:#6E9BFF;
+  --float:0 10px 28px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.45);
+  --is-dark:1;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.35;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.app{max-width:520px;margin:0 auto;padding:14px 16px calc(118px + env(safe-area-inset-bottom,0px))}
+
+/* ---------- Top line ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 4px 12px}
+.date b{display:block;font-size:16px;font-weight:800;letter-spacing:-.02em}
+.date small{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-top:1px}
+.icon-btn{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:0;background:var(--tile);display:grid;place-items:center}
+
+/* ---------- The big tile ---------- */
+.hero{background:var(--day);color:#111214;border-radius:var(--r);padding:18px 20px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;align-items:end;transition:background-color .2s ease}
+.hero .eyebrow{grid-column:1/-1;font-size:13.5px;font-weight:800;letter-spacing:-.01em}
+.hero h1{margin:6px 0 0;font-size:46px;line-height:.95;letter-spacing:-.05em;font-weight:800;text-wrap:balance;overflow-wrap:anywhere;-webkit-hyphens:manual;hyphens:manual}
+.hero .count{font-size:14.5px;font-weight:700;margin-top:10px;font-variant-numeric:tabular-nums}
+.hero .go{width:56px;height:56px;border-radius:50%;border:0;background:#111214;color:#FFFFFF;display:grid;place-items:center}
+.hero .go:focus-visible{outline-color:#111214}
+.hero .bar{grid-column:1/-1;height:9px;border-radius:99px;background:rgba(17,18,20,.17);overflow:hidden;margin-top:10px}
+.hero .bar i{display:block;height:100%;width:0;background:#111214;border-radius:99px;transition:width .3s ease}
+.hero.ink{background:var(--ink);color:var(--on-ink)}
+.hero.ink .bar{background:rgba(127,127,127,.35)}
+.hero.ink .bar i{background:var(--on-ink)}
+
+/* ---------- Tiles ---------- */
+.tile{background:var(--tile);border-radius:var(--r);padding:16px 18px 16px;margin-top:10px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.tile h2,.list h2{margin:0;font-size:19px;font-weight:800;letter-spacing:-.025em}
+.tile p{margin:0;font-size:15px;font-weight:500}
+.step{scroll-margin-top:12px}
+.step h2{display:flex;align-items:center;gap:10px}
+.step .no{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--on-ink);display:grid;place-items:center;font-size:13.5px;font-weight:800;letter-spacing:0;font-variant-numeric:tabular-nums}
+.hint{margin:0;font-size:13.5px;font-weight:500;color:var(--muted)}
+.tile p.hint{font-size:13.5px}
+
+.btn{border:0;border-radius:99px;background:var(--ink);color:var(--on-ink);font-weight:800;font-size:14.5px;padding:11px 18px;min-height:44px;text-decoration:none;display:inline-grid;place-items:center;text-align:center}
+.btn.sm{align-self:flex-start;padding:8px 16px;min-height:40px;font-size:13.5px}
+.btn.ghost{background:var(--inset);color:var(--ink)}
+.btn.warn{background:var(--bad);color:#FFFFFF}
+
+/* ---------- Wire colour chips ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.wire{border:0;border-radius:99px;background:var(--inset);padding:0 15px 0 11px;min-height:44px;display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700}
+.wire i,.dot{flex:0 0 auto;display:inline-block;width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(127,127,127,.55)}
+.wire[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+.wire[aria-pressed="true"] i{box-shadow:0 0 0 2px var(--on-ink)}
+.dot{width:14px;height:14px;vertical-align:-1.5px;margin-right:7px}
+
+.toggle{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;min-height:44px;cursor:pointer;font-size:15px;font-weight:700;border-radius:14px}
+.toggle:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.tick{flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:2px solid var(--edge);display:grid;place-items:center;color:transparent;transition:background .15s,border-color .15s}
+.toggle[aria-pressed="true"] .tick,.row.done .tick{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+
+/* ---------- Measuring ---------- */
+.meas{display:grid;gap:12px}
+.mname{font-size:15px;font-weight:800;margin-bottom:6px}
+.opt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.opt button{border:0;border-radius:14px;background:var(--inset);min-height:46px;font-weight:800;font-size:15px;font-variant-numeric:tabular-nums}
+.opt button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+.msg{margin:0;font-size:14.5px;font-weight:700}
+
+/* ---------- Call-outs ---------- */
+.callout{margin-top:10px;border-radius:var(--r);background:var(--warn-bg);color:var(--warn);padding:14px 18px;font-size:14.5px;font-weight:700}
+.callout.stop{background:var(--bad);color:#FFFFFF}
+:root.look-dark .callout.stop{color:#111214}
+@media (prefers-color-scheme: dark){ :root:not(.look-light) .callout.stop{color:#111214} }
+
+/* ---------- White lists ---------- */
+.list{background:var(--tile);border-radius:var(--r);margin-top:10px;overflow:hidden;padding-bottom:8px}
+.list > header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:16px 18px 6px}
+.list .n{font-size:13px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.list ul,.list ol{list-style:none;margin:0;padding:0}
+.list .hint{padding:4px 18px 8px}
+.ex{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 18px;font-size:15px;font-weight:600;position:relative}
+.ex + .ex::before{content:"";position:absolute;left:18px;right:18px;top:0;border-top:1px solid var(--line)}
+.ex b{font-weight:800;text-align:right}
+.ex.text{display:block;font-weight:500}
+a.ex{text-decoration:none}
+a.ex b{font-weight:800;text-align:left}
+a.ex svg{flex:0 0 auto;color:var(--muted)}
+
+.row{position:relative}
+.row + .row::before{content:"";position:absolute;left:58px;right:18px;top:0;border-top:1px solid var(--line)}
+.row .line{display:flex;align-items:center;gap:6px;padding-right:14px}
+.row-main{all:unset;box-sizing:border-box;flex:1 1 auto;min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;padding:11px 0 11px 18px;min-height:52px;cursor:pointer}
+.row-main:focus-visible{outline:3px solid var(--ink);outline-offset:-3px;border-radius:14px}
+.row .t{display:block;font-size:16px;font-weight:700;letter-spacing:-.01em;overflow-wrap:anywhere}
+.row.done .t{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1.5px}
+.row .note{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-top:2px}
+.row .side{flex:0 0 auto}
+.row .side .btn{min-height:38px;padding:7px 14px;font-size:13.5px}
+
+/* ---------- The sketch ---------- */
+.sketch{padding:14px 8px 16px}
+#sketch svg{display:block;width:100%;height:auto}
+.sk-t{font:800 16px var(--font);fill:var(--ink);letter-spacing:-.02em}
+.sk-s{font:600 13.5px var(--font);fill:var(--muted)}
+.sk-box{fill:var(--inset)}
+.sk-n{fill:var(--blue)}
+.sk-nt{font:800 16px var(--font);fill:#111214}
+.sk-frame{fill:none;stroke:var(--edge);stroke-width:1.5;stroke-dasharray:5 5}
+.sk-plain{fill:none;stroke:var(--muted);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.sk-case{fill:none;stroke:var(--ink);stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
+.sk-core{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.sk-new{fill:none;stroke:var(--new-wire);stroke-width:4.5;stroke-linecap:round;stroke-dasharray:9 8}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;padding:0 10px;font-size:13px;font-weight:600;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend svg{flex:0 0 auto}
+
+.plint{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:6px 18px 4px}
+.plint div{background:var(--inset);border-radius:16px;padding:12px 4px 10px;text-align:center;min-width:0}
+.plint b{display:block;font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.plint small{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
+.plint .n{background:var(--blue);color:#111214}
+.plint .n small{color:#111214;opacity:.75}
+
+/* ---------- Floating tab bar ---------- */
+.tabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--tile);border-radius:99px;padding:7px;display:flex;gap:6px;box-shadow:var(--float);z-index:10}
+.tabs button{width:62px;height:50px;border-radius:99px;border:0;background:transparent;color:var(--ink);display:grid;place-items:center}
+.tabs button[aria-current="page"]{background:var(--ink);color:var(--on-ink)}
+
+@media (max-width:350px){
+  .hero h1{font-size:40px}
+  .tabs button{width:56px}
+  .plint{padding-left:12px;padding-right:12px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;scroll-behavior:auto !important}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <div class="date">
+      <b>Nollan</b>
+      <small>NSPanel till taklampan</small>
+    </div>
+    <button class="icon-btn" id="lookBtn" type="button" aria-label="Byt mellan ljust och mörkt läge">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <!-- ================= Hitta nollan ================= -->
+    <section id="v-hitta" aria-label="Hitta nollan">
+      <div class="hero" id="hero">
+        <div class="eyebrow">Vilken bunt är nollan?</div>
+        <div role="status">
+          <h1 id="heroName">Inte hittad än</h1>
+          <div class="count" id="heroSub">Börja med färgerna i strömbrytaren.</div>
+        </div>
+        <button class="go" id="goNext" type="button" aria-label="Gå till nästa steg">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path id="goIcon" d="M12 5v14M6 13l6 6 6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="tile step" id="step-sw">
+        <h2><span class="no">1</span>Färgerna i strömbrytaren</h2>
+        <p class="hint">Tryck på färgerna som sitter i den gamla strömbrytaren. Oftast är det två: fasen och tändtråden.</p>
+        <div class="chips" id="chipsSw" role="group" aria-label="Färger i strömbrytaren"></div>
+        <button class="toggle" id="trapp" type="button" aria-pressed="false">
+          <span class="tick"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          <span>Lampan tänds från fler än ett ställe</span>
+        </button>
+      </div>
+      <div class="callout" id="trappNote" hidden>Tänds lampan från fler ställen är det en trappkoppling. Då sitter det tre ledare i strömbrytaren, och ingen av dem behöver vara fasen. NSPanel kan inte ersätta en trappbrytare rakt av. Låt elektrikern titta på det.</div>
+
+      <div class="tile step" id="step-lamp">
+        <h2><span class="no">2</span>Färgerna i lamputtaget</h2>
+        <p class="hint">Tryck på färgerna vid taklampan. Oftast är det nollan och tändtråden, ibland en skyddsjord också.</p>
+        <div class="chips" id="chipsLamp" role="group" aria-label="Färger i lamputtaget"></div>
+        <p class="hint" id="peHint" hidden>Gul/grön är skyddsjord och räknas inte med.</p>
+      </div>
+
+      <div class="list" id="result" hidden>
+        <header><h2>Så hänger det ihop</h2></header>
+        <div id="resultRows"></div>
+        <p class="hint">Tändtråden finns på båda ställena. Fasen finns bara i strömbrytaren och nollan bara i lampan.</p>
+      </div>
+      <div class="callout" id="resultNote" role="status" hidden></div>
+
+      <div class="tile step" id="step-meas">
+        <h2><span class="no">3</span>Mät buntarna i kopplingsdosan</h2>
+        <p class="hint">Mät varje bunt mot jord med en tvåpolig spänningsprovare. Jord finns på jordblecket i ett jordat uttag. Dra fram en jordad skarvsladd om det behövs.</p>
+        <p class="hint">Den som mäter ska kunna det. Rör inga trådar. Är ni osäkra mäter elektrikern.</p>
+        <div class="meas" id="meas"></div>
+        <p class="msg" id="measMsg" role="status"></p>
+        <button class="btn ghost sm" id="editBundles" type="button" aria-expanded="false" aria-controls="bundleEdit">Buntarna har andra färger</button>
+        <div id="bundleEdit" hidden>
+          <p class="hint" style="margin-bottom:9px">Välj de två färgerna på buntarna i dosan.</p>
+          <div class="chips" id="chipsBundles" role="group" aria-label="Buntarnas färger"></div>
+        </div>
+      </div>
+      <div class="callout stop" id="measNote" role="status" hidden></div>
+    </section>
+
+    <!-- ================= Skissen ================= -->
+    <section id="v-skiss" hidden aria-label="Skissen">
+      <div class="hero ink">
+        <div>
+          <h1>Skissen</h1>
+          <div class="count" id="skissSub">Så ska ledarna sitta när det är klart.</div>
+        </div>
+      </div>
+      <div class="tile sketch">
+        <div id="sketch"></div>
+        <div class="legend">
+          <span><svg width="30" height="8" viewBox="0 0 30 8" aria-hidden="true"><path class="sk-plain" d="M2 4H28"/></svg>finns redan</span>
+          <span><svg width="30" height="8" viewBox="0 0 30 8" aria-hidden="true"><path class="sk-new" d="M3 4H28"/></svg>ny blå nolla, 1,5 mm²</span>
+        </div>
+      </div>
+
+      <div class="list">
+        <header><h2>Plinten på baksidan</h2><span class="n">från vänster</span></header>
+        <div class="plint">
+          <div><b>L2</b><small>tom</small></div>
+          <div><b>L1</b><small>tändtråd</small></div>
+          <div><b>L</b><small>fas</small></div>
+          <div class="n"><b>N</b><small>ny nolla</small></div>
+        </div>
+        <div class="ex"><span>N</span><b>den nya blå nollan</b></div>
+        <div class="ex"><span>L</span><b>fasen, som alltid har spänning</b></div>
+        <div class="ex"><span>L1</span><b>tändtråden upp till lampan</b></div>
+        <div class="ex"><span>L2</span><b>tom, för en andra lampa</b></div>
+        <p class="hint">Hålet längst till vänster har ingen bokstav. Det används inte.</p>
+      </div>
+
+      <div class="tile">
+        <h2>Tråden</h2>
+        <p>Blå FQ 1,5 mm², den ni redan har. Den dras i röret mellan kopplingsdosan och strömbrytaren och kopplas in i nollbunten.</p>
+        <p class="hint">Panelen måste ha både fas och nolla för att skärmen och wifi ska få ström. Utan nolla tar panelen sin ström genom lampan, och då blinkar lampan.</p>
+      </div>
+    </section>
+
+    <!-- ================= Stegen ================= -->
+    <section id="v-steg" hidden aria-label="Stegen">
+      <div class="hero ink">
+        <div role="status">
+          <h1>Stegen</h1>
+          <div class="count" id="stegCount"></div>
+        </div>
+        <span></span>
+        <div class="bar"><i id="stegBar"></i></div>
+      </div>
+      <div id="stegLists"></div>
+    </section>
+
+    <!-- ================= Regler ================= -->
+    <section id="v-regler" hidden aria-label="Regler">
+      <div class="hero ink">
+        <div>
+          <h1>Regler</h1>
+          <div class="count">Vad ni gör själva och vad elektrikern gör.</div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <h2>Dragningen är elektrikerns jobb</h2>
+        <p>Att dra en ny ledare i rör och koppla in den i dosan är elinstallationsarbete. Det får bara den göra som har egen auktorisation eller jobbar under ett elföretags egenkontrollprogram.</p>
+        <p>Elprogrammet på gymnasiet räcker inte i sig. Görs jobbet ändå kan det ge straff enligt elsäkerhetslagen.</p>
+        <p class="hint">Appen hjälper er att ta reda på vilken bunt som är nollan och att förbereda. Ni har redan tråd och dragfjäder, så för en elektriker är det ett kort jobb.</p>
+      </div>
+
+      <div class="list">
+        <header><h2>Säkert vid dosan</h2></header>
+        <div class="ex text">Mät med en tvåpolig spänningsprovare. Prova den i ett uttag som fungerar först.</div>
+        <div class="ex text">Rör inga trådar när säkringen är på.</div>
+        <div class="ex text">De två lösa ändarna i dosan kan ha spänning.</div>
+        <div class="ex text">Bryt säkringen och mät att det är spänningslöst innan någon tar i buntarna.</div>
+        <div class="ex text">Lita inte på färgerna i en gammal dosa. Mät.</div>
+      </div>
+
+      <div class="tile">
+        <h2>Färgerna i gamla hus</h2>
+        <p>I hus från före 70-talet varierar färgerna. Svart kan vara nolla i ett hus och fas i nästa, och vit tvärtom.</p>
+        <p>Röd är oftast gammal skyddsjord eller tändtråd. I nyare installationer är nollan blå och skyddsjorden gul/grön.</p>
+      </div>
+
+      <div class="list">
+        <header><h2>Läs mer</h2></header>
+        <a class="ex" href="https://elsakerhetsverket.se/kollaelforetaget/privatperson" target="_blank" rel="noopener"><b>Elsäkerhetsverket: när du anlitar ett elföretag</b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a class="ex" href="https://www.elsakerhetsverket.se/contentassets/e7287f5baae34003b16db9f2fa3c69b7/elsak-pm-olagligt-elinstallationsarbete-en-regelbeskrivning-2017.pdf" target="_blank" rel="noopener"><b>Elsäkerhetsverket: olagligt elinstallationsarbete</b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a class="ex" href="https://sonoff.tech/products/sonoff-nspanel-smart-scene-wall-switch86-eu-type-120-type" target="_blank" rel="noopener"><b>Sonoff: NSPanel</b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      </div>
+
+      <div class="tile">
+        <button class="btn ghost" id="resetAll" type="button">Börja om från början</button>
+        <p class="hint" id="resetMsg" role="status">Färger, mätning och bockar sparas bara på den här telefonen.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="tabs" id="tabs" aria-label="Flikar">
+  <button id="tab-hitta" type="button" aria-label="Hitta nollan">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+  </button>
+  <button id="tab-skiss" type="button" aria-label="Skissen">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"/><path d="M10.5 7H14a3 3 0 0 1 3 3v3.5"/></svg>
+  </button>
+  <button id="tab-steg" type="button" aria-label="Stegen">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5l2 2 3.5-4M3.5 16.5l2 2 3.5-4M13 7.5h7.5M13 16.5h7.5"/></svg>
+  </button>
+  <button id="tab-regler" type="button" aria-label="Regler">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 2.8v5.4c0 4.3-2.9 7.6-7 9.6-4.1-2-7-5.3-7-9.6V5.8L12 3z"/><path d="M9 12l2.2 2.2L15.2 10"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+"use strict";
+
+var KEY = "nollan.v1", LOOK_KEY = "nollan.look";
+try {
+  var look0 = localStorage.getItem(LOOK_KEY);
+  if (look0 === "dark" || look0 === "light") document.documentElement.classList.add("look-" + look0);
+} catch (e) { /* follows the phone */ }
+
+function $(id) { return document.getElementById(id); }
+
+/* The colours a wire can have. "adj" is the form used in "den vita bunten". */
+var STRIPES = "repeating-linear-gradient(135deg,#F5C400 0 5px,#2E9E5B 5px 10px)";
+var COLORS = [
+  { id: "svart", name: "svart", adj: "svarta", hex: "#16171A" },
+  { id: "vit", name: "vit", adj: "vita", hex: "#FAFAF7" },
+  { id: "rod", name: "röd", adj: "röda", hex: "#E5352B" },
+  { id: "bla", name: "blå", adj: "blå", hex: "#2F6FE4" },
+  { id: "brun", name: "brun", adj: "bruna", hex: "#8A5A33" },
+  { id: "gra", name: "grå", adj: "grå", hex: "#9A9DA6" },
+  { id: "gul", name: "gul", adj: "gula", hex: "#F5C400" },
+  { id: "gron", name: "grön", adj: "gröna", hex: "#2E9E5B" },
+  { id: "gulgron", name: "gul/grön", adj: "gulgröna", hex: null }
+];
+var BY = {};
+COLORS.forEach(function (c) { BY[c.id] = c; });
+var BUNDLE_COLORS = COLORS.filter(function (c) { return c.id !== "gulgron"; });
+
+function order(a) { return a.slice().sort(function (x, y) { return COLORS.indexOf(BY[x]) - COLORS.indexOf(BY[y]); }); }
+function fresh() { return { tab: "hitta", sw: [], lamp: [], trapp: false, bundles: ["svart", "vit"], meas: {}, done: {} }; }
+var state = fresh();
+(function load() {
+  try {
+    var s = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (!s || typeof s !== "object") return;
+    ["sw", "lamp", "bundles"].forEach(function (k) {
+      if (!Array.isArray(s[k])) return;
+      var seen = {};
+      state[k] = s[k].filter(function (c) { if (!BY[c] || seen[c]) return false; seen[c] = 1; return true; });
+    });
+    state.bundles = state.bundles.filter(function (c) { return c !== "gulgron"; }).slice(0, 2);
+    state.trapp = !!s.trapp;
+    if (s.meas && typeof s.meas === "object") {
+      Object.keys(s.meas).forEach(function (c) { if (BY[c] && /^(230|0|annat)$/.test(s.meas[c])) state.meas[c] = s.meas[c]; });
+    }
+    if (s.done && typeof s.done === "object") {
+      Object.keys(s.done).forEach(function (k) { if (s.done[k] === true) state.done[k] = true; });
+    }
+    if (/^(hitta|skiss|steg|regler)$/.test(s.tab)) state.tab = s.tab;
+  } catch (e) { state = fresh(); }
+})();
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* works without it */ } }
+
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function has(a, c) { return a.indexOf(c) !== -1; }
+function nm(c) { return BY[c].name; }
+function bunt(c) { return "den " + BY[c].adj + " bunten"; }
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+function fill(c) { return BY[c].hex ? BY[c].hex : STRIPES; }
+function dot(c) { return '<span class="dot" style="background:' + fill(c) + '"></span>'; }
+function names(a) { return a.map(function (c) { return dot(c) + esc(nm(c)); }).join(" &nbsp; "); }
+
+/* ---------- What the colours say ----------
+   The switch has the phase and the switched wire (tändtråd). The lamp has the neutral and the switched wire.
+   So the colour found in both places is the switched wire, the one only in the switch is the phase,
+   and the one only at the lamp is the neutral. Yellow/green is always protective earth and is left out;
+   red beside another colour at the lamp is taken as old protective earth. */
+function colorVerdict() {
+  if (state.trapp) return { kind: "trapp" };
+  var sw = state.sw.filter(function (c) { return c !== "gulgron"; });
+  var lamp = state.lamp.filter(function (c) { return c !== "gulgron"; });
+  var pe = has(state.sw, "gulgron") || has(state.lamp, "gulgron") ? ["gulgron"] : [];
+  if (sw.length < 2) return { kind: "need", what: "sw" };
+  if (lamp.length < 2) return { kind: "need", what: "lamp" };
+  var common = sw.filter(function (c) { return has(lamp, c); });
+  var fas = sw.filter(function (c) { return !has(lamp, c); });
+  var nolla = lamp.filter(function (c) { return !has(sw, c); });
+  if (nolla.length > 1 && has(nolla, "rod")) { pe.push("rod"); nolla = nolla.filter(function (c) { return c !== "rod"; }); }
+  if (!common.length) return { kind: "unclear", why: "nocommon" };
+  if (!fas.length) return { kind: "unclear", why: "nofas" };
+  if (!nolla.length) return { kind: "unclear", why: "nonolla" };
+  if (fas.length > 1 || nolla.length > 1) return { kind: "unclear", why: "many" };
+  return { kind: "ok", tand: common, fas: fas[0], nolla: nolla[0], pe: pe };
+}
+
+/* ---------- What the tester says ----------
+   Phase shows 230 V to earth, neutral about 0 V. Anything else means stop. */
+function measVerdict() {
+  if (state.bundles.length !== 2) return { kind: "none" };
+  var a = state.bundles[0], b = state.bundles[1], ma = state.meas[a] || null, mb = state.meas[b] || null;
+  if (!ma && !mb) return { kind: "none" };
+  if (!ma || !mb) return { kind: "half" };
+  if (ma === "annat" || mb === "annat") return { kind: "stop", why: "annat" };
+  if (ma === "230" && mb === "230") return { kind: "stop", why: "both230" };
+  if (ma === "0" && mb === "0") return { kind: "stop", why: "both0" };
+  return { kind: "ok", fas: ma === "230" ? a : b, nolla: ma === "0" ? a : b };
+}
+
+function verdict() {
+  var c = colorVerdict(), m = measVerdict(), v = { c: c, m: m, known: false };
+  if (m.kind === "stop") { v.state = m.why === "both0" ? "retry" : "stop"; return v; }
+  if (m.kind === "ok") {
+    if (c.kind === "ok" && c.nolla !== m.nolla) { v.state = "conflict"; return v; }
+    v.state = c.kind === "ok" ? "confirmed" : "measured";
+    v.fas = m.fas; v.nolla = m.nolla; v.known = true;
+    return v;
+  }
+  if (c.kind === "trapp") { v.state = "trapp"; return v; }
+  if (c.kind === "ok") { v.state = "color"; v.fas = c.fas; v.nolla = c.nolla; v.known = true; return v; }
+  v.state = c.kind === "unclear" ? "unclear" : "none";
+  return v;
+}
+
+/* ---------- Chips ---------- */
+function chipHtml(c) {
+  return '<button class="wire" type="button" data-c="' + c.id + '" aria-pressed="false"><i style="background:' + fill(c.id) + '"></i>' + esc(c.name) + '</button>';
+}
+function buildChips(el, list) { el.innerHTML = list.map(chipHtml).join(""); }
+function syncChips(el, sel) {
+  Array.prototype.forEach.call(el.querySelectorAll(".wire"), function (b) {
+    b.setAttribute("aria-pressed", has(sel, b.getAttribute("data-c")) ? "true" : "false");
+  });
+}
+function onChips(el, fn) {
+  el.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest(".wire") : null;
+    if (!b || !el.contains(b)) return;
+    fn(b.getAttribute("data-c"));
+    save(); paint();
+  });
+}
+function toggleIn(arr, c, max) {
+  var i = arr.indexOf(c);
+  if (i !== -1) { arr.splice(i, 1); return; }
+  arr.push(c);
+  if (max && arr.length > max) arr.shift();
+}
+
+/* ---------- Hitta ---------- */
+var ARROW_DOWN = "M12 5v14M6 13l6 6 6-6", ARROW_RIGHT = "M5 12h14M13 6l6 6-6 6";
+var goTarget = "step-sw";
+
+function paintHero(v) {
+  var c = v.c, m = v.m, color = "blue", title = "Inte hittad än", sub = "", go = "step-sw";
+  if (v.state === "none") {
+    if (c.what === "lamp") { sub = "Välj färgerna i lamputtaget också."; go = "step-lamp"; }
+    else { sub = state.sw.length ? "Välj minst två färger i strömbrytaren." : "Börja med färgerna i strömbrytaren."; }
+  } else if (v.state === "unclear") {
+    title = "Mät för att veta"; sub = "Färgerna räcker inte den här gången."; go = "step-meas";
+  } else if (v.state === "trapp") {
+    color = "yellow"; title = "Trapp\u00ADkoppling"; sub = "Färgerna räcker inte här. Läs rutan nedanför."; go = "step-meas";
+  } else if (v.state === "color") {
+    color = "yellow"; title = cap(bunt(v.nolla)); sub = "Enligt färgerna. Mät för att bekräfta."; go = "step-meas";
+  } else if (v.state === "confirmed") {
+    color = "green"; title = cap(bunt(v.nolla)); sub = "Bekräftad med mätning."; go = "tab:skiss";
+  } else if (v.state === "measured") {
+    color = "green"; title = cap(bunt(v.nolla)); sub = "Enligt mätningen."; go = "tab:skiss";
+  } else if (v.state === "conflict") {
+    color = "red"; title = "Mät igen"; sub = "Färgerna säger " + nm(c.nolla) + ", mätningen säger " + nm(m.nolla) + "."; go = "step-meas";
+  } else if (v.state === "retry") {
+    color = "yellow"; title = "Mät igen"; sub = "Ingen av buntarna visade spänning."; go = "step-meas";
+  } else if (v.state === "stop") {
+    color = "red"; title = "Stopp"; sub = "Mätningen stämmer inte. Läs rutan nedanför."; go = "step-meas";
+  }
+  $("hero").style.setProperty("--day", "var(--" + color + ")");
+  if ($("heroName").textContent !== title) $("heroName").textContent = title;
+  if ($("heroSub").textContent !== sub) $("heroSub").textContent = sub;
+  goTarget = go;
+  var toTab = go.indexOf("tab:") === 0;
+  $("goNext").setAttribute("aria-label", toTab ? "Visa skissen" : "Gå till nästa steg");
+  $("goIcon").setAttribute("d", toTab ? ARROW_RIGHT : ARROW_DOWN);
+}
+
+function paintResult(v) {
+  var c = v.c, note = "";
+  $("trappNote").hidden = !state.trapp;
+  $("peHint").hidden = !(has(state.sw, "gulgron") || has(state.lamp, "gulgron"));
+  if (c.kind === "ok") {
+    var rows = '<div class="ex"><span>Tändtråd</span><b>' + names(c.tand) + '</b></div>' +
+      '<div class="ex"><span>Fas</span><b>' + names([c.fas]) + '</b></div>' +
+      '<div class="ex"><span>Nolla</span><b>' + names([c.nolla]) + '</b></div>';
+    if (c.pe.length) rows += '<div class="ex"><span>Skyddsjord</span><b>' + names(c.pe) + '</b></div>';
+    $("resultRows").innerHTML = rows;
+    $("result").hidden = false;
+    if (c.nolla === "rod") note = "Röd som nolla är ovanligt. I gamla hus är röd oftast skyddsjord eller tändtråd. Mät innan ni litar på det.";
+    else if (c.fas === "bla") note = "Blå är nolla i nyare installationer. Sitter den som fas här är något ovanligt kopplat. Mät innan ni litar på det.";
+    else if (has(["gul", "gron", "brun"], c.nolla)) note = cap(nm(c.nolla)) + " är en ovanlig färg för en nolla. Mät innan ni litar på det.";
+    else if (state.bundles.length === 2 && !has(state.bundles, c.nolla)) note = "Enligt färgerna är nollan " + nm(c.nolla) + ", men buntarna i steg 3 är " + nm(order(state.bundles)[0]) + " och " + nm(order(state.bundles)[1]) + ". Ändra buntarnas färger där, eller mät.";
+    else if (c.tand.length > 1 && has(c.tand, "rod")) note = "Två färger finns på båda ställena. Den röda kan vara skyddsjord i stället för tändtråd.";
+  } else {
+    $("result").hidden = true;
+    if (c.kind === "unclear") {
+      note = c.why === "nocommon" ? "Ingen färg finns på båda ställena. Då byter tändtråden färg på vägen, och färgerna räcker inte. Mät buntarna i steg 3."
+        : c.why === "nofas" ? "Alla färger i strömbrytaren finns i lampan också. Då går det inte att se vilken som är fasen. Mät buntarna i steg 3."
+        : c.why === "nonolla" ? "Alla färger i lampan finns i strömbrytaren också. Då går det inte att se vilken som är nollan. Mät buntarna i steg 3."
+        : "Det blir fler än en möjlig fas eller nolla. Kolla att du har valt rätt färger. Annars får ni mäta buntarna i steg 3.";
+    }
+  }
+  $("resultNote").hidden = !note;
+  if ($("resultNote").textContent !== note) $("resultNote").textContent = note;
+}
+
+var measBuilt = "";
+function paintMeas(v) {
+  var m = v.m, el = $("meas"), shown = order(state.bundles), sig = shown.join(",");
+  if (measBuilt !== sig) {
+    measBuilt = sig;
+    el.innerHTML = shown.length !== 2 ? "" : shown.map(function (c) {
+      var label = cap(bunt(c)).replace(/^Den /, "");
+      return '<div><div class="mname">' + dot(c) + esc(cap(label)) + ' mot jord</div>' +
+        '<div class="opt" role="group" aria-label="' + esc(cap(label)) + ' mot jord">' +
+        ["230", "0", "annat"].map(function (val) {
+          return '<button type="button" data-c="' + c + '" data-v="' + val + '" aria-pressed="false">' + (val === "annat" ? "Annat" : val + "\u00A0V") + '</button>';
+        }).join("") + '</div></div>';
+    }).join("");
+  }
+  Array.prototype.forEach.call(el.querySelectorAll("button"), function (b) {
+    b.setAttribute("aria-pressed", state.meas[b.getAttribute("data-c")] === b.getAttribute("data-v") ? "true" : "false");
+  });
+  var msg = "", stop = "";
+  if (state.bundles.length !== 2) msg = "Välj två färger på buntarna här under.";
+  else if (m.kind === "none") msg = "Fasen visar 230\u00A0V mot jord. Nollan visar runt 0\u00A0V.";
+  else if (m.kind === "half") msg = "Mät den andra bunten också.";
+  else if (m.kind === "ok") msg = cap(bunt(m.fas)) + " är fasen och " + bunt(m.nolla) + " är nollan. Kolla att den visar 0\u00A0V även när lampan är tänd.";
+  else if (m.why === "both0") msg = "Ingen av buntarna har spänning. Är säkringen på, och fungerar provaren i ett vanligt uttag? Mät igen.";
+  else if (m.why === "both230") stop = "Båda buntarna visar 230\u00A0V. Då mäter ni kanske inte mot riktig jord, eller så är något annat fel. Gör inget mer. Låt elektrikern mäta.";
+  else stop = "Ett annat värde än 230\u00A0V eller 0\u00A0V betyder att något inte stämmer. Gör inget mer. Låt elektrikern mäta.";
+  if (v.state === "conflict") msg = "Färgerna pekar på " + bunt(v.c.nolla) + ", mätningen på " + bunt(m.nolla) + ". Mät en gång till. Visar provaren samma sak igen är det mätningen som gäller.";
+  if ($("measMsg").textContent !== msg) $("measMsg").textContent = msg;
+  $("measMsg").hidden = !msg;
+  $("measNote").hidden = !stop;
+  if ($("measNote").textContent !== stop) $("measNote").textContent = stop;
+}
+
+/* ---------- Skissen ---------- */
+function wire(d, c) {
+  if (!c) return '<path class="sk-plain" d="' + d + '"/>';
+  if (c === "gulgron") return '<path class="sk-case" d="' + d + '"/><path class="sk-core" stroke="#2E9E5B" d="' + d + '"/><path class="sk-core" stroke="#F5C400" stroke-dasharray="7 9" stroke-linecap="butt" d="' + d + '"/>';
+  return '<path class="sk-case" d="' + d + '"/><path class="sk-core" stroke="' + BY[c].hex + '" d="' + d + '"/>';
+}
+function paintSketch(v) {
+  var fas = v.known ? v.fas : null, nolla = v.known ? v.nolla : null;
+  var tand = v.c.kind === "ok" ? v.c.tand[0] : null;
+  var two = order(state.bundles), either = two.length === 2 ? nm(two[0]) + " eller " + nm(two[1]) : "";
+  var fasSub = fas ? nm(fas) : either, nollSub = nolla ? nm(nolla) : (either ? "den andra färgen" : "");
+  var alt = "Fasbunten" + (fas ? " (" + nm(fas) + ")" : "") + " går ner till L på panelen. Tändtråden går från L1 genom kopplingsdosan upp till taklampan. Nollbunten" + (nolla ? " (" + nm(nolla) + ")" : "") + " går till taklampan, och en ny blå nolla dras från nollbunten ner till N.";
+  $("sketch").innerHTML =
+    '<svg viewBox="0 0 380 432" role="img" aria-label="' + esc(alt) + '">' +
+    '<rect class="sk-box" x="205" y="14" width="140" height="48" rx="16"/>' +
+    '<text class="sk-t" x="275" y="38" text-anchor="middle" dominant-baseline="central">Taklampa</text>' +
+    '<rect class="sk-frame" x="20" y="98" width="340" height="128" rx="22"/>' +
+    '<text class="sk-t" x="38" y="121" dominant-baseline="central">Kopplingsdosa</text>' +
+    '<rect class="sk-box" x="38" y="142" width="134" height="64" rx="18"/>' +
+    '<text class="sk-t" x="105" y="165" text-anchor="middle" dominant-baseline="central">Fasbunt</text>' +
+    '<text class="sk-s" x="105" y="186" text-anchor="middle" dominant-baseline="central">' + esc(fasSub) + '</text>' +
+    '<rect class="sk-box" x="208" y="142" width="134" height="64" rx="18"/>' +
+    '<text class="sk-t" x="275" y="165" text-anchor="middle" dominant-baseline="central">Nollbunt</text>' +
+    '<text class="sk-s" x="275" y="186" text-anchor="middle" dominant-baseline="central">' + esc(nollSub) + '</text>' +
+    '<rect class="sk-frame" x="20" y="296" width="340" height="126" rx="22"/>' +
+    '<rect class="sk-box" x="70" y="326" width="70" height="50" rx="16"/>' +
+    '<text class="sk-t" x="105" y="351" text-anchor="middle" dominant-baseline="central">L</text>' +
+    '<rect class="sk-box" x="155" y="326" width="70" height="50" rx="16"/>' +
+    '<text class="sk-t" x="190" y="351" text-anchor="middle" dominant-baseline="central">L1</text>' +
+    '<rect class="sk-n" x="240" y="326" width="70" height="50" rx="16"/>' +
+    '<text class="sk-nt" x="275" y="351" text-anchor="middle" dominant-baseline="central">N</text>' +
+    '<text class="sk-t" x="38" y="399" dominant-baseline="central">NSPanel</text>' +
+    wire("M275 65V139", nolla) +
+    wire("M105 209V323", fas) +
+    wire("M190 323V38H202", tand) +
+    '<path class="sk-new" d="M275 210V322"/>' +
+    '<text class="sk-s" x="287" y="82" dominant-baseline="central">nolla</text>' +
+    '<text class="sk-s" x="117" y="262" dominant-baseline="central">fas</text>' +
+    '<text class="sk-s" x="202" y="262" dominant-baseline="central">tändtråd</text>' +
+    '<text class="sk-s" x="287" y="262" dominant-baseline="central">ny blå nolla</text>' +
+    '</svg>';
+  $("skissSub").textContent = v.known
+    ? "Fasbunten är " + nm(v.fas) + " och nollbunten " + nm(v.nolla) + (v.state === "color" ? ", enligt färgerna." : ", enligt mätningen.")
+    : "Färgerna fylls i när du har hittat nollan.";
+}
+
+/* ---------- Stegen ---------- */
+var STEPS = [
+  { title: "Innan elektrikern kommer", items: [
+    { id: "colors", auto: true, t: "Kolla färgerna i strömbrytaren och lamputtaget", note: "Steg 1 och 2 under Hitta nollan." },
+    { id: "measure", auto: true, t: "Mät vilken bunt som är nollan", note: "Steg 3 under Hitta nollan." },
+    { id: "loose", t: "Kolla vart de två lösa ändarna i dosan går", note: "En svart och en vit med ihoprullad ände. Går en av dem ner till strömbrytaren finns kanske redan en ledig ledare. Mät dem, för de kan ha spänning." },
+    { id: "gear", t: "Lägg fram den blå tråden och dragfjädern", note: "FQ 1,5 mm², den ni redan har." },
+    { id: "book", t: "Boka en elektriker", note: "Säg att det gäller en nolla från kopplingsdosan till strömbrytaren, och att tråden finns." }
+  ] },
+  { title: "Det här gör elektrikern", items: [
+    { id: "off", t: "Bryter säkringen och mäter att det är spänningslöst" },
+    { id: "pull", t: "Drar den blå nollan i röret, från dosan till strömbrytaren" },
+    { id: "join", t: "Kopplar in den i nollbunten" },
+    { id: "panel", t: "Kopplar panelen: N, L och L1", note: "Se plinten under Skissen." }
+  ] },
+  { title: "När det är klart", items: [
+    { id: "on", t: "Slå på säkringen", note: "Skärmen på panelen ska tändas." },
+    { id: "app", t: "Lägg till panelen i eWeLink-appen", note: "Panelen vill ha wifi på 2,4 GHz." },
+    { id: "test", t: "Prova att tända och släcka taklampan från panelen" }
+  ] }
+];
+var TICK = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+function isDone(it, v) {
+  if (it.id === "colors") return v.c.kind === "ok" || v.m.kind === "ok";
+  if (it.id === "measure") return v.state === "confirmed" || v.state === "measured";
+  return !!state.done[it.id];
+}
+var stegBuilt = false;
+function paintSteg(v) {
+  var total = 0, done = 0;
+  if (!stegBuilt) {
+    stegBuilt = true;
+    $("stegLists").innerHTML = STEPS.map(function (g, gi) {
+      return '<div class="list"><header><h2>' + esc(g.title) + '</h2><span class="n" id="stegN' + gi + '"></span></header><ul>' +
+        g.items.map(function (it) {
+          return '<li class="row" id="steg-' + it.id + '"><div class="line">' +
+            '<button class="row-main" type="button" data-id="' + it.id + '"' + (it.auto ? ' data-auto="1"' : ' aria-pressed="false"') + '>' +
+            '<span class="tick">' + TICK + '</span><span><span class="t">' + esc(it.t) + '</span>' +
+            (it.note ? '<span class="note">' + esc(it.note) + '</span>' : '') + '</span></button>' +
+            (it.auto ? '<span class="side"><span class="btn ghost" aria-hidden="true">Öppna</span></span>' : '') +
+            '</div></li>';
+        }).join("") + '</ul></div>';
+    }).join("");
+  }
+  STEPS.forEach(function (g, gi) {
+    var gd = 0;
+    g.items.forEach(function (it) {
+      var on = isDone(it, v), li = $("steg-" + it.id), b = li.querySelector(".row-main");
+      total++; if (on) { done++; gd++; }
+      li.classList.toggle("done", on);
+      if (it.auto) b.setAttribute("aria-label", it.t + (on ? ", klart" : ", inte klart") + ". Öppna Hitta nollan.");
+      else b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    $("stegN" + gi).textContent = gd + " av " + g.items.length;
+  });
+  var txt = done === total ? "Alla " + total + " steg är klara." : done + " av " + total + " steg klara.";
+  if ($("stegCount").textContent !== txt) $("stegCount").textContent = txt;
+  $("stegBar").style.width = Math.round(100 * done / total) + "%";
+}
+
+function paint() {
+  var v = verdict();
+  syncChips($("chipsSw"), state.sw);
+  syncChips($("chipsLamp"), state.lamp);
+  syncChips($("chipsBundles"), state.bundles);
+  $("trapp").setAttribute("aria-pressed", state.trapp ? "true" : "false");
+  paintHero(v); paintResult(v); paintMeas(v); paintSketch(v); paintSteg(v);
+}
+
+/* ---------- Tabs ---------- */
+var TABS = ["hitta", "skiss", "steg", "regler"];
+function showTab(k, keepScroll) {
+  state.tab = k;
+  TABS.forEach(function (t) {
+    $("v-" + t).hidden = t !== k;
+    if (t === k) $("tab-" + t).setAttribute("aria-current", "page"); else $("tab-" + t).removeAttribute("aria-current");
+  });
+  save();
+  if (!keepScroll) window.scrollTo(0, 0);
+}
+function calm() { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+function goTo(id) {
+  var el = $(id); if (!el) return;
+  el.scrollIntoView({ behavior: calm() ? "auto" : "smooth", block: "start" });
+}
+
+/* ---------- Wiring it up ---------- */
+buildChips($("chipsSw"), COLORS);
+buildChips($("chipsLamp"), COLORS);
+buildChips($("chipsBundles"), BUNDLE_COLORS);
+onChips($("chipsSw"), function (c) { toggleIn(state.sw, c, 4); });
+onChips($("chipsLamp"), function (c) { toggleIn(state.lamp, c, 4); });
+onChips($("chipsBundles"), function (c) {
+  toggleIn(state.bundles, c, 2);
+  Object.keys(state.meas).forEach(function (k) { if (!has(state.bundles, k)) delete state.meas[k]; });
+});
+$("trapp").addEventListener("click", function () { state.trapp = !state.trapp; save(); paint(); });
+$("meas").addEventListener("click", function (e) {
+  var b = e.target.closest ? e.target.closest("button") : null;
+  if (!b) return;
+  var c = b.getAttribute("data-c"), val = b.getAttribute("data-v");
+  if (state.meas[c] === val) delete state.meas[c]; else state.meas[c] = val;
+  save(); paint();
+});
+$("editBundles").addEventListener("click", function () {
+  var open = $("bundleEdit").hidden;
+  $("bundleEdit").hidden = !open;
+  this.setAttribute("aria-expanded", open ? "true" : "false");
+});
+$("goNext").addEventListener("click", function () {
+  if (goTarget.indexOf("tab:") === 0) showTab(goTarget.slice(4)); else goTo(goTarget);
+});
+$("stegLists").addEventListener("click", function (e) {
+  var b = e.target.closest ? e.target.closest(".row") : null;
+  if (!b) return;
+  var main = b.querySelector(".row-main"), id = main.getAttribute("data-id");
+  if (main.getAttribute("data-auto")) { showTab("hitta"); goTo(id === "measure" ? "step-meas" : "step-sw"); return; }
+  if (state.done[id]) delete state.done[id]; else state.done[id] = true;
+  save(); paint();
+});
+TABS.forEach(function (k) { $("tab-" + k).addEventListener("click", function () { showTab(k); }); });
+
+var resetArmed = false, resetTimer = null;
+$("resetAll").addEventListener("click", function () {
+  var btn = this, msg = $("resetMsg");
+  if (!resetArmed) {
+    resetArmed = true; btn.textContent = "Tryck igen för att rensa allt"; btn.className = "btn warn";
+    resetTimer = setTimeout(function () { resetArmed = false; btn.textContent = "Börja om från början"; btn.className = "btn ghost"; }, 5000);
+    return;
+  }
+  clearTimeout(resetTimer); resetArmed = false;
+  var tab = state.tab; state = fresh(); state.tab = tab; measBuilt = "";
+  btn.textContent = "Börja om från början"; btn.className = "btn ghost";
+  msg.textContent = "Rensat. Färger, mätning och bockar är borta.";
+  save(); paint();
+});
+
+/* Light or dark: follows the phone until the moon is pressed, like in GymSchema and Idag. */
+$("lookBtn").addEventListener("click", function () {
+  var root = document.documentElement;
+  var dark = getComputedStyle(root).getPropertyValue("--is-dark").trim() === "1";
+  root.classList.remove("look-dark", "look-light");
+  root.classList.add(dark ? "look-light" : "look-dark");
+  try { localStorage.setItem(LOOK_KEY, dark ? "light" : "dark"); } catch (e) {}
+});
+
+paint();
+showTab(state.tab, true);
+
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () { /* works without it */ }); });
+}
+})();
+</script>
+</body>
+</html>

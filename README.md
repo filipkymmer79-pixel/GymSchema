@@ -281,3 +281,18 @@ Klartexten är JSON:
 - `shop` – `eyebrow`, `callout` och `secs`, där varje del har `id`, `title`, `sub` och `items`.
 
 Ikonen är ritad med Manrope (`vendor/manrope-OFL.txt`). Kontrollerat i Chromium på 320 och 390 px, ljust och mörkt, med och utan nyckel. Inte provat på en riktig iPhone.
+
+## Nollan
+
+Hitta nollan till NSPanel som app: https://filipkymmer79-pixel.github.io/GymSchema/nollan/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*.
+
+Appen hjälper till att ta reda på vilken bunt i kopplingsdosan som är nollan, så att en blå nolla kan dras ner till strömbrytaren där NSPanel ska sitta. Dragningen och inkopplingen är elinstallationsarbete och görs av en elektriker – appen är till för att förstå och förbereda.
+
+- **Hitta nollan**: tryck på färgerna i strömbrytaren och i lamputtaget. Färgen som finns på båda ställena är tändtråden, den som bara finns i strömbrytaren är fasen och den som bara finns i lampan är nollan. Gul/grön räknas som skyddsjord, och röd bredvid en annan färg i lampan som gammal skyddsjord. Räcker inte färgerna säger appen det i stället för att gissa – till exempel när ingen färg går igen, eller när lampan tänds från fler ställen (trappkoppling). Sedan fylls mätningen i för varje bunt: 230 V, 0 V eller annat mot jord. Buntarna är svart och vit från början och går att byta.
+- **Stora rutan** svarar på frågan *Vilken bunt är nollan?* och byter färg efter hur säkert svaret är: blå tills nollan är hittad, gul när färgerna pekar ut den, grön när mätningen bekräftar den och röd när mätningen inte stämmer eller säger emot färgerna.
+- **Skissen** visar hur ledarna ska sitta och får buntarnas och trådarnas färger när nollan är hittad. Under den står plinten på baksidan i rätt ordning från vänster: L2, L1, L, N.
+- **Stegen** är 12 punkter i tre delar: innan elektrikern kommer, det elektrikern gör och när det är klart. De två första bockas av sig själva när färgerna och mätningen är ifyllda.
+- **Regler** säger vad som kräver elektriker och hur man håller sig säker vid dosan, med länkar till Elsäkerhetsverket och Sonoff. *Börja om från början* rensar allt efter två tryck.
+- Samma utseende som GymSchema och Idag (Bento, Manrope). Månen högst upp byter mellan ljust och mörkt.
+
+Färger, mätning och bockar sparas bara på telefonen. Ikonen är ritad för appen: en blå tråd ner i plinten N. Kontrollerat i Chromium på 320 och 390 px, ljust och mörkt, och utan nät. Inte provat på en riktig iPhone.
