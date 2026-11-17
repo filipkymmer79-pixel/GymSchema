@@ -258,7 +258,7 @@ Bockar och egna punkter sparas bara på telefonen.
 
 ### Schemat ligger förseglat
 
-Repot är öppet för alla, så själva schemat – dagarna, punkterna och inköpslistan – står inte i klartext här. Det ligger krypterat i `idag/index.html`, i strängen `SEALED`: AES-128-GCM, där de första 12 byten är IV och de sista 16 är taggen, allt i base64. Nyckeln är 16 slumpade byte i base64url (22 tecken) och finns bara i länken; det som står efter `#` skickas aldrig till servern. Appen sparar nyckeln på telefonen och lägger tillbaka den i adressen, så att den följer med till hemskärmen. Därför har appen ingen `manifest.webmanifest` – med en `start_url` skulle hemskärmen öppna adressen utan nyckel. Utan nyckel visar appen bara en ruta där länken klistras in.
+Repot är öppet för alla, så själva schemat – dagarna, punkterna och inköpslistan – står inte i klartext här. Det ligger krypterat i `idag/index.html`, i strängen `SEALED`: AES-128-GCM, där de första 12 byten är IV och de sista 16 är taggen, allt i base64. Nyckeln är 16 slumpade byte i base64url (22 tecken) och står inte i repot. Den finns i länken – det som står efter `#` skickas aldrig till servern – och i Filips privata Claude-artifact *Schema 17–19 nov* (`meta/idag` i dess databas), så att nästa schema kan förseglas med samma nyckel. Appen sparar nyckeln på telefonen och lägger tillbaka den i adressen, så att den följer med till hemskärmen. Därför har appen ingen `manifest.webmanifest` – med en `start_url` skulle hemskärmen öppna adressen utan nyckel. Utan nyckel visar appen bara en ruta där länken klistras in.
 
 Ett nytt schema läggs in genom att byta ut `SEALED`. Med samma nyckel öppnas det direkt i appen. Med en ny nyckel behöver den nya länken klistras in en gång.
 
