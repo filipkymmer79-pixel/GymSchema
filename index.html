@@ -902,7 +902,14 @@ span.mn-go{padding:10px 4px;background:none!important;color:var(--good)!importan
 .bz-alt.on small{color:var(--bg);opacity:.8}
 .bz-alt:active{opacity:.75}
 /* Hemmapass (17 nov 2026) */
-.ss-card .hm-sw{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.ss-card .pl-row{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);display:grid;gap:8px}
+.pl-row > b,.sh-row > b{font-weight:700;font-size:15px}
+.pl-row small,.sh-row small{font-size:12.5px;color:var(--muted);font-weight:600;line-height:1.4}
+.pl-row small b,.sh-row small b{color:var(--ink);font-weight:700}
+.pl-seg,.sh-seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px}
+.ss-card .pl-seg button,.ss-card .sh-seg button{background:var(--p1)}
+.ss-card .sh-row{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);display:grid;gap:8px}
+.pl-seg button,.sh-seg button{border:0;padding:10px 6px;font:inherit;font-weight:700;font-size:14px;color:var(--ink);white-space:nowrap;cursor:pointer}
 .alt-on.hm-on{background:var(--surface2)}
 .hm-det{width:100%}
 .hm-det summary{cursor:pointer;font-weight:700;font-size:13.5px;color:var(--ink);padding:2px 0;list-style:none}
@@ -2591,6 +2598,35 @@ img.at-th:not([src]){content:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3
 .vf-th img{width:100%;height:100%;object-fit:contain}
 .vf-del{position:absolute;top:4px;right:4px;min-width:26px;height:26px;border-radius:13px;border:0;background:rgba(0,0,0,.62);color:#fff;font-size:15px;line-height:1;padding:0 7px;cursor:pointer}
 .vf-del.arm{background:var(--bad);color:#fff;font-size:12px;font-weight:700}
+
+
+/* ================= Passet, omgång 2 (17 nov 2026) ================= */
+.cr-eta b,.spk-card .small b,.btd-card .small b{color:var(--ink);font-weight:800}
+.spk-rows{display:grid;gap:0;margin-top:6px}
+.spk-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.spk-r:first-child{border-top:0}
+.spk-r span{display:flex;flex-direction:column;min-width:0}
+.spk-r span b{font-weight:700;font-size:15px}
+.spk-r small{font-size:12.5px;color:var(--muted);font-weight:600}
+.spk-r > b{font-weight:800;font-size:18px;white-space:nowrap}
+.spk-r > b.good{color:var(--good)}
+.btd{display:grid;gap:10px;margin:8px 0 6px}
+.btd-r{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:10px;align-items:center}
+.btd-r span{display:flex;flex-direction:column;font-weight:700;font-size:14.5px;min-width:0}
+.btd-r small{font-size:11.5px;color:var(--muted);font-weight:600}
+.btd-r > b{font-weight:800;font-size:15px;min-width:58px;text-align:right}
+.btd-r.best > b,.btd-r.best span{color:var(--ink)}
+.btd-bar{position:relative;display:block;height:10px;border-radius:5px;background:var(--p1)}
+.btd-bar::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--edge)}
+.btd-bar > i{position:absolute;top:0;bottom:0;border-radius:5px;background:var(--muted)}
+.btd-r.best .btd-bar > i{background:var(--good)}
+.fc-dots{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 4px}
+.fc-d{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:40px;padding:8px 6px;border-radius:14px;background:var(--p1)}
+.fc-d b{font-weight:800;font-size:18px}
+.fc-d small{font-size:10.5px;color:var(--muted);font-weight:700}
+.fc-d.ok{background:var(--good-bg)}
+.fc-d.ok b{color:var(--good)}
+.fc-done{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:14px;font-weight:600;color:var(--muted)}
 </style>
 
 <div class="app">
@@ -3183,7 +3219,7 @@ async function saveSession(){
     if (dn.length) exercises.push(Object.assign({k, unit: o.unit}, o.alt ? {alt: o.alt} : {}, {sets: dn.map(x => Object.assign({w: x.w == null ? null : x.w, r: x.r == null ? null : x.r, s: x.s == null ? null : x.s}, o.lr ? {wR: x.wR == null ? null : x.wR, rR: x.rR == null ? null : x.rR} : {}))}));
   });
   if (!exercises.length){ toast("Bocka av minst ett set först"); return; }
-  const doc = {date: draft.date, ts: Date.now(), type: draft.type, exercises, note: (draft.note || "").trim(), volume: volumeOf(exercises), warm: !!draft.warm, stretch: !!draft.stretch, abs: !!draft.abs, min: draft.t0 ? Math.max(1, Math.round((Date.now() - draft.t0) / 60000)) : null, ss: ssOn() ? 1 : 0};
+  const doc = {date: draft.date, ts: Date.now(), type: draft.type, exercises, note: (draft.note || "").trim(), volume: volumeOf(exercises), warm: !!draft.warm, stretch: !!draft.stretch, abs: !!draft.abs, min: draft.t0 ? Math.max(1, Math.round((Date.now() - draft.t0) / 60000)) : null, ss: ssOn() ? 1 : 0, ...(draft.leave != null || draft.started ? {focus: draft.leave || 0} : {})};
   if (dlActive()) doc.deload = true;
   const prs = findPRs(doc);
   doc.prs = prs;
@@ -3192,7 +3228,7 @@ async function saveSession(){
   const b = $("saveBtn"); b.disabled = true; b.textContent = "Sparar…";
   try {
     const ref = await db.collection("sessions").add(doc);
-    justSaved = {id: ref && ref.id, type: doc.type, date: doc.date, volume: doc.volume, prs, sets: exercises.reduce((a, e) => a + e.sets.length, 0), warm: doc.warm, stretch: doc.stretch, abs: doc.abs, beatN, beatOf, min: doc.min, ss: doc.ss}; try { sharePrep(justSaved); } catch(x){}
+    justSaved = {id: ref && ref.id, type: doc.type, date: doc.date, volume: doc.volume, prs, sets: exercises.reduce((a, e) => a + e.sets.length, 0), warm: doc.warm, stretch: doc.stretch, abs: doc.abs, beatN, beatOf, min: doc.min, ss: doc.ss, focus: doc.focus}; try { sharePrep(justSaved); } catch(x){}
     if (prs.length){ setTimeout(() => confetti(0, 0, 160, true), 250); say("Nytt rekord! " + prs.map(t => t.split(":")[0].replace(/\s*\(.*?\)/g, "")).slice(0, 2).join(" och ") + "."); }
     else if (beatN) say("Passet är sparat. Du slog förra gången i " + beatN + " set.");
     clearTimeout(saveDraftT); draft = null; selType = null; store("lyftloggen.draft.v1", null); releaseAwake(); stopTimer();
@@ -6326,7 +6362,8 @@ const BUSY = {
   lutandehantel: [{n: "Lutande bröstpress i maskin", unit: "kg", lo: 8, hi: 10, step: 2.5, how: "Handtagen i övre brösthöjd. Pressa upp och sänk kontrollerat."},
                   {n: "Bröstpress i maskin", unit: "kg", lo: 8, hi: 10, step: 2.5, how: "Handtagen i brösthöjd, skulderbladen bakåt."}],
   triceps: [{n: "Tricepspress med rakt handtag", unit: "kg", lo: 10, hi: 12, step: 2.5, how: "Samma rörelse med det raka handtaget: armbågarna mot sidorna, pressa ner till raka armar."},
-            {n: "Dips i maskin", unit: "hjalp", lo: 8, hi: 10, step: 2.5, how: "Luta dig lätt framåt, sänk tills överarmarna är vågräta och pressa upp. Vikten är hjälp – lägre är tyngre."}]
+            {n: "Dips i maskin", unit: "hjalp", lo: 8, hi: 10, step: 2.5, how: "Luta dig lätt framåt, sänk tills överarmarna är vågräta och pressa upp. Vikten är hjälp – lägre är tyngre."},
+            {n: "Smal hantelpress", unit: "kg", lo: 10, hi: 12, step: 1, how: "Ligg på bänken med hantlarna ihop över bröstet, handflatorna mot varandra. Sänk med armbågarna längs kroppen och pressa upp. Kg per hantel."}]
 };
 /* ---------- Hemmapass (17 nov 2026): kommer du inte till gymmet går samma pass hemma ---------- */
 // Viktväst, stången på väggen, gummiband och en stol. Varje hemmaövning tar samma muskler som gymövningen och loggas med eget
@@ -6351,9 +6388,17 @@ const HOME = {
   triceps: {n: "Smala armhävningar", unit: "reps", lo: 8, hi: 15, step: 0, fig: "push_up", how: "Händerna tätt ihop under bröstet, armbågarna längs kroppen. För tungt? Gör dem med knäna i golvet."}
 };
 const HOME_FIG = {"band_pullapart": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-band_pullapart\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><rect x=\"120.0\" y=\"118.0\" width=\"80.0\" height=\"18.0\" rx=\"9\" fill=\"var(--fig-ink)\"/><circle cx=\"160\" cy=\"128\" r=\"13\" fill=\"var(--fig-ink)\" stroke=\"var(--fig-bg)\" stroke-width=\"3\"/><polyline points=\"128.0,126.0 142.0,48.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"192.0,126.0 178.0,48.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M142,48 Q160,56 178,48\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"4\" stroke-linecap=\"round\"/><polyline points=\"128.0,126.0 54.0,112.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"192.0,126.0 266.0,112.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M54,112 Q160,120 266,112\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"4\" stroke-linecap=\"round\"/><circle cx=\"54.0\" cy=\"112.0\" r=\"5.0\" fill=\"var(--fig-ink)\"/><circle cx=\"266.0\" cy=\"112.0\" r=\"5.0\" fill=\"var(--fig-ink)\"/><path d=\"M136.0,70.0 Q110.0,77.0 96.0,100.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-band_pullapart)\"/><path d=\"M184.0,70.0 Q210.0,77.0 224.0,100.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-band_pullapart)\"/><text x=\"160\" y=\"28\" text-anchor=\"middle\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Ovanifrån: dra isär tills bandet nuddar bröstet</text><text x=\"160\" y=\"188\" text-anchor=\"middle\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Raka armar hela tiden. Axlarna ner. Skulderbladen ihop.</text></svg>", "calf_step": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-calf_step\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"14.0\" y1=\"176.0\" x2=\"306.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><rect x=\"70.0\" y=\"162.0\" width=\"46.0\" height=\"14.0\" rx=\"3\" fill=\"var(--fig-equip)\"/><line x1=\"64.0\" y1=\"8.0\" x2=\"64.0\" y2=\"176.0\" stroke=\"var(--fig-equip-dark)\" stroke-width=\"6\" stroke-linecap=\"round\"/><polyline points=\"126.0,97.2 122.3,132.2 151.4,149.0 143.8,162.2\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"125.0,49.2 100.4,56.4 70.0,65.2\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"126.0,97.2 125.0,49.2\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"125.0,49.2 124.0,37.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"124.0\" cy=\"37.0\" r=\"8.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/>\n<polyline points=\"126.0,97.2 125.0,132.4 124.0,166.0 110.0,159.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"125.0,49.2 100.4,56.4 70.0,65.2\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"70.0\" cy=\"65.2\" r=\"3.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/><circle cx=\"117.0\" cy=\"150.0\" r=\"16\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"117.0\" cy=\"150.0\" r=\"10\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"118.0,80.2 114.3,115.2 143.4,132.0 135.8,145.2\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"117.0,32.2 92.8,40.5 70.0,48.2\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"118.0,80.2 117.0,32.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"117.0,32.2 116.0,20.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"116.0\" cy=\"20.0\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"118.0,80.2 117.0,115.4 116.0,149.0 110.0,158.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"117.0,32.2 92.8,40.5 70.0,48.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"70.0\" cy=\"48.2\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M150.0,166.0 Q150.0,149.0 150.0,132.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-calf_step)\"/><text x=\"176\" y=\"52\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Hälen långt ner,</text><text x=\"176\" y=\"66\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">sedan högt på tå</text><text x=\"176\" y=\"88\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Håll i väggen. Paus</text><text x=\"176\" y=\"101\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">1 sek uppe och nere.</text></svg>", "db_curl": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-db_curl\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><g transform=\"translate(10,0)\"><line x1=\"14.0\" y1=\"178.0\" x2=\"306.0\" y2=\"178.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"80.0,110.0 80.0,62.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,62.0 80.0,50.8\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"80.0\" cy=\"50.8\" r=\"8.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/>\n<polyline points=\"80.0,62.0 81.8,87.5 83.4,110.7\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"83.4\" cy=\"110.7\" r=\"8.0\" fill=\"var(--fig-ghost)\"/><circle cx=\"83.4\" cy=\"110.7\" r=\"2.6\" fill=\"var(--fig-bg)\"/><circle cx=\"82.8\" cy=\"77.8\" r=\"15\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"82.8\" cy=\"77.8\" r=\"9\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"80.0,110.0 78.8,145.2 78.8,178.8 94.0,178.8\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,62.0 81.8,87.5 90.5,66.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,110.0 80.0,62.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,62.0 80.0,50.8\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"80.0\" cy=\"50.8\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"80.0,110.0 81.2,145.2 81.2,178.8 96.4,178.8\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,62.0 81.8,87.5 90.5,66.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"90.5\" cy=\"66.0\" r=\"8.0\" fill=\"var(--fig-equip-dark)\"/><circle cx=\"90.5\" cy=\"66.0\" r=\"2.6\" fill=\"var(--fig-bg)\"/><path d=\"M108.0,104.0 Q90.1,86.7 104.0,66.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-db_curl)\"/><text x=\"176\" y=\"60\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Armbågen står still</text><text x=\"176\" y=\"84\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Bara underarmen rör sig.</text><text x=\"176\" y=\"97\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">3 sek på vägen ner.</text></g></svg>", "db_hammer_curl": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-db_hammer_curl\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><g transform=\"translate(10,0)\"><line x1=\"14.0\" y1=\"178.0\" x2=\"306.0\" y2=\"178.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"80.0,110.0 80.0,62.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,62.0 80.0,50.8\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"80.0\" cy=\"50.8\" r=\"8.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/>\n<polyline points=\"80.0,62.0 81.8,87.5 83.4,110.7\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><line x1=\"74.4\" y1=\"111.3\" x2=\"92.4\" y2=\"110.1\" stroke=\"var(--fig-ghost)\" stroke-width=\"3.2\" stroke-linecap=\"round\"/><circle cx=\"74.4\" cy=\"111.3\" r=\"4.8\" fill=\"var(--fig-ghost)\"/><circle cx=\"92.4\" cy=\"110.1\" r=\"4.8\" fill=\"var(--fig-ghost)\"/><circle cx=\"88.9\" cy=\"80.5\" r=\"15\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"88.9\" cy=\"80.5\" r=\"9\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"80.0,110.0 78.8,145.2 78.8,178.8 94.0,178.8\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,62.0 81.8,87.5 98.2,71.1\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,110.0 80.0,62.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,62.0 80.0,50.8\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"80.0\" cy=\"50.8\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"80.0,110.0 81.2,145.2 81.2,178.8 96.4,178.8\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"80.0,62.0 81.8,87.5 98.2,71.1\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><line x1=\"104.6\" y1=\"77.5\" x2=\"91.8\" y2=\"64.8\" stroke=\"var(--fig-equip-dark)\" stroke-width=\"3.2\" stroke-linecap=\"round\"/><circle cx=\"104.6\" cy=\"77.5\" r=\"4.8\" fill=\"var(--fig-equip-dark)\"/><circle cx=\"91.8\" cy=\"64.8\" r=\"4.8\" fill=\"var(--fig-equip-dark)\"/><path d=\"M112.0,112.0 Q103.2,94.6 118.0,82.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-db_hammer_curl)\"/><text x=\"176\" y=\"60\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Tummen uppåt</text><text x=\"176\" y=\"84\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Armbågen står still.</text><text x=\"176\" y=\"97\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">3 sek på vägen ner.</text></g></svg>", "db_lateral_raise": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-db_lateral_raise\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"14.0\" y1=\"176.0\" x2=\"306.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"8\" y1=\"70\" x2=\"200\" y2=\"70\" stroke=\"var(--c)\" stroke-width=\"1.6\" stroke-dasharray=\"3 4\" opacity=\".75\"/><polyline points=\"82.0,70.0 75.0,94.0 76.0,118.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"76.0\" cy=\"122.0\" r=\"6.5\" fill=\"var(--fig-ghost)\"/><polyline points=\"126.0,70.0 133.0,94.0 132.0,118.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"132.0\" cy=\"122.0\" r=\"6.5\" fill=\"var(--fig-ghost)\"/><circle cx=\"82.0\" cy=\"68.0\" r=\"16\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"82.0\" cy=\"68.0\" r=\"10\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"82.0,70.0 52.0,69.0 28.0,75.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"27.0\" cy=\"78.0\" r=\"7.5\" fill=\"var(--fig-equip-dark)\"/><circle cx=\"27.0\" cy=\"78.0\" r=\"3.0\" fill=\"var(--fig-equip)\"/><circle cx=\"126.0\" cy=\"68.0\" r=\"16\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"126.0\" cy=\"68.0\" r=\"10\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"126.0,70.0 156.0,69.0 180.0,75.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"181.0\" cy=\"78.0\" r=\"7.5\" fill=\"var(--fig-equip-dark)\"/><circle cx=\"181.0\" cy=\"78.0\" r=\"3.0\" fill=\"var(--fig-equip)\"/><rect x=\"80.0\" y=\"62.0\" width=\"48.0\" height=\"16.0\" rx=\"8\" fill=\"var(--fig-ink)\"/><rect x=\"89.0\" y=\"74.0\" width=\"30.0\" height=\"54.0\" rx=\"10\" fill=\"var(--fig-ink)\"/><polyline points=\"97.0,124.0 95.0,172.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"9.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"111.0,124.0 113.0,172.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"9.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"104.0\" cy=\"46.0\" r=\"12.0\" fill=\"var(--fig-ink)\"/><path d=\"M64.0,116.0 Q52.5,95.9 30.0,90.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-db_lateral_raise)\"/><path d=\"M144.0,116.0 Q155.5,95.9 178.0,90.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-db_lateral_raise)\"/><text x=\"202\" y=\"66\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Upp till axelhöjd –</text><text x=\"202\" y=\"80\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">inte högre</text><text x=\"202\" y=\"108\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Armbågen leder,</text><text x=\"202\" y=\"121\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">armen lätt böjd.</text><text x=\"202\" y=\"142\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Axlarna ner,</text><text x=\"202\" y=\"155\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">ingen gungning.</text></svg>", "db_shrug": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-db_shrug\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"14.0\" y1=\"176.0\" x2=\"306.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"14\" y1=\"68\" x2=\"196\" y2=\"68\" stroke=\"var(--c)\" stroke-width=\"1.6\" stroke-dasharray=\"3 4\" opacity=\".75\"/><polyline points=\"28.0,74.0 26.0,122.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"76.0,74.0 78.0,122.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"36.0\" y=\"70.0\" width=\"32.0\" height=\"58.0\" rx=\"10\" fill=\"var(--fig-ghost)\"/><path d=\"M45,53 L59,53 L77,68 L77,77 L27,77 L27,68 Z\" fill=\"var(--fig-ghost)\" stroke=\"var(--fig-ghost)\" stroke-width=\"6\" stroke-linejoin=\"round\"/><polyline points=\"45.0,124.0 43.0,172.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"9.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"59.0,124.0 61.0,172.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"9.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"52.0\" cy=\"44.0\" r=\"12.0\" fill=\"var(--fig-ghost)\"/><circle cx=\"26.0\" cy=\"126.0\" r=\"8.5\" fill=\"var(--fig-ghost)\"/><circle cx=\"26.0\" cy=\"126.0\" r=\"2.7\" fill=\"var(--fig-bg)\"/><circle cx=\"78.0\" cy=\"126.0\" r=\"8.5\" fill=\"var(--fig-ghost)\"/><circle cx=\"78.0\" cy=\"126.0\" r=\"2.7\" fill=\"var(--fig-bg)\"/><circle cx=\"131.0\" cy=\"52.0\" r=\"15\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"131.0\" cy=\"52.0\" r=\"9\" fill=\"var(--c)\" opacity=\"0.28\"/><circle cx=\"161.0\" cy=\"52.0\" r=\"15\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"161.0\" cy=\"52.0\" r=\"9\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"122.0,61.0 120.0,109.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"170.0,61.0 172.0,109.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"130.0\" y=\"57.0\" width=\"32.0\" height=\"71.0\" rx=\"10\" fill=\"var(--fig-ink)\"/><path d=\"M139,53 L153,53 L171,55 L171,64 L121,64 L121,55 Z\" fill=\"var(--fig-ink)\" stroke=\"var(--fig-ink)\" stroke-width=\"6\" stroke-linejoin=\"round\"/><polyline points=\"139.0,124.0 137.0,172.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"9.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"153.0,124.0 155.0,172.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"9.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"146.0\" cy=\"44.0\" r=\"12.0\" fill=\"var(--fig-ink)\"/><circle cx=\"120.0\" cy=\"113.0\" r=\"8.5\" fill=\"var(--fig-equip-dark)\"/><circle cx=\"120.0\" cy=\"113.0\" r=\"2.7\" fill=\"var(--fig-bg)\"/><circle cx=\"172.0\" cy=\"113.0\" r=\"8.5\" fill=\"var(--fig-equip-dark)\"/><circle cx=\"172.0\" cy=\"113.0\" r=\"2.7\" fill=\"var(--fig-bg)\"/><path d=\"M105.0,88.0 Q105.0,70.5 105.0,53.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-db_shrug)\"/><path d=\"M187.0,88.0 Q187.0,70.5 187.0,53.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-db_shrug)\"/><text x=\"52\" y=\"193\" text-anchor=\"middle\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"700\" font-size=\"8.5\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Start</text><text x=\"146\" y=\"193\" text-anchor=\"middle\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"8.5\" fill=\"var(--c)\" letter-spacing=\"0.2\">Toppen · håll 1 sek</text><text x=\"206\" y=\"60\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Axlarna rakt</text><text x=\"206\" y=\"74\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">upp mot öronen</text><text x=\"206\" y=\"100\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Raka armar.</text><text x=\"206\" y=\"113\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Håll 1 sek i toppen,</text><text x=\"206\" y=\"126\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">sänk på 2 sek.</text><text x=\"206\" y=\"146\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Rulla inte axlarna.</text></svg>", "neg_chin": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-neg_chin\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"34.0\" y1=\"6.0\" x2=\"34.0\" y2=\"196.0\" stroke=\"var(--fig-equip)\" stroke-width=\"7\" stroke-linecap=\"round\"/><line x1=\"34.0\" y1=\"24.0\" x2=\"96.0\" y2=\"24.0\" stroke=\"var(--fig-equip-dark)\" stroke-width=\"5\" stroke-linecap=\"round\"/><circle cx=\"96.0\" cy=\"24.0\" r=\"5.5\" fill=\"var(--fig-equip-dark)\"/><polyline points=\"107.3,74.0 100.0,108.4 122.5,133.4 120.9,148.5\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"109.0,26.0 96.2,48.2 97.0,25.0\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"107.3,74.0 109.0,26.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"109.0,26.0 107.0,13.8\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"107.0\" cy=\"13.8\" r=\"8.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/>\n<polyline points=\"107.3,74.0 100.0,108.4 122.5,133.4 120.9,148.5\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"109.0,26.0 96.2,48.2 97.0,25.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"97.0\" cy=\"25.0\" r=\"3.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/><circle cx=\"102.0\" cy=\"68.0\" r=\"17\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"102.0\" cy=\"68.0\" r=\"11\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"98.3,120.0 92.2,154.6 117.2,177.1 115.6,192.2\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"100.0,72.0 92.0,47.7 97.0,25.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"98.3,120.0 100.0,72.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"100.0,72.0 103.0,59.8\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"103.0\" cy=\"59.8\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"98.3,120.0 92.2,154.6 117.2,177.1 115.6,192.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"100.0,72.0 92.0,47.7 97.0,25.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"97.0\" cy=\"25.0\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M152.0,44.0 Q152.0,72.0 152.0,100.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-neg_chin)\"/><text x=\"170\" y=\"62\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Sänk dig på</text><text x=\"170\" y=\"76\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">4–5 sekunder</text><text x=\"170\" y=\"100\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Kliv upp på en stol</text><text x=\"170\" y=\"113\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">till toppläget.</text></svg>", "pike_push": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-pike_push\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"14.0\" y1=\"176.0\" x2=\"306.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"156.2,94.5 165.3,128.5 174.0,161.0 166.9,174.4\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"124.4,130.5 107.4,149.6 92.0,167.0\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"156.2,94.5 124.4,130.5\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"124.4,130.5 116.9,140.1\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"116.9\" cy=\"140.1\" r=\"8.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/>\n<polyline points=\"156.2,94.5 165.3,128.5 174.0,161.0 166.9,174.4\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"124.4,130.5 107.4,149.6 92.0,167.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"92.0\" cy=\"167.0\" r=\"3.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/><circle cx=\"71.6\" cy=\"139.5\" r=\"17\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"71.6\" cy=\"139.5\" r=\"11\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"125.4,112.4 150.2,137.2 174.0,161.0 166.9,174.4\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"82.2,133.4 103.9,147.1 92.0,167.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"125.4,112.4 82.2,133.4\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"82.2,133.4 71.6,139.5\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"71.6\" cy=\"139.5\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"125.4,112.4 150.2,137.2 174.0,161.0 166.9,174.4\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"82.2,133.4 103.9,147.1 92.0,167.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"92.0\" cy=\"167.0\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M42.0,106.0 Q42.0,124.0 42.0,142.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-pike_push)\"/><text x=\"196\" y=\"44\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Huvudet ner</text><text x=\"196\" y=\"58\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">mellan händerna</text><text x=\"196\" y=\"80\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Höften högt hela tiden.</text><text x=\"196\" y=\"93\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Tryck upp till raka armar.</text></svg>", "push_up": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-push_up\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"14.0\" y1=\"176.0\" x2=\"306.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"121.6,128.0 159.4,139.7 195.5,150.9 191.1,167.4\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"70.0,112.0 75.1,140.3 80.0,167.0\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"121.6,128.0 70.0,112.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"12.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"70.0,112.0 56.7,109.4\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"56.7\" cy=\"109.4\" r=\"9.9\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/>\n<polyline points=\"121.6,128.0 159.4,139.7 195.5,150.9 191.1,167.4\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"70.0,112.0 75.1,140.3 80.0,167.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"80.0\" cy=\"167.0\" r=\"4.3\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/><circle cx=\"75.0\" cy=\"148.0\" r=\"17\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"75.0\" cy=\"148.0\" r=\"11\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"117.0,148.0 156.5,149.5 194.3,150.9 193.7,168.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"63.0,146.0 91.7,143.7 80.0,167.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"117.0,148.0 63.0,146.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"12.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"63.0,146.0 49.4,146.9\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"49.4\" cy=\"146.9\" r=\"9.9\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"117.0,148.0 156.5,149.5 194.3,150.9 193.7,168.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"63.0,146.0 91.7,143.7 80.0,167.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"80.0\" cy=\"167.0\" r=\"4.3\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M36.0,104.0 Q36.0,122.0 36.0,140.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-push_up)\"/><text x=\"168\" y=\"44\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Bröstet nästan</text><text x=\"168\" y=\"58\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">ner i golvet</text><text x=\"168\" y=\"80\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Rak kropp, spänd mage.</text><text x=\"168\" y=\"93\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Ner på 2 sek, upp på 1.</text></svg>", "push_up_decline": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-push_up_decline\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"14.0\" y1=\"176.0\" x2=\"306.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><rect x=\"180.0\" y=\"128.0\" width=\"62.0\" height=\"8.0\" rx=\"3\" fill=\"var(--fig-equip-dark)\"/><line x1=\"186.0\" y1=\"136.0\" x2=\"186.0\" y2=\"176.0\" stroke=\"var(--fig-equip)\" stroke-width=\"4\" stroke-linecap=\"round\"/><line x1=\"236.0\" y1=\"136.0\" x2=\"236.0\" y2=\"176.0\" stroke=\"var(--fig-equip)\" stroke-width=\"4\" stroke-linecap=\"round\"/><line x1=\"238.0\" y1=\"132.0\" x2=\"238.0\" y2=\"84.0\" stroke=\"var(--fig-equip)\" stroke-width=\"5\" stroke-linecap=\"round\"/><polyline points=\"124.0,110.0 163.5,108.5 201.3,107.1 201.3,124.2\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"70.0,112.0 75.1,140.3 80.0,167.0\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"124.0,110.0 70.0,112.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"12.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"70.0,112.0 56.5,113.9\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"56.5\" cy=\"113.9\" r=\"9.9\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/>\n<polyline points=\"124.0,110.0 163.5,108.5 201.3,107.1 201.3,124.2\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"70.0,112.0 75.1,140.3 80.0,167.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"80.0\" cy=\"167.0\" r=\"4.3\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/><circle cx=\"88.0\" cy=\"148.0\" r=\"17\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"88.0\" cy=\"148.0\" r=\"11\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"127.6,130.1 165.5,118.5 201.6,107.4 206.9,123.7\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"76.0,146.0 97.5,147.7 80.0,167.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"127.6,130.1 76.0,146.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"12.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"76.0,146.0 63.5,151.3\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"63.5\" cy=\"151.3\" r=\"9.9\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"127.6,130.1 165.5,118.5 201.6,107.4 206.9,123.7\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"76.0,146.0 97.5,147.7 80.0,167.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"80.0\" cy=\"167.0\" r=\"4.3\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M36.0,104.0 Q36.0,122.0 36.0,140.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-push_up_decline)\"/><text x=\"36\" y=\"40\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Fötterna på stolen,</text><text x=\"36\" y=\"54\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">bröstet ner mot golvet</text><text x=\"36\" y=\"76\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Rak kropp hela vägen.</text></svg>", "side_leg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-side_leg\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"20.0\" y1=\"172.0\" x2=\"300.0\" y2=\"172.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"124.0,155.0 104.0,166.0 94.0,150.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"172.0,157.0 207.0,159.0 241.0,161.0 248.0,153.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"172.0,157.0 207.0,153.0 241.0,154.0 248.0,146.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"176.0\" cy=\"148.0\" r=\"17\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"176.0\" cy=\"148.0\" r=\"11\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"172.0,157.0 124.0,155.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"124.0,155.0 103.0,146.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"103.0\" cy=\"146.0\" r=\"8.8\" fill=\"var(--fig-ink)\"/><polyline points=\"124.0,155.0 138.0,164.0 146.0,168.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"146.0\" cy=\"168.0\" r=\"3.8\" fill=\"var(--fig-ink)\"/><polyline points=\"172.0,157.0 203.1,140.5 232.7,124.7 231.0,114.9\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M262.0,146.0 Q251.3,134.0 252.0,118.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-side_leg)\"/><text x=\"160\" y=\"70\" text-anchor=\"middle\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Lyft det övre benet rakt upp</text><text x=\"160\" y=\"88\" text-anchor=\"middle\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Tårna framåt. Rulla inte höften bakåt.</text></svg>", "sl_rdl": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-sl_rdl\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"14.0\" y1=\"176.0\" x2=\"306.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"100.0,101.0 93.9,135.7 73.2,162.1 75.8,177.1\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"100.0,53.0 100.0,78.6 100.0,101.8\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"100.0,101.0 100.0,53.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"100.0,53.0 99.1,40.8\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"99.1\" cy=\"40.8\" r=\"8.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/>\n<polyline points=\"100.0,101.0 109.6,134.9 104.0,168.0 119.2,168.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"100.0,53.0 100.0,78.6 100.0,101.8\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"100.0\" cy=\"101.8\" r=\"3.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/><circle cx=\"89.1\" cy=\"105.0\" r=\"18\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"89.1\" cy=\"105.0\" r=\"12\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"96.0,101.0 61.3,107.1 28.2,112.9 26.7,128.1\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"143.3,92.7 143.3,118.3 143.3,141.5\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"96.0,101.0 143.3,92.7\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"143.3,92.7 155.1,89.7\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"155.1\" cy=\"89.7\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"96.0,101.0 106.8,134.5 104.0,168.0 119.2,168.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"143.3,92.7 143.3,118.3 143.3,141.5\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"143.3\" cy=\"141.5\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M80.0,92.0 Q65.0,92.0 50.0,92.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-sl_rdl)\"/><path d=\"M116.0,42.0 Q142.6,47.8 150.0,74.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-sl_rdl)\" stroke-dasharray=\"5 5\"/><text x=\"176\" y=\"40\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Höften bakåt,</text><text x=\"176\" y=\"54\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">bakre benet rakt ut</text><text x=\"190\" y=\"136\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Rak linje huvud–häl.</text><text x=\"190\" y=\"149\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Håll i en stol i början.</text></svg>", "split_squat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-split_squat\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"14.0\" y1=\"176.0\" x2=\"306.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><rect x=\"184.0\" y=\"134.0\" width=\"52.0\" height=\"8.0\" rx=\"3\" fill=\"var(--fig-equip-dark)\"/><line x1=\"190.0\" y1=\"142.0\" x2=\"190.0\" y2=\"176.0\" stroke=\"var(--fig-equip)\" stroke-width=\"4\" stroke-linecap=\"round\"/><line x1=\"230.0\" y1=\"142.0\" x2=\"230.0\" y2=\"176.0\" stroke=\"var(--fig-equip)\" stroke-width=\"4\" stroke-linecap=\"round\"/><line x1=\"234.0\" y1=\"138.0\" x2=\"234.0\" y2=\"96.0\" stroke=\"var(--fig-equip)\" stroke-width=\"5\" stroke-linecap=\"round\"/><polyline points=\"126.0,104.0 157.4,120.0 190.0,128.0 205.1,130.1\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"122.7,56.1 121.8,81.7 121.8,104.9\" fill=\"none\" stroke=\"var(--fig-ghost-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"126.0,104.0 122.7,56.1\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"122.7,56.1 121.8,43.9\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"121.8\" cy=\"43.9\" r=\"8.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/>\n<polyline points=\"126.0,104.0 108.3,134.4 110.0,168.0 94.8,169.1\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"122.7,56.1 121.8,81.7 121.8,104.9\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"121.8\" cy=\"104.9\" r=\"3.8\" fill=\"var(--fig-ghost)\" opacity=\"1.0\"/><circle cx=\"110.8\" cy=\"135.1\" r=\"17\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"110.8\" cy=\"135.1\" r=\"11\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"132.0,136.0 164.4,149.8 190.0,128.0 205.1,130.1\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"126.2,88.4 125.3,113.9 125.3,137.1\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"132.0,136.0 126.2,88.4\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"126.2,88.4 124.7,76.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"124.7\" cy=\"76.2\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"132.0,136.0 96.8,137.1 110.0,168.0 94.8,169.1\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"126.2,88.4 125.3,113.9 125.3,137.1\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"125.3\" cy=\"137.1\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M92.0,84.0 Q92.0,101.0 92.0,118.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-split_squat)\"/><text x=\"172\" y=\"40\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Gå rakt ner</text><text x=\"172\" y=\"54\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">på främre benet</text><text x=\"172\" y=\"76\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Bakre knät mot golvet.</text><text x=\"172\" y=\"89\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Viktvästen på.</text></svg>", "vest_row": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-h-vest_row\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"14.0\" y1=\"176.0\" x2=\"306.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><rect x=\"28.0\" y=\"136.0\" width=\"52.0\" height=\"8.0\" rx=\"3\" fill=\"var(--fig-equip-dark)\"/><line x1=\"34.0\" y1=\"144.0\" x2=\"34.0\" y2=\"176.0\" stroke=\"var(--fig-equip)\" stroke-width=\"4\" stroke-linecap=\"round\"/><line x1=\"74.0\" y1=\"144.0\" x2=\"74.0\" y2=\"176.0\" stroke=\"var(--fig-equip)\" stroke-width=\"4\" stroke-linecap=\"round\"/><line x1=\"30.0\" y1=\"140.0\" x2=\"30.0\" y2=\"92.0\" stroke=\"var(--fig-equip)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"90.7\" y1=\"146.0\" x2=\"88.7\" y2=\"152.0\" stroke=\"var(--fig-ghost)\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><line x1=\"98.7\" y1=\"146.0\" x2=\"100.7\" y2=\"152.0\" stroke=\"var(--fig-ghost)\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><rect x=\"84.7\" y=\"151.0\" width=\"20.0\" height=\"18.0\" rx=\"5\" fill=\"var(--fig-ghost)\"/><polyline points=\"94.7,97.7 91.2,123.0 94.7,146.0\" fill=\"none\" stroke=\"var(--fig-ghost)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"94.7\" cy=\"146.0\" r=\"3.8\" fill=\"var(--fig-ghost)\"/><circle cx=\"110.9\" cy=\"92.4\" r=\"17\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"110.9\" cy=\"92.4\" r=\"11\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"142.0,106.0 127.1,137.9 112.0,170.0 96.8,170.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"94.7,97.7 84.5,121.1 64.0,132.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"142.0,106.0 94.7,97.7\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"94.7,97.7 82.8,95.1\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"82.8\" cy=\"95.1\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"142.0,106.0 158.5,137.1 174.3,166.7 160.0,171.9\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"94.7,97.7 106.4,120.5 128.0,112.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"128.0\" cy=\"112.0\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><line x1=\"124.0\" y1=\"112.0\" x2=\"122.0\" y2=\"118.0\" stroke=\"var(--fig-equip-dark)\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><line x1=\"132.0\" y1=\"112.0\" x2=\"134.0\" y2=\"118.0\" stroke=\"var(--fig-equip-dark)\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><rect x=\"118.0\" y=\"117.0\" width=\"20.0\" height=\"18.0\" rx=\"5\" fill=\"var(--fig-equip-dark)\"/><circle cx=\"128.0\" cy=\"112.0\" r=\"3.8\" fill=\"var(--fig-ink)\"/><path d=\"M128.0,170.0 Q128.0,158.0 128.0,146.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-h-vest_row)\"/><text x=\"170\" y=\"40\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">Dra västen</text><text x=\"170\" y=\"54\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"800\" font-size=\"10\" fill=\"var(--c)\" letter-spacing=\"0.2\">mot höften</text><text x=\"170\" y=\"76\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Ena handen på en stol.</text><text x=\"170\" y=\"89\" text-anchor=\"start\" font-family=\"Archivo, Inter, sans-serif\" font-weight=\"600\" font-size=\"9\" fill=\"var(--fig-cap)\" letter-spacing=\"0.2\">Armbågen nära kroppen.</text></svg>"};
+// Resepass (17 nov 2026, idé 11): på ett annat gym byts maskinerna mot hantlar och fria vikter – samma byten som under Upptagen?
+const TRIP = {chins: "Negativa chins", kabelrodd: "Enarms hantelrodd", axelpress: "Sittande hantelpress", sidolyftk: "Sidolyft med hantlar", facepulls: "Omvända flyes med hantlar",
+  benpress: "Goblet squat", vadpress: "Tåhävningar på trappsteg, en fot", abduktion: "Sidoliggande benlyft", triceps: "Smal hantelpress"};
 // Hemmapasset är på i dag: draft.home = övningarna som bytts av knappen (bara de byts tillbaka när den slås av)
 const hmDay = () => !!(draft && Array.isArray(draft.home));
 const hmOn = k => hmDay() && draft.home.indexOf(k) >= 0 && !!HOME[k] && !!draft.alt && draft.alt[k] === HOME[k].n;
+const trDay = () => !!(draft && Array.isArray(draft.trip));
+const trOn = k => trDay() && draft.trip.indexOf(k) >= 0 && !!TRIP[k] && !!draft.alt && draft.alt[k] === TRIP[k];
+// Var passet körs i dag: gymmet, hemma eller annat gym. draft.home / draft.trip = övningarna som bytts av valet.
+const PLATS = {hemma: {key: "home", name: k => HOME[k] && HOME[k].n}, annat: {key: "trip", name: k => TRIP[k]}};
+const plDay = () => hmDay() ? "hemma" : trDay() ? "annat" : "gym";
 // Ett byte: först hemmaövningen om hemmapasset är på, annars bytena i gymmet
 const altDef = (k, n) => { const h = HOME[k] && HOME[k].n === n ? HOME[k] : null; if (h && hmOn(k)) return h; return (BUSY[k] || []).find(x => x.n === n) || h; };
 // Teckningen till en hemmaövning – med egna id:n varje gång, annars pekar pilspetsarna på en dold kopia
@@ -6413,44 +6458,51 @@ function ssCardHTML(){
     '<label class="mn-sw"><span><b>⚡ Snabbläge – supersets</b><small>' +
     (on ? 'Ett set av 1:an, direkt till 2:an, vila sen. Övningarna tar ca <b>' + b + ' min</b> i stället för ' + a + '.' : 'Kör övningarna i par med mindre vila – ca ' + b + ' min i stället för ' + a + '. Bra när du har bråttom.') +
     '</small></span><input type="checkbox" data-ss' + (on ? " checked" : "") + ' aria-label="Snabbläge med supersets"><i></i></label>' +
-    (readOnly ? '' : hmSwitchHTML()) +
+    (readOnly ? '' : plSegHTML() + shSegHTML()) +
     (readOnly ? '' : '<button type="button" class="exlink pr-link" data-pr="open">✏️ Ändra övningar, set och reps</button>') + '</div>';
 }
-function hmSwitchHTML(){
-  const on = hmDay(), n = on ? PROGRAM[draft.type].ex.filter(e => hmOn(e.k)).length : 0;
-  return '<label class="mn-sw hm-sw"><span><b>🏠 Hemmapass i dag</b><small>' +
-    (on ? (n ? '<b>' + n + ' övningar</b> bytta till hemmaövningar med bild. De loggas för sig, så gymmets vikter blir inte fel.' : 'Inga övningar kvar att byta – de är redan påbörjade.')
-        : 'Kommer du inte till gymmet? Samma muskler hemma med viktväst, stången, gummiband och en stol.') +
-    '</small></span><input type="checkbox" data-home' + (on ? " checked" : "") + ' aria-label="Hemmapass i dag"><i></i></label>';
+function plSegHTML(){
+  const cur = plDay(), n = cur === "hemma" ? PROGRAM[draft.type].ex.filter(e => hmOn(e.k)).length : cur === "annat" ? PROGRAM[draft.type].ex.filter(e => trOn(e.k)).length : 0;
+  return '<div class="pl-row hm-sw"><b>Var tränar du i dag?</b><div class="bxseg pl-seg" role="group" aria-label="Var tränar du i dag">' +
+    [["gym", "Gymmet"], ["hemma", "🏠 Hemma"], ["annat", "Annat gym"]].map(o => '<button type="button" data-plats="' + o[0] + '" aria-pressed="' + (cur === o[0]) + '">' + o[1] + '</button>').join("") + '</div><small>' +
+    (cur === "hemma" ? (n ? '<b>' + n + ' övningar</b> bytta till hemmaövningar med bild – viktväst, stången, gummiband och en stol. De loggas för sig, så gymmets vikter blir inte fel.' : 'Inga övningar kvar att byta – de är redan påbörjade.')
+     : cur === "annat" ? (n ? '<b>' + n + ' maskinövningar</b> bytta mot hantlar och fria vikter. De loggas för sig.' : 'Inga övningar kvar att byta – de är redan påbörjade.')
+     : 'Hemma eller på ett annat gym byts övningarna mot sådana du kan göra där. Det du redan loggat byts inte.') + '</small></div>';
 }
-// Slå på: varje övning med en hemmavariant som inte är påbörjad byts. Slå av: bara de som knappen bytte och som inte är påbörjade
-// går tillbaka – till ditt byte för alltid om du har ett, annars till gymövningen.
-function hmSet(on){
+// Byt plats: först går det som förra valet bytte tillbaka (om det inte är påbörjat) – till ditt byte för alltid om du har ett,
+// annars till gymövningen. Sedan byts varje övning som har en variant för den nya platsen och inte är påbörjad.
+function plSet(pl){
   if (!draft || readOnly) return;
+  const cur = plDay(); if (cur === pl) return;
   const p = PROGRAM[draft.type], begun = k => !!(draft.sets[k] && draft.sets[k].some(x => x.done));
-  let n = 0, kept = 0;
+  let n = 0, kept = 0, back = 0;
   draft.alt = draft.alt || {};
-  if (on){
-    const keys = [];
-    p.ex.forEach(ex => {
-      const h = HOME[ex.k]; if (!h) return;
-      if (draft.alt[ex.k] === h.n){ keys.push(ex.k); return; }
-      if (begun(ex.k)){ kept++; return; }
-      draft.alt[ex.k] = h.n; keys.push(ex.k); bzReset(ex.k); n++;
-    });
-    draft.home = keys;
-  } else {
-    (Array.isArray(draft.home) ? draft.home : []).forEach(k => {
-      const h = HOME[k]; if (!h || draft.alt[k] !== h.n || begun(k) || !draft.sets[k]) return;
+  if (cur !== "gym"){
+    const P = PLATS[cur];
+    (draft[P.key] || []).forEach(k => {
+      const nm = P.name(k); if (!nm || draft.alt[k] !== nm || begun(k) || !draft.sets[k]) return;
       const perm = prAltOf(draft.type, k);
       if (perm) draft.alt[k] = perm; else delete draft.alt[k];
-      bzReset(k); n++;
+      bzReset(k); back++;
     });
-    delete draft.home;
+    delete draft[P.key];
+  }
+  if (pl !== "gym"){
+    const P = PLATS[pl], keys = [];
+    p.ex.forEach(ex => {
+      const nm = P.name(ex.k); if (!nm) return;
+      if (draft.alt[ex.k] === nm){ keys.push(ex.k); return; }
+      if (begun(ex.k)){ kept++; return; }
+      draft.alt[ex.k] = nm; keys.push(ex.k); bzReset(ex.k); n++;
+    });
+    draft[P.key] = keys;
   }
   persistDraft(); renderPass();
-  toast(on ? "🏠 Hemmapass – " + n + " övningar bytta" + (kept ? ", " + kept + " påbörjade är kvar" : "") : "Gympasset igen" + (n ? " – " + n + " övningar tillbaka" : ""));
+  toast(pl === "hemma" ? "🏠 Hemmapass – " + n + " övningar bytta" + (kept ? ", " + kept + " påbörjade är kvar" : "")
+      : pl === "annat" ? "Annat gym – " + n + " övningar bytta mot hantlar" + (kept ? ", " + kept + " påbörjade är kvar" : "")
+      : "Gympasset igen" + (back ? " – " + back + " övningar tillbaka" : ""));
 }
+const hmSet = on => plSet(on ? "hemma" : "gym");
 const ssTag = (html, t) => html.replace('<h3 class="ex-n">', '<h3 class="ex-n"><span class="ss-tag">' + t + '</span> ').replace(/<span class="tag num">Vila [^<]*<\/span>/, '');
 function passExHTML(){
   if (!ssOn()) return passOrder().map(e => exHTML(e)).join("");
@@ -6530,13 +6582,14 @@ function bzReset(k){
 }
 function bzScrollTo(k){ setTimeout(() => { const c = document.querySelector('.ex[data-k="' + k + '"]'); if (c) c.scrollIntoView({block: "start", behavior: "smooth"}); }, 60); }
 document.addEventListener("click", e => {
+  const pl = e.target.closest("[data-plats]"); if (pl && draft){ plSet(pl.dataset.plats); return; }
   const open = e.target.closest("[data-busy]");
   if (open && draft){ bzSheet(open.dataset.busy); return; }
   const off = e.target.closest("[data-alt-off]");
   if (off && draft){
-    const k = off.dataset.altOff, home = hmOn(k), perm = home ? prAltOf(draft.type, k) : null;
+    const k = off.dataset.altOff, md = hmOn(k) ? "home" : trOn(k) ? "trip" : null, perm = md ? prAltOf(draft.type, k) : null;
     if (perm) draft.alt[k] = perm; else if (draft.alt) delete draft.alt[k];
-    if (home) draft.home = draft.home.filter(x => x !== k);
+    if (md) draft[md] = draft[md].filter(x => x !== k);
     bzReset(k); persistDraft(); renderPass(); bzScrollTo(k); toast("Tillbaka till " + (perm || SHORT[k] || k)); return;
   }
   const b = e.target.closest("[data-bz]"); if (!b || !draft) return;
@@ -6554,8 +6607,7 @@ document.addEventListener("click", e => {
   if (a === "off"){ if (draft.alt) delete draft.alt[k]; bzReset(k); persistDraft(); bzClose(); renderPass(); bzScrollTo(k); return; }
 });
 document.addEventListener("change", e => {
-  const t = e.target; if (t && t.hasAttribute && t.hasAttribute("data-home") && draft){ hmSet(t.checked); return; }
-  if (!t || !t.hasAttribute || !t.hasAttribute("data-ss") || !draft) return;
+  const t = e.target; if (!t || !t.hasAttribute || !t.hasAttribute("data-ss") || !draft) return;
   draft.ss = t.checked; ssPref = t.checked; try { localStorage.setItem(SS_KEY, t.checked ? "1" : "0"); } catch(x){}
   persistDraft(); renderPass();
   toast(t.checked ? "⚡ Supersets på – övningarna går i par" : "Vanlig ordning igen");
@@ -7531,10 +7583,12 @@ function malDoneHTML(r){
 }
 function malHintHTML(ex){
   if (!ex || ex.alt) return "";
-  const g = mal.ex.find(x => x.k === ex.k && !x.hit); if (!g) return "";
+  const g = mal.ex.find(x => x.k === ex.k && !x.hit);
+  // Utan eget mål: chinsen visar ändå vägen till egna chins (idé 4, 17 nov 2026)
+  if (!g){ if (ex.k === "chins" && typeof chinsRoad === "function"){ const r = chinsRoad(); if (r && r.eta) return '<div class="mal-hint">🎯 Egna chins i din takt runt ' + progDate(r.eta) + '</div>'; } return ""; }
   const st = malStat(g); if (!st) return "";
   const left = st.best == null ? null : Math.abs(g.t - st.best);
-  return '<div class="mal-hint">🎯 Mål: ' + esc(malName(g)) + (left != null && left > 1e-9 ? ' · ' + fmt(left) + (st.ex.unit === "sek" ? " s" : " kg") + ' kvar' : '') + '</div>';
+  return '<div class="mal-hint">🎯 Mål: ' + esc(malName(g)) + (left != null && left > 1e-9 ? ' · ' + fmt(left) + (st.ex.unit === "sek" ? " s" : " kg") + ' kvar' : '') + (st.eta ? ' · runt ' + progDate(st.eta) : '') + '</div>';
 }
 function malHTML(){
   const act = mal.ex.filter(g => !g.hit), done = mal.ex.filter(g => g.hit).sort((a, b) => a.hit < b.hit ? 1 : -1).slice(0, 4);
@@ -7970,7 +8024,8 @@ const GU = [
     ["⏱", "Vila med timer och röst", "Bocka ett set så startar vilan. Rösten säger när det är dags och vad nästa set är.", "pass", "#v-pass article.ex .set [data-chk]"],
     ["⚡", "Snabbläge – supersets", "Övningarna i par med mindre vila när du har bråttom.", "pass", "#v-pass .ss-card .mn-sw"],
     ["🔁", "Upptagen? Byt", "Kör något annat först, fråga om du får köra mellan, eller byt övning i dag.", "pass", "#v-pass .bz-link"],
-    ["🏠", "Hemmapass", "Kommer du inte till gymmet? Slå på Hemmapass i dag under Kör passet-knappen. Övningarna byts mot hemmaövningar med viktväst, stången, gummiband och en stol – med bild – och loggas för sig.", "pass", "#v-pass .hm-sw"],
+    ["🏠", "Hemmapass och annat gym", "Var tränar du i dag? Under Kör passet-knappen väljer du Hemma – då byts övningarna mot hemmaövningar med viktväst, stången, gummiband och en stol, med bild – eller Annat gym, då byts maskinerna mot hantlar. Allt loggas för sig.", "pass", "#v-pass .hm-sw"],
+    ["⏱", "Kort pass", "Har du bråttom? Välj 45, 35 eller 25 minuter under Kör passet-knappen, så stryks set i övningarna som betyder minst. De tre viktigaste behåller minst två set.", "pass", "#v-pass .sh-row"],
     ["🎵", "Spotify i Kör passet", "Musikknappen uppe till höger i Kör passet öppnar Spotify direkt på din spellista. Första gången klistrar du in länken (··· → Dela → Kopiera länk i Spotify). Håll inne knappen för att byta spellista.", "pass", '#v-pass [data-fk="open"]'],
     ["✏️", "Ändra programmet", "Set, reps, vila och ordning, byt en övning för alltid, pausa eller lägg till.", "pass", "#v-pass .pr-link"],
     ["↪", "Flytta passet", "Kan du inte i dag, eller missade du ett pass? Välj ny dag så blir det ändå fyra pass i veckan.", "pass", "#v-pass .fl-pill, #v-pass .fl-ban", "", "Knappen syns i passet på en gymdag innan du börjat, och som banner dagen efter ett missat pass."],
@@ -8006,6 +8061,7 @@ const GU = [
     ["🎯", "Mål", "Mål per övning – till exempel chins utan hjälp – med stapel, prognos och fest när du klarar det.", "framsteg", "#malCard"],
     ["🏆", "Rekord", "Bästa setet i varje övning och veckor i rad med alla fyra passen.", "framsteg", "#v-framsteg .rk"],
     ["📏", "Hopptest", "Upphopp och längdhopp i cm varannan söndag, med graf.", "framsteg", "#atTest-f"],
+    ["🏆", "Vägen till egna chins och styrka per kilo", "I Framsteg: hjälpvikten i chinsen ner mot noll med ett datum i din takt, styrkan delad med kroppsvikten, vilken tid på dygnet du lyfter tyngst och hur ofta du lämnade appen mellan seten.", "framsteg", "#v-framsteg .cr-card"],
     ["📈", "Grafer och prognos", "Kurvan för varje övning och när du når nästa vikt i din egen takt.", "framsteg", "#v-framsteg .chips"],
     ["🗓", "Månadens sammanfattning", "En bild i storyformat med månadens siffror – att spara eller skicka.", "framsteg", "#wrapCard"]
   ]],
@@ -9412,7 +9468,7 @@ function rgPass(){
       btGrid([btTile({l: "Volym", v: fmt(s.saved.volume || 0, 0) + " kg", s: "lyft i dag", cls: "dark"}), mins ? btTile({l: "Tid", v: mins + " min", s: "tog passet"}) : btTile({l: "Övningar", v: s.pr.ex.length, s: "i passet"}), btAtTile(s) || btTile({l: "Set", v: n, s: "loggade"}), btHallTile()]);
   }
   const nx = btNextSet(), when = s.pre ? "Första passet" : s.tk === k ? "Dagens pass" : "Pass";
-  return btHero({c: PROGRAM[k].c, chip: hmDay() ? "Hemmapass" : when, code: PROGRAM[k].ab, title: s.pr.name, label: hmDay() ? "Hemmapass i dag" : when, foot: s.done + " av " + s.tot + " set · ca " + min + " min", p: s.p,
+  return btHero({c: PROGRAM[k].c, chip: hmDay() ? "Hemmapass" : trDay() ? "Annat gym" : when, code: PROGRAM[k].ab, title: s.pr.name, label: hmDay() ? "Hemmapass i dag" : trDay() ? "Annat gym i dag" : when, foot: s.done + " av " + s.tot + " set · ca " + min + " min", p: s.p,
       btn: readOnly ? "" : '<button type="button" class="bt-play" data-fk="open" aria-label="' + (s.done ? "Fortsätt passet" : "Kör passet") + '">' + BT_PLAY + '</button>'}) +
     btGrid([btTile({l: "Klart", v: btPct(s.p), s: "av passet", cls: "dark big"}),
       nx ? btTile({l: "Näst på tur", v: esc(nx.n), s: nx.sub, cls: "txt"}) : btTile({l: "Näst på tur", v: "Spara passet", s: "allt är klart", cls: "txt"}),
@@ -9731,11 +9787,226 @@ document.addEventListener("change", e => { if (e.target && e.target.id === "vfFi
 document.addEventListener("keydown", e => { if (e.key === "Escape" && vfOpenNow()) vfClose(); });
 
 
+/* ---------- Passet, omgång 2 (17 nov 2026): kort pass (idé 2), vägen till egna chins (4), styrka per kilo (64),
+   bästa tiden på dygnet (69) och fokus under passet (74). Resepasset (11) ligger i pass2.js bredvid hemmapasset.
+   Muskelkartan (7) fanns redan: Veckans muskelkarta i Framsteg. ---------- */
+
+/* ---------- Kort pass: välj tid, så stryks set i övningarna som betyder minst ----------
+   Som en lätt vecka ändras antalet set i dagens övningar (övningens sets) – det som redan är gjort ligger kvar.
+   De tre viktigaste övningarna behåller minst två set, resten minst ett. shB = antalet set före det korta passet. */
+const SHORT_PRI = {over: ["chins", "hantelbank", "kabelrodd", "axelpress", "curls", "sidolyftk", "hammarcurl", "facepulls", "shrugs"],
+  under: ["benpress", "rdl", "lutandehantel", "abduktion", "triceps", "sidolyftk", "vadpress", "plankan", "deadbug"]};
+const SHORT_OPT = [45, 35, 25];
+function shRestore(){ let ch = false; [OVER_EX, UNDER_EX].forEach(L => L.forEach(ex => { if (ex.shB != null){ ex.sets = ex.shB; delete ex.shB; ch = true; } })); return ch; }
+function shCounts(type, target){
+  const L = PROGRAM[type].ex, pri = SHORT_PRI[ssKind(type)] || [], cnt = {}, keep = L.map(e => e.sets);
+  L.forEach(e => { cnt[e.k] = e.shB != null ? e.shB : e.sets; });
+  const done = k => ((draft && draft.sets[k]) || []).filter(x => x.done).length;
+  const rank = k => { const i = pri.indexOf(k); return i < 0 ? 99 : i; };
+  const est = () => { L.forEach(e => { e.sets = cnt[e.k]; }); return passMinutes(type, ssOn()); };
+  const order = L.map(e => e.k).sort((a, b) => rank(b) - rank(a));   // minst viktig först
+  for (let g = 0; g < 80 && est() > target; g++){
+    const k = order.find(x => cnt[x] > Math.max(rank(x) < 3 ? 2 : 1, done(x)));
+    if (!k) break;
+    cnt[k]--;
+  }
+  L.forEach((e, i) => { e.sets = keep[i]; });
+  return cnt;
+}
+function shApply(){
+  if (!draft || !draft.short) return;
+  const L = PROGRAM[draft.type].ex;
+  L.forEach(e => { if (e.shB == null) e.shB = e.sets; });
+  const cnt = shCounts(draft.type, draft.short);
+  L.forEach(e => { e.sets = cnt[e.k]; });
+}
+// Hela passets tid (utan uppvärmning och stretch), även när det korta passet är på
+function shFull(type){ const L = PROGRAM[type].ex, keep = L.map(e => e.sets); L.forEach(e => { if (e.shB != null) e.sets = e.shB; }); const m = passMinutes(type, ssOn()); L.forEach((e, i) => { e.sets = keep[i]; }); return m; }
+function shSegHTML(){
+  if (!draft) return "";
+  const cur = draft.short || 0, full = shFull(draft.type), now = passMinutes(draft.type, ssOn()), L = PROGRAM[draft.type].ex;
+  const fewer = cur ? L.filter(e => e.shB != null && e.sets < e.shB).length : 0, opts = SHORT_OPT.filter(m => m < full || m === cur);
+  if (!opts.length && !cur) return "";
+  return '<div class="sh-row"><b>Hur mycket tid har du?</b><div class="bxseg sh-seg" role="group" aria-label="Kort pass">' +
+    [[0, "Hela"]].concat(opts.map(m => [m, m + " min"])).map(o => '<button type="button" data-short="' + o[0] + '" aria-pressed="' + (cur === o[0]) + '">' + o[1] + '</button>').join("") + '</div><small>' +
+    (cur ? 'Kort pass: ca <b>' + now + ' min</b> i stället för ' + full + ' – färre set i ' + fewer + (fewer === 1 ? ' övning' : ' övningar') + '.' + (now > cur ? ' Kortare än så går inte utan att stryka hela övningar.' : '') + ' De tre viktigaste behåller minst två set.'
+         : 'Hela passet tar ca ' + full + ' min utan uppvärmning och stretch. Har du bråttom: välj tid, så stryks set i övningarna som betyder minst.') + '</small></div>';
+}
+function shSet(min){
+  if (!draft || readOnly) return;
+  if ((draft.short || 0) === min) return;
+  shRestore();
+  if (min) draft.short = min; else delete draft.short;
+  shApply();
+  prSync(ssKind(draft.type));
+  persistDraft(); renderPass();
+  toast(min ? "Kort pass – ca " + passMinutes(draft.type, ssOn()) + " min" : "Hela passet igen");
+}
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("[data-short]"); if (b && draft) shSet(+b.dataset.short || 0); });
+const _shND = newDraft; newDraft = function(type){ shRestore(); return _shND(type); };
+// Varje gång passet ritas: det korta passet räknas om (utkastet laddas och fylls på till hela passets set när appen startar,
+// och Ändra programmet kan ändra antalet set) – och efter ett sparat pass går övningarna tillbaka till hela antalet set.
+const _shRP = renderPass; renderPass = function(){
+  try {
+    if (!draft) shRestore();
+    else if (draft.short && !readOnly){
+      shRestore(); shApply();
+      if (PROGRAM[draft.type].ex.some(e => { const a = draft.sets[e.k] || []; return a.length !== e.sets && a.some(x => !x.done); })) prSync(ssKind(draft.type));
+    }
+  } catch(e){}
+  return _shRP.apply(this, arguments);
+};
+
+/* ---------- Vägen till egna chins: hjälpvikten (minst 5 reps) ner mot noll, med datum i din takt ---------- */
+function chinsRoad(){
+  const ex = EXMAP.chins; if (!ex || typeof malVal !== "function") return null;
+  const pts = sessions.filter(s => !s.deload).map(s => ({date: s.date, t: parseIso(s.date).getTime(), y: malVal(ex, setsOf(s, "chins"), 5)})).filter(p => p.y != null).sort((a, b) => a.t - b.t);
+  if (!pts.length) return null;
+  const last = pts[pts.length - 1], best = Math.min.apply(null, pts.map(p => p.y));
+  if (best <= 0) return {pts, last, best, done: true};
+  const rec = pts.filter(p => p.t >= Date.now() - 56 * 864e5);
+  let eta = null, stall = false;
+  if (rec.length >= 3 && (rec[rec.length - 1].t - rec[0].t) / 864e5 >= 12){
+    const f = trendFit(rec);
+    if (f && f.k * 7 < -0.3) eta = Math.max(1, (0 - f.at(Date.now() / 864e5)) / f.k); else stall = true;
+  }
+  return {pts, last, best, eta, stall};
+}
+function chinsRoadHTML(){
+  const r = chinsRoad(); if (!r) return "";
+  const extra = r.eta ? [{pts: [{t: r.last.t, y: r.last.y}, {t: addDays(today(), Math.round(r.eta)).getTime(), y: 0}], dash: "5 4", color: "var(--muted)"}] : [];
+  return '<div class="card cr-card"><div class="gm-top"><b>Vägen till egna chins</b><span class="lead num">' + (r.done ? 'Klart!' : fmt(r.best) + ' kg hjälp') + '</span></div>' +
+    '<div style="margin-top:8px">' + lineChart({pts: r.pts.map(p => ({t: p.t, y: p.y})), color: "var(--red)", unit: "kg", label: "Hjälpvikten i chinsen", extra, goal: 0}) + '</div>' +
+    '<p class="small cr-eta">' + (r.done ? 'Du har gjort chins utan hjälp med minst fem reps. Nästa steg: fler reps, sedan viktväst.'
+      : r.eta ? 'I din takt: <b>egna chins runt ' + progDate(r.eta) + '</b> (' + progWeeks(r.eta) + '). Den streckade linjen är takten fram till noll.'
+      : r.stall ? 'Hjälpvikten står still just nu. Sänk hjälpen ett steg när du klarar 8 reps i alla set.'
+      : 'Datumet kommer efter tre pass på två veckor.') + ' Hjälpvikten med minst fem reps, ett värde per pass.</p></div>';
+}
+
+/* ---------- Styrka per kilo: blir du starkare snabbare än du blir tyngre? ---------- */
+// Uppskattat max (Epley) i första och senaste passet, delat med kroppsvikten de dagarna. Hantlar räknas som båda händerna.
+// Chins: kroppsvikten minus hjälpen. Vikten måste vara inloggad högst två veckor från passet.
+const SPK = [["chins", "Chins"], ["hantelbank", "Hantelbänkpress"], ["benpress", "Benpress"], ["rdl", "Rumänska marklyft"]];
+function spkBw(date){ let best = null; weights.forEach(w => { const d = Math.abs(parseIso(w.date) - parseIso(date)); if (d <= 14 * 864e5 && (!best || d < best.d)) best = {d, kg: w.kg}; }); return best ? best.kg : null; }
+function spkVal(k, s){
+  const ex = EXMAP[k], sets = setsOf(s, k); if (!ex || !sets) return null;
+  const bw = spkBw(s.date); if (!bw) return null;
+  let v = null;
+  sets.forEach(x => {
+    if (x.w == null || !x.r) return;
+    const load = ex.unit === "hjalp" ? bw - x.w : (/per hantel|hantlar/.test(ex.n) ? 2 * x.w : x.w);
+    if (load <= 0) return;
+    const e1 = load * (1 + Math.min(x.r, 12) / 30); if (v == null || e1 > v) v = e1;
+  });
+  return v == null ? null : {v, bw, r: v / bw};
+}
+function spkHTML(){
+  const rows = SPK.map(([k, n]) => {
+    const pts = sessions.filter(s => !s.deload).slice().sort((a, b) => a.date < b.date ? -1 : 1).map(s => ({s, x: spkVal(k, s)})).filter(p => p.x);
+    if (pts.length < 2 || pts[0].s.date === pts[pts.length - 1].s.date) return null;
+    const a = pts[0].x, b = pts[pts.length - 1].x;
+    return {n, a, b, str: b.v / a.v - 1, kg: b.bw / a.bw - 1, rel: b.r / a.r - 1};
+  }).filter(Boolean);
+  const pc = v => (v >= 0 ? "+" : "−") + fmt(Math.abs(v * 100), 0) + " %";
+  let body;
+  if (!rows.length) body = '<p class="small">Kommer när du har två pass i en övning och vägt dig runt de dagarna (högst två veckor ifrån).</p>';
+  else {
+    const up = rows.filter(r => r.rel > 0.005).length;
+    body = '<div class="spk-rows">' + rows.map(r => '<div class="spk-r"><span><b>' + esc(r.n) + '</b><small>' + fmt(r.a.r, 2) + ' → ' + fmt(r.b.r, 2) + ' × kroppsvikten</small></span><b class="num' + (r.rel > 0.005 ? ' good' : '') + '">' + pc(r.rel) + '</b></div>').join("") + '</div>' +
+      '<p class="small">' + (up === rows.length ? 'Du blir starkare snabbare än du blir tyngre i alla ' + rows.length + '.' : up ? 'Starkare snabbare än tyngre i ' + up + ' av ' + rows.length + '.' : 'Vikten har gått upp mer än styrkan just nu. Det är vanligt i början av en uppgång i vikt – håll i stegringen.') +
+      ' Styrkan är uppskattat max från dina set, vikten den du vägt nära passet.</p>';
+  }
+  return '<div class="card spk-card"><div class="gm-top"><b>Styrka per kilo</b><span class="lead">första passet → senaste</span></div>' + body + '</div>';
+}
+
+/* ---------- Bästa tiden på dygnet: när lyfter du tyngst? ---------- */
+// Varje övnings värde jämförs med sin egen trend (du blir ju starkare hela tiden): över eller under trenden i procent.
+// Passets värde = snittet av övningarna. Starttiden = sparat minus passets längd.
+const BT_BUCKETS = [[5, 11, "Morgon", "på morgonen"], [11, 15, "Mitt på dagen", "mitt på dagen"], [15, 18, "Eftermiddag", "på eftermiddagen"], [18, 24, "Kväll", "på kvällen"]];
+function btdData(){
+  const ss = sessions.filter(s => !s.deload && s.ts);
+  const byEx = {};
+  ss.forEach(s => (s.exercises || []).forEach(e => {
+    if (e.alt) return;
+    const ex = EXMAP[e.k]; if (!ex || (ex.unit !== "kg" && ex.unit !== "hjalp")) return;
+    let v = null; (e.sets || []).forEach(x => { const sc = setScore(ex, x); if (sc == null) return; const y = ex.unit === "hjalp" ? -sc : sc; if (v == null || y > v) v = y; });
+    if (v == null) return;
+    (byEx[e.k] = byEx[e.k] || []).push({s, t: parseIso(s.date).getTime(), y: v});
+  }));
+  const res = {};
+  Object.keys(byEx).forEach(k => {
+    const pts = byEx[k]; if (pts.length < 3) return;
+    const f = trendFit(pts); if (!f) return;
+    pts.forEach(p => { const tr = f.at(p.t / 864e5), base = Math.abs(tr) || 1; (res[p.s.ts] = res[p.s.ts] || []).push((p.y - tr) / base); });
+  });
+  const buckets = BT_BUCKETS.map(b => ({n: b[2], on: b[3], from: b[0], to: b[1], v: []}));
+  ss.forEach(s => {
+    const r = res[s.ts]; if (!r || !r.length) return;
+    const h = new Date(s.ts - (s.min || 0) * 60000).getHours();
+    const b = buckets.find(x => h >= x.from && h < x.to); if (!b) return;
+    b.v.push(r.reduce((a, c) => a + c, 0) / r.length);
+  });
+  return buckets.map(b => ({n: b.n, on: b.on, from: b.from, to: b.to, cnt: b.v.length, avg: b.v.length ? b.v.reduce((a, c) => a + c, 0) / b.v.length : null}));
+}
+function btdHTML(){
+  const d = btdData(), ok = d.filter(b => b.cnt >= 2);
+  let body;
+  if (ok.length < 2) body = '<p class="small">Kommer när du har pass på olika tider – minst två pass vid två olika tider på dygnet. Varje övning jämförs med sin egen kurva, så att det inte bara blir de senaste passen som vinner.</p>';
+  else {
+    const mx = Math.max(0.02, ...ok.map(b => Math.abs(b.avg))), best = ok.slice().sort((a, b) => b.avg - a.avg)[0];
+    body = '<div class="btd">' + d.map(b => '<div class="btd-r' + (b === best ? ' best' : '') + '"><span>' + esc(b.n) + '<small>' + b.from + '–' + b.to + ' · ' + b.cnt + ' pass</small></span><i class="btd-bar"><i style="width:' + (b.cnt >= 2 ? Math.max(3, Math.abs(b.avg) / mx * 50) : 0) + '%;' + (b.cnt >= 2 && b.avg < 0 ? 'right:50%' : 'left:50%') + '"></i></i><b class="num">' + (b.cnt >= 2 ? (b.avg >= 0 ? "+" : "−") + fmt(Math.abs(b.avg * 100), 1) + " %" : "–") + '</b></div>').join("") + '</div>' +
+      '<p class="small">Du lyfter tyngst <b>' + esc(best.on) + '</b> – ' + fmt(Math.abs(best.avg * 100), 1) + ' % ' + (best.avg >= 0 ? 'över' : 'under') + ' din kurva. Procenten är hur mycket över eller under din egen trend passen ligger.</p>';
+  }
+  return '<div class="card btd-card"><div class="gm-top"><b>Bästa tiden på dygnet</b><span class="lead">när du lyfter tyngst</span></div>' + body + '</div>';
+}
+
+/* ---------- Fokus under passet: hur ofta appen lämnades mellan seten ----------
+   Räknas från första bockade setet till att passet sparas. Vilan räknas inte (då får mobilen ligga), inte heller
+   Spotify- och Brick-knapparna eller videolänkarna. */
+let fokSkip = 0;
+document.addEventListener("click", e => { if (e.target.closest && e.target.closest("[data-spo],[data-brick],a[target=_blank],.yt")) fokSkip = Date.now() + 6000; }, true);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "hidden" || !draft || justSaved || readOnly) return;
+  if (!Object.keys(draft.sets || {}).some(k => (draft.sets[k] || []).some(x => x && x.done))) return;
+  if (Date.now() < fokSkip) return;
+  if (!$("timer").hidden && tEnd > Date.now()) return;
+  draft.leave = (draft.leave || 0) + 1; persistDraft();
+});
+const fokTxt = n => n === 0 ? "Fullt fokus – du lämnade aldrig appen mellan seten" : "Du lämnade appen " + n + (n === 1 ? " gång" : " gånger") + " mellan seten";
+function fokHTML(){
+  const ss = sessions.filter(s => s.focus != null).slice(0, 8);
+  if (!ss.length) return "";
+  const avg = ss.reduce((a, s) => a + s.focus, 0) / ss.length;
+  return '<div class="card fc-card"><div class="gm-top"><b>Fokus under passet</b><span class="lead">' + ss.length + ' senaste passen</span></div>' +
+    '<div class="fc-dots">' + ss.slice().reverse().map(s => '<span class="fc-d' + (s.focus === 0 ? ' ok' : '') + '" title="' + esc(dLabel(s.date)) + '"><b class="num">' + s.focus + '</b><small>' + esc(dLabel(s.date)) + '</small></span>').join("") + '</div>' +
+    '<p class="small">Gånger du lämnade appen mellan seten – färre är bättre. I snitt ' + fmt(avg, 1) + ' per pass. Vilan, Spotify och Brick räknas inte.</p></div>';
+}
+
+/* ---------- In i Framsteg och efter sparat pass ---------- */
+function p3InsertProg(){
+  const el = $("v-framsteg"); if (!el) return;
+  el.querySelectorAll(".cr-card,.spk-card,.btd-card,.fc-card").forEach(x => x.remove());
+  const html = chinsRoadHTML() + spkHTML() + btdHTML() + fokHTML(); if (!html) return;
+  const after = el.querySelector("#malCard") || el.querySelector(".mmap") && el.querySelector(".mmap").closest(".card");
+  const tmp = document.createElement("div"); tmp.innerHTML = html;
+  const frag = document.createDocumentFragment(); while (tmp.firstChild) frag.appendChild(tmp.firstChild);
+  if (after && after.parentNode === el) el.insertBefore(frag, after.nextSibling); else el.appendChild(frag);
+}
+const _p3RP = renderProg; renderProg = function(){ const r = _p3RP.apply(this, arguments); try { p3InsertProg(); } catch(e){} return r; };
+const _p3RPa = renderPass; renderPass = function(){
+  const r = _p3RPa.apply(this, arguments);
+  try {
+    if (justSaved && justSaved.focus != null){ const d = document.querySelector("#v-pass .donecard"); if (d && !d.querySelector(".fc-done")) d.insertAdjacentHTML("beforeend", '<div class="fc-done"><span aria-hidden="true">' + (justSaved.focus === 0 ? "🎯" : "📱") + '</span>' + esc(fokTxt(justSaved.focus)) + '.</div>'); }
+  } catch(e){}
+  return r;
+};
+
+
 /* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611170043, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611170101, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -9767,7 +10038,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "17 nov 00.43", BUILD_NOTE = "Hemmapass och Spotify-knapp i Kör passet";
+const BUILD = "17 nov 01.01", BUILD_NOTE = "Annat gym, kort pass och nya rutor i Framsteg";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
