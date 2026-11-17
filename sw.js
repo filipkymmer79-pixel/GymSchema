@@ -1,11 +1,14 @@
-const CACHE = "gymschema-v202611171419";
+const CACHE = "gymschema-v202611171855";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./vendor/jszip.min.js", "./vendor/archivo-var-ext.woff2", "./vendor/manrope-latin-ext.woff2", "./vendor/bigshoulders-800.woff2", "./vendor/bigshoulders-900.woff2"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith("gymschema-") && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 // Påminnelser: workern på Cloudflare skickar web push hit, och ett tryck öppnar rätt flik i appen
 self.addEventListener("push", e => {
   let d = {}; try { d = e.data ? e.data.json() : {}; } catch(x){ d = {body: e.data ? e.data.text() : ""}; }
-  e.waitUntil(self.registration.showNotification(d.title || "GymSchema", {body: d.body || "", tag: d.tag || undefined, data: {url: d.url || "./"}, icon: "icon-192.png"}));
+  const show = () => self.registration.showNotification(d.title || "GymSchema", {body: d.body || "", tag: d.tag || undefined, data: {url: d.url || "./", kind: d.kind || ""}, icon: "icon-192.png"});
+  // Vilan är slut: bara den senaste ligger kvar bland notiserna
+  const old = d.kind === "vila" && self.registration.getNotifications ? self.registration.getNotifications().then(l => { l.forEach(n => { if (n.data && n.data.kind === "vila") n.close(); }); }).catch(() => {}) : Promise.resolve();
+  e.waitUntil(old.then(show, show));
 });
 self.addEventListener("notificationclick", e => {
   e.notification.close();

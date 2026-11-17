@@ -3,6 +3,12 @@
 //    Token och secret kommer från appen och sparas inte här.
 // 2) Påminnelser: sparar appens notisschema i KV (bindningen GS) och skickar notiserna med web push.
 //    Cron-schemat (varje minut) kollar vad som ska skickas.
+// 3) Vilan är slut (version 2): när mobilen låses under vilan lämnar appen en notis med klockslag på sekunden.
+//    Cron-körningen stannar kvar den minut den äger, hittar notisen och skickar den precis när vilan är slut.
+//    Varje nyckel som används för det läses bara en gång – då kan KV aldrig svara med ett gammalt värde.
+const V = 2;
+const SLOT = 10e3, REST_MAX = 12 * 60e3;
+const sleep = ms => new Promise(r => setTimeout(r, Math.max(0, ms)));
 const APP = "https://filipkymmer79-pixel.github.io";
 const CONTACT = "https://filipkymmer79-pixel.github.io/GymSchema/";
 const te = new TextEncoder();
@@ -24,7 +30,7 @@ async function vapid(env){
   return v;
 }
 // Web push (RFC 8291 aes128gcm + RFC 8292 VAPID)
-async function push(env, sub, msg){
+async function push(env, sub, msg, ttl){
   const v = await vapid(env);
   const jh = b64u(te.encode('{"typ":"JWT","alg":"ES256"}'));
   const jb = b64u(te.encode(JSON.stringify({aud: new URL(sub.endpoint).origin, exp: Math.floor(Date.now() / 1000) + 12 * 3600, sub: CONTACT})));
@@ -42,36 +48,64 @@ async function push(env, sub, msg){
   const ct = new Uint8Array(await crypto.subtle.encrypt({name: "AES-GCM", iv: nonce}, cek, cat(te.encode(JSON.stringify(msg)), new Uint8Array([2]))));
   const r = await fetch(sub.endpoint, {method: "POST", body: cat(salt, new Uint8Array([0, 0, 16, 0, 65]), as, ct), headers: {
     "Authorization": "vapid t=" + jh + "." + jb + "." + b64u(sig) + ", k=" + v.pub,
-    "Content-Encoding": "aes128gcm", "Content-Type": "application/octet-stream", "TTL": "3600", "Urgency": "high"}});
+    "Content-Encoding": "aes128gcm", "Content-Type": "application/octet-stream", "TTL": String(ttl || 3600), "Urgency": "high"}});
   return r.status;
 }
-async function tick(env){
+// Schemat: det som är dags nu. Svarar false om prenumerationen är borta hos Apple.
+async function sendDue(env, cfg, now){
+  const due = cfg.events.filter(e => e.at <= now + 20e3 && now - e.at < 15 * 60e3);
+  if (!due.length) return true;
+  const sent = (await env.GS.get("sent", "json")) || {}, todo = due.filter(e => !sent[e.id]);
+  if (!todo.length) return true;
+  for (const e of todo){
+    const st = await push(env, cfg.sub, {title: e.title, body: e.body, url: e.url, tag: e.id});
+    if (st === 404 || st === 410){ await env.GS.delete("cfg"); return false; }
+    sent[e.id] = now;
+  }
+  for (const k in sent) if (now - sent[k] > 3 * 864e5) delete sent[k];
+  await env.GS.put("sent", JSON.stringify(sent));
+  return true;
+}
+// Vilan är slut: väntar till en och en halv sekund före, frågar om notisen är avbokad och skickar den så att den landar i tid.
+async function restJob(env, cfg, e){
+  if (Date.now() - e.at > 20e3 || e.at - Date.now() > REST_MAX) return;   // för gammal för att vara till nytta, eller orimligt långt bort
+  await sleep(e.at - 1500 - Date.now());
+  let off = null; try { off = await env.GS.get("rx:" + e.id); } catch(x){}
+  if (off) return;
+  await sleep(e.at - 600 - Date.now());
+  const st = await push(env, cfg.sub, {title: e.title, body: e.body, url: e.url, tag: e.id, kind: "vila"}, 120);
+  if (st === 404 || st === 410) await env.GS.delete("cfg");
+}
+// Körningen äger sin minut (sex luckor om tio sekunder). Tre sekunder efter att en lucka stängts läses dess nyckel – en enda gång.
+async function rests(env, cfg, S){
+  if (!(cfg.rest > Date.now())) return;
+  const n0 = Math.floor(S / SLOT), jobs = [];
+  for (let k = 0; k < 6; k++){
+    await sleep((n0 + k + 1) * SLOT + 3000 - Date.now());
+    let e = null; try { e = await env.GS.get("rs:" + (n0 + k), "json"); } catch(x){}
+    if (e && e.id && typeof e.at === "number") jobs.push(restJob(env, cfg, e).catch(() => {}));
+  }
+  await Promise.all(jobs);
+}
+async function tick(env, S){
   if (!env.GS) return;
   const now = Date.now(), last = Number(await env.GS.get("cron")) || 0;
   if (now - last > 50 * 60e3) await env.GS.put("cron", String(now));
   const cfg = await env.GS.get("cfg", "json");
   if (!cfg || !cfg.sub || !Array.isArray(cfg.events)) return;
-  const due = cfg.events.filter(e => e.at <= now + 20e3 && now - e.at < 15 * 60e3);
-  if (!due.length) return;
-  const sent = (await env.GS.get("sent", "json")) || {}, todo = due.filter(e => !sent[e.id]);
-  if (!todo.length) return;
-  for (const e of todo){
-    const st = await push(env, cfg.sub, {title: e.title, body: e.body, url: e.url, tag: e.id});
-    if (st === 404 || st === 410){ await env.GS.delete("cfg"); return; }
-    sent[e.id] = now;
-  }
-  for (const k in sent) if (now - sent[k] > 3 * 864e5) delete sent[k];
-  await env.GS.put("sent", JSON.stringify(sent));
+  if (!(await sendDue(env, cfg, now))) return;
+  await rests(env, cfg, S || now);
 }
 async function pushApi(request, env, path, json){
   if (!env.GS) return json({error: "kv"}, 503);
   if (path === "/push/key" && request.method === "GET"){
     const v = await vapid(env);
-    return json({key: v.pub, cron: Number(await env.GS.get("cron")) || 0, on: !!(await env.GS.get("cfg"))});
+    return json({key: v.pub, cron: Number(await env.GS.get("cron")) || 0, on: !!(await env.GS.get("cfg")), v: V});
   }
   if (request.method !== "POST") return json({error: "method"}, 405);
-  let b = {}; try { b = await request.json(); } catch(e){}
-  const key = request.headers.get("X-GS-Key") || "";
+  let b = {}; try { b = JSON.parse(await request.text()) || {}; } catch(e){}
+  // nyckeln kommer i rubriken – eller i kroppen från /push/rest, som skickas medan appen göms (sendBeacon kan inte sätta rubriker)
+  const key = request.headers.get("X-GS-Key") || (path === "/push/rest" && typeof b.key === "string" ? b.key : "");
   if (key.length < 20) return json({error: "key"}, 400);
   const kh = await sha(key), cfg = await env.GS.get("cfg", "json");
   const sub = b && b.sub && typeof b.sub.endpoint === "string" && /^https:\/\//.test(b.sub.endpoint) && b.sub.keys && b.sub.keys.p256dh && b.sub.keys.auth ? b.sub : null;
@@ -80,8 +114,10 @@ async function pushApi(request, env, path, json){
     if (!sub) return json({error: "sub"}, 400);
     const events = (Array.isArray(b.events) ? b.events : []).filter(e => e && typeof e.at === "number" && e.title).slice(0, 300)
       .map(e => ({id: String(e.id || e.at).slice(0, 60), at: e.at, title: String(e.title).slice(0, 90), body: String(e.body || "").slice(0, 300), url: String(e.url || "./").slice(0, 80)}));
-    await env.GS.put("cfg", JSON.stringify({kh, sub: {endpoint: sub.endpoint, keys: {p256dh: String(sub.keys.p256dh), auth: String(sub.keys.auth)}}, events}));
-    return json({ok: true, n: events.length, cron: Number(await env.GS.get("cron")) || 0});
+    // rest: till när appen kan lämna notiser om att vilan är slut – bara då stannar cron-körningen kvar och letar
+    const rest = Math.max(0, Math.min(Number(b.rest) || 0, Date.now() + 6 * 3600e3));
+    await env.GS.put("cfg", JSON.stringify({kh, sub: {endpoint: sub.endpoint, keys: {p256dh: String(sub.keys.p256dh), auth: String(sub.keys.auth)}}, events, rest}));
+    return json({ok: true, n: events.length, cron: Number(await env.GS.get("cron")) || 0, v: V, rest});
   }
   if (path === "/push/test"){
     if (!cfg) return json({error: "off"}, 404);
@@ -90,6 +126,18 @@ async function pushApi(request, env, path, json){
     return json({ok: st >= 200 && st < 300, status: st});
   }
   if (path === "/push/off"){ if (cfg) await env.GS.delete("cfg"); return json({ok: true}); }
+  if (path === "/push/rest"){
+    if (!cfg) return json({error: "off"}, 404);
+    const clean = x => String(x || "").replace(/[^A-Za-z0-9_-]/g, "").slice(0, 40);
+    const prev = clean(b.prev), id = clean(b.id), at = Number(b.at) || 0;
+    if (prev.length >= 6) await env.GS.put("rx:" + prev, "1", {expirationTtl: 900});     // avboka den förra
+    if (!at) return json({ok: true, v: V});
+    const now = Date.now();
+    if (id.length < 6 || at < now + 5e3 || at > now + REST_MAX) return json({error: "at"}, 400);
+    // luckan: en och en halv sekund fram, så att skrivningen hinner bli klar innan cron-körningen läser nyckeln
+    await env.GS.put("rs:" + Math.floor((now + 1500) / SLOT), JSON.stringify({id, at, title: String(b.title || "Vilan är slut").slice(0, 90), body: String(b.body || "").slice(0, 300), url: String(b.url || "./#pass").slice(0, 80)}), {expirationTtl: 120});
+    return json({ok: true, v: V, rest: cfg.rest || 0});
+  }
   return json({error: "path"}, 404);
 }
 export default {
@@ -119,5 +167,5 @@ export default {
     });
     return new Response(await res.text(), {status: res.status, headers: {...cors, "Content-Type": "application/json; charset=utf-8"}});
   },
-  async scheduled(event, env, ctx){ ctx.waitUntil(tick(env)); }
+  async scheduled(event, env, ctx){ const p = tick(env, Number(event && event.scheduledTime) || Date.now()); ctx.waitUntil(p); await p; }
 };
