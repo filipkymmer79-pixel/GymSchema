@@ -273,12 +273,15 @@ Appen visar också vad som gäller för aktivitetsrapporten just nu. Mellan den 
 
 Schemat för de närmaste dagarna som app: https://filipkymmer79-pixel.github.io/GymSchema/idag/ – den öppnas med länken från Claude, som slutar på en nyckel efter `#`. Öppna länken i Safari och välj *Dela → Lägg till på hemskärmen*, så följer nyckeln med appen.
 
-- **En lista per dag**, i den ordning sakerna ska göras – inga rubriker. Varje punkt har sitt nummer i ringen tills den bockas av. Punkten som är näst på tur lyser i dagens färg (löpdag orange, Ö1 röd, B1 blå, som i GymSchema), och rutan *Nu* har en *Klar*-knapp.
-- **Rutorna** under dagens stora ruta: nästa klockslag med nedräkning, vatten i glas (10 på löpdagen, 12 på gymdagar – när målet är nått bockas *Dricka vatten* av), shakens fyra glas och en nedräkning till veckans stora händelse, om schemat har någon.
-- **Egna punkter** läggs till i appen: *Näst på tur* eller *Sist i listan*. De går att ta bort igen.
-- **Handla** är inköpslistan, och **Gym** visar veckan och passen som de står i GymSchema.
-- *Kopiera dagen* och *Kopiera det som är kvar* ger text som går att klistra in i Dagsschema.
-- Samma utseende som GymSchema (Bento, Manrope). Månen högst upp byter mellan ljust och mörkt.
+Appen visar en sak i taget:
+
+- **Nu** är en färgad ruta med det som står på tur och knappen *Klar*. Färgen följer klockan: gul på morgonen, blå på dagen, orange på kvällen och lila på natten.
+- **Resten av dagen** står under, i den ordning sakerna ska göras – inga rubriker. Det som är avbockat försvinner ur listan och ligger under *Visa det som är klart*. *Ångra* syns i några sekunder efter varje bock.
+- Överst står dagen, hur mycket som är klart, nästa klockslag med nedräkning och veckans nedräkning, om schemat har någon. Knapparna *Idag*, *I morgon* och veckodagarna byter dag.
+- **Egna punkter** läggs till längst ner, *näst på tur* eller *sist i listan*, och går att ta bort.
+- **Handla** öppnas med vagnen uppe till höger, som visar hur mycket som är kvar att köpa.
+- *Kopiera listan* ger text som går att klistra in i Dagsschema.
+- Typsnittet är Familjen Grotesk. Ljust eller mörkt följer telefonens inställning.
 
 Bockar och egna punkter sparas bara på telefonen.
 
@@ -290,10 +293,10 @@ Ett nytt schema läggs in genom att byta ut `SEALED`. Med samma nyckel öppnas d
 
 Klartexten är JSON:
 
-- `key` – namnet som bockarna sparas under på telefonen. Byt det för varje nytt schema, så att gamla bockar inte följer med.
-- `title` och `event` (valfri nedräkning: `label`, `at` i millisekunder, `before`, `after`, `afterText`).
-- `days` – varje dag har `id`, `date`, `name`, `short`, `tag`, `color` (`run`, `red`, `blue`, `yellow`, `green` eller `rest`), `kind`, `water` och `items` i den ordning de ska göras. En punkt har `id` och `t`, och kan ha `time`, `ts` (klockslaget i millisekunder, för nedräkningen), `note`, `go` (`handla` eller `gym`) och `more` (`rows`: `RUN`, `OVER` eller `BEN`, samt `foot`).
-- `shop` – `eyebrow`, `callout` och `secs`, där varje del har `id`, `title`, `sub` och `items`.
+- `key` – namnet som bockarna sparas under på telefonen. Punkter som byts ut under dagen får nya `id`, så att gamla bockar inte följer med.
+- `title` och `event` (valfri nedräkning: `label`, `at` i millisekunder och `after`, texten som står efter namnet när tiden har gått).
+- `days` – varje dag har `id`, `date`, `name` och `items` i den ordning de ska göras. En punkt har `id` och `t`, och kan ha `time`, `ts` (klockslaget i millisekunder, för nedräkningen), `note`, `go` (`handla`) och `more` (`rows`: `RUN`, `OVER` eller `BEN`, samt `foot`).
+- `shop` – `eyebrow`, `callout` och `secs`, där varje del har `id`, `title`, `sub` och `items`. Delen med id `h-eget` tar emot varorna som läggs till i appen.
 
 Ikonen är ritad med Manrope (`vendor/manrope-OFL.txt`). Kontrollerat i Chromium på 320 och 390 px, ljust och mörkt, med och utan nyckel. Inte provat på en riktig iPhone.
 
