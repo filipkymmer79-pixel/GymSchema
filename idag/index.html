@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Idag</title>
+<meta name="description" content="Dagens lista, en sak i taget.">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Idag">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#E8E9ED" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D0E11" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&amp;display=swap">
+<style>
+/* Bento, the same system as GymSchema: grey ground, white tiles with big round corners, black ink.
+   Colour only as whole tiles, taken from the day (run day orange, Ö1 red, B1 blue). One typeface, Manrope.
+   Layout: date line, day switcher, one big day tile, small tiles for what is live right now, then white lists. */
+:root{
+  --ground:#E8E9ED; --tile:#FFFFFF; --inset:#F1F2F5;
+  --ink:#111214; --on-ink:#FFFFFF; --muted:#555862;
+  --line:#E4E5EA; --edge:#C3C5CC; --track:#DADBE0;
+  --run:#FF9A5C; --red:#FF6B6B; --blue:#6E9BFF; --yellow:#FFC93A; --green:#3DCB8A; --rest:#B49CFF;
+  --warn:#7A4500; --warn-bg:#FFF1D8; --bad:#C42B2B;
+  --float:0 10px 28px rgba(17,18,20,.16),0 1px 3px rgba(17,18,20,.10);
+  --font:"Manrope",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --r:26px;
+  --day:var(--run);
+  --is-dark:0;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]):not(.look-light){
+    --ground:#0D0E11; --tile:#1B1D22; --inset:#25272D;
+    --ink:#F2F3F5; --on-ink:#111214; --muted:#A9ADB6;
+    --line:#2A2D33; --edge:#4A4E57; --track:#34363D;
+    --warn:#F2A33A; --warn-bg:#33240D; --bad:#FF7070;
+    --float:0 10px 28px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.45);
+    --is-dark:1;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]:not(.look-light), :root.look-dark{
+  --ground:#0D0E11; --tile:#1B1D22; --inset:#25272D;
+  --ink:#F2F3F5; --on-ink:#111214; --muted:#A9ADB6;
+  --line:#2A2D33; --edge:#4A4E57; --track:#34363D;
+  --warn:#F2A33A; --warn-bg:#33240D; --bad:#FF7070;
+  --float:0 10px 28px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.45);
+  --is-dark:1;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.35;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent;cursor:pointer}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.app{max-width:520px;margin:0 auto;padding:14px 16px calc(118px + env(safe-area-inset-bottom,0px))}
+
+/* ---------- Date line ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 4px 12px}
+.date b{display:block;font-size:16px;font-weight:800;letter-spacing:-.02em}
+.date small{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-top:1px}
+.icon-btn{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:0;background:var(--tile);display:grid;place-items:center}
+
+/* ---------- Day switcher ---------- */
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:var(--tile);border-radius:24px;padding:5px}
+.seg button{border:0;background:transparent;border-radius:19px;padding:9px 4px 8px;display:grid;justify-items:center;gap:1px}
+.seg b{font-size:21px;font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.seg small{font-size:12.5px;font-weight:700;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--c);color:#111214}
+.seg button[aria-pressed="true"] small{color:#111214;opacity:.72}
+.seg button.today b::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-left:5px;vertical-align:.5em}
+
+/* ---------- The big tile ---------- */
+.hero{background:var(--day);color:#111214;border-radius:var(--r);padding:18px 20px 18px;margin-top:10px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;align-items:end}
+.hero .eyebrow{grid-column:1/-1;font-size:13.5px;font-weight:800;letter-spacing:-.01em}
+.hero h1{margin:6px 0 0;font-size:46px;line-height:.95;letter-spacing:-.05em;font-weight:800;text-wrap:balance}
+.hero .count{font-size:14.5px;font-weight:700;margin-top:10px;font-variant-numeric:tabular-nums}
+.hero .go{width:56px;height:56px;border-radius:50%;border:0;background:#111214;color:#FFFFFF;display:grid;place-items:center}
+.hero .bar{grid-column:1/-1;height:9px;border-radius:99px;background:rgba(17,18,20,.17);overflow:hidden;margin-top:10px}
+.hero .bar i{display:block;height:100%;width:0;background:#111214;border-radius:99px;transition:width .3s ease}
+.hero.ink{background:var(--ink);color:var(--on-ink)}
+.hero.ink .bar{background:color-mix(in srgb, var(--on-ink) 22%, transparent)}
+.hero.ink .bar i{background:var(--on-ink)}
+
+/* ---------- Small tiles ---------- */
+.bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.tile{background:var(--tile);border-radius:var(--r);padding:15px 16px 14px;min-height:112px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.tile.wide{grid-column:1/-1;min-height:0}
+.tile .l{font-size:12.5px;font-weight:800;color:var(--muted)}
+.tile .v{font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1.15;overflow-wrap:anywhere}
+.tile .v.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tile .v.big{font-size:30px;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.tile .v.big small{font-size:13.5px;font-weight:700;letter-spacing:0;color:var(--muted)}
+.tile .v.huge{font-size:38px;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums}
+.tile .s{font-size:13px;font-weight:600;color:var(--muted);overflow-wrap:anywhere}
+.tile .push{margin-top:auto}
+.tile.ink{background:var(--ink);color:var(--on-ink)}
+.tile.ink .l,.tile.ink .s{color:inherit;opacity:.7}
+
+.btn{border:0;border-radius:99px;background:var(--ink);color:var(--on-ink);font-weight:800;font-size:14.5px;padding:11px 18px;min-height:44px;text-decoration:none;display:inline-grid;place-items:center;text-align:center}
+.btn.sm{align-self:flex-start;padding:8px 16px;min-height:38px;font-size:13.5px}
+.btn.ghost{background:var(--inset);color:var(--ink)}
+.btn.warn{background:var(--bad);color:#FFFFFF}
+.btn:disabled{opacity:.4;cursor:default}
+
+.dots{display:flex;gap:4px;margin-top:2px}
+.dots i{flex:1 1 0;height:7px;border-radius:4px;background:var(--track)}
+.dots i.on{background:var(--ink)}
+.pm{display:flex;gap:6px;margin-top:auto;padding-top:6px}
+.pm button{border:0;border-radius:99px;background:var(--inset);font-weight:800;font-size:14px;min-height:40px;padding:0 14px}
+.pm button:first-child{flex:0 0 44px;padding:0;font-size:18px}
+.pm button:last-child{flex:1 1 auto;background:var(--ink);color:var(--on-ink)}
+.glasses{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:auto;padding-top:6px}
+.glasses button{border:0;border-radius:14px;background:var(--inset);height:44px;display:grid;place-items:center;color:var(--muted)}
+.glasses button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+
+/* ---------- White lists ---------- */
+.list{background:var(--tile);border-radius:var(--r);margin-top:10px;overflow:hidden;padding-bottom:6px}
+.list > header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:16px 18px 6px}
+.list h2{margin:0;font-size:19px;font-weight:800;letter-spacing:-.025em}
+.list h2 small{display:block;font-size:12.5px;font-weight:600;letter-spacing:0;color:var(--muted);margin-top:2px}
+.list .n{font-size:13px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.list ul,.list ol{list-style:none;margin:0;padding:0}
+.list.flat{padding:6px 0}
+.row{position:relative}
+.row + .row::before{content:"";position:absolute;left:58px;right:18px;top:0;border-top:1px solid var(--line)}
+.row .line{display:flex;align-items:center;gap:6px;padding-right:12px}
+.row-main{all:unset;box-sizing:border-box;flex:1 1 auto;min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;padding:11px 0 11px 18px;min-height:52px;cursor:pointer}
+.row-main:focus-visible{outline:3px solid var(--ink);outline-offset:-3px;border-radius:14px}
+.tick{width:28px;height:28px;border-radius:50%;border:2px solid var(--edge);display:grid;place-items:center;color:var(--muted);font-size:11.5px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;transition:background .15s,border-color .15s}
+.row.done .tick{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.row.now .tick{color:var(--ink)}
+.row .t{display:block;font-size:16px;font-weight:700;letter-spacing:-.01em;overflow-wrap:anywhere}
+.row.done .t{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1.5px}
+.row .note{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-top:2px}
+.row .side{flex:0 0 auto;display:flex;align-items:center;gap:4px}
+.chip{font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums;background:var(--inset);border-radius:99px;padding:5px 10px;white-space:nowrap}
+.row.now{background:var(--inset)}
+@supports (background:color-mix(in srgb, red 10%, blue)){
+  .row.now{background:color-mix(in srgb, var(--day) 24%, var(--tile))}
+}
+.row.now::before,.row.now + .row::before{display:none}
+.row.now .tick{border-color:var(--ink)}
+.row.now .chip{background:var(--tile)}
+.mini{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;color:var(--muted)}
+.mini svg{transition:transform .15s}
+.mini[aria-expanded="true"] svg{transform:rotate(90deg)}
+.mini.del.sure{width:auto;padding:0 12px;background:var(--bad);color:#FFFFFF;font-size:13px;font-weight:800;border-radius:99px}
+.more{padding:0 18px 14px 58px}
+.more ol{list-style:none;margin:0;padding:0;border-radius:16px;background:var(--inset);overflow:hidden}
+.row.now .more ol{background:var(--tile)}
+.more li{display:flex;justify-content:space-between;gap:12px;padding:9px 13px;font-size:14px;font-weight:600}
+.more li + li{border-top:1px solid var(--line)}
+.more li b{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.more p{margin:9px 2px 0;font-size:13.5px;font-weight:500;color:var(--muted)}
+.more .btn{margin-top:10px}
+
+/* ---------- Forms and tools ---------- */
+.add{margin-top:10px;gap:9px}
+.add label{font-size:12.5px;font-weight:800;color:var(--muted)}
+.add input,.add select{width:100%;border:0;border-radius:16px;background:var(--inset);padding:13px 14px;font-size:16px;font-weight:600;min-height:48px}
+.add .addrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.add input::placeholder{color:var(--muted);opacity:.8}
+.tools{margin-top:10px;gap:9px}
+.tools .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tools textarea{width:100%;min-height:150px;border:0;border-radius:16px;background:var(--inset);padding:12px 14px;font-size:14px;font-weight:500}
+.hint{margin:0;font-size:13px;font-weight:500;color:var(--muted)}
+.callout{margin-top:10px;border-radius:var(--r);background:var(--warn-bg);color:var(--warn);padding:14px 18px;font-size:14.5px;font-weight:700}
+
+/* ---------- Gym: the week ---------- */
+.strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));justify-items:center;gap:0;margin-top:6px}
+.strip div{display:grid;justify-items:center;gap:5px}
+.strip i{font-style:normal;width:40px;height:40px;border-radius:50%;background:var(--c);color:#111214;display:grid;place-items:center;font-size:12.5px;font-weight:800;letter-spacing:-.02em}
+.strip small{font-size:12px;font-weight:700;color:var(--muted)}
+.strip .today i{box-shadow:0 0 0 3px var(--tile),0 0 0 5.5px var(--ink)}
+.strip .today small{color:var(--ink);font-weight:800}
+.swatch{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--c);margin-right:7px;vertical-align:.5px}
+.ex{display:flex;justify-content:space-between;gap:12px;padding:10px 18px;font-size:15px;font-weight:600;position:relative}
+.ex + .ex::before{content:"";position:absolute;left:18px;right:18px;top:0;border-top:1px solid var(--line)}
+.ex b{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ex.side-note{color:var(--muted);font-size:13.5px;font-weight:600}
+
+/* ---------- Locked (only the app on GitHub, before the link has been opened) ---------- */
+.lock{max-width:520px;margin:0 auto;padding:14px 16px 40px}
+.lock .hero{margin-top:0}
+.lock .add .btn{justify-self:start;align-self:flex-start}
+
+/* ---------- Floating tab bar ---------- */
+.tabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--tile);border-radius:99px;padding:7px;display:flex;gap:6px;box-shadow:var(--float);z-index:10}
+.tabs button{width:62px;height:50px;border-radius:99px;border:0;background:transparent;color:var(--ink);display:grid;place-items:center}
+.tabs button[aria-current="page"]{background:var(--ink);color:var(--on-ink)}
+
+@media (max-width:350px){
+  .hero h1{font-size:40px}
+  .tile .v.huge{font-size:32px}
+  .strip i{width:36px;height:36px;font-size:11.5px}
+  .tools .two{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;scroll-behavior:auto !important}
+}
+</style>
+</head>
+<body>
+<section class="lock" id="v-lock" hidden aria-label="Lås upp schemat">
+  <div class="hero ink">
+    <div class="eyebrow">Idag</div>
+    <div>
+      <h1>Låst</h1>
+      <div class="count">Schemat öppnas med din länk</div>
+    </div>
+  </div>
+  <form class="tile wide add" id="lockForm" novalidate>
+    <label for="lockText">Klistra in länken du fick av Claude</label>
+    <input id="lockText" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://…">
+    <button class="btn" type="submit">Lås upp</button>
+    <p class="hint" id="lockMsg">Länken sparas på telefonen, så det här behövs bara en gång.</p>
+  </form>
+</section>
+<div class="app" id="app" hidden>
+  <header class="top">
+    <div class="date">
+      <b id="dateLine">tisdag 17 nov · vecka 47</b>
+      <small id="status" role="status">Sparas på den här telefonen</small>
+    </div>
+    <button class="icon-btn" id="lookBtn" type="button" aria-label="Byt mellan ljust och mörkt läge">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <!-- ================= Schema ================= -->
+    <section id="v-dag" aria-label="Schema">
+      <div class="seg" id="seg" role="group" aria-label="Välj dag"></div>
+
+      <div class="hero" id="hero">
+        <div class="eyebrow" id="heroKind"></div>
+        <div>
+          <h1 id="heroName"></h1>
+          <div class="count" id="heroCount"></div>
+        </div>
+        <button class="go" id="goNow" type="button" aria-label="Gå till nästa punkt">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+        </button>
+        <div class="bar"><i id="heroBar"></i></div>
+      </div>
+
+      <div class="bento">
+        <div class="tile">
+          <span class="l">Nu</span>
+          <span class="v clamp" id="nowText"></span>
+          <button class="btn sm push" id="nowDone" type="button">Klar</button>
+        </div>
+        <div class="tile">
+          <span class="l">Nästa tid</span>
+          <span class="v big" id="nextTime"></span>
+          <span class="s" id="nextText"></span>
+        </div>
+        <div class="tile">
+          <span class="l">Vatten</span>
+          <span class="v big"><span id="waterN">0</span><small> / <span id="waterGoal">10</span> glas</small></span>
+          <div class="dots" id="waterDots" aria-hidden="true"></div>
+          <div class="pm">
+            <button id="waterMinus" type="button" aria-label="Ta bort ett glas vatten">−</button>
+            <button id="waterPlus" type="button">+ Glas</button>
+          </div>
+        </div>
+        <div class="tile">
+          <span class="l">Shake</span>
+          <span class="v big"><span id="shakeN">0</span><small> / 4 glas</small></span>
+          <div class="glasses" id="glasses"></div>
+        </div>
+        <div class="tile wide ink" id="evTile" hidden>
+          <span class="l" id="evLabel"></span>
+          <span class="v huge" id="evCount"></span>
+          <span class="s" id="evText"></span>
+        </div>
+      </div>
+
+      <div id="lists"></div>
+
+      <form class="tile wide add" id="addForm" novalidate>
+        <label for="addText">Lägg till en punkt</label>
+        <input id="addText" type="text" maxlength="140" autocomplete="off" placeholder="Skriv vad du ska göra">
+        <div class="addrow">
+          <select id="addPos" aria-label="Var i listan">
+            <option value="next">Näst på tur</option>
+            <option value="last">Sist i listan</option>
+          </select>
+          <button class="btn" type="submit">Lägg till</button>
+        </div>
+      </form>
+
+      <div class="tile wide tools">
+        <div class="two">
+          <button class="btn ghost" id="copyDay" type="button">Kopiera dagen</button>
+          <button class="btn ghost" id="resetDay" type="button">Nollställ bockarna</button>
+        </div>
+        <p class="hint" id="dayMsg">Kopiera dagen om du vill klistra in den i Dagsschema.</p>
+        <textarea id="dayBox" hidden readonly aria-label="Dagens lista som text"></textarea>
+      </div>
+    </section>
+
+    <!-- ================= Handla ================= -->
+    <section id="v-handla" hidden aria-label="Handla">
+      <div class="hero ink">
+        <div class="eyebrow" id="shopEyebrow"></div>
+        <div>
+          <h1>Handla</h1>
+          <div class="count" id="shopCount"></div>
+        </div>
+        <span></span>
+        <div class="bar"><i id="shopBar"></i></div>
+      </div>
+      <div id="shopLists"></div>
+      <div class="callout" id="shopCallout" hidden></div>
+
+      <form class="tile wide add" id="shopForm" novalidate>
+        <label for="shopText">Lägg till en vara</label>
+        <div class="addrow">
+          <input id="shopText" type="text" maxlength="80" autocomplete="off" placeholder="Skriv en vara">
+          <button class="btn" type="submit">Lägg till</button>
+        </div>
+      </form>
+
+      <div class="tile wide tools">
+        <button class="btn ghost" id="copyShop" type="button">Kopiera det som är kvar</button>
+        <p class="hint" id="shopMsg">Listan går att klistra in under Handla i Dagsschema.</p>
+        <textarea id="shopBox" hidden readonly aria-label="Inköpslistan som text"></textarea>
+      </div>
+    </section>
+
+    <!-- ================= Gym ================= -->
+    <section id="v-gym" hidden aria-label="Gym">
+      <div class="hero" id="gymHero">
+        <div class="eyebrow" id="gymKind"></div>
+        <div>
+          <h1 id="gymName"></h1>
+          <div class="count" id="gymCount"></div>
+        </div>
+        <span></span>
+      </div>
+      <div class="bento">
+        <div class="tile wide">
+          <span class="l">Veckan</span>
+          <div class="strip" id="strip"></div>
+          <span class="s" style="margin-top:8px">Fyra gympass: onsdag, torsdag, lördag och söndag. Tisdag är löpdag, måndag och fredag vila från gymmet.</span>
+        </div>
+      </div>
+      <div id="gymLists"></div>
+      <div class="tile wide tools">
+        <a class="btn" href="https://filipkymmer79-pixel.github.io/GymSchema/" target="_blank" rel="noopener">Öppna GymSchema</a>
+        <p class="hint">Passen kör och loggar du i GymSchema. Hinner du inte allt: gympasset och spänsten först.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="tabs" id="tabs" aria-label="Flikar" hidden>
+  <button id="tab-dag" type="button" aria-label="Schema" aria-current="page">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5l1.6 1.6L8.4 5.3M12 7h8M4 12.5l1.6 1.6 2.8-2.8M12 13h8M4 18.5l1.6 1.6 2.8-2.8M12 19h8"/></svg>
+  </button>
+  <button id="tab-handla" type="button" aria-label="Handla">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.3l2.2 10.3a1.6 1.6 0 0 0 1.6 1.2h8.1a1.6 1.6 0 0 0 1.5-1.2L20.3 8H6.3"/><circle cx="9.6" cy="19.3" r="1.2"/><circle cx="16.9" cy="19.3" r="1.2"/></svg>
+  </button>
+  <button id="tab-gym" type="button" aria-label="Gym">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12h19M6.5 7v10M4 9.5v5M17.5 7v10M20 9.5v5"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+"use strict";
+
+/* The schedule itself (days, items, shopping list) is data, not code: PLAN.
+   On GitHub it is sealed, and opened in the phone with the key in the link. */
+var PLAN = null, SEALED = "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";
+var TZ = "Europe/Stockholm";
+var WATER_MAX = 16;
+var LOOK_KEY = "schema.look";
+try {
+  var look0 = localStorage.getItem(LOOK_KEY);
+  if (look0 === "dark" || look0 === "light") document.documentElement.classList.add("look-" + look0);
+} catch (e) { /* follows the phone */ }
+
+/* Passen som de står i GymSchema (program 2.1). */
+var OVER = [
+  ["Chins i assisterad maskin", "4 × 5–8"], ["Hantelbänkpress", "3 × 6–8"], ["Sittande kabelrodd", "3 × 8–10"],
+  ["Axelpress i maskin", "3 × 8–10"], ["Sidolyft i kabel, en arm i taget", "3 × 12–20"], ["Hantelshrugs", "2 × 10–12"],
+  ["Bicepscurl med hantlar", "3 × 10–12"], ["Hammarcurl med hantlar", "3 × 10–12"], ["Face pulls", "2 × 15–20"]
+];
+var BEN = [
+  ["Sittande benpress", "3 × 6–8"], ["Vadpress", "2 × 15–20"], ["Rumänska marklyft med hantlar", "3 × 8–10"],
+  ["Höftabduktion i maskin", "3 × 15–20"], ["Lutande hantelpress", "3 × 8–10"], ["Sidolyft i kabel, en arm i taget", "3 × 12–20"],
+  ["Tricepspress med rep i kabel", "3 × 10–12"], ["Plankan", "3 × 30–45 s"], ["Dead bug", "3 × 10 per sida"]
+];
+var RUN = [
+  ["Fötter och balans", ""], ["Spring lugnt till backen", "12 min"], ["Starka ben, backhopp och sprint", "33 min"],
+  ["Spring lugnt hem", "12 min"], ["Stå rak", ""]
+];
+
+var TABLES = { OVER: OVER, BEN: BEN, RUN: RUN };
+
+var WEEK = [
+  ["Mån", "Vila", "rest"], ["Tis", "Löp", "run"], ["Ons", "Ö1", "red"], ["Tor", "B1", "blue"],
+  ["Fre", "Vila", "rest"], ["Lör", "Ö2", "yellow"], ["Sön", "B2", "green"]
+];
+
+function boot(PLAN) {
+var KEY = PLAN.key, DAYS = PLAN.days, SHOP = PLAN.shop.secs, EVENT = PLAN.event || null;
+
+/* ---------- Small helpers ---------- */
+var IC = {
+  check: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
+  x: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  glass: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10l-1.1 14.6a1.6 1.6 0 0 1-1.6 1.4H9.7a1.6 1.6 0 0 1-1.6-1.4L7 4zM7.5 10h9"/></svg>'
+};
+function $(id) { return document.getElementById(id); }
+function el(tag, attrs, kids) {
+  var n = document.createElement(tag), k, v;
+  if (attrs) for (k in attrs) {
+    if (!Object.prototype.hasOwnProperty.call(attrs, k)) continue;
+    v = attrs[k];
+    if (v === false || v === null || v === undefined) continue;
+    if (k === "class") n.className = v;
+    else if (k === "text") n.textContent = v;
+    else if (k === "icon") n.innerHTML = IC[v];
+    else n.setAttribute(k, v === true ? "" : v);
+  }
+  if (kids) kids.forEach(function (c) { if (c) n.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+  return n;
+}
+function pad(n) { return (n < 10 ? "0" : "") + n; }
+function dayOf(id) { for (var i = 0; i < DAYS.length; i++) if (DAYS[i].id === id) return DAYS[i]; return DAYS[0]; }
+function swDate(ms) {
+  try {
+    return new Intl.DateTimeFormat("sv-SE", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(ms));
+  } catch (e) {
+    var d = new Date(ms); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+}
+function isoWeek(ms) {
+  var p = swDate(ms).split("-");
+  var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+  var wd = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - wd);
+  var y0 = Date.UTC(d.getUTCFullYear(), 0, 1);
+  return Math.ceil(((d.getTime() - y0) / 864e5 + 1) / 7);
+}
+function weekdayIndex(ms) {           // 0 = måndag
+  var p = swDate(ms).split("-");
+  return (new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])).getUTCDay() + 6) % 7;
+}
+function dateLine(ms) {
+  var s;
+  try {
+    s = new Intl.DateTimeFormat("sv-SE", { timeZone: TZ, weekday: "long", day: "numeric", month: "short" }).format(new Date(ms)).replace(/\./g, "");
+  } catch (e) { s = swDate(ms); }
+  return s + " · vecka " + isoWeek(ms);
+}
+function dur(ms, full) {
+  var m = Math.max(0, Math.round(ms / 6e4));
+  if (m < 1) return "nu";
+  var d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), mi = m % 60;
+  if (d > 0) return full ? d + " d " + h + " h " + mi + " min" : d + " d" + (h ? " " + h + " h" : "");
+  if (h > 0) return h + " h" + (mi ? " " + mi + " min" : "");
+  return mi + " min";
+}
+function todayId(ms) {
+  var d = swDate(ms - 4 * 3600e3);    // dygnet byter 04:00, så natten hör till dagen innan
+  for (var i = 0; i < DAYS.length; i++) if (DAYS[i].date === d) return DAYS[i].id;
+  return d < DAYS[0].date ? DAYS[0].id : DAYS[DAYS.length - 1].id;
+}
+
+/* ---------- State: ticks and own items. Kept on the phone, and in the artifact's store when it answers. ---------- */
+var S = { done: {}, extra: {} };
+var pend = {};                         // "samling/id" -> det som ska sparas (null = ta bort)
+var ui = { day: todayId(Date.now()), tab: "dag", open: {}, del: null, reset: false, addFor: null };
+
+function cleanExtra(x) {
+  if (!x || typeof x !== "object" || typeof x.text !== "string") return null;
+  var text = x.text.replace(/\s+/g, " ").trim().slice(0, 140);
+  if (!text) return null;
+  var day = x.day === "shop" ? "shop" : dayOf(x.day).id === x.day ? x.day : null;
+  if (!day) return null;
+  var after = typeof x.after === "string" && /^[a-z0-9-]{1,40}$/.test(x.after) ? x.after : "";
+  return { day: day, after: after, text: text, ts: typeof x.ts === "number" ? x.ts : 0 };
+}
+try {
+  var raw = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (raw) {
+    if (Array.isArray(raw.d)) raw.d.forEach(function (id) { if (typeof id === "string") S.done[id] = true; });
+    if (raw.x && typeof raw.x === "object") Object.keys(raw.x).forEach(function (id) { var c = cleanExtra(raw.x[id]); if (c) S.extra[id] = c; });
+    if (raw.p && typeof raw.p === "object") Object.keys(raw.p).forEach(function (k) { pend[k] = raw.p[k]; });
+  }
+} catch (e) { /* ingen lagring: börja tomt */ }
+try { var t0 = localStorage.getItem(KEY + ".tab"); if (t0 === "handla" || t0 === "gym") ui.tab = t0; } catch (e) {}
+function saveLocal() {
+  try { localStorage.setItem(KEY, JSON.stringify({ d: Object.keys(S.done), x: S.extra, p: pend })); } catch (e) { /* går bra utan */ }
+}
+
+function ownIds(dayKey) {             // egna punkter för en dag (eller "shop"), äldst först
+  return Object.keys(S.extra).filter(function (id) { return S.extra[id].day === dayKey; })
+    .sort(function (a, b) { return S.extra[a].ts - S.extra[b].ts || (a < b ? -1 : 1); });
+}
+function ownItem(id) { return { id: id, t: S.extra[id].text, own: true, after: S.extra[id].after }; }
+function itemsOf(day) {                // dagens lista i ordning; egna punkter där de lades in, annars sist
+  var list = day.items.slice(), last = [];
+  ownIds(day.id).forEach(function (id) {
+    var after = S.extra[id].after, at = -1, i;
+    if (after) for (i = 0; i < list.length; i++) if (list[i].id === after) { at = i + 1; break; }
+    if (at === -1) { last.push(ownItem(id)); return; }
+    while (at < list.length && list[at].own && list[at].after === after) at++;
+    list.splice(at, 0, ownItem(id));
+  });
+  return list.concat(last);
+}
+function shopSections() {
+  return SHOP.map(function (s) {
+    var own = s.id === "h-eget" ? ownIds("shop").map(ownItem) : [];
+    return { id: s.id, title: s.title, sub: s.sub, items: s.items.concat(own) };
+  }).filter(function (s) { return s.items.length; });
+}
+function flat(secs) { var out = []; secs.forEach(function (s) { s.items.forEach(function (it) { out.push(it); }); }); return out; }
+function nowItem(list) {               // första punkten som inte är avbockad
+  for (var i = 0; i < list.length; i++) if (!S.done[list[i].id]) return list[i];
+  return null;
+}
+function waterCount(day) { var n = 0; for (var i = 1; i <= WATER_MAX; i++) if (S.done[day.id + "-v" + i]) n++; return n; }
+function shakeCount(day) { var n = 0; for (var i = 1; i <= 4; i++) if (S.done[day.id + "-g" + i]) n++; return n; }
+
+/* ---------- Saving ---------- */
+var LOCAL = "Sparas på den här telefonen", SAVED = "Sparat", SAVING = "Sparar", FAILED = "Kunde inte spara, bocka igen", STALE = "Väntar på nätet";
+var db = null, busy = {}, retried = {}, confirmed = false, loadTimer = null;
+function say(msg) { $("status").textContent = msg; }
+function goLocal() { db = null; say(LOCAL); }
+function put(col, id, val) { pend[col + "/" + id] = val; saveLocal(); flush(col + "/" + id); }
+function flush(key) {
+  if (!db || busy[key] || !(key in pend)) return;
+  var want = pend[key], ref;
+  busy[key] = true;
+  try { ref = db.doc(key); } catch (e) { busy[key] = false; goLocal(); return; }
+  if (confirmed) say(SAVING);
+  (want === null ? ref.delete() : ref.set(want)).then(function () {
+    busy[key] = false; retried[key] = false;
+    if (pend[key] === want) { delete pend[key]; saveLocal(); if (confirmed) say(SAVED); }
+    else flush(key);
+  }, function (err) {
+    busy[key] = false;
+    var code = err && err.code;
+    if (code === "resource_exhausted" || code === "quota_exceeded") { say(FAILED); return; }
+    if (code === "invalid_argument" || code === "transform_error" || code === "revoked" || code === "not_granted" ||
+        code === "not_writer" || code === "capability_disabled" || code === "capability_removed") { goLocal(); return; }
+    if (!retried[key]) { retried[key] = true; setTimeout(function () { flush(key); }, 500 + Math.random() * 1000); }
+    else { retried[key] = false; say(FAILED); }
+  });
+}
+function listen(col, take) {
+  db.collection(col).onSnapshot(function (snap) {
+    var fromCache = !!(snap.metadata && snap.metadata.fromCache);
+    if (fromCache && !confirmed) return;        // vänta på servern, annars kan en tom cache blinka bort bockarna
+    var remote = {};
+    snap.docs.forEach(function (d) { remote[d.id] = d.data() || {}; });
+    take(remote);
+    saveLocal();
+    paint();
+    if (!fromCache && !confirmed) { confirmed = true; clearTimeout(loadTimer); say(SAVED); }
+  }, function () { clearTimeout(loadTimer); goLocal(); });
+}
+function free(col, id) { var k = col + "/" + id; return !(k in pend) && !busy[k]; }
+function connect(ns) {
+  if (!ns) { say(LOCAL); return; }
+  db = ns;
+  loadTimer = setTimeout(function () { if (!confirmed) say(STALE); }, 10000);
+  try {
+    listen("checks", function (remote) {
+      Object.keys(S.done).concat(Object.keys(remote)).forEach(function (id) {
+        if (!free("checks", id)) return;
+        if (remote[id] && remote[id].done === true) S.done[id] = true; else delete S.done[id];
+      });
+    });
+    listen("extra", function (remote) {
+      Object.keys(S.extra).concat(Object.keys(remote)).forEach(function (id) {
+        if (!free("extra", id)) return;
+        var c = cleanExtra(remote[id]);
+        if (c) S.extra[id] = c; else delete S.extra[id];
+      });
+    });
+  } catch (e) { clearTimeout(loadTimer); goLocal(); return; }
+  Object.keys(pend).forEach(flush);
+}
+
+function setDone(id, on) {
+  if (on) S.done[id] = true; else delete S.done[id];
+  put("checks", id, on ? { done: true } : null);
+}
+
+/* ---------- Drawing ---------- */
+function rowEl(it, isNow, withMore, num) {
+  var done = !!S.done[it.id], open = !!ui.open[it.id];
+  var tick = done ? el("span", { class: "tick", icon: "check" }) : el("span", { class: "tick", text: num ? String(num) : "" });
+  var side = [];
+  if (it.time) side.push(el("span", { class: "chip", text: it.time }));
+  if (withMore && it.more) side.push(el("button", { class: "mini", type: "button", "data-more": it.id, "aria-expanded": open ? "true" : "false", "aria-label": "Visa mer om " + it.t, icon: "chev" }));
+  if (it.own) {
+    side.push(ui.del === it.id
+      ? el("button", { class: "mini del sure", type: "button", "data-del": it.id, text: "Ta bort" })
+      : el("button", { class: "mini del", type: "button", "data-del": it.id, "aria-label": "Ta bort " + it.t, icon: "x" }));
+  }
+  var txt = el("span", { class: "txt" }, [el("span", { class: "t", text: it.t }), it.note ? el("span", { class: "note", text: it.note }) : null]);
+  var main = el("button", { class: "row-main", type: "button", role: "checkbox", "aria-checked": done ? "true" : "false", "data-id": it.id, id: "b-" + it.id },
+    [tick, txt]);
+  var li = el("li", { class: "row" + (done ? " done" : "") + (isNow ? " now" : ""), id: "r-" + it.id }, [el("div", { class: "line" }, [main, side.length ? el("span", { class: "side" }, side) : null])]);
+  if (withMore && it.more && open) {
+    var kids = [el("ol", null, (typeof it.more.rows === "string" ? TABLES[it.more.rows] || [] : it.more.rows).map(function (r) { return el("li", null, [el("span", { text: r[0] }), r[1] ? el("b", { text: r[1] }) : null]); }))];
+    if (it.more.foot) kids.push(el("p", { text: it.more.foot }));
+    if (it.more.go) kids.push(el("button", { class: "btn ghost sm", type: "button", "data-go": it.more.go, text: "Visa veckan under Gym" }));
+    li.appendChild(el("div", { class: "more" }, kids));
+  } else if (withMore && it.go && !it.more) {
+    li.querySelector(".side") || li.firstChild.appendChild(el("span", { class: "side" }));
+    li.querySelector(".side").appendChild(el("button", { class: "mini", type: "button", "data-go": it.go, "aria-label": "Öppna " + (it.go === "handla" ? "Handla" : "Gym"), icon: "chev" }));
+  }
+  return li;
+}
+function listEl(sec, nowId) {
+  var d = sec.items.filter(function (it) { return S.done[it.id]; }).length;
+  var h2 = el("h2", null, [sec.title, sec.sub ? el("small", { text: sec.sub }) : null]);
+  return el("section", { class: "list", "aria-label": sec.title }, [
+    el("header", null, [h2, el("span", { class: "n", text: d + "/" + sec.items.length })]),
+    el("ul", null, sec.items.map(function (it) { return rowEl(it, it.id === nowId, true); }))
+  ]);
+}
+function flatListEl(items, nowId) {    // dagens lista: en enda numrerad följd, inga rubriker
+  return el("section", { class: "list flat", "aria-label": "Dagens lista i ordning" }, [
+    el("ol", null, items.map(function (it, i) { return rowEl(it, it.id === nowId, true, i + 1); }))
+  ]);
+}
+function keepFocus(fn) {
+  var a = document.activeElement, id = a && a.id, more = a && a.getAttribute && (a.getAttribute("data-more") || a.getAttribute("data-del"));
+  fn();
+  var back = id ? $(id) : more ? document.querySelector('[data-more="' + more + '"],[data-del="' + more + '"]') : null;
+  if (back && back !== document.activeElement) { try { back.focus({ preventScroll: true }); } catch (e) {} }
+}
+
+var nowId = null;
+function paintNext(all, now) {         // nästa klockslag som inte är avbockat
+  var up = all.filter(function (it) { return it.ts && !S.done[it.id] && it.ts > now; }).sort(function (a, b) { return a.ts - b.ts; })[0];
+  if (up) {
+    $("nextTime").textContent = up.time.replace(/^(ca|senast) /, "").replace(/–.*$/, "");
+    $("nextText").textContent = up.t + " · om " + dur(up.ts - now);
+  } else {
+    $("nextTime").textContent = "–";
+    $("nextText").textContent = "Inga fler tider den här dagen";
+  }
+}
+function paintEvent(now) {             // nedräkningen till veckans stora händelse, om schemat har någon
+  if (!EVENT) return;
+  if (now < EVENT.at) { $("evCount").textContent = dur(EVENT.at - now, true); $("evText").textContent = EVENT.before; }
+  else { $("evCount").textContent = EVENT.after; $("evText").textContent = EVENT.afterText; }
+}
+function paintDay() {
+  var day = dayOf(ui.day), all = itemsOf(day), now = Date.now();
+  var done = all.filter(function (it) { return S.done[it.id]; }).length;
+  var cur = nowItem(all);
+  nowId = cur ? cur.id : null;
+  document.documentElement.style.setProperty("--day", "var(--" + day.color + ")");
+
+  var today = todayId(now);
+  [].forEach.call($("seg").children, function (b) {
+    b.setAttribute("aria-pressed", b.getAttribute("data-day") === day.id ? "true" : "false");
+    b.classList.toggle("today", b.getAttribute("data-day") === today);
+  });
+  $("heroKind").textContent = day.kind;
+  $("heroName").textContent = day.name;
+  $("heroCount").textContent = done + " av " + all.length + " klara";
+  $("heroBar").style.width = (all.length ? Math.round(done / all.length * 100) : 0) + "%";
+  $("goNow").disabled = !cur;
+
+  $("nowText").textContent = cur ? cur.t : "Allt är avbockat";
+  $("nowDone").hidden = !cur;
+
+  paintNext(all, now);
+
+  var w = waterCount(day), dots = $("waterDots");
+  $("waterN").textContent = w;
+  $("waterGoal").textContent = day.water;
+  if (dots.children.length !== day.water) { dots.textContent = ""; for (var i = 0; i < day.water; i++) dots.appendChild(el("i")); }
+  [].forEach.call(dots.children, function (d, k) { d.className = k < w ? "on" : ""; });
+  $("waterMinus").disabled = w === 0;
+  $("waterPlus").disabled = w >= WATER_MAX;
+
+  $("shakeN").textContent = shakeCount(day);
+  [].forEach.call($("glasses").children, function (b, k) {
+    b.setAttribute("aria-pressed", S.done[day.id + "-g" + (k + 1)] ? "true" : "false");
+  });
+
+  paintEvent(now);
+
+  keepFocus(function () {
+    var box = $("lists"); box.textContent = "";
+    box.appendChild(flatListEl(all, nowId));
+  });
+
+  $("resetDay").textContent = ui.reset ? "Tryck igen för att nollställa" : "Nollställ bockarna";
+  $("resetDay").className = "btn " + (ui.reset ? "warn" : "ghost");
+}
+function paintShop() {
+  var secs = shopSections(), all = flat(secs);
+  var got = all.filter(function (it) { return S.done[it.id]; }).length;
+  $("shopCount").textContent = got + " av " + all.length + " köpta";
+  $("shopBar").style.width = (all.length ? Math.round(got / all.length * 100) : 0) + "%";
+  keepFocus(function () {
+    var box = $("shopLists"); box.textContent = "";
+    secs.forEach(function (s) { box.appendChild(listEl(s, null)); });
+  });
+}
+function paintGym() {
+  var now = Date.now(), wi = weekdayIndex(now), t = WEEK[wi];
+  $("gymHero").style.background = "var(--" + t[2] + ")";
+  $("gymKind").textContent = "Vecka " + isoWeek(now);
+  $("gymName").textContent = t[1] === "Vila" ? "Vila i dag" : t[1] === "Löp" ? "Löpdag i dag" : "Gymdag i dag";
+  $("gymCount").textContent = { "Ö1": "Ö1 · Över · pass 1", "B1": "B1 · Ben + över · pass 1", "Ö2": "Ö2 · Över · pass 2", "B2": "B2 · Ben + över · pass 2", "Löp": "Backen, starka ben och sprint", "Vila": "Vila från gymmet" }[t[1]];
+  [].forEach.call($("strip").children, function (d, k) { d.className = k === wi ? "today" : ""; });
+}
+function gymCard(title, color, n, pre, rows, post) {
+  var kids = [];
+  if (pre) kids.push(el("li", { class: "ex side-note", text: pre }));
+  rows.forEach(function (r) { kids.push(el("li", { class: "ex" }, [el("span", { text: r[0] }), r[1] ? el("b", { text: r[1] }) : null])); });
+  if (post) kids.push(el("li", { class: "ex side-note", text: post }));
+  return el("section", { class: "list", "aria-label": title }, [
+    el("header", null, [el("h2", null, [el("span", { class: "swatch", style: "--c:var(--" + color + ")" }), title]), el("span", { class: "n", text: n })]),
+    el("ul", null, kids)
+  ]);
+}
+function buildOnce() {
+  if (EVENT) { $("evLabel").textContent = EVENT.label; $("evTile").hidden = false; }
+  $("shopEyebrow").textContent = PLAN.shop.eyebrow || "";
+  if (PLAN.shop.callout) { $("shopCallout").textContent = PLAN.shop.callout; $("shopCallout").hidden = false; }
+  DAYS.forEach(function (d) {
+    $("seg").appendChild(el("button", { type: "button", "data-day": d.id, style: "--c:var(--" + d.color + ")", "aria-pressed": "false", "aria-label": d.name + ", " + d.kind },
+      [el("b", { text: d.short }), el("small", { text: d.tag })]));
+  });
+  for (var i = 1; i <= 4; i++) $("glasses").appendChild(el("button", { type: "button", "data-glass": String(i), "aria-pressed": "false", "aria-label": "Shakeglas " + i, icon: "glass" }));
+  WEEK.forEach(function (w) { $("strip").appendChild(el("div", null, [el("i", { style: "--c:var(--" + w[2] + ")", text: w[1] }), el("small", { text: w[0] })])); });
+  var g = $("gymLists");
+  g.appendChild(gymCard("Tisdag · Löpdag", "run", "ca 60 min", null, RUN, null));
+  g.appendChild(gymCard("Onsdag · Ö1 Över", "red", "ca 67 min", null, OVER, "Efter passet: isometriskt och slåss, 3 ronder"));
+  g.appendChild(gymCard("Torsdag · B1 Ben + över", "blue", "ca 60 min", "Före passet: Spänst B", BEN, null));
+  g.appendChild(gymCard("Helgen", "yellow", "2 pass", null, [["Lördag · Ö2 Över", "som onsdag"], ["Söndag · B2 Ben + över", "som torsdag"]], "Söndag: Spänst A före passet"));
+}
+function paint() {
+  $("dateLine").textContent = dateLine(Date.now());
+  if (ui.tab === "dag") paintDay();
+  else if (ui.tab === "handla") paintShop();
+  else paintGym();
+}
+function showTab(name) {
+  ui.tab = name; ui.del = null; ui.reset = false;
+  ["dag", "handla", "gym"].forEach(function (k) {
+    $("v-" + k).hidden = k !== name;
+    if (k === name) $("tab-" + k).setAttribute("aria-current", "page"); else $("tab-" + k).removeAttribute("aria-current");
+  });
+  try { localStorage.setItem(KEY + ".tab", name); } catch (e) {}
+  paint();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Text out: the format Dagsschema reads ---------- */
+function dayText() {
+  return itemsOf(dayOf(ui.day)).map(function (it) {
+    return (S.done[it.id] ? "[x] " : "") + (it.time ? it.time + " " : "") + it.t + (it.note ? "\n> " + it.note : "");
+  }).join("\n");
+}
+function shopText() {
+  var out = [];
+  shopSections().forEach(function (s) {
+    var left = s.items.filter(function (it) { return !S.done[it.id]; });
+    if (!left.length) return;
+    if (out.length) out.push("");
+    out.push("# " + s.title);
+    left.forEach(function (it) { out.push(it.t); });
+  });
+  return out.join("\n");
+}
+function copier(btnId, msgId, boxId, make, okMsg) {
+  $(btnId).addEventListener("click", function () {
+    var text = make(), msg = $(msgId), box = $(boxId);
+    function byHand() {
+      box.value = text; box.hidden = false;
+      msg.textContent = "Markera texten här under och kopiera den.";
+      try { box.focus(); box.select(); } catch (e) {}
+    }
+    if (!text) { msg.textContent = "Det finns inget kvar att kopiera."; return; }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { box.hidden = true; msg.textContent = okMsg; }, byHand);
+      } else byHand();
+    } catch (e) { byHand(); }
+  });
+}
+
+/* ---------- Taps ---------- */
+function onListClick(e) {
+  var b = e.target.closest ? e.target.closest("button") : null;
+  if (!b) return;
+  var id;
+  if ((id = b.getAttribute("data-id"))) {
+    ui.del = null; ui.reset = false;
+    setDone(id, !S.done[id]);
+    paint();
+  } else if ((id = b.getAttribute("data-more"))) {
+    ui.open[id] = !ui.open[id];
+    paint();
+  } else if ((id = b.getAttribute("data-del"))) {
+    if (ui.del !== id) { ui.del = id; paint(); return; }
+    ui.del = null;
+    delete S.extra[id];
+    put("extra", id, null);
+    if (S.done[id]) setDone(id, false);
+    paint();
+  } else if ((id = b.getAttribute("data-go"))) {
+    showTab(id);
+  }
+}
+function addOwn(dayKey, after, input) {
+  var text = input.value.replace(/\s+/g, " ").trim().slice(0, 140);
+  if (!text) { input.focus(); return; }
+  var id = "x" + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36);
+  var x = { day: dayKey, after: after, text: text, ts: Date.now() };
+  S.extra[id] = x;
+  put("extra", id, x);
+  input.value = "";
+  paint();
+}
+
+buildOnce();
+$("seg").addEventListener("click", function (e) {
+  var b = e.target.closest ? e.target.closest("button") : null;
+  if (!b) return;
+  ui.day = b.getAttribute("data-day"); ui.del = null; ui.reset = false;
+  paint();
+});
+$("lists").addEventListener("click", onListClick);
+$("shopLists").addEventListener("click", onListClick);
+$("goNow").addEventListener("click", function () {
+  var r = nowId && $("r-" + nowId);
+  if (!r) return;
+  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  r.scrollIntoView({ block: "center", behavior: calm ? "auto" : "smooth" });
+});
+$("nowDone").addEventListener("click", function () { if (nowId) { setDone(nowId, true); paint(); } });
+$("waterPlus").addEventListener("click", function () {
+  var day = dayOf(ui.day);
+  for (var i = 1; i <= WATER_MAX; i++) if (!S.done[day.id + "-v" + i]) { setDone(day.id + "-v" + i, true); break; }
+  if (waterCount(day) >= day.water && !S.done[day.id + "-vatten"]) setDone(day.id + "-vatten", true);
+  paint();
+});
+$("waterMinus").addEventListener("click", function () {
+  var day = dayOf(ui.day);
+  for (var i = WATER_MAX; i >= 1; i--) if (S.done[day.id + "-v" + i]) { setDone(day.id + "-v" + i, false); break; }
+  paint();
+});
+$("glasses").addEventListener("click", function (e) {
+  var b = e.target.closest ? e.target.closest("button") : null;
+  if (!b) return;
+  var id = dayOf(ui.day).id + "-g" + b.getAttribute("data-glass");
+  setDone(id, !S.done[id]);
+  paint();
+});
+$("addForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  addOwn(dayOf(ui.day).id, $("addPos").value === "next" && nowId ? nowId : "", $("addText"));
+});
+$("shopForm").addEventListener("submit", function (e) { e.preventDefault(); addOwn("shop", "", $("shopText")); });
+$("resetDay").addEventListener("click", function () {
+  if (!ui.reset) { ui.reset = true; paint(); return; }
+  ui.reset = false;
+  var day = dayOf(ui.day), ids = itemsOf(day).map(function (it) { return it.id; }), i;
+  for (i = 1; i <= WATER_MAX; i++) ids.push(day.id + "-v" + i);
+  for (i = 1; i <= 4; i++) ids.push(day.id + "-g" + i);
+  ids.forEach(function (id) { if (S.done[id]) setDone(id, false); });
+  paint();
+});
+copier("copyDay", "dayMsg", "dayBox", dayText, "Kopierat. Klistra in i Dagsschema.");
+copier("copyShop", "shopMsg", "shopBox", shopText, "Kopierat. Klistra in under Handla i Dagsschema.");
+["dag", "handla", "gym"].forEach(function (k) { $("tab-" + k).addEventListener("click", function () { showTab(k); }); });
+
+/* Light or dark: follows the app it is opened in until the moon is pressed, like the ☾ in GymSchema. */
+(function () {
+  var root = document.documentElement, saved = null;
+  try { saved = localStorage.getItem(LOOK_KEY); } catch (e) {}
+  if (saved === "dark" || saved === "light") root.classList.add("look-" + saved);
+  $("lookBtn").addEventListener("click", function () {
+    var dark = getComputedStyle(root).getPropertyValue("--is-dark").trim() === "1";
+    root.classList.remove("look-dark", "look-light");
+    root.classList.add(dark ? "look-light" : "look-dark");
+    try { localStorage.setItem(LOOK_KEY, dark ? "light" : "dark"); } catch (e) {}
+  });
+})();
+
+showTab(ui.tab);
+setInterval(function () { if (!document.hidden) paintClock(); }, 20000);
+document.addEventListener("visibilitychange", function () { if (!document.hidden) paintClock(); });
+function paintClock() {
+  /* Only the parts that follow the clock, so a tap in progress is never redrawn away. */
+  $("dateLine").textContent = dateLine(Date.now());
+  if (ui.tab === "gym") { paintGym(); return; }
+  if (ui.tab !== "dag") return;
+  var now = Date.now();
+  paintNext(itemsOf(dayOf(ui.day)), now);
+  paintEvent(now);
+  var t = todayId(now);
+  [].forEach.call($("seg").children, function (b) { b.classList.toggle("today", b.getAttribute("data-day") === t); });
+}
+
+if (window.claude && typeof window.claude.use === "function") {
+  try { window.claude.use("db").then(connect, function () { say(LOCAL); }); } catch (e) { say(LOCAL); }
+} else {
+  say(LOCAL);
+}
+}   // boot
+
+/* ---------- Unlocking: the schedule is sealed in this file and the key is the last part of the link ---------- */
+var APP = document.getElementById("app"), TABS = document.getElementById("tabs"), LOCK = document.getElementById("v-lock");
+function bytes(s) {
+  s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "=";
+  var bin = atob(s), u = new Uint8Array(bin.length), i;
+  for (i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return u;
+}
+function keyFrom(text) {
+  var s = String(text || "");
+  if (s.indexOf("#") !== -1) s = s.slice(s.lastIndexOf("#") + 1);
+  s = s.trim();
+  return /^[A-Za-z0-9_-]{22}$/.test(s) ? s : null;
+}
+function unseal(k) {
+  if (!window.crypto || !crypto.subtle) return Promise.reject(new Error("no crypto"));
+  var buf = bytes(SEALED);
+  return crypto.subtle.importKey("raw", bytes(k), "AES-GCM", false, ["decrypt"])
+    .then(function (key) { return crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(0, 12) }, key, buf.slice(12)); })
+    .then(function (plain) { return JSON.parse(new TextDecoder().decode(plain)); });
+}
+function opened(plan, k) {
+  try { localStorage.setItem("schema.k", k); } catch (e) { /* then the link has to carry it */ }
+  /* Keep the key in the address, so that "Lägg till på hemskärmen" saves it with the app. */
+  if (keyFrom(location.hash) !== k) { try { history.replaceState(null, "", "#" + k); } catch (e) {} }
+  LOCK.hidden = true; APP.hidden = false; TABS.hidden = false;
+  boot(plan);
+}
+var savedKey = null;
+try { savedKey = localStorage.getItem("schema.k"); } catch (e) {}
+var tries = [keyFrom(location.hash), keyFrom(savedKey)].filter(function (k, i, a) { return k && a.indexOf(k) === i; });
+(function next() {
+  if (!tries.length) { LOCK.hidden = false; return; }
+  var k = tries.shift();
+  unseal(k).then(function (plan) { opened(plan, k); }, next);
+})();
+document.getElementById("lockForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var msg = document.getElementById("lockMsg"), k = keyFrom(document.getElementById("lockText").value);
+  if (!k) { msg.textContent = "Det där är inte hela länken. Kopiera den från Claude och klistra in den igen."; return; }
+  unseal(k).then(function (plan) { opened(plan, k); }, function () {
+    msg.textContent = "Länken passar inte det här schemat. Klistra in den senaste länken från Claude.";
+  });
+});
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () { /* works without it */ }); });
+}
+})();
+</script>
+</body>
+</html>
