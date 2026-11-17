@@ -131,7 +131,7 @@ Notiserna skickas av samma Cloudflare Worker som gardinen ([`gymschema-worker.js
 - **Bästa tiden på dygnet** i Framsteg: varje övning jämförs med sin egen trend, och passen grupperas efter starttid (morgon, mitt på dagen, eftermiddag, kväll). Kräver minst två pass vid två olika tider.
 - **Fokus under passet**: hur många gånger appen lämnades mellan seten, från första set till sparat pass. Vilan räknas inte (då får mobilen ligga), inte heller Spotify- och Brick-knapparna. Står efter sparat pass och i Framsteg.
 - **Prognos** räknar en rak linje genom de senaste åtta veckorna och säger när du når nästa vikt i varje övning, och när kroppsvikten når 70 kg och viktmålet.
-- **Lätt vecka** föreslås när två av huvudövningarna (chins, bänkpress, benpress, rumänska marklyft) stått still i tre pass, eller när Garmin visar att du är sliten. Tar du den blir det två set per övning och ungefär 10 % lättare den veckan, och lätta pass räknas inte som "förra gången" efteråt.
+- **Lätt vecka** föreslås när två av huvudövningarna (chins, bänkpress, benpress, rumänska marklyft) stått still i tre pass, eller när Garmin visar att du är sliten. Tar du den blir det två set per övning och ungefär 10 % lättare den veckan, och lätta pass räknas inte som "förra gången" efteråt. **Lätt dag** är samma sak för en enda dag – se *Kroppen och sömnen*.
 
 ### Kropp: vikt och mat
 
@@ -180,6 +180,21 @@ På löpdagen (tisdag) visar Pass bästa timmen att springa i Umeå (07–21): t
 - **🔥 Dagar i rad** för varje vana står bredvid namnet. En missad dag i veckan räddas av veckans frysdag (❄️ visar att den är använd) – två missar samma vecka och serien börjar om.
 - **⏰ Måltidsrytm**: ligger du efter med kalorierna för tiden på dagen (rak linje från en timme efter väckningen till 21.00) står *Ät nästa gång senast …* under kalorierna i Mat – 3,5 timmar efter senaste maten eller shakeglaset – och en påminnelse kommer då med ett mellanmål som passar. Inga påminnelser efter 20.00, inte när ett shakeglas ändå ska drickas strax efter, och bara när du loggat mat de senaste dagarna. Är påminnelsen *Fem mål om dagen* på (förvalt sedan 17 november 2026) gäller planens klockslag i stället: raden säger *Nästa mål* och måltidsrytmens notiser vilar.
 - **🦷 Munvård** (från 18 november 2026): borsta två minuter morgon och kväll med fluortandkräm, tandtråd en gång om dagen och tungskrapan på morgonen. En vana som kommer senare räknas från sitt startdatum – dagarna före har kvar sina tio vanor, så att serien med perfekta dagar inte bryts.
+
+### Kroppen och sömnen
+
+Sedan 17 november 2026:
+
+- **🌅 Morgonkänsla** (på Pass, efter gardinen): tryck 1–5 för hur kroppen känns när du har vaknat – sliten, trött, okej, bra eller pigg. Tillsammans med klockans siffror (HRV, vilopuls, kort sömn), eller en kort natt i sömndagboken, säger appen hur dagen ska gå: 1–2, eller 3 när klockan varnar, ger *Kör lätt i dag* på en gymdag och ett lugnare råd på löpdagen, intervalldagen och vilodagen. 4–5 med en varning från klockan ger *Kör som planerat* och två reps kvar.
+- **🪶 Lätt dag**: som lätt vecka – två set per övning och ungefär 10 % lättare – men bara i dag. Passet sparas som lätt och räknas inte i rekord och förslag. Går att avbryta, och är borta av sig självt nästa dag.
+- **🧍 Ömhetskarta** (*Visa kroppen* i samma kort): tryck på kroppen eller på namnen – ett tryck är lite öm, två är mycket öm, tre tar bort. Fjorton kroppsdelar. Är du mycket öm i det som är huvudmuskel i dagens övningar säger kortet det, med *Kör lätt i dag* och *Flytta passet*, och övningarna får en rad: lite öm – värm upp ett set extra, mycket öm – sluta med 2–3 reps kvar.
+- **🩹 Smärtlogg** (*Gör det ont?* under varje övning, också i Kör passet): var, vilken sida och hur mycket – *Känns*, *Stör* eller *Skarpt* – och en anteckning. Appen säger vad du gör nu (sänk vikten, byt övning eller sluta) och föreslår samma ersättare som under *Upptagen?*. Vid skarp smärta föreslås ingen ersättare. Övningen visar när det gjorde ont senast, fyra veckor bakåt.
+- **📓 Sömndagbok** (under *Sömn 10 timmar* i Vanor): de nätter klockan inte har någon sömn skriver du när du somnade och vaknade. Natten räknas då i vanan, i morgonkänslan och i Sömn mot lyft. Har klockan natten gäller klockan.
+- **😴 Tupplur 20 minuter** (under *Sömn 10 timmar*, och i morgonkortet efter en natt under åtta timmar): en mörk skärm som räknar ner, håller skärmen tänd och ringer i appen när tiden är ute – i högst tre minuter. Är påminnelserna på kommer en notis samtidigt, ifall mobilen ändå låses. Efter 15 säger appen att en tupplur gör det svårare att somna på kvällen.
+- **📊 Sömn mot lyft** (i Framsteg): varje pass jämförs med förra gången övningarna kördes (bästa setet, övningar med vikt i kilo), och passen delas efter sömnen natten före – korta nätter mot långa, med gränsen mitt emellan. Två medelvärden och ett punktdiagram. Kräver åtta pass med sömn natten före; lätta pass räknas inte. Få pass ger mycket slump.
+- **🩺 Till sjukgymnasten** (under Kropp → Hållning): smärtloggen åtta veckor bakåt, de senaste hållningsmätningarna med bild, testerna (rörlighet, häng, balans, split, hopp), var du är stelast, träningsvärken de senaste fjorton dagarna, träningen de senaste fyra veckorna med programmet, och sömnen och morgonkänslan – på en sida att visa på besöket.
+
+Allt utom hållningsbilderna följer med i backupen.
 
 ### Bilder och hållning
 
