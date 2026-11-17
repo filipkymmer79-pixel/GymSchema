@@ -242,3 +242,31 @@ Jobbmotorn som app: https://filipkymmer79-pixel.github.io/GymSchema/jobb/ – ö
 Appen öppnar Jobbmotorn i Claude. Där letar den upp dagens jobb på Indeed, skriver ett personligt brev till varje med dina egna ord och sparar jobben du har skickat, så att listan är klar för aktivitetsrapporten. Själva motorn körs i Claude, eftersom den använder ditt Claude-konto och din Indeed-koppling.
 
 Appen visar också vad som gäller för aktivitetsrapporten just nu. Mellan den 1 och 14 i månaden lyser rutan gult och visar hur många dagar som är kvar att skicka in förra månadens rapport.
+
+## Idag
+
+Schemat för de närmaste dagarna som app: https://filipkymmer79-pixel.github.io/GymSchema/idag/ – den öppnas med länken från Claude, som slutar på en nyckel efter `#`. Öppna länken i Safari och välj *Dela → Lägg till på hemskärmen*, så följer nyckeln med appen.
+
+- **En lista per dag**, i den ordning sakerna ska göras – inga rubriker. Varje punkt har sitt nummer i ringen tills den bockas av. Punkten som är näst på tur lyser i dagens färg (löpdag orange, Ö1 röd, B1 blå, som i GymSchema), och rutan *Nu* har en *Klar*-knapp.
+- **Rutorna** under dagens stora ruta: nästa klockslag med nedräkning, vatten i glas (10 på löpdagen, 12 på gymdagar – när målet är nått bockas *Dricka vatten* av), shakens fyra glas och en nedräkning till veckans stora händelse, om schemat har någon.
+- **Egna punkter** läggs till i appen: *Näst på tur* eller *Sist i listan*. De går att ta bort igen.
+- **Handla** är inköpslistan, och **Gym** visar veckan och passen som de står i GymSchema.
+- *Kopiera dagen* och *Kopiera det som är kvar* ger text som går att klistra in i Dagsschema.
+- Samma utseende som GymSchema (Bento, Manrope). Månen högst upp byter mellan ljust och mörkt.
+
+Bockar och egna punkter sparas bara på telefonen.
+
+### Schemat ligger förseglat
+
+Repot är öppet för alla, så själva schemat – dagarna, punkterna och inköpslistan – står inte i klartext här. Det ligger krypterat i `idag/index.html`, i strängen `SEALED`: AES-128-GCM, där de första 12 byten är IV och de sista 16 är taggen, allt i base64. Nyckeln är 16 slumpade byte i base64url (22 tecken) och finns bara i länken; det som står efter `#` skickas aldrig till servern. Appen sparar nyckeln på telefonen och lägger tillbaka den i adressen, så att den följer med till hemskärmen. Därför har appen ingen `manifest.webmanifest` – med en `start_url` skulle hemskärmen öppna adressen utan nyckel. Utan nyckel visar appen bara en ruta där länken klistras in.
+
+Ett nytt schema läggs in genom att byta ut `SEALED`. Med samma nyckel öppnas det direkt i appen. Med en ny nyckel behöver den nya länken klistras in en gång.
+
+Klartexten är JSON:
+
+- `key` – namnet som bockarna sparas under på telefonen. Byt det för varje nytt schema, så att gamla bockar inte följer med.
+- `title` och `event` (valfri nedräkning: `label`, `at` i millisekunder, `before`, `after`, `afterText`).
+- `days` – varje dag har `id`, `date`, `name`, `short`, `tag`, `color` (`run`, `red`, `blue`, `yellow`, `green` eller `rest`), `kind`, `water` och `items` i den ordning de ska göras. En punkt har `id` och `t`, och kan ha `time`, `ts` (klockslaget i millisekunder, för nedräkningen), `note`, `go` (`handla` eller `gym`) och `more` (`rows`: `RUN`, `OVER` eller `BEN`, samt `foot`).
+- `shop` – `eyebrow`, `callout` och `secs`, där varje del har `id`, `title`, `sub` och `items`.
+
+Ikonen är ritad med Manrope (`vendor/manrope-OFL.txt`). Kontrollerat i Chromium på 320 och 390 px, ljust och mörkt, med och utan nyckel. Inte provat på en riktig iPhone.
