@@ -3451,6 +3451,15 @@ span.sy-cov.th.none{font-size:16px}
 :root[data-theme="dark"] .pr-on button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
 .pr-sum + .pr-sum{margin-top:-6px}
 .pr-sum span b{margin-right:6px}
+
+/* ---------- Nästa bild (18 nov 2026): en tom ruta bland bilderna, med dagen då den ska tas ---------- */
+.ph-grid .ph-next .ph-box{width:100%;aspect-ratio:3/4;border-radius:10px;border:1.5px dashed var(--muted);background:var(--surface2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px;box-sizing:border-box;color:var(--muted);text-align:center;font-size:12px}
+.ph-grid .ph-next .ph-box svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
+.ph-grid .ph-next .ph-box b{font-size:12px;font-weight:800;line-height:1.2;color:inherit}
+.ph-grid .ph-next .ph-box small{font-size:10.5px;font-weight:600;line-height:1.25}
+.ph-grid .ph-next.due .ph-box{border-style:solid;border-color:var(--ink);background:var(--surface);color:var(--ink)}
+.ph-grid .ph-next.due > span:last-child{color:var(--ink)}
+.b8-empty{margin-top:10px}
 </style>
 
 <div class="app">
@@ -5834,7 +5843,7 @@ function photoNew(){
     onAction: async a => {
       if (a === "again"){ $("camBody").innerHTML = ""; $("camBtns").hidden = false; $("camOv").classList.remove("done"); camStart(); }
       if (a === "save"){ const blob = await canvasBlob(CAM.canvas); const p = {id: "p" + Date.now().toString(36), kind: "progress", view: photoView, date: iso(today()), ts: Date.now(), w: CAM.canvas.width, h: CAM.canvas.height, blob};
-        try { await PDB.put(p); photos.push(p); toast("Bilden är sparad"); } catch(e){ toast("Kunde inte spara bilden – är telefonen full?"); } camClose(); }
+        try { await PDB.put(p); photos.push(p); toast("Bilden är sparad" + (typeof b8Said === "function" ? b8Said(p) : "")); } catch(e){ toast("Kunde inte spara bilden – är telefonen full?"); } camClose(); }
     }});
 }
 function photoViewer(id){
@@ -9084,7 +9093,7 @@ const GU = [
     ["📌", "Fäst dina snabbval", "Det du äter ofta ligger först. Under Ändra fäster du det som alltid ska finnas kvar och döljer det du inte vill se.", "vikt/mat", '#v-vikt [data-m4="quick"]', "#v-vikt .fd-add", "Länken Ändra syns när du har lagt in mat minst en gång."],
     ["🙂", "Magdagbok", "Tryck hur magen känns på kvällen. Efter en vecka letar appen efter mat som hänger ihop med dåliga kvällar.", "vikt/mat", "#m4Mage"],
     ["📅", "Veckomeny och inköpslista", "Veckans middagar, inköpslista per avdelning och laga-läge steg för steg.", "vikt/mat/meny", ""],
-    ["📷", "Progressbilder", "Samma ställe och ljus varje vecka, före och nu sida vid sida.", "vikt/bilder", "#v-vikt .card.coach"],
+    ["📷", "Progressbilder", "Samma ställe och ljus varje vecka, före och nu sida vid sida. En tom ruta bland bilderna visar vilken dag nästa ska tas, och den dagen kommer en påminnelse.", "vikt/bilder", "#v-vikt .card.coach"],
     ["🧍", "Hållning", "AI:n i telefonen mäter hållningen från sidan och framifrån.", "vikt/hallning", "#v-vikt .card.coach"],
     ["🩺", "Till sjukgymnasten", "Smärtloggen, hållningen, testerna, träningsvärken och de senaste veckornas träning på en sida – att visa på besöket.", "vikt/hallning", "#k5Sjk"]
   ]],
@@ -14276,11 +14285,81 @@ document.addEventListener("click", e => {
 });
 
 
+/* ---------- Nästa bild (18 nov 2026): en tom ruta bland progressbilderna med dagen då nästa ska tas, och en påminnelse den dagen ----------
+   Filip: "det kan finnas typ en ruta där det står datum under där nästa bild ska tas, och då jag tar en kommer nästa ruta upp".
+   Nästa bild = en vecka efter den senaste, för varje vinkel för sig. Bilderna ligger i IndexedDB och går inte att läsa direkt när
+   påminnelserna räknas ut, så senaste datumet per vinkel sparas också i en liten nyckel (bara datum – inga bilder lämnar telefonen). */
+const B8_KEY = "gymschema.bildnext.v1", B8_DAYS = 7;
+let b8 = (() => { const v = store(B8_KEY); return v && typeof v === "object" && !Array.isArray(v) && v.last && typeof v.last === "object" ? v : {last: {}}; })();
+// Senaste progressbilden per vinkel → {fram: "2026-11-18", …}. Ändras något räknas påminnelserna om.
+function b8Sync(list){
+  if (!Array.isArray(list)) return;
+  const last = {};
+  list.forEach(p => { if (p && p.kind === "progress" && /^\d{4}-\d{2}-\d{2}$/.test(p.date || "") && (!last[p.view] || p.date > last[p.view])) last[p.view] = p.date; });
+  if (JSON.stringify(last) === JSON.stringify(b8.last || {})) return;
+  b8 = {last}; store(B8_KEY, b8);
+  if (typeof ntSoon === "function") ntSoon();
+}
+const b8Next = v => { const d = (b8.last || {})[v]; return d ? iso(addDays(parseIso(d), B8_DAYS)) : null; };   // null = ingen bild i den vinkeln än
+// Dagen för påminnelsen: en vecka efter den senaste bilden i någon vinkel (tar du alla tre samma dag är det samma dag för alla).
+// Har dagen redan varit blir det i dag.
+function b8Due(){
+  const ds = Object.keys(b8.last || {}).map(v => b8.last[v]).sort(); if (!ds.length) return null;
+  const d = addDays(parseIso(ds[ds.length - 1]), B8_DAYS), t = today();
+  return d < t ? t : d;
+}
+const B8_CAM = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 8h3l1.4-2h6.2l1.4 2h3v10.5h-15z"/><circle cx="12" cy="13" r="3.4"/></svg>';
+// Rutan: streckad och tom tills dagen är inne – då blir den hel och svart. Ett tryck öppnar kameran, som knappen högst upp.
+function b8TileHTML(view){
+  const nx = b8Next(view), td = iso(today()), due = !nx || nx <= td, late = !!nx && nx < td;
+  const lab = !nx ? "Ta den första bilden" : "Ta nästa bild – " + (due ? "i dag" : dLong(nx));
+  return '<button type="button" class="ph-next' + (due ? " due" : "") + '" id="b8Next" data-ph="new" data-b8next="' + (nx || "") + '" aria-label="' + esc(lab) + '">' +
+    '<span class="ph-box">' + B8_CAM + '<b>' + (nx ? "Nästa bild" : "Första bilden") + '</b>' + (late ? '<small>skulle tas ' + esc(dLabel(nx)) + '</small>' : '') + '</span>' +
+    '<span>' + (due ? "I dag" : esc(gmCap(dLong(nx)))) + '</span></button>';
+}
+const _b8PH = photosHTML;
+photosHTML = function(){
+  const h = _b8PH.apply(this, arguments);
+  if (photos == null) return h;
+  b8Sync(photos);
+  const tile = b8TileHTML(photoView), g = '<div class="ph-grid">';
+  if (h.indexOf(g) >= 0) return h.replace(g, g + tile);
+  // inga bilder i den här vinkeln än: rutan för den första, i stället för det tomma kortet
+  const i = h.indexOf('<div class="card empty">'), j = i >= 0 ? h.indexOf('</div>', i) : -1;
+  if (i < 0 || j < 0) return h;
+  return h.slice(0, i) + '<div class="card"><div class="gm-top"><b>Alla bilder</b><span class="lead">0</span></div>' + g + tile + '</div>' +
+    '<div class="small b8-empty">Inga bilder ' + PVIEWS.find(v => v[0] === photoView)[1].toLowerCase() + ' än. Ta en i dag, så har du något att jämföra med om en månad.</div></div>' + h.slice(j + 6);
+};
+// Efter att en bild sparats: när nästa ska tas
+function b8Said(p){ try { return p && p.kind === "progress" ? " – nästa " + dLong(iso(addDays(parseIso(p.date), B8_DAYS))) : ""; } catch(e){ return ""; } }
+// När appen startar: läs datumen en gång, så att påminnelsen stämmer också innan Bilder har öppnats
+setTimeout(() => { if (photos) b8Sync(photos); else PDB.all().then(b8Sync).catch(() => {}); }, 2500);
+
+/* ----- påminnelsen: den dagen, tjugofem minuter efter att du vaknat (före frukost, som vägningen) ----- */
+NT_DEF.bild = {on: true};
+NT_ROWS.push(["bild", "📷", "Veckans bild", "En vecka efter förra progressbilden, på morgonen"]);
+(NT_GROUPS.find(g => g[0] === "Koll") || NT_GROUPS[NT_GROUPS.length - 1])[1].push("bild");
+NT_DESC.bild = () => Object.keys(b8.last || {}).length ? n6Desc("En vecka efter förra progressbilden, på morgonen", "bild-") : "En vecka efter förra progressbilden, på morgonen. Ta den första under Kropp → Bilder, så räknar appen därifrån";
+const _b8Nt = ntEvents;
+ntEvents = function(){
+  const out = _b8Nt.apply(this, arguments);
+  try {
+    if (!ntSet("bild").on) return out;
+    let d = b8Due(); if (!d) return out;
+    const at = x => { const p = String(gmWake()).split(/[:.]/).map(Number), y = new Date(x); y.setHours(p[0] || 0, p[1] || 0, 0, 0); return y.getTime() + 25 * 60e3; };
+    let a = at(d); if (a < Date.now() + 60e3){ d = addDays(d, 1); a = at(d); }
+    // (en dag längre fram än de andra påminnelserna: nästa bild ligger precis en vecka bort samma dag som en bild tas)
+    if ((d - today()) / 864e5 <= 7) out.push({id: "bild-" + iso(d), at: a, title: "Veckans bild i dag 📷", body: "En vecka sedan förra. Samma ställe och samma ljus, före frukost – förra bilden syns genomskinlig så att du ställer dig likadant.", url: "./#vikt/bilder"});
+  } catch(e){}
+  return out;
+};
+
+
 /* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611181230, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611181246, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -14312,7 +14391,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "18 nov 12.30", BUILD_NOTE = "Program 3.0: bröstpress i maskin, dips, latsdrag, benspark och lårcurl är tillbaka";
+const BUILD = "18 nov 12.46", BUILD_NOTE = "Rutan för nästa bild under Kropp → Bilder, med påminnelse den dagen";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
