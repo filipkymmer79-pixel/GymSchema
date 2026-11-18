@@ -1,7 +1,7 @@
 // Nollan: offline shell. Only this app's own caches are ever cleaned up,
 // because the other apps share the same site and keep caches of their own.
 const PREFIX = "nollan-";
-const CACHE = PREFIX + "v202611171346";
+const CACHE = PREFIX + "v202611181231";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith(PREFIX) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
