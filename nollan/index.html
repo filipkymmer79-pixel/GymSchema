@@ -179,14 +179,31 @@ a.ex svg{flex:0 0 auto;color:var(--muted)}
 .plint .n{background:var(--blue);color:#111214}
 .plint .n small{color:#111214;opacity:.75}
 
+/* ---------- Läget: the same parts set large, to be read at arm's length while standing at the wall ---------- */
+.big h2{font-size:22px}
+.tile.big p{font-size:21px;font-weight:700;line-height:1.28;letter-spacing:-.015em}
+.tile.big p.hint{font-size:15px;font-weight:500;letter-spacing:0;line-height:1.35}
+.list.big .row .t{font-size:20px;line-height:1.25}
+.list.big .row .note{font-size:15px;margin-top:4px}
+.list.big .hint{font-size:15px}
+.plint.big b{font-size:28px}
+.plint.big small{font-size:15px}
+.foot{margin:14px 6px 0;font-size:13px;font-weight:600;color:var(--muted)}
+
 /* ---------- Floating tab bar ---------- */
 .tabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--tile);border-radius:99px;padding:7px;display:flex;gap:6px;box-shadow:var(--float);z-index:10}
-.tabs button{width:62px;height:50px;border-radius:99px;border:0;background:transparent;color:var(--ink);display:grid;place-items:center}
+.tabs button{width:58px;height:50px;border-radius:99px;border:0;background:transparent;color:var(--ink);display:grid;place-items:center}
 .tabs button[aria-current="page"]{background:var(--ink);color:var(--on-ink)}
 
 @media (max-width:350px){
   .hero h1{font-size:40px}
-  .tabs button{width:56px}
+  .tabs{gap:4px}
+  .tabs button{width:50px}
+  .big h2{font-size:20px}
+  .tile.big p{font-size:19px}
+  .list.big .row .t{font-size:18.5px}
+  .plint.big b{font-size:24px}
+  .plint.big small{font-size:13px}
   .plint{padding-left:12px;padding-right:12px}
 }
 @media (prefers-reduced-motion: reduce){
@@ -207,8 +224,55 @@ a.ex svg{flex:0 0 auto;color:var(--muted)}
   </header>
 
   <main>
+    <!-- ================= Läget ================= -->
+    <section id="v-laget" aria-label="Läget">
+      <div class="hero" id="heroL">
+        <div class="eyebrow">Vilken bunt är nollan?</div>
+        <div role="status">
+          <h1 id="heroNameL">Den svarta bunten</h1>
+          <div class="count" id="heroSubL">Enligt färgerna. Mät för att bekräfta.</div>
+        </div>
+        <button class="go" id="goNextL" type="button" aria-label="Gå till nästa steg">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+
+      <div class="tile big" id="whyTile">
+        <h2>Därför</h2>
+        <p id="whyText"></p>
+      </div>
+
+      <div class="list big">
+        <header><h2>Innan den blå kopplas in</h2><span class="n" id="preN"></span></header>
+        <ul id="preList"></ul>
+      </div>
+
+      <div class="tile big">
+        <h2>Den blå tråden</h2>
+        <p>Änden vid strömbrytaren är lång och böjd efter dragningen. Klipp av den och skala en ny, kort ände.</p>
+      </div>
+
+      <div class="list big">
+        <header><h2>På panelen</h2><span class="n">från vänster</span></header>
+        <div class="plint big">
+          <div><b>L2</b><small>tom</small></div>
+          <div><b>L1</b><small>röd</small></div>
+          <div><b>L</b><small>båda vita</small></div>
+          <div class="n"><b>N</b><small>blå</small></div>
+        </div>
+        <p class="hint">De två vita ser ut att sitta i samma plint på gamla brytaren. Stämmer det ska båda sitta ihop i L. Annars tappar det som matas vidare sin ström.</p>
+      </div>
+
+      <div class="tile big">
+        <h2>Skarven i dosan</h2>
+        <p>Låt en elektriker göra eller kontrollera skarven i kopplingsdosan.</p>
+      </div>
+
+      <p class="foot">Uppdaterat 18 november, efter videon på strömbrytaren.</p>
+    </section>
+
     <!-- ================= Hitta nollan ================= -->
-    <section id="v-hitta" aria-label="Hitta nollan">
+    <section id="v-hitta" hidden aria-label="Hitta nollan">
       <div class="hero" id="hero">
         <div class="eyebrow">Vilken bunt är nollan?</div>
         <div role="status">
@@ -222,7 +286,7 @@ a.ex svg{flex:0 0 auto;color:var(--muted)}
 
       <div class="tile step" id="step-sw">
         <h2><span class="no">1</span>Färgerna i strömbrytaren</h2>
-        <p class="hint">Tryck på färgerna som sitter i den gamla strömbrytaren. Oftast är det två: fasen och tändtråden.</p>
+        <p class="hint">Tryck på färgerna som sitter i den gamla strömbrytaren. Vit och röd är ifyllt från videon. Ändra om det inte stämmer.</p>
         <div class="chips" id="chipsSw" role="group" aria-label="Färger i strömbrytaren"></div>
         <button class="toggle" id="trapp" type="button" aria-pressed="false">
           <span class="tick"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
@@ -241,7 +305,7 @@ a.ex svg{flex:0 0 auto;color:var(--muted)}
       <div class="list" id="result" hidden>
         <header><h2>Så hänger det ihop</h2></header>
         <div id="resultRows"></div>
-        <p class="hint">Tändtråden finns på båda ställena. Fasen finns bara i strömbrytaren och nollan bara i lampan.</p>
+        <p class="hint" id="resultWhy"></p>
       </div>
       <div class="callout" id="resultNote" role="status" hidden></div>
 
@@ -288,6 +352,7 @@ a.ex svg{flex:0 0 auto;color:var(--muted)}
         <div class="ex"><span>L</span><b>fasen, som alltid har spänning</b></div>
         <div class="ex"><span>L1</span><b>tändtråden upp till lampan</b></div>
         <div class="ex"><span>L2</span><b>tom, för en andra lampa</b></div>
+        <p class="hint">Sitter två trådar ihop i samma plint på gamla brytaren ska de sitta ihop i L på panelen också.</p>
         <p class="hint">Hålet längst till vänster har ingen bokstav. Det används inte.</p>
       </div>
 
@@ -358,6 +423,9 @@ a.ex svg{flex:0 0 auto;color:var(--muted)}
 </div>
 
 <nav class="tabs" id="tabs" aria-label="Flikar">
+  <button id="tab-laget" type="button" aria-label="Läget">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 21V4.5M5.5 4.5H18l-2.4 4 2.4 4H5.5"/></svg>
+  </button>
   <button id="tab-hitta" type="button" aria-label="Hitta nollan">
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
   </button>
@@ -402,12 +470,18 @@ COLORS.forEach(function (c) { BY[c.id] = c; });
 var BUNDLE_COLORS = COLORS.filter(function (c) { return c.id !== "gulgron"; });
 
 function order(a) { return a.slice().sort(function (x, y) { return COLORS.indexOf(BY[x]) - COLORS.indexOf(BY[y]); }); }
-function fresh() { return { tab: "hitta", sw: [], lamp: [], trapp: false, bundles: ["svart", "vit"], meas: {}, done: {} }; }
+/* A new start already holds what the video of the old switch showed: white and red wires there, black and white bundles in the box. */
+function fresh() { return { v: 2, tab: "laget", sw: ["vit", "rod"], lamp: [], trapp: false, bundles: ["svart", "vit"], meas: {}, done: {} }; }
 var state = fresh();
 (function load() {
   try {
     var s = JSON.parse(localStorage.getItem(KEY) || "null");
     if (!s || typeof s !== "object") return;
+    if (s.done && typeof s.done === "object") {
+      Object.keys(s.done).forEach(function (k) { if (s.done[k] === true) state.done[k] = true; });
+    }
+    // Answers saved by the first version give way to what the video showed. The ticks stay.
+    if (s.v !== 2) return;
     ["sw", "lamp", "bundles"].forEach(function (k) {
       if (!Array.isArray(s[k])) return;
       var seen = {};
@@ -418,10 +492,7 @@ var state = fresh();
     if (s.meas && typeof s.meas === "object") {
       Object.keys(s.meas).forEach(function (c) { if (BY[c] && /^(230|0|annat)$/.test(s.meas[c])) state.meas[c] = s.meas[c]; });
     }
-    if (s.done && typeof s.done === "object") {
-      Object.keys(s.done).forEach(function (k) { if (s.done[k] === true) state.done[k] = true; });
-    }
-    if (/^(hitta|skiss|steg|regler)$/.test(s.tab)) state.tab = s.tab;
+    if (/^(laget|hitta|skiss|steg|regler)$/.test(s.tab)) state.tab = s.tab;
   } catch (e) { state = fresh(); }
 })();
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* works without it */ } }
@@ -434,18 +505,37 @@ function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 function fill(c) { return BY[c].hex ? BY[c].hex : STRIPES; }
 function dot(c) { return '<span class="dot" style="background:' + fill(c) + '"></span>'; }
 function names(a) { return a.map(function (c) { return dot(c) + esc(nm(c)); }).join(" &nbsp; "); }
+function listed(a) { return a.length > 2 ? a.slice(0, -1).join(", ") + " och " + a[a.length - 1] : a.join(" och "); }
+/* What should sit at the lamp: the neutral's colour and the switched wire's. */
+function expect(c) { return nm(c.nolla) + " och " + c.tand.map(nm).join(" eller "); }
 
 /* ---------- What the colours say ----------
-   The switch has the phase and the switched wire (tändtråd). The lamp has the neutral and the switched wire.
-   So the colour found in both places is the switched wire, the one only in the switch is the phase,
-   and the one only at the lamp is the neutral. Yellow/green is always protective earth and is left out;
-   red beside another colour at the lamp is taken as old protective earth. */
+   Two ways to read them. The bundles come first, because the question is which bundle is the neutral.
+   1. The bundles. The phase runs from its bundle down to the switch, and the neutral never goes to a switch.
+      So when just one of the two bundle colours is found in the switch, that bundle is the phase and the other
+      one the neutral. The lamp is then only a check: it should hold the neutral's colour and the switched wire's.
+   2. The lamp. When the bundles give no answer: the colour found in both the switch and the lamp is the
+      switched wire (tändtråd), the one only in the switch is the phase, the one only at the lamp is the neutral.
+   Yellow/green is always protective earth and is left out; a spare red at the lamp is taken as old protective earth. */
 function colorVerdict() {
   if (state.trapp) return { kind: "trapp" };
   var sw = state.sw.filter(function (c) { return c !== "gulgron"; });
   var lamp = state.lamp.filter(function (c) { return c !== "gulgron"; });
   var pe = has(state.sw, "gulgron") || has(state.lamp, "gulgron") ? ["gulgron"] : [];
   if (sw.length < 2) return { kind: "need", what: "sw" };
+
+  var inSw = state.bundles.length === 2 ? state.bundles.filter(function (c) { return has(sw, c); }) : [];
+  if (inSw.length === 1) {
+    var bFas = inSw[0], bNolla = state.bundles[0] === bFas ? state.bundles[1] : state.bundles[0];
+    var bTand = sw.filter(function (c) { return c !== bFas; });
+    var r = { kind: "ok", via: "bundles", tand: bTand, fas: bFas, nolla: bNolla, pe: pe, lampOdd: false };
+    if (lamp.length < 2) return r;
+    if (has(lamp, bFas)) return { kind: "unclear", why: "lampfas", fas: bFas };
+    if (has(lamp, "rod") && !has(bTand, "rod") && bNolla !== "rod") pe.push("rod");
+    if (has(lamp, bNolla) && bTand.some(function (c) { return has(lamp, c); })) r.via = "both"; else r.lampOdd = true;
+    return r;
+  }
+
   if (lamp.length < 2) return { kind: "need", what: "lamp" };
   var common = sw.filter(function (c) { return has(lamp, c); });
   var fas = sw.filter(function (c) { return !has(lamp, c); });
@@ -455,7 +545,7 @@ function colorVerdict() {
   if (!fas.length) return { kind: "unclear", why: "nofas" };
   if (!nolla.length) return { kind: "unclear", why: "nonolla" };
   if (fas.length > 1 || nolla.length > 1) return { kind: "unclear", why: "many" };
-  return { kind: "ok", tand: common, fas: fas[0], nolla: nolla[0], pe: pe };
+  return { kind: "ok", via: "lamp", tand: common, fas: fas[0], nolla: nolla[0], pe: pe, lampOdd: false };
 }
 
 /* ---------- What the tester says ----------
@@ -537,12 +627,15 @@ function paintHero(v) {
   } else if (v.state === "stop") {
     color = "red"; title = "Stopp"; sub = "Mätningen stämmer inte. Läs rutan nedanför."; go = "step-meas";
   }
-  $("hero").style.setProperty("--day", "var(--" + color + ")");
-  if ($("heroName").textContent !== title) $("heroName").textContent = title;
-  if ($("heroSub").textContent !== sub) $("heroSub").textContent = sub;
   goTarget = go;
-  var toTab = go.indexOf("tab:") === 0;
-  $("goNext").setAttribute("aria-label", toTab ? "Visa skissen" : "Gå till nästa steg");
+  var toTab = go.indexOf("tab:") === 0, label = toTab ? "Visa skissen" : "Gå till nästa steg";
+  // The same answer on Hitta nollan and on Läget. On Läget the box it points to is one tab away.
+  [["hero", "heroName", "heroSub", "goNext", sub], ["heroL", "heroNameL", "heroSubL", "goNextL", sub.replace("Läs rutan nedanför.", "Tryck på pilen.")]].forEach(function (h) {
+    $(h[0]).style.setProperty("--day", "var(--" + color + ")");
+    if ($(h[1]).textContent !== title) $(h[1]).textContent = title;
+    if ($(h[2]).textContent !== h[4]) $(h[2]).textContent = h[4];
+    $(h[3]).setAttribute("aria-label", label);
+  });
   $("goIcon").setAttribute("d", toTab ? ARROW_RIGHT : ARROW_DOWN);
 }
 
@@ -557,16 +650,25 @@ function paintResult(v) {
     if (c.pe.length) rows += '<div class="ex"><span>Skyddsjord</span><b>' + names(c.pe) + '</b></div>';
     $("resultRows").innerHTML = rows;
     $("result").hidden = false;
+    var why = "Tändtråden finns på båda ställena. Fasen finns bara i strömbrytaren och nollan bara i lampan.";
+    if (c.via !== "lamp") {
+      why = "Av buntarnas färger finns bara " + nm(c.fas) + " i strömbrytaren. Den bunten är fasen, för nollan går aldrig till en strömbrytare.";
+      if (c.via === "both") why += " Lampan stämmer med det.";
+      else if (!c.lampOdd) why += " Kolla lamputtaget också: där bör det sitta " + expect(c) + ".";
+    }
+    if ($("resultWhy").textContent !== why) $("resultWhy").textContent = why;
     if (c.nolla === "rod") note = "Röd som nolla är ovanligt. I gamla hus är röd oftast skyddsjord eller tändtråd. Mät innan ni litar på det.";
     else if (c.fas === "bla") note = "Blå är nolla i nyare installationer. Sitter den som fas här är något ovanligt kopplat. Mät innan ni litar på det.";
     else if (has(["gul", "gron", "brun"], c.nolla)) note = cap(nm(c.nolla)) + " är en ovanlig färg för en nolla. Mät innan ni litar på det.";
+    else if (c.lampOdd) note = "I lampan väntas " + expect(c) + ". Stämmer inte det kan något vara skarvat på vägen. Mät för att vara säker.";
     else if (state.bundles.length === 2 && !has(state.bundles, c.nolla)) note = "Enligt färgerna är nollan " + nm(c.nolla) + ", men buntarna i steg 3 är " + nm(order(state.bundles)[0]) + " och " + nm(order(state.bundles)[1]) + ". Ändra buntarnas färger där, eller mät.";
-    else if (c.tand.length > 1 && has(c.tand, "rod")) note = "Två färger finns på båda ställena. Den röda kan vara skyddsjord i stället för tändtråd.";
+    else if (c.via === "lamp" && c.tand.length > 1 && has(c.tand, "rod")) note = "Två färger finns på båda ställena. Den röda kan vara skyddsjord i stället för tändtråd.";
   } else {
     $("result").hidden = true;
     if (c.kind === "unclear") {
       note = c.why === "nocommon" ? "Ingen färg finns på båda ställena. Då byter tändtråden färg på vägen, och färgerna räcker inte. Mät buntarna i steg 3."
         : c.why === "nofas" ? "Alla färger i strömbrytaren finns i lampan också. Då går det inte att se vilken som är fasen. Mät buntarna i steg 3."
+        : c.why === "lampfas" ? "I lampan sitter " + nm(c.fas) + ", samma färg som bunten som går till strömbrytaren. Då räcker inte färgerna. Mät buntarna i steg 3."
         : c.why === "nonolla" ? "Alla färger i lampan finns i strömbrytaren också. Då går det inte att se vilken som är nollan. Mät buntarna i steg 3."
         : "Det blir fler än en möjlig fas eller nolla. Kolla att du har valt rätt färger. Annars får ni mäta buntarna i steg 3.";
     }
@@ -653,6 +755,64 @@ function paintSketch(v) {
     : "Färgerna fylls i när du har hittat nollan.";
 }
 
+/* ---------- Läget ---------- */
+var PRE = [
+  { id: "pre-lamp", auto: "step-lamp", t: "Kolla lamputtaget" },
+  { id: "pre-meas", auto: "step-meas", t: "Mät buntarna" },
+  { id: "pre-fuse", t: "Bryt säkringen innan någon rör buntarna" }
+];
+function preDone(it, v) {
+  if (it.id === "pre-lamp") return v.c.kind === "ok" && v.c.via !== "bundles";
+  if (it.id === "pre-meas") return v.state === "confirmed" || v.state === "measured";
+  return !!state.done[it.id];
+}
+function preNote(it, v) {
+  if (it.id === "pre-lamp") return v.c.kind === "ok" ? "Sitter det " + expect(v.c) + " där stämmer det." : "Fyll i färgerna under Hitta nollan.";
+  if (it.id === "pre-meas") return v.known
+    ? cap(bunt(v.nolla)) + " ska visa 0\u00A0V mot jord, även när lampan är tänd. " + cap(bunt(v.fas)) + " ska visa 230\u00A0V."
+    : "Nollan visar 0\u00A0V mot jord och fasen 230\u00A0V.";
+  return "";
+}
+function whyText(v) {
+  var c = v.c, t = "";
+  if (!v.known) return "";
+  if (c.kind !== "ok") return cap(bunt(v.nolla)) + " visar 0\u00A0V mot jord och " + bunt(v.fas) + " 230\u00A0V.";
+  if (c.via === "lamp") {
+    t = "Tändtråden (" + listed(c.tand.map(nm)) + ") finns både i strömbrytaren och i lampan. " + cap(nm(c.fas)) + " finns bara i strömbrytaren och är fasen. " + cap(nm(c.nolla)) + " finns bara i lampan och är nollan.";
+  } else {
+    t = "I strömbrytaren sitter bara " + listed(order([c.fas].concat(c.tand)).map(function (x) { return BY[x].adj; })) + " trådar, ingen " + nm(c.nolla) + ". Nollan går aldrig till en strömbrytare, så " + nm(c.fas) + " är fasen och " + listed(c.tand.map(nm)) + (c.tand.length > 1 ? " är tändtrådar" : " tändtråden") + ". Kvar som nolla blir " + bunt(c.nolla) + ".";
+  }
+  if (v.state === "confirmed") t += " Mätningen säger samma sak.";
+  return t;
+}
+var preBuilt = false;
+function paintLaget(v) {
+  if (!preBuilt) {
+    preBuilt = true;
+    $("preList").innerHTML = PRE.map(function (it) {
+      return '<li class="row" id="' + it.id + '"><div class="line">' +
+        '<button class="row-main" type="button" data-id="' + it.id + '"' + (it.auto ? ' data-auto="1"' : ' aria-pressed="false"') + '>' +
+        '<span class="tick">' + TICK + '</span><span><span class="t">' + esc(it.t) + '</span><span class="note"></span></span></button>' +
+        (it.auto ? '<span class="side"><span class="btn ghost" aria-hidden="true">Öppna</span></span>' : '') +
+        '</div></li>';
+    }).join("");
+  }
+  var done = 0;
+  PRE.forEach(function (it) {
+    var on = preDone(it, v), li = $(it.id), b = li.querySelector(".row-main"), note = li.querySelector(".note"), txt = preNote(it, v);
+    if (on) done++;
+    li.classList.toggle("done", on);
+    if (note.textContent !== txt) note.textContent = txt;
+    note.hidden = !txt;
+    if (it.auto) b.setAttribute("aria-label", it.t + (on ? ", klart" : ", inte klart") + ". " + txt + " Öppna Hitta nollan.");
+    else b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  $("preN").textContent = done + " av " + PRE.length;
+  var w = whyText(v);
+  $("whyTile").hidden = !w;
+  if ($("whyText").textContent !== w) $("whyText").textContent = w;
+}
+
 /* ---------- Stegen ---------- */
 var STEPS = [
   { title: "Innan elektrikern kommer", items: [
@@ -666,7 +826,7 @@ var STEPS = [
     { id: "off", t: "Bryter säkringen och mäter att det är spänningslöst" },
     { id: "pull", t: "Drar den blå nollan i röret, från dosan till strömbrytaren" },
     { id: "join", t: "Kopplar in den i nollbunten" },
-    { id: "panel", t: "Kopplar panelen: N, L och L1", note: "Se plinten under Skissen." }
+    { id: "panel", t: "Kopplar panelen: N, L och L1", note: "Båda vita i L, röd i L1 och blå i N." }
   ] },
   { title: "När det är klart", items: [
     { id: "on", t: "Slå på säkringen", note: "Skärmen på panelen ska tändas." },
@@ -719,11 +879,11 @@ function paint() {
   syncChips($("chipsLamp"), state.lamp);
   syncChips($("chipsBundles"), state.bundles);
   $("trapp").setAttribute("aria-pressed", state.trapp ? "true" : "false");
-  paintHero(v); paintResult(v); paintMeas(v); paintSketch(v); paintSteg(v);
+  paintHero(v); paintLaget(v); paintResult(v); paintMeas(v); paintSketch(v); paintSteg(v);
 }
 
 /* ---------- Tabs ---------- */
-var TABS = ["hitta", "skiss", "steg", "regler"];
+var TABS = ["laget", "hitta", "skiss", "steg", "regler"];
 function showTab(k, keepScroll) {
   state.tab = k;
   TABS.forEach(function (t) {
@@ -765,6 +925,18 @@ $("editBundles").addEventListener("click", function () {
 $("goNext").addEventListener("click", function () {
   if (goTarget.indexOf("tab:") === 0) showTab(goTarget.slice(4)); else goTo(goTarget);
 });
+$("goNextL").addEventListener("click", function () {
+  if (goTarget.indexOf("tab:") === 0) { showTab(goTarget.slice(4)); return; }
+  showTab("hitta"); goTo(goTarget);
+});
+$("preList").addEventListener("click", function (e) {
+  var li = e.target.closest ? e.target.closest(".row") : null;
+  if (!li) return;
+  var it = PRE.filter(function (x) { return x.id === li.id; })[0];
+  if (it.auto) { showTab("hitta"); goTo(it.auto); return; }
+  if (state.done[it.id]) delete state.done[it.id]; else state.done[it.id] = true;
+  save(); paint();
+});
 $("stegLists").addEventListener("click", function (e) {
   var b = e.target.closest ? e.target.closest(".row") : null;
   if (!b) return;
@@ -786,7 +958,7 @@ $("resetAll").addEventListener("click", function () {
   clearTimeout(resetTimer); resetArmed = false;
   var tab = state.tab; state = fresh(); state.tab = tab; measBuilt = "";
   btn.textContent = "Börja om från början"; btn.className = "btn ghost";
-  msg.textContent = "Rensat. Färger, mätning och bockar är borta.";
+  msg.textContent = "Rensat. Strömbrytaren står på vit och röd igen, resten är tomt.";
   save(); paint();
 });
 
