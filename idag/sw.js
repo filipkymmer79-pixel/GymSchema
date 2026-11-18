@@ -1,7 +1,7 @@
 // Idag: offline shell. Only this app's own caches are ever cleaned up,
 // because the other apps share the same site and keep caches of their own.
 const PREFIX = "idag-";
-const CACHE = PREFIX + "v202611171505";
+const CACHE = PREFIX + "v202611181010";
 const SHELL = ["./", "./index.html", "./icon-180.png", "./icon-192.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith(PREFIX) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
