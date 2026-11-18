@@ -110,6 +110,19 @@ Senare samma kväll kom 13 klipp, fem bilder och en sammanställning till. Nytt:
 - **🎤 Röstlogg** (ett experiment, från 18 november 2026): knappen *Säg setet* över vikt och reps i Kör passet lyssnar på svenska. "Tio kilo åtta" fyller i vikten och repsen, bara "åtta" ändrar repsen, och "tjugosju och en halv kilo sju" blir 27,5 × 7. Raden under säger vad appen hörde, och setet bockas aldrig av sig självt – man trycker *Klart set* som vanligt. Hellre inget svar än fel svar: tre tal utan ordet kilo, eller halva reps, förstås inte. Knappen finns inte i uppvärmningen, inte där höger och vänster loggas var för sig och inte för plankan – och inte alls om webbläsaren saknar röstigenkänning. På iPhone fungerar röst i webbappar på hemskärmen inte alltid.
 - Vikter med decimal (27,5) ryms nu mellan minus och plus i Kör passet.
 
+Från 19 november 2026 har Kör passet också det här. Inget av det ändrar programmet eller vikterna appen föreslår:
+
+- **⚙ Maskinens inställning**: skriv till exempel *säte 4, ryggstöd 2* en gång. Det står vid övningen varje gång, också som en svart etikett i passet.
+- **✎ Lapp till nästa gång**: en rad till dig själv, som *höj sätet ett snäpp*. Den står gul överst vid övningen nästa gång du kör den, tills du trycker *Fixat*.
+- **🏆 Rekordet att slå**: rekordet i övningen och hur många reps på vikten du valt som slår det. Samma mått som när passet sparas: uppskattat max (Epley) för vikt, minst hjälp för assisterat.
+- **🔋 Kvar i tanken**: under vilan trycker du 0, 1, 2 eller 3+ – hur många reps till du hade klarat. Det sparas på setet (`q`) och syns som *45 × 8 (2 kvar)* nästa gång och i Historik.
+- **↘ Dropset**: efter sista setet i en övning med vikt sänker knappen under vilan vikten 20 % och du kör direkt. Dropsetet sparas på setet (`d`), räknas inte i volymen eller rekorden och påverkar inte vikten appen föreslår.
+- **♪ Tempo-pip**: ett lågt pip när du sänker vikten och ett högt när du lyfter – 2, 3 eller 4 sekunder ner och 1 upp. Stannar vid *Klart set*.
+- **🧪 Styrketest** vecka 4 och 8 i blocket: Kör passet frågar om du vill testa. Säger du ja kör du sista setet i första övningen så långt det går med bra teknik, och appen räknar ut ett ungefärligt max. Setet märks som test (`t`), och resultaten sparas på telefonen (`gymschema.styrketest.v1`). Inte på en lätt dag.
+- **↶ Ångra**: efter *Klart set* står *Set 1 klart · Ångra* längst ner i några sekunder. Ett tryck gör setet oklart igen och stoppar vilan. Ett dropset och en lapp som bockats av går också att ångra.
+- **🛞 Viktratten**: tryck på siffran för vikt eller reps, så kommer en ratt att snurra fram rätt siffra på. Plus och minus finns kvar.
+- Maskinen, lapparna, tempot och styrketesten sparas på telefonen (`gymschema.maskin.v1`, `gymschema.nasta.v1`, `gymschema.tempo.v1`) och följer med i backupen.
+
 ### Spotify i appen
 
 Sedan 17 november 2026 går musiken att styra utan att lämna appen. Musiken spelas av Spotify-appen – GymSchema är fjärrkontrollen. Det kräver Spotify Premium.
