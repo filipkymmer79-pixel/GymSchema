@@ -46,6 +46,10 @@ Version 3.0 kom 18 november 2026: **bröstpress i maskin** ersatte hantelbänkpr
 
 **↪ Flytta passet**: blir ett pass inte av kommer en banner dagen efter. Välj ny dag så skjuts det som låg där till nästa lediga dag, så att det ändå blir fyra pass i veckan. Dagens pass går också att flytta innan det börjat (*↪ Flytta* överst i passet), eller hoppa över den veckan. Veckoremsan, dagens pass, Vanor, veckokollen och gympåminnelserna följer flytten. Nästa vecka är som vanligt igen. Körs ett pass en annan dag än sin egen (till exempel onsdagens pass på tisdagen) räknas det som flyttat dit, från 18 november 2026: det står inte kvar på sin vanliga dag, Pass säger att det redan är kört och visar nästa pass. Väljer man det för hand ändå ligger det kvar.
 
+**🕘 Logga i efterhand** (från 18 november 2026): tryck på en dag i veckoremsan som har varit och saknar gympass, välj passet du körde och bocka av seten. Det går också från *↪ Flytta* (*Körde du det redan?*). Överst står *I efterhand* med dagen och *Avbryt*; vilotimern och rösten är tysta, och *Kör passet* behövs inte. Passet sparas på den dagen (klockan 12, utan passtid, märkt `late`) och räknas sedan som flyttat dit – onsdagens pass loggat på tisdagen gör onsdagen ledig. Har dagens pass redan bockade set får man spara eller avsluta det först.
+
+**Ett osparat pass glöms inte bort**: tidigare släpptes ett pass som aldrig sparats när dagen tog slut, och det som bockats av försvann. Nu läggs ett sådant pass undan när appen öppnas (`gymschema.osparat.v1`, bara på telefonen, högst fem), och Pass visar *Passet i tisdags sparades aldrig* med antalet bockade set. *Öppna och spara* öppnar det i efterhand för rätt dag, *Släng* tar bort det efter ett andra tryck.
+
 ### Atletprogrammet
 
 Sedan 14 november 2026 ligger Atletprogrammet runt gympassen: 121 övningar i 18 grupper – fötter och balans, kvällsvila, spänst, starka ben, backe och sprint, isometriskt, slåss, Shaolin, yoga, rörlighet, stå rak, kalistenik, Dirty thirty och surf på land.

@@ -3540,6 +3540,38 @@ body.sy-docked.timer-on .app{padding-bottom:calc(var(--tabs-h) + var(--tabs-b) +
 .ph-grid .ph-next.due .ph-box{border-style:solid;border-color:var(--ink);background:var(--surface);color:var(--ink)}
 .ph-grid .ph-next.due > span:last-child{color:var(--ink)}
 .b8-empty{margin-top:10px}
+
+/* ---------- Logga i efterhand och osparade pass (18 nov 2026, kväll) ---------- */
+/* Veckan: en dag som har varit utan gympass går att trycka på */
+#strip .day[data-ef]{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#strip .day[data-ef]:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+#strip .day[data-ef]:active .plate{transform:scale(.9)}
+/* Rutorna överst på Pass */
+.banner.os-ban,.banner.ef-ban{flex-wrap:wrap;align-items:flex-start}
+.banner.os-ban > span:nth-child(2),.banner.ef-ban > span:nth-child(2){flex:1 1 180px;min-width:0;line-height:1.45}
+.banner.ef-ban > .btn{flex:0 0 auto;margin-left:auto;align-self:center}
+.os-btns{display:flex;flex-wrap:wrap;gap:8px;flex:1 0 100%;padding-left:30px}
+.os-btns .btn{flex:0 0 auto}
+.os-ban .btn.ghost,.ef-ban .btn.ghost{background:var(--p1)}
+/* Bladet: vilket pass körde du? */
+.ef-list{display:grid;padding:6px}
+.ef-row{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;min-height:62px;padding:9px 10px;border-radius:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ef-row + .ef-row{box-shadow:0 -1px 0 var(--line)}
+.ef-row:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.ef-row:active{background:var(--surface2)}
+.ef-ab{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:var(--onc);font-weight:800;font-size:14px;letter-spacing:-.01em}
+.ef-row.did .ef-ab{background:var(--surface2);color:var(--muted)}
+.ef-tx{display:grid;gap:2px;min-width:0}
+.ef-tx b{font-size:15.5px;line-height:1.25;color:var(--ink)}
+.ef-tx small{font-size:13px;line-height:1.3;color:var(--muted)}
+/* Flytta passet: Körde du det redan? */
+.ef-fl{display:grid;gap:8px;padding-top:4px}
+.ef-fl b{font-size:15.5px;line-height:1.3}
+.ef-fl p{margin:0;font-size:14px;line-height:1.45;color:var(--muted)}
+.ef-days{grid-template-columns:repeat(auto-fill,minmax(64px,1fr))}
+.ef-days button{min-height:52px}
+/* Medan ett pass loggas i efterhand behövs inte Kör passet */
+html.ef-late #v-pass [data-fk="open"]{display:none}
 </style>
 
 <div class="app">
@@ -3886,7 +3918,7 @@ let saveDraftT = 0;
 function persistDraft(){ clearTimeout(saveDraftT); saveDraftT = setTimeout(() => store("lyftloggen.draft.v1", draft), 300); }
 function restoreDraft(){
   const d = store("lyftloggen.draft.v1");
-  if (!d || !d.type || !PROGRAM[d.type] || d.date !== iso(today()) || !d.sets) return null;
+  if (!d || !d.type || !PROGRAM[d.type] || (d.late ? d.made !== iso(today()) : d.date !== iso(today())) || !d.sets) return null;   // late: loggas i efterhand (efter9.js)
   // 15 nov 2026: tricepspress med rep ersatte triceps över huvudet. Set som loggats i dag med bytet "Tricepspress med rep" följer med.
   if (d.sets.tricepsoh){ const al = d.alt && d.alt.tricepsoh; if (al === "Tricepspress med rep" && !d.sets.triceps) d.sets.triceps = d.sets.tricepsoh; delete d.sets.tricepsoh; if (d.alt) delete d.alt.tricepsoh; }
   // 15 nov 2026 (2): abduktorn ersatte hip thrust på Ben + över – Filip körde redan abduktorn i den rutan. Set som bockats av i dag följer med till abduktorn.
@@ -3966,7 +3998,7 @@ function renderPass(){
   if (preStart){
     const nx = nextScheduled();
     banner += '<div class="banner info"><span>▶</span><span><b>Programmet startar ' + (nx.i === 1 ? "imorgon" : DAYL[nx.d.getDay()] + " " + nx.d.getDate() + " " + MON[nx.d.getMonth()]) + '</b> med ' + esc(PROGRAM[nx.k].name) + '. Kika igenom övningarna redan nu – vikterna fyller du i på plats.</span></div>';
-  } else if (!tk){
+  } else if (!tk && !draft.late){   // late: ett annat dags pass loggas i efterhand (efter9.js) – dagens vilodagsrutor hör inte hit
     const nx = nextScheduled(), rd = RUN_DAYS[today().getDay()];
     banner += rd ? '<div class="banner info"><span>🏃</span><span><b>Löpdag: ' + esc(rd.toLowerCase()) + '.</b> Lugnt till en backe, backpasset och lugnt hem – blocken står i Atlet idag. ' + (gmPushToday() ? 'Passet ligger på klockan – starta Löpning så finns det där. ' : '') + 'Nästa gympass: ' + DAYL[nx.d.getDay()] + ' – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>'
       : a3IvDay() ? '<div class="banner info"><span>🫀</span><span><b>Intervaller i dag: 4 × 4.</b> Inget gympass – blocket står i Atlet idag och tar 35 minuter. Nästa gympass: ' + DAYL[nx.d.getDay()] + ' – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>'
@@ -3976,7 +4008,7 @@ function renderPass(){
   const loggedToday = sessions.some(s => s.date === iso(today()) && s.type === selType);
   el.innerHTML = flyttBannerHTML() + dlBannerHTML() + banner + runWxHTML() + gmPassHTML() + hemHTML() + k5MornHTML() + atCardHTML() +
     '<div class="picker" role="group" aria-label="Välj pass">' + ORDER.map(k => '<button class="pick" type="button" data-type="' + k + '" aria-pressed="' + (k === selType) + '" style="' + sessColor(k) + '"><span class="ab">' + PROGRAM[k].ab + '</span><span class="dd">' + PROGRAM[k].day + '</span></button>').join("") + '</div>' +
-    '<div class="sess-head"><div><div class="lead">' + (preStart ? "Första passet" : tk === selType ? "Dagens pass" : "Valt pass") + '</div><h2 class="h2">' + esc(p.name) + '</h2></div>' +
+    '<div class="sess-head"><div><div class="lead">' + (draft.late ? "I efterhand · " + efDayL(draft.date) : preStart ? "Första passet" : tk === selType ? "Dagens pass" : "Valt pass") + '</div><h2 class="h2">' + esc(p.name) + '</h2></div>' +
     '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">' + ("speechSynthesis" in window ? '<button class="pill vtog" type="button" data-voice aria-pressed="' + voiceOn + '" aria-label="Röstcoach ' + (voiceOn ? "på" : "av") + '">' + (voiceOn ? "🔊 Röst" : "🔇 Röst") + '</button>' : '') +
     flyttPillHTML() + (dlActive() ? '<span class="pill dl">' + (k5DlDay() ? "Lätt dag" : "Lätt vecka") + '</span>' : '') + (loggedToday ? '<span class="pill good">✓ Loggat idag</span>' : '<span class="pill num">' + p.ex.length + ' övningar</span>') + '</div></div>' +
     rcardHTML("w") +
@@ -4087,7 +4119,7 @@ $("v-pass").addEventListener("click", e => {
     const t = pick.dataset.type;
     if (t === selType) return;
     if (draft && draft.started && armed !== t){ armed = t; clearTimeout(armedT); armedT = setTimeout(() => { armed = null; }, 4000); toast("Tryck igen för att byta – det du loggat i det här passet försvinner"); return; }
-    armed = null; selType = t; draft = newDraft(t); draft.pick = 1; persistDraft(); renderPass(); window.scrollTo({top: 0}); return;   // pick: valt för hand – då ligger det kvar även om passet redan är kört i veckan
+    armed = null; selType = t; draft = Object.assign(newDraft(t), draft && draft.late ? {date: draft.date, late: 1, made: draft.made} : {}); draft.pick = 1; persistDraft(); renderPass(); window.scrollTo({top: 0}); return;   // pick: valt för hand – då ligger det kvar även om passet redan är kört i veckan
   }
   const act = e.target.closest("[data-act]");
   if (act){ justSaved = null; if (act.dataset.act === "prog"){ go("framsteg"); } else { draft = null; selType = null; renderPass(); } return; }
@@ -4161,7 +4193,7 @@ async function saveSession(){
     if (dn.length) exercises.push(Object.assign({k, unit: o.unit}, o.alt ? {alt: o.alt} : {}, {sets: dn.map(x => Object.assign({w: x.w == null ? null : x.w, r: x.r == null ? null : x.r, s: x.s == null ? null : x.s}, o.lr ? {wR: x.wR == null ? null : x.wR, rR: x.rR == null ? null : x.rR} : {}))}));
   });
   if (!exercises.length){ toast("Bocka av minst ett set först"); return; }
-  const doc = {date: draft.date, ts: Date.now(), type: draft.type, exercises, note: (draft.note || "").trim(), volume: volumeOf(exercises), warm: !!draft.warm, stretch: !!draft.stretch, abs: !!draft.abs, min: draft.t0 ? Math.max(1, Math.round((Date.now() - draft.t0) / 60000)) : null, ss: ssOn() ? 1 : 0, ...(draft.leave != null || draft.started ? {focus: draft.leave || 0} : {})};
+  const doc = {date: draft.date, ts: draft.late ? efTs(draft.date) : Date.now(), type: draft.type, exercises, note: (draft.note || "").trim(), volume: volumeOf(exercises), warm: !!draft.warm, stretch: !!draft.stretch, abs: !!draft.abs, min: draft.t0 && !draft.late ? Math.max(1, Math.round((Date.now() - draft.t0) / 60000)) : null, ...(draft.late ? {late: 1} : {}), ss: ssOn() ? 1 : 0, ...(draft.leave != null || draft.started ? {focus: draft.leave || 0} : {})};
   if (dlActive()) doc.deload = true;
   const prs = findPRs(doc);
   doc.prs = prs;
@@ -4695,7 +4727,7 @@ function initDb(){
     sessions = snap.docs.map(d => Object.assign({id: d.id}, d.data())).filter(x => x.date && x.type);
     if (first){ first = false;
       if (flStale(draft)){ draft = null; selType = null; store("lyftloggen.draft.v1", null); }   // passet kördes en annan dag i veckan – då väljs dagens pass om
-      else if (draft && !draft.started) draft = Object.assign(newDraft(draft.type), {warm: draft.warm, abs: draft.abs, stretch: draft.stretch}, draft.pick ? {pick: 1} : {});
+      else if (draft && !draft.started) draft = Object.assign(newDraft(draft.type), {warm: draft.warm, abs: draft.abs, stretch: draft.stretch}, draft.pick ? {pick: 1} : {}, draft.late ? {date: draft.date, late: 1, made: draft.made} : {});
       return; }
     onData();
   });
@@ -8146,12 +8178,12 @@ function flMissed(){
 const DAYL = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
 const flDay = ds => DAYL[parseIso(ds).getDay()];
 function flyttBannerHTML(){
-  if (justSaved || today() < START) return "";
+  if (justSaved || (draft && draft.late) || today() < START) return "";
   const m = flMissed()[0]; if (!m) return "";
   return '<div class="banner warn fl-ban"><span>↪</span><span><b>' + esc(PROGRAM[m.k].name) + ' blev inte av i ' + flDay(m.ds) + 's.</b> Flytta det, så blir det ändå fyra pass i veckan.</span><button type="button" class="btn sm" data-fl="' + m.k + '">Flytta</button></div>';
 }
 function flyttPillHTML(){
-  if (!draft || justSaved || today() < START) return "";
+  if (!draft || draft.late || justSaved || today() < START) return "";
   const td = iso(today()), wk = flWk(td), plan = flPlan(wk), done = flDone(wk);
   if (done[draft.type] || plan[draft.type] !== td || draft.sets && PROGRAM[draft.type].ex.some(e => draft.sets[e.k].some(x => x.done))) return "";
   return '<button class="pill fl-pill" type="button" data-fl="' + draft.type + '">↪ Flytta</button>';
@@ -9087,7 +9119,7 @@ document.addEventListener("input", e => { const f = e.target && e.target.dataset
 const GU = [
   ["Pass", [
     ["🎯", "Rutorna högst upp", "Den stora rutan är dagens pass i passets färg, och den runda knappen startar Kör passet. Under den: hur mycket som är klart, nästa set, Atlet i dag och hur länge passet tar. Varje flik har sina egna rutor.", "pass", "#rgHero"],
-    ["📅", "Veckan", "Måndag till söndag i en egen ruta: gympassen Ö1, B1, Ö2 och B2, löpning på tisdagen och vila. Klara dagar är svarta med en bock, i dag har dagens färg och en missad dag är streckad.", "pass", "#strip"],
+    ["📅", "Veckan", "Måndag till söndag i en egen ruta: gympassen Ö1, B1, Ö2 och B2, löpning på tisdagen och vila. Klara dagar är svarta med en bock, i dag har dagens färg och en missad dag är streckad. Tryck på en dag som har varit utan gympass, så loggar du ett i efterhand.", "pass", "#strip"],
     ["🏋️", "Dagens pass", "Övningarna med set, vikt och reps. Appen föreslår vikten från förra gången och säger när det är dags att öka.", "pass", "#v-pass .sess-head"],
     ["▶", "Kör passet – ett set i taget", "Ett set åt gången med bild, vikt, reps och vila på en skärm. Uppvärmningsseten räknas ut åt dig.", "pass", '#v-pass [data-fk="open"]'],
     ["🎤", "Röstlogg", "Ett experiment: tryck Säg setet i Kör passet och säg till exempel \"tio kilo åtta\", så fylls vikt och reps i. Kolla siffrorna och tryck Klart set. Röst fungerar inte på alla telefoner.", "pass", '#v-pass [data-fk="open"]'],
@@ -9100,7 +9132,7 @@ const GU = [
     ["🎵", "Spotify i appen", "Koppla Spotify en gång, så ligger låten som spelas i en grön ruta ovanför menyn på alla flikar – där byter du låt och pausar. Tryck på låten för resten: spola, volym, upprepa, gilla, sök, kön, dina spellistor och vilken spelare det spelas på. Kräver Spotify Premium.", "pass", "#syCard:not(.sy-gone), #syDock:not([hidden])", '#v-pass [data-fk="open"]', "Kortet är dolt. Håll inne musikknappen i Kör passet och tryck Koppla Spotify."],
     ["🎵", "Spotify-länken i Kör passet", "Utan koppling öppnar musikknappen uppe till höger i Kör passet Spotify direkt på din spellista. Klistra in länken första gången (··· → Dela → Kopiera länk i Spotify). Håll inne knappen för att byta spellista.", "pass", '#v-pass [data-fk="open"]'],
     ["✏️", "Ändra programmet", "Set, reps, vila och ordning, byt en övning för alltid, pausa eller lägg till – och välj om en övning ska köras i pass 1, pass 2 eller båda.", "pass", "#v-pass .pr-link"],
-    ["↪", "Flytta passet", "Kan du inte i dag, eller missade du ett pass? Välj ny dag så blir det ändå fyra pass i veckan.", "pass", "#v-pass .fl-pill, #v-pass .fl-ban", "", "Knappen syns i passet på en gymdag innan du börjat, och som banner dagen efter ett missat pass."],
+    ["↪", "Flytta passet", "Kan du inte i dag, eller missade du ett pass? Välj ny dag så blir det ändå fyra pass i veckan. Körde du det redan en annan dag? Logga det i efterhand där, så försvinner det från i dag.", "pass", "#v-pass .fl-pill, #v-pass .fl-ban", "", "Knappen syns i passet på en gymdag innan du börjat, och som banner dagen efter ett missat pass."],
     ["🎯", "Målet under övningen", "Har du ett mål för övningen står det i passet hur mycket som är kvar.", "pass", "#v-pass .mal-hint", "", "Syns när du satt ett mål under Framsteg → Mål."],
     ["🧍", "Hållningen varje dag", "Egen ruta på Pass varje dag. Knappen kör alla övningarna i ordning med bild och timer, och bockar av Hållning + fascia under Vanor när du är klar.", "pass", "#rgHero .bt-hall"],
     ["☾", "Mörkt läge", "Högst upp under ? slår du på mörkt läge. Appen är ljus som standard och följer inte telefonens inställning.", "pass", ".top .gu-btn"],
@@ -10578,7 +10610,7 @@ function rgPass(){
     if (!justSaved){ const k = s.type || nextScheduled().k; return btHero({c: PROGRAM[k].c, chip: "Pass", code: PROGRAM[k].ab, title: PROGRAM[k].name}); }
     const r = justSaved, day = t < START ? null : atDay(t), ac = day ? atDayCount(day) : [0, 0], nPr = (r.prs || []).length;
     return btHero({c: PROGRAM[r.type].c, cls: "bt-done", chip: "Sparat", code: PROGRAM[r.type].ab, title: PROGRAM[r.type].name, label: "Passet är sparat", foot: r.sets + " set klara", p: 1, btn: '<span class="bt-play bt-ok" aria-hidden="true">' + BT_CHECK + '</span>'}) +
-      btGrid([btTile({l: "Volym", v: fmt(r.volume, 0) + " kg", s: "lyft i dag", cls: "dark"}), btTile({l: "Rekord", v: nPr, s: nPr === 1 ? "nytt rekord" : "nya rekord"}), ac[1] ? btTile({l: "Atlet i dag", v: ac[0] + "/" + ac[1], extra: btAtBars(day)}) : btTile({l: "Set", v: r.sets, s: "klara i dag"}), btHallTile()]);
+      btGrid([btTile({l: "Volym", v: fmt(r.volume, 0) + " kg", s: "lyft " + efWhen(r.date), cls: "dark"}), btTile({l: "Rekord", v: nPr, s: nPr === 1 ? "nytt rekord" : "nya rekord"}), ac[1] ? btTile({l: "Atlet i dag", v: ac[0] + "/" + ac[1], extra: btAtBars(day)}) : btTile({l: "Set", v: r.sets, s: "klara " + efWhen(r.date)}), btHallTile()]);
   }
   if (s.mode === "rest"){
     const run = RUN_DAYS[t.getDay()], iv = !run && a3IvDay(t), nx = nextScheduled(), when = nx.i === 0 ? "i dag" : nx.i === 1 ? "i morgon" : DAYL[nx.d.getDay()], nb = btAtNext(s.day);
@@ -10595,9 +10627,10 @@ function rgPass(){
     return btHero({c: PROGRAM[k].c, cls: "bt-done", chip: "Sparat i dag", code: PROGRAM[k].ab, title: s.pr.name, label: "Dagens pass är sparat", foot: n + " set loggade", p: 1, btn: '<span class="bt-play bt-ok" aria-hidden="true">' + BT_CHECK + '</span>'}) +
       btGrid([btTile({l: "Volym", v: fmt(s.saved.volume || 0, 0) + " kg", s: "lyft i dag", cls: "dark"}), mins ? btTile({l: "Tid", v: mins + " min", s: "tog passet"}) : btTile({l: "Övningar", v: s.pr.ex.length, s: "i passet"}), btAtTile(s) || btTile({l: "Set", v: n, s: "loggade"}), btHallTile()]);
   }
-  const nx = btNextSet(), when = s.pre ? "Första passet" : s.tk === k ? "Dagens pass" : "Pass";
-  return btHero({c: PROGRAM[k].c, chip: hmDay() ? "Hemmapass" : trDay() ? "Annat gym" : when, code: PROGRAM[k].ab, title: s.pr.name, label: hmDay() ? "Hemmapass i dag" : trDay() ? "Annat gym i dag" : when, foot: s.done + " av " + s.tot + " set · ca " + min + " min", p: s.p,
-      btn: readOnly ? "" : '<button type="button" class="bt-play" data-fk="open" aria-label="' + (s.done ? "Fortsätt passet" : "Kör passet") + '">' + BT_PLAY + '</button>'}) +
+  // i efterhand (efter9.js): rutan säger vilken dag, och Kör passet behövs inte
+  const nx = btNextSet(), late = !!draft.late, when = late ? "I efterhand" : s.pre ? "Första passet" : s.tk === k ? "Dagens pass" : "Pass";
+  return btHero({c: PROGRAM[k].c, chip: late ? when : hmDay() ? "Hemmapass" : trDay() ? "Annat gym" : when, code: PROGRAM[k].ab, title: s.pr.name, label: late ? "Loggas i efterhand – " + efDayL(draft.date) : hmDay() ? "Hemmapass i dag" : trDay() ? "Annat gym i dag" : when, foot: s.done + " av " + s.tot + " set · " + (late ? efDayL(draft.date) : "ca " + min + " min"), p: s.p,
+      btn: readOnly || late ? "" : '<button type="button" class="bt-play" data-fk="open" aria-label="' + (s.done ? "Fortsätt passet" : "Kör passet") + '">' + BT_PLAY + '</button>'}) +
     btGrid([btTile({l: "Klart", v: btPct(s.p), s: "av passet", cls: "dark big"}),
       nx ? btTile({l: "Näst på tur", v: esc(nx.n), s: nx.sub, cls: "txt"}) : btTile({l: "Näst på tur", v: "Spara passet", s: "allt är klart", cls: "txt"}),
       btAtTile(s) || btTile({l: "Övningar", v: s.pr.ex.length, s: "i passet"}),
@@ -14740,12 +14773,182 @@ ntEvents = function(){
   return out;
 };
 
+/* ---------- Logga i efterhand, och ett osparat pass glöms inte bort (18 nov 2026, kväll) ---------- */
+// Filip körde onsdagspasset i tisdags, men inget pass var sparat den dagen – så onsdagen låg kvar. Ett utkast som inte sparats
+// släpptes dagen efter (restoreDraft tar bara dagens), så det som bockats av försvann. Två saker:
+// 1. Logga i efterhand: tryck på en dag i veckan som har varit och inte har något gympass (eller "Körde du det redan?" i Flytta
+//    passet), välj passet och bocka av seten. Utkastet får date = den dagen, late = 1 och made = i dag. saveSession sparar det på
+//    den dagen (kl. 12, utan passtid, märkt late), och sedan sköter flEff resten: passet räknas som flyttat dit.
+// 2. Ett utkast från en tidigare dag med bockade set läggs vid start undan i gymschema.osparat.v1 (högst fem) i stället för att
+//    glömmas. Pass visar då rutan "Passet i tisdags sparades aldrig" – Öppna och spara laddar det i efterhand-läget, Släng tar bort.
+const OS_KEY = "gymschema.osparat.v1", EF_DRAFT = "lyftloggen.draft.v1";
+const efDone = d => Object.keys((d && d.sets) || {}).reduce((a, k) => a + (Array.isArray(d.sets[k]) ? d.sets[k].filter(x => x && x.done).length : 0), 0);
+const efTot = d => PROGRAM[d.type] ? PROGRAM[d.type].ex.reduce((a, e) => a + (e.sets || 0), 0) : 0;
+const efLate = () => !!(draft && draft.late);
+// "i dag", "i går", "i tisdags"
+function efWhen(ds){
+  const td = iso(today());
+  return !ds || ds === td ? "i dag" : ds === iso(addDays(today(), -1)) ? "i går" : "i " + DAYL[parseIso(ds).getDay()] + "s";
+}
+const efDay = ds => { const d = parseIso(ds); return rgCap(DAYL[d.getDay()]) + " " + d.getDate() + " " + MON[d.getMonth()]; };   // "Tisdag 17 nov"
+const efDayL = ds => efDay(ds).toLowerCase();   // "tisdag 17 nov" – mitt i en mening
+const efDagen = ds => DAYL[parseIso(ds).getDay()] + "en";   // "tisdagen"
+// Klockslaget för ett pass som sparas i efterhand: mitt på den dagen (det styr bara ordningen bland passen)
+const efTs = ds => { const d = parseIso(ds); d.setHours(12, 0, 0, 0); return d.getTime(); };
+
+/* ----- osparade pass ----- */
+function osList(){ const v = store(OS_KEY); return Array.isArray(v) ? v.filter(x => x && typeof x.type === "string" && typeof x.date === "string" && x.sets && typeof x.sets === "object") : []; }
+function osSave(l){ store(OS_KEY, l.length ? l.slice(0, 5) : null); }
+// Vid start, innan restoreDraft släpper ett utkast från en annan dag: har det bockade set läggs det undan
+function osStash(){
+  const d = store(EF_DRAFT), td = iso(today());
+  if (!d || typeof d !== "object" || typeof d.type !== "string" || typeof d.date !== "string" || !d.sets) return;
+  const from = d.late ? String(d.made || d.date) : d.date;
+  if (from >= td || !efDone(d)) return;
+  const l = osList().filter(x => !(x.date === d.date && x.type === d.type)), c = Object.assign({}, d, {stash: Date.now()});
+  delete c.late; delete c.made; delete c.pick;
+  l.unshift(c); osSave(l); store(EF_DRAFT, null);
+}
+restoreDraft = (f => function(){ try { osStash(); } catch(e){} return f.apply(this, arguments); })(restoreDraft);
+
+const efBusyMsg = () => efLate() ? "Spara passet " + efWhen(draft.date) + " först – eller tryck Avbryt" : "Spara eller avsluta dagens pass först";
+function osBanHTML(){
+  if (readOnly) return "";
+  return osList().map((o, i) => !PROGRAM[o.type] ? "" :
+    '<div class="banner warn os-ban"><span aria-hidden="true">⚠</span><span><b>Passet ' + efWhen(o.date) + ' sparades aldrig.</b> ' + esc(PROGRAM[o.type].name) + ' · ' + efDone(o) + ' av ' + efTot(o) + ' set är bockade. Öppna det och tryck Spara passet, så hamnar det på ' + efDagen(o.date) + '.</span>' +
+    '<span class="os-btns"><button type="button" class="btn sm" data-os="open" data-i="' + i + '">Öppna och spara</button><button type="button" class="btn sm ghost" data-os="drop" data-i="' + i + '">Släng</button></span></div>').join("");
+}
+function osOpen(i){
+  const l = osList(), o = l[i]; if (!o) return;
+  if (!PROGRAM[o.type]){ toast("Det passet finns inte längre i programmet"); return; }
+  if (draft && efDone(draft)){ toast(efBusyMsg()); return; }
+  clearTimeout(saveDraftT);   // ett utkast på väg in i minnet får inte skriva över det här
+  const c = Object.assign({}, o, {late: 1, made: iso(today()), pick: 1}); delete c.stash;
+  store(EF_DRAFT, c);
+  const d = restoreDraft(); if (!d){ store(EF_DRAFT, null); toast("Det gick inte att öppna passet"); return; }
+  l.splice(i, 1); osSave(l);
+  draft = d; selType = d.type; justSaved = null;
+  if (view !== "pass") show("pass"); else { renderPass(); renderStrip(); }
+  window.scrollTo({top: 0});
+  toast("Kolla seten och tryck Spara passet längst ner");
+}
+let osArm = -1, osArmT = 0;
+function osDrop(i, btn){
+  if (osArm !== i || Date.now() > osArmT){ osArm = i; osArmT = Date.now() + 4000; if (btn) btn.textContent = "Säker? Tryck igen"; return; }
+  osArm = -1; const l = osList(); l.splice(i, 1); osSave(l);
+  if (view === "pass") renderPass();
+  toast("Passet är slängt");
+}
+
+/* ----- logga i efterhand ----- */
+function efStart(k, ds){
+  if (readOnly || !PROGRAM[k] || !ds || ds >= iso(today())) return;
+  if (draft && efDone(draft) && !(draft.late && draft.date === ds && draft.type === k)){ toast(efBusyMsg()); return; }
+  if (!(draft && draft.late && draft.date === ds && draft.type === k)){
+    const d = newDraft(k); d.date = ds; d.late = 1; d.made = iso(today()); d.pick = 1;
+    draft = d; persistDraft();
+  }
+  selType = k; justSaved = null; efClose(); if (typeof flClose === "function") flClose();
+  if (view !== "pass") show("pass"); else { renderPass(); renderStrip(); }
+  window.scrollTo({top: 0});
+  toast(PROGRAM[k].name + " " + efWhen(ds) + " – bocka av det du körde");
+}
+let efArm = 0;
+function efCancel(btn){
+  if (!efLate()) return;
+  if (efDone(draft) && Date.now() > efArm){ efArm = Date.now() + 4000; if (btn) btn.textContent = "Säker? Tryck igen"; toast("Tryck igen – det du bockat av försvinner"); return; }
+  efArm = 0; clearTimeout(saveDraftT); draft = null; selType = null; store(EF_DRAFT, null);
+  renderPass(); renderStrip(); window.scrollTo({top: 0});
+  toast("Avbrutet – dagens pass igen");
+}
+function efBanHTML(){
+  if (!efLate() || justSaved) return "";
+  return '<div class="banner info ef-ban"><span aria-hidden="true">🕘</span><span><b>I efterhand: ' + efDayL(draft.date) + '.</b> Bocka av seten du körde och tryck Spara passet längst ner. Passet sparas på ' + efDagen(draft.date) + '.</span>' +
+    '<button type="button" class="btn sm ghost" data-efx="cancel">Avbryt</button></div>';
+}
+// Rutorna ligger överst på Pass, ovanför dagens pass
+rgPass = (f => function(){ return osBanHTML() + efBanHTML() + f.apply(this, arguments); })(rgPass);
+// Vilotimern och rösten hör till passet på gymmet – inte till att fylla i efteråt
+startTimer = (f => function(){ if (efLate()) return; return f.apply(this, arguments); })(startTimer);
+say = (f => function(){ if (efLate()) return; return f.apply(this, arguments); })(say);
+renderPass = (f => function(){
+  const r = f.apply(this, arguments);
+  try {
+    document.documentElement.classList.toggle("ef-late", efLate() && !justSaved);
+    const b = $("saveBtn"); if (b && efLate() && b.textContent === "Spara passet") b.textContent = "Spara passet på " + efDagen(draft.date);
+  } catch(e){}
+  return r;
+})(renderPass);
+
+/* ----- bladet: vilket pass körde du? ----- */
+function efSheetHTML(ds){
+  const wk = flWk(ds), plan = flPlan(wk), done = flDone(wk), td = iso(today());
+  const sub = k => done[k] ? "Redan sparat " + efWhen(done[k]) : plan[k] === "skip" ? "Hoppas över i veckan" : plan[k] === td ? "Står på i dag" : plan[k] < td ? "Skulle ha körts " + efWhen(plan[k]) : plan[k] ? "Planerat " + DAYL[parseIso(plan[k]).getDay()] : "";
+  const rows = ORDER.slice().sort((a, b) => (done[a] ? 1 : 0) - (done[b] ? 1 : 0)).map(k =>
+    '<button type="button" class="ef-row' + (done[k] ? " did" : "") + '" data-efgo="' + ds + '" data-efk="' + k + '" style="' + sessColor(k) + '"><span class="ef-ab" aria-hidden="true">' + esc(PROGRAM[k].ab) + '</span><span class="ef-tx"><b>' + esc(PROGRAM[k].name) + '</b><small>' + sub(k) + '</small></span></button>').join("");
+  return '<div class="sh-top"><b>Logga i efterhand</b><button type="button" class="sh-x" data-efx="close" aria-label="Stäng">×</button></div>' +
+    '<div><div class="lead">' + menyWeekLabel(wk) + '</div><h2 class="h2">' + efDay(ds) + '</h2></div>' +
+    '<p class="lead">Inget gympass är sparat ' + efWhen(ds) + '. Vilket körde du? Sedan bockar du av seten du gjorde, och passet sparas på ' + efDagen(ds) + '.</p>' +
+    '<div class="card ef-list">' + rows + '</div>' +
+    '<button type="button" class="btn ghost" data-efx="close">Avbryt</button>';
+}
+function efSheet(ds){
+  if (readOnly) return;
+  let o = $("efOv");
+  if (!o){ o = document.createElement("div"); o.id = "efOv"; o.className = "sheet"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Logga i efterhand"); document.body.appendChild(o); }
+  o.innerHTML = '<div class="sh-in">' + efSheetHTML(ds) + '</div>'; o.hidden = false; o.scrollTop = 0; document.documentElement.classList.add("noscroll");
+}
+function efClose(){ const o = $("efOv"); if (o && !o.hidden){ o.hidden = true; document.documentElement.classList.remove("noscroll"); } }
+
+// Veckan: en dag som har varit och saknar gympass går att trycka på
+const efCan = ds => ds < iso(today()) && parseIso(ds) >= START && !sessions.some(s => s.date === ds) && !(draft && draft.late && draft.date === ds && efDone(draft));
+function efStrip(){
+  const st = $("strip"); if (!st) return;
+  const ws = weekStart(today());
+  st.querySelectorAll(".day").forEach((el, i) => {
+    const ds = iso(addDays(ws, i)), can = !readOnly && efCan(ds);
+    if (can){
+      if (el.dataset.ef === ds) return;
+      el.dataset.ef = ds; el.setAttribute("role", "button"); el.tabIndex = 0;
+      el.setAttribute("aria-label", efDay(ds) + " – inget gympass sparat. Tryck för att logga ett i efterhand");
+    } else if (el.dataset.ef){ delete el.dataset.ef; el.removeAttribute("role"); el.removeAttribute("tabindex"); el.removeAttribute("aria-label"); }
+  });
+}
+renderStrip = (f => function(){ const r = f.apply(this, arguments); try { efStrip(); } catch(e){} return r; })(renderStrip);
+rgStrip = (f => function(){ const r = f.apply(this, arguments); try { efStrip(); } catch(e){} return r; })(rgStrip);
+
+// Flytta passet: körde du det redan en annan dag i veckan? Då loggas det där i stället.
+flHTML = (f => function(){
+  const h = f.apply(this, arguments);
+  try {
+    if (!flK || readOnly) return h;
+    const ws = parseIso(flWk(today())), past = [];
+    for (let i = 0; i < 7; i++){ const ds = iso(addDays(ws, i)); if (efCan(ds)) past.push(ds); }
+    if (!past.length) return h;
+    return h + '<div class="ef-fl"><b>Körde du det redan?</b><p>Logga ' + esc(PROGRAM[flK].name) + ' i efterhand på dagen du körde det.</p><div class="sp-days ef-days">' +
+      past.map(ds => { const d = parseIso(ds); return '<button type="button" data-efgo="' + ds + '" data-efk="' + flK + '" aria-label="Logga ' + esc(PROGRAM[flK].name) + ' ' + efWhen(ds) + '"><b>' + MENY_DS[(d.getDay() + 6) % 7] + '</b><span>' + d.getDate() + '</span></button>'; }).join("") + '</div></div>';
+  } catch(e){ return h; }
+})(flHTML);
+
+document.addEventListener("click", e => {
+  const t = e.target; if (!t || !t.closest) return;
+  const dy = t.closest("#strip .day[data-ef]"); if (dy){ efSheet(dy.dataset.ef); return; }
+  const g = t.closest("[data-efgo]"); if (g){ efStart(g.dataset.efk, g.dataset.efgo); return; }
+  const x = t.closest("[data-efx]"); if (x){ if (x.dataset.efx === "close") efClose(); else if (x.dataset.efx === "cancel") efCancel(x); return; }
+  const o = t.closest("[data-os]"); if (o){ const i = +o.dataset.i; if (o.dataset.os === "open") osOpen(i); else osDrop(i, o); }
+});
+document.addEventListener("keydown", e => {
+  const t = e.target;
+  if (t && t.matches && t.matches("#strip .day[data-ef]") && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); efSheet(t.dataset.ef); return; }
+  if (e.key === "Escape"){ const o = $("efOv"); if (o && !o.hidden) efClose(); }
+});
+
 
 /* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611181715, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611181759, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -14777,7 +14980,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "18 nov 17.15", BUILD_NOTE = "Spotify: grön ruta som syns på alla flikar – och spola, gilla, sök, kö och volym i bladet";
+const BUILD = "18 nov 17.59", BUILD_NOTE = "Logga ett pass i efterhand – tryck på en dag i veckan som varit. Ett osparat pass glöms inte bort";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
