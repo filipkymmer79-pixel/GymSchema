@@ -3556,7 +3556,12 @@ body.sy-docked.timer-on .app{padding-bottom:calc(var(--tabs-h) + var(--tabs-b) +
 /* Bladet: vilket pass körde du? */
 .ef-list{display:grid;padding:6px}
 .ef-row{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;min-height:62px;padding:9px 10px;border-radius:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.ef-row + .ef-row{box-shadow:0 -1px 0 var(--line)}
+.ef-rw{display:flex;align-items:center;gap:6px;min-width:0}
+.ef-rw .ef-row{flex:1 1 0;min-width:0}
+.ef-rw + .ef-rw{box-shadow:0 -1px 0 var(--line)}
+.ef-bare{flex:0 0 auto;border:0;border-radius:999px;min-height:44px;padding:0 16px;margin-right:4px;background:var(--surface2);color:var(--ink);font:inherit;font-size:14px;font-weight:700;touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
+.ef-bare:active{transform:scale(.96)}
+.ef-bare:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .ef-row:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
 .ef-row:active{background:var(--surface2)}
 .ef-ab{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:var(--onc);font-weight:800;font-size:14px;letter-spacing:-.01em}
@@ -4585,13 +4590,13 @@ function renderHist(){
     const nSets = (s.exercises || []).reduce((a, e) => a + (e.sets || []).length, 0);
     let body = "";
     if (open){
-      body = '<div class="hbody">' + (s.exercises || []).map(e => { const ex = e.alt ? altEx(e.k, e.alt, EXMAP[e.k]) : EXMAP[e.k]; return ex ? '<div class="hl"><span>' + esc(ex.n) + (e.alt ? ' <small>(byte)</small>' : '') + '</span><span class="num">' + (e.sets || []).map(x => esc(setText(ex, x))).join(", ") + '</span></div>' : ""; }).join("") +
+      body = '<div class="hbody">' + (s.bare ? '<div class="hl"><span>Markerat som kört i efterhand</span><span>Inga set loggade</span></div>' : '') + (s.exercises || []).map(e => { const ex = e.alt ? altEx(e.k, e.alt, EXMAP[e.k]) : EXMAP[e.k]; return ex ? '<div class="hl"><span>' + esc(ex.n) + (e.alt ? ' <small>(byte)</small>' : '') + '</span><span class="num">' + (e.sets || []).map(x => esc(setText(ex, x))).join(", ") + '</span></div>' : ""; }).join("") +
         ((s.prs || []).length ? s.prs.map(t => '<div class="pr"><i>REKORD</i><span>' + esc(t) + '</span></div>').join("") : "") +
         (s.note ? '<div class="hl"><span>Anteckning</span><span>' + esc(s.note) + '</span></div>' : "") +
         (RFOR[s.type] && RFOR[s.type].a ? '<div class="hl"><span>Uppvärmning · mage · stretch</span><span>' + (s.warm ? "✓" : "–") + ' · ' + (s.abs ? "✓" : "–") + ' · ' + (s.stretch ? "✓" : "–") + '</span></div>' : '<div class="hl"><span>Uppvärmning · stretch</span><span>' + (s.warm ? "✓" : "–") + ' · ' + (s.stretch ? "✓" : "–") + '</span></div>') +
         '<div style="margin-top:6px">' + (confirmDel === s.id ? '<span class="confirm"><span>Ta bort passet för gott?</span><button class="btn sm" type="button" data-del-yes="' + s.id + '">Ja, ta bort</button><button class="btn sm ghost" type="button" data-del-no="1">Avbryt</button></span>' : (db && !readOnly ? '<button class="btn sm ghost" type="button" data-del="' + s.id + '">Ta bort pass</button>' : "")) + '</div></div>';
     }
-    return '<div class="hcard"><button type="button" data-open="' + s.id + '" aria-expanded="' + open + '"><span class="badge" style="' + sessColor(s.type in PROGRAM ? s.type : "oA") + '">' + pAb + '</span><span style="min-width:0"><span class="h-t">' + esc(pName) + '</span><br><span class="h-s">' + dLong(s.date) + ' · ' + nSets + ' set' + (s.min ? ' · ' + s.min + ' min' : '') + ((s.prs || []).length ? ' · ' + s.prs.length + ' rekord' : '') + '</span></span><span class="h-v num">' + fmt(s.volume || 0, 0) + '<small>kg volym</small></span></button>' + body + '</div>';
+    return '<div class="hcard"><button type="button" data-open="' + s.id + '" aria-expanded="' + open + '"><span class="badge" style="' + sessColor(s.type in PROGRAM ? s.type : "oA") + '">' + pAb + '</span><span style="min-width:0"><span class="h-t">' + esc(pName) + '</span><br><span class="h-s">' + dLong(s.date) + ' · ' + (s.bare ? 'kört, inga set loggade' : nSets + ' set') + (s.min ? ' · ' + s.min + ' min' : '') + ((s.prs || []).length ? ' · ' + s.prs.length + ' rekord' : '') + '</span></span><span class="h-v num">' + fmt(s.volume || 0, 0) + '<small>kg volym</small></span></button>' + body + '</div>';
   }).join("") + '</div>';
 }
 $("v-historik").addEventListener("change", e => { if (e.target && e.target.id === "bkIn" && e.target.files && e.target.files[0]) importBackup(e.target.files[0]); });
@@ -14885,10 +14890,11 @@ function efSheetHTML(ds){
   const wk = flWk(ds), plan = flPlan(wk), done = flDone(wk), td = iso(today());
   const sub = k => done[k] ? "Redan sparat " + efWhen(done[k]) : plan[k] === "skip" ? "Hoppas över i veckan" : plan[k] === td ? "Står på i dag" : plan[k] < td ? "Skulle ha körts " + efWhen(plan[k]) : plan[k] ? "Planerat " + DAYL[parseIso(plan[k]).getDay()] : "";
   const rows = ORDER.slice().sort((a, b) => (done[a] ? 1 : 0) - (done[b] ? 1 : 0)).map(k =>
-    '<button type="button" class="ef-row' + (done[k] ? " did" : "") + '" data-efgo="' + ds + '" data-efk="' + k + '" style="' + sessColor(k) + '"><span class="ef-ab" aria-hidden="true">' + esc(PROGRAM[k].ab) + '</span><span class="ef-tx"><b>' + esc(PROGRAM[k].name) + '</b><small>' + sub(k) + '</small></span></button>').join("");
+    '<div class="ef-rw"><button type="button" class="ef-row' + (done[k] ? " did" : "") + '" data-efgo="' + ds + '" data-efk="' + k + '" style="' + sessColor(k) + '"><span class="ef-ab" aria-hidden="true">' + esc(PROGRAM[k].ab) + '</span><span class="ef-tx"><b>' + esc(PROGRAM[k].name) + '</b><small>' + sub(k) + '</small></span></button>' +
+    '<button type="button" class="ef-bare" data-efbare="' + ds + '" data-efk="' + k + '" aria-label="Markera ' + esc(PROGRAM[k].name) + ' som kört ' + efWhen(ds) + ', utan set">Kört</button></div>').join("");
   return '<div class="sh-top"><b>Logga i efterhand</b><button type="button" class="sh-x" data-efx="close" aria-label="Stäng">×</button></div>' +
     '<div><div class="lead">' + menyWeekLabel(wk) + '</div><h2 class="h2">' + efDay(ds) + '</h2></div>' +
-    '<p class="lead">Inget gympass är sparat ' + efWhen(ds) + '. Vilket körde du? Sedan bockar du av seten du gjorde, och passet sparas på ' + efDagen(ds) + '.</p>' +
+    '<p class="lead">Inget gympass är sparat ' + efWhen(ds) + '. Vilket körde du? Tryck på passet och bocka av seten – eller tryck Kört om du inte minns vikterna. Passet sparas på ' + efDagen(ds) + '.</p>' +
     '<div class="card ef-list">' + rows + '</div>' +
     '<button type="button" class="btn ghost" data-efx="close">Avbryt</button>';
 }
@@ -14899,6 +14905,23 @@ function efSheet(ds){
   o.innerHTML = '<div class="sh-in">' + efSheetHTML(ds) + '</div>'; o.hidden = false; o.scrollTop = 0; document.documentElement.classList.add("noscroll");
 }
 function efClose(){ const o = $("efOv"); if (o && !o.hidden){ o.hidden = true; document.documentElement.classList.remove("noscroll"); } }
+// Kört: passet sparas på dagen utan set (bare). Vikterna och förslagen påverkas inte – inga siffror hittas på.
+let efBareBusy = false;
+async function efBare(k, ds){
+  if (readOnly || !db || !PROGRAM[k] || !ds || ds >= iso(today()) || efBareBusy) return;
+  if (sessions.some(s => s.date === ds && s.type === k)){ toast(PROGRAM[k].name + " är redan sparat " + efWhen(ds)); return; }
+  efBareBusy = true;
+  const doc = {date: ds, ts: efTs(ds), type: k, exercises: [], note: "", volume: 0, warm: false, stretch: false, abs: false, min: null, ss: 0, late: 1, bare: 1, prs: []};
+  try {
+    await db.collection("sessions").add(doc);
+    efClose();
+    // passet i dag som inte är påbörjat (och inte valt för hand) eller i efterhand för samma dag: planen får bestämma igen
+    if (draft && !efDone(draft) && (draft.late ? draft.date === ds : !draft.pick && !draft.started && draft.type === k)){ clearTimeout(saveDraftT); draft = null; selType = null; store(EF_DRAFT, null); }
+    justSaved = null; renderPass(); renderStrip(); window.scrollTo({top: 0});
+    toast(PROGRAM[k].name + " är sparat som kört " + efWhen(ds) + " ✓");
+  } catch(e){ toast(e && e.code === "quota_exceeded" ? "Loggen är full – ta bort gamla pass i Historik" : "Kunde inte spara – försök igen"); }
+  efBareBusy = false;
+}
 
 // Veckan: en dag som har varit och saknar gympass går att trycka på
 const efCan = ds => ds < iso(today()) && parseIso(ds) >= START && !sessions.some(s => s.date === ds) && !(draft && draft.late && draft.date === ds && efDone(draft));
@@ -14933,6 +14956,7 @@ flHTML = (f => function(){
 document.addEventListener("click", e => {
   const t = e.target; if (!t || !t.closest) return;
   const dy = t.closest("#strip .day[data-ef]"); if (dy){ efSheet(dy.dataset.ef); return; }
+  const bb = t.closest("[data-efbare]"); if (bb){ efBare(bb.dataset.efk, bb.dataset.efbare); return; }
   const g = t.closest("[data-efgo]"); if (g){ efStart(g.dataset.efk, g.dataset.efgo); return; }
   const x = t.closest("[data-efx]"); if (x){ if (x.dataset.efx === "close") efClose(); else if (x.dataset.efx === "cancel") efCancel(x); return; }
   const o = t.closest("[data-os]"); if (o){ const i = +o.dataset.i; if (o.dataset.os === "open") osOpen(i); else osDrop(i, o); }
@@ -14943,12 +14967,21 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape"){ const o = $("efOv"); if (o && !o.hidden) efClose(); }
 });
 
+// Ett pass i gång sparas på telefonen direkt när appen göms eller stängs – inte 0,3 s senare, då iOS redan kan ha stängt den
+let efPend = false;
+// Samma som förut – utkastet skrivs 0,3 s efter senaste ändringen – men appen vet om något väntar på att skrivas.
+// Bara då skrivs det direkt när appen göms, så att inget som redan skrivits skrivs över.
+persistDraft = function(){ clearTimeout(saveDraftT); efPend = true; saveDraftT = setTimeout(() => { efPend = false; store(EF_DRAFT, draft); }, 300); };
+function efFlush(){ if (!efPend || readOnly) return; efPend = false; try { store(EF_DRAFT, draft || null); } catch(e){} }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") efFlush(); });
+window.addEventListener("pagehide", efFlush);
+
 
 /* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611181759, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611181844, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -14980,7 +15013,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "18 nov 17.59", BUILD_NOTE = "Logga ett pass i efterhand – tryck på en dag i veckan som varit. Ett osparat pass glöms inte bort";
+const BUILD = "18 nov 18.44", BUILD_NOTE = "Logga ett pass i efterhand – tryck på en dag i veckan som varit. Ett osparat pass glöms inte bort";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
