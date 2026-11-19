@@ -1,4 +1,4 @@
-<!doctype html><html lang="sv" data-theme="light"><head><meta charset=utf8><script>try{if(localStorage.getItem("gymschema.theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>GymSchema</title>
+<!doctype html><html lang="sv" data-theme="light"><head><meta charset=utf8><script>try{(function(){var d=document.documentElement,l=localStorage,k,n,m,p,a,b;if(l.getItem("gymschema.theme")==="dark"){d.setAttribute("data-theme","dark");return}k=JSON.parse(l.getItem("gymschema.kvall.v1")||"null");if(!k)return;n=new Date();m=n.getHours()*60+n.getMinutes();p=function(s){s=String(s||"").split(":");return(+s[0]||0)*60+(+s[1]||0)};a=p(k.from);b=p(k.to);if((k.force&&Date.now()<k.force)||(k.dark&&k.from&&k.to&&(a<=b?m>=a&&m<b:m>=a||m<b)))d.setAttribute("data-theme","dark")})()}catch(e){}</script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>GymSchema</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="GymSchema">
@@ -2021,6 +2021,8 @@ a,summary,label,[role="button"]{touch-action:manipulation}
 .ik-hourglass-medium{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M204,75.64V40a20,20,0,0,0-20-20H72A20,20,0,0,0,52,40V76a20.1,20.1,0,0,0,8,16l48,36L60,164a20.1,20.1,0,0,0-8,16v36a20,20,0,0,0,20,20H184a20,20,0,0,0,20-20V180.36a20.13,20.13,0,0,0-7.94-16L147.9,128l48.16-36.4A20.13,20.13,0,0,0,204,75.64ZM180,44V72H76V44Zm-52,69L105.33,96h45.1Zm52,99H76V182l40-30v16a12,12,0,0,0,24,0V152.11l40,30.24Z'/%3E%3C/svg%3E")}
 .ik-gift{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M216,68H190.06A33.82,33.82,0,0,0,196,49.69,36.62,36.62,0,0,0,158.31,12,33.44,33.44,0,0,0,134,23.25a54.65,54.65,0,0,0-6,8.3,54.65,54.65,0,0,0-6-8.3A33.44,33.44,0,0,0,97.69,12,36.62,36.62,0,0,0,60,49.69,33.82,33.82,0,0,0,65.94,68H40A20,20,0,0,0,20,88v32a20,20,0,0,0,16,19.6V200a20,20,0,0,0,20,20H200a20,20,0,0,0,20-20V139.6A20,20,0,0,0,236,120V88A20,20,0,0,0,216,68Zm-4,48H140V92h72ZM152,39.17A9.59,9.59,0,0,1,159,36h.35A12.62,12.62,0,0,1,172,49,9.59,9.59,0,0,1,168.83,56c-6.9,6.12-18.25,9.26-27.63,10.76C142.7,57.42,145.84,46.07,152,39.17ZM87.7,39.7A12.8,12.8,0,0,1,96.61,36H97A9.59,9.59,0,0,1,104,39.17c6.12,6.9,9.26,18.24,10.75,27.61C105.45,65.27,94,62.13,87.17,56A9.59,9.59,0,0,1,84,49,12.72,12.72,0,0,1,87.7,39.7ZM44,92h72v24H44Zm16,48h56v56H60Zm80,56V140h56v56Z'/%3E%3C/svg%3E")}
 .ik-medal{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M220,96A92,92,0,1,0,68,165.69V240a12,12,0,0,0,17.37,10.73L128,229.42l42.64,21.31A12,12,0,0,0,188,240V165.69A91.86,91.86,0,0,0,220,96ZM60,96a68,68,0,1,1,68,68A68.07,68.07,0,0,1,60,96ZM164,220.59l-30.64-15.32a12,12,0,0,0-10.74,0L92,220.58V180.66a92,92,0,0,0,72,0ZM128,148A52,52,0,1,0,76,96,52.06,52.06,0,0,0,128,148Zm0-80a28,28,0,1,1-28,28A28,28,0,0,1,128,68Z'/%3E%3C/svg%3E")}
+.ik-wind{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M24,104a12,12,0,0,1,0-24h96a12,12,0,0,0,0-24,15.07,15.07,0,0,0-10.26,4.45,12,12,0,0,1-17-16.9A39.34,39.34,0,0,1,120,32a36,36,0,0,1,0,72ZM208,68a39.34,39.34,0,0,0-27.3,11.55,12,12,0,0,0,17,16.9A15.07,15.07,0,0,1,208,92a12,12,0,0,1,0,24H32a12,12,0,0,0,0,24H208a36,36,0,0,0,0-72Zm-56,84H40a12,12,0,0,0,0,24H152a12,12,0,0,1,0,24,15.11,15.11,0,0,1-10.27-4.45,12,12,0,1,0-17,16.9A39.34,39.34,0,0,0,152,224a36,36,0,0,0,0-72Z'/%3E%3C/svg%3E")}
+.ik-coffee{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M212,76H32A12,12,0,0,0,20,88v48a100.24,100.24,0,0,0,26.73,68H32a12,12,0,0,0,0,24H208a12,12,0,0,0,0-24H193.27a100.75,100.75,0,0,0,20-32A44,44,0,0,0,256,128v-8A44.05,44.05,0,0,0,212,76Zm-16,60a76.27,76.27,0,0,1-42,68H86a76.27,76.27,0,0,1-42-68V100H196Zm36-8a20,20,0,0,1-12.57,18.55A97.17,97.17,0,0,0,220,136V101.68A20,20,0,0,1,232,120ZM68,48V24a12,12,0,0,1,24,0V48a12,12,0,0,1-24,0Zm40,0V24a12,12,0,0,1,24,0V48a12,12,0,0,1-24,0Zm40,0V24a12,12,0,0,1,24,0V48a12,12,0,0,1-24,0Z'/%3E%3C/svg%3E")}
 .ik-repeat-once{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M20,128A76.08,76.08,0,0,1,96,52h99l-3.52-3.51a12,12,0,1,1,17-17l24,24a12,12,0,0,1,0,17l-24,24a12,12,0,0,1-17-17L195,76H96a52.06,52.06,0,0,0-52,52,12,12,0,0,1-24,0Zm204-12a12,12,0,0,0-12,12,52.06,52.06,0,0,1-52,52H61l3.52-3.51a12,12,0,1,0-17-17l-24,24a12,12,0,0,0,0,17l24,24a12,12,0,1,0,17-17L61,204h99a76.08,76.08,0,0,0,76-76A12,12,0,0,0,224,116Zm-88,48a12,12,0,0,0,12-12V104a12,12,0,0,0-17.36-10.74l-16,8a12,12,0,0,0,9.36,22V152A12,12,0,0,0,136,164Z'/%3E%3C/svg%3E")}
 .ik-speaker-low{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M157.27,21.22a12,12,0,0,0-12.64,1.31L75.88,76H32A20,20,0,0,0,12,96v64a20,20,0,0,0,20,20H75.88l68.75,53.47A12,12,0,0,0,164,224V32A12,12,0,0,0,157.27,21.22ZM36,100H68v56H36Zm104,99.46L92,162.13V93.87l48-37.33ZM212,128a44,44,0,0,1-11,29.11,12,12,0,0,1-18-15.88,20,20,0,0,0,0-26.44,12,12,0,0,1,18-15.85A43.94,43.94,0,0,1,212,128Z'/%3E%3C/svg%3E")}
 .ik-playlist{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M28,64A12,12,0,0,1,40,52H216a12,12,0,0,1,0,24H40A12,12,0,0,1,28,64Zm12,76H156a12,12,0,0,0,0-24H40a12,12,0,0,0,0,24Zm68,40H40a12,12,0,0,0,0,24h68a12,12,0,0,0,0-24Zm143.49-52.55a12,12,0,0,1-14.94,8L212,128.13V192a36,36,0,1,1-24-33.94V112a12,12,0,0,1,15.45-11.49l40,12A12,12,0,0,1,251.49,127.45ZM188,192a12,12,0,1,0-12,12A12,12,0,0,0,188,192Z'/%3E%3C/svg%3E")}
@@ -2051,7 +2053,6 @@ a,summary,label,[role="button"]{touch-action:manipulation}
 .ik-cloud-rain{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M156,12A80.22,80.22,0,0,0,82.39,60.36,56.76,56.76,0,0,0,76,60a56,56,0,0,0,0,112h29.58L86,201.34a12,12,0,1,0,20,13.32L134.42,172H156a80,80,0,0,0,0-160Zm0,136H76a32,32,0,0,1,0-64h.28c-.11,1.1-.2,2.2-.26,3.3a12,12,0,1,0,24,1.39A56.06,56.06,0,1,1,156,148Zm.65,58.66-26.67,40a12,12,0,1,1-20-13.32l26.66-40a12,12,0,1,1,20,13.32Z'/%3E%3C/svg%3E")}
 .ik-t-shirt{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M246.17,57.9,198.09,29.65h0A11.9,11.9,0,0,0,192,28H160a12,12,0,0,0-12,12,20,20,0,0,1-40,0A12,12,0,0,0,96,28H64a11.9,11.9,0,0,0-6.07,1.66h0L9.83,57.9A20.18,20.18,0,0,0,2,84l17.9,36.8A19.62,19.62,0,0,0,37.67,132H52v76a20,20,0,0,0,20,20H184a20,20,0,0,0,20-20V132h14.32a19.64,19.64,0,0,0,17.75-11.17L254,84A20.18,20.18,0,0,0,246.17,57.9ZM40.37,108,25.16,76.73,52,61v47ZM180,204H76V52h9.67a44,44,0,0,0,84.68,0H180Zm35.62-96H204V61l26.83,15.76Z'/%3E%3C/svg%3E")}
 .ik-sneaker{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M255.8,162.93l0-.31A43.94,43.94,0,0,0,226,125.36l-56.62-20.2-.24-.09a20,20,0,0,1-11.92-10.78L134.06,40l-.06-.16A20.06,20.06,0,0,0,108.89,29.2L33.17,56.73A20.07,20.07,0,0,0,20,75.53V192a20,20,0,0,0,20,20H236a20,20,0,0,0,20-20V167.06C256,165.67,255.93,164.3,255.8,162.93ZM113.53,53.05l6,14L103.9,72.72a12,12,0,1,0,8.2,22.55L129,89.14l4.54,10.63-13.6,5A12,12,0,0,0,124,128a11.79,11.79,0,0,0,4.1-.73l19.57-7.11a43.86,43.86,0,0,0,13.8,7.64L218.09,148l.23.08a19.89,19.89,0,0,1,6.84,3.91H44V78.33ZM44,188V176H232v12Z'/%3E%3C/svg%3E")}
-.ik-wind{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M24,104a12,12,0,0,1,0-24h96a12,12,0,0,0,0-24,15.07,15.07,0,0,0-10.26,4.45,12,12,0,0,1-17-16.9A39.34,39.34,0,0,1,120,32a36,36,0,0,1,0,72ZM208,68a39.34,39.34,0,0,0-27.3,11.55,12,12,0,0,0,17,16.9A15.07,15.07,0,0,1,208,92a12,12,0,0,1,0,24H32a12,12,0,0,0,0,24H208a36,36,0,0,0,0-72Zm-56,84H40a12,12,0,0,0,0,24H152a12,12,0,0,1,0,24,15.11,15.11,0,0,1-10.27-4.45,12,12,0,1,0-17,16.9A39.34,39.34,0,0,0,152,224a36,36,0,0,0,0-72Z'/%3E%3C/svg%3E")}
 .ik-flashlight{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M184,12H72A20,20,0,0,0,52,32V77.33a20.12,20.12,0,0,0,4,12L76,116V224a20,20,0,0,0,20,20h64a20,20,0,0,0,20-20V116l20-26.67a20.12,20.12,0,0,0,4-12V32A20,20,0,0,0,184,12Zm-4,24V52H76V36Zm-20,66.67a20.12,20.12,0,0,0-4,12V220H100V114.67a20.12,20.12,0,0,0-4-12L76,76H180ZM140,120v32a12,12,0,0,1-24,0V120a12,12,0,0,1,24,0Z'/%3E%3C/svg%3E")}
 
 /* ================= Bento (16 nov 2026) =================
@@ -3837,6 +3838,69 @@ html.ef-late #v-pass [data-fk="open"]{display:none}
 /* Ordningen: ordet direkt under det sparade passet, året före passen i Historik */
 #v-pass > .m12-ord{order:0}
 #v-historik > .m12-year{order:0}
+
+/* ---------- Sömn och vardag, omgång 13 (19 nov 2026) ---------- */
+/* Rutan Kvällen på Pass: efter gardinen, före Morgonkänslan */
+#v-pass > .v13-kv{order:1}
+.v13-kv{display:flex;flex-direction:column;gap:10px}
+.v13-kvt{margin:0}
+.v13-kv .bk{display:flex;flex-wrap:wrap;gap:8px}
+/* Raden under Vanor */
+.v13-row{width:100%;text-align:left}
+/* Bladen */
+.sheet.v13-sh{z-index:90}
+.v13-big{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.v13-big span{font-size:15.5px;font-weight:800}
+.v13-big b{font-family:var(--display);font-size:34px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.v13-now,.v13-koff{display:flex;flex-direction:column;gap:10px}
+.v13-now p,.v13-koff p{margin:0;line-height:1.45}
+.v13-now .bk{display:flex;flex-wrap:wrap;gap:8px}
+.v13-sw.off{opacity:.6}
+.v13-sh .pr-sub{margin:6px 0 -4px}
+.v13-did{display:flex;flex-direction:column;gap:6px;background:var(--green);color:var(--on-green)}
+.v13-did b{font-size:15.5px;font-weight:800}
+.v13-did ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;font-size:14.5px;font-weight:700}
+.v13-steps{list-style:none;margin:0;padding:6px 16px;display:flex;flex-direction:column}
+.v13-st{display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 0;border-top:1px solid var(--line)}
+.v13-st:first-child{border-top:0}
+.v13-si{flex:0 0 auto;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--p1);font-size:17px}
+.v13-stt{flex:1 1 auto;display:flex;flex-direction:column;gap:2px;min-width:0}
+.v13-stt b{font-size:15.5px;font-weight:800}
+.v13-stt small{font-size:13px;color:var(--muted);line-height:1.35}
+.v13-st .btn{flex:0 0 auto}
+.v13-bed{display:flex;flex-direction:column;gap:4px}
+.v13-bed b{font-size:20px;font-weight:800}
+.v13-bed span{font-size:14px;color:var(--muted);line-height:1.4}
+.v13-sh .sh-in > .btn{width:100%;justify-content:center}
+/* Res dig: från och till under raden i Påminnelser */
+.v13-res{display:flex;flex-wrap:wrap;gap:8px 16px}
+/* Andningscirkeln – alltid mörk, som tuppluren */
+.scan.v13-an{z-index:98;justify-content:space-between}
+.v13-amid{flex:1;display:grid;align-content:center;justify-items:center;gap:18px;text-align:center}
+.v13-ring{position:relative;width:min(64vw,260px);aspect-ratio:1;display:grid;place-items:center}
+.v13-ring::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,255,255,.16)}
+.v13-ring i{position:absolute;inset:0;border-radius:50%;background:#6E9BFF;transform:scale(.5);transition:transform 4s ease-in-out;will-change:transform}
+.v13-ring.idle i{transform:scale(.72);background:#2A3550}
+.v13-ring.done i{background:#3DCB8A}
+.v13-rt{position:relative;display:flex;flex-direction:column;align-items:center;color:#FFFFFF}
+.v13-rt b{font-family:var(--display);font-size:54px;font-weight:800;line-height:1;color:#0B0D12}
+.v13-ring.idle .v13-rt b{color:#FFFFFF}
+.v13-ring.done .v13-rt b{color:#0B0D12}
+.v13-rt small{font-size:14px;font-weight:700;color:#B8BEC8}
+.v13-aph{margin:0;font-size:26px;font-weight:800;letter-spacing:-.01em}
+.v13-atip{margin:0 auto;max-width:330px;font-size:14.5px;line-height:1.45;color:#B8BEC8}
+.v13-aset{display:flex;flex-direction:column;gap:8px}
+.v13-aseg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px}
+.v13-ab{all:unset;box-sizing:border-box;min-height:52px;padding:6px 8px;border-radius:14px;background:rgba(255,255,255,.1);color:#FFFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;font-family:var(--body);font-size:15.5px;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.v13-ab small{font-size:12px;font-weight:700;color:#B8BEC8}
+.v13-ab[aria-pressed="true"]{background:#FFFFFF;color:#0B0D12}
+.v13-ab[aria-pressed="true"] small{color:#454B57}
+.v13-ab:focus-visible{outline:2.5px solid #FFFFFF;outline-offset:2px}
+.v13-an .scan-btns .btn{min-width:200px;padding:16px 22px;font-size:17px;justify-content:center}
+.v13-an .scan-btns .btn:not(.ghost){background:#FFFFFF;color:#0B0D12}
+.v13-an .scan-btns .btn.ghost{background:rgba(255,255,255,.12);color:#FFFFFF}
+@media (prefers-reduced-motion:reduce){ .v13-ring i{transition:none !important;transform:scale(.8) !important} }
+@media (max-width:359px){ .v13-big b{font-size:30px} .v13-rt b{font-size:46px} .v13-aph{font-size:23px} }
 </style>
 
 <div class="app">
@@ -4271,7 +4335,7 @@ function renderPass(){
       : '<div class="banner info"><span>☾</span><span><b>Vilodag enligt schemat.</b> Nästa pass: ' + DAYL[nx.d.getDay()] + ' – ' + esc(PROGRAM[nx.k].name) + '. Hållningspasset gör du ändå.</span></div>';
   }
   const loggedToday = sessions.some(s => s.date === iso(today()) && s.type === selType);
-  el.innerHTML = flyttBannerHTML() + dlBannerHTML() + banner + runWxHTML() + gmPassHTML() + hemHTML() + k5MornHTML() + atCardHTML() +
+  el.innerHTML = flyttBannerHTML() + dlBannerHTML() + banner + runWxHTML() + gmPassHTML() + hemHTML() + v13KvHTML() + k5MornHTML() + atCardHTML() +
     '<div class="picker" role="group" aria-label="Välj pass">' + ORDER.map(k => '<button class="pick" type="button" data-type="' + k + '" aria-pressed="' + (k === selType) + '" style="' + sessColor(k) + '"><span class="ab">' + PROGRAM[k].ab + '</span><span class="dd">' + PROGRAM[k].day + '</span></button>').join("") + '</div>' +
     '<div class="sess-head"><div><div class="lead">' + (draft.late ? "I efterhand · " + efDayL(draft.date) : preStart ? "Första passet" : tk === selType ? "Dagens pass" : "Valt pass") + '</div><h2 class="h2">' + esc(p.name) + '</h2></div>' +
     '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">' + ("speechSynthesis" in window ? '<button class="pill vtog" type="button" data-voice aria-pressed="' + voiceOn + '" aria-label="Röstcoach ' + (voiceOn ? "på" : "av") + '">' + (voiceOn ? "🔊 Röst" : "🔇 Röst") + '</button>' : '') +
@@ -5003,7 +5067,7 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, programMig: PR_MIG, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}, program: prog, goals: mal, bodyMeasures: matt, supplements: supp, water: vat, atlet: {done: atl.done, tests: atl.tests, start: atl.start || null, tips: atl.tips || {}, hang: atl.hang || [], mobt: atl.mobt || [], split: atl.split || [], bal: atl.bal || [], vo2: atl.vo2 || [], stel: atl.stel || {}, moved: atl.moved || {}}, mat: m4Export(), kropp: k5Export(), sista: s7Export(), pass: p11Export(), framemot: m12Export()};
+  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, programMig: PR_MIG, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}, program: prog, goals: mal, bodyMeasures: matt, supplements: supp, water: vat, atlet: {done: atl.done, tests: atl.tests, start: atl.start || null, tips: atl.tips || {}, hang: atl.hang || [], mobt: atl.mobt || [], split: atl.split || [], bal: atl.bal || [], vo2: atl.vo2 || [], stel: atl.stel || {}, moved: atl.moved || {}, hand: atl.hand || []}, mat: m4Export(), kropp: k5Export(), sista: s7Export(), pass: p11Export(), framemot: m12Export()};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
@@ -9436,6 +9500,13 @@ const GU = [
     ["🧍", "Fler påminnelser", "Sträck på dig, ät före passet, bricka mobilen, mobilen ner, morgonljus och säkerhetskopia. Du väljer vilka, och tiderna, under Påminnelser i mobilen.", "vanor", "#ntRow"],
     ["📵", "Skärmtid", "Skriv in dagens skärmtid från iPhone på kvällen. Då ser du de två senaste veckorna, snittet och hur det går mot ditt mål.", "vanor", "#s7Skarm"],
     ["✓", "Vanorna", "Bocka av på kvällen. Sömnen, proteinet och shaken bockas av sig själva från klockan och Mat.", "vanor", "#v-vanor .hlist"],
+    ["🌙", "Kväll på en knapp", "Starta kvällen gör appen mörk till i morgon, stänger gardinen och visar kvällens steg: Kvällsvila, andas och vanorna. Knappen finns under Vanor → Kväll och sömn, och på kvällen i rutan Kvällen på Pass.", "vanor", "#v13Row"],
+    ["🌬", "Andningscirkel", "Följ cirkeln: andas in när den växer och ut när den krymper. Två, fem eller tio minuter – lugn andning eller box. Under Vanor → Kväll och sömn.", "vanor", "#v13Row"],
+    ["☕", "Koffeinstopp", "Sista kaffet senast nio timmar före läggdags. Tiden står under Vanor → Kväll och sömn, och påminnelsen heter Koffeinstopp under Påminnelser.", "vanor", "#v13Row"],
+    ["🌙", "Tidigare kväll före gymdagar", "Kvällen före ett gympass är läggdags en halvtimme tidigare. Stäng av det under Vanor → Kväll och sömn om du inte vill ha det.", "vanor", "#v13Row"],
+    ["☾", "Mörkt på kvällen", "Appen blir mörk två timmar före läggdags och ljus igen när du vaknar. Slå på det längst ner under Allt, eller under Vanor → Kväll och sömn.", "vanor", "#v13Row"],
+    ["🪟", "Väckning med gardinen", "Gardinen öppnas när du öppnar appen första gången på morgonen. Slå på det under Vanor → Kväll och sömn. Vill du att den öppnas innan du vaknar lägger du ett schema i SwitchBot-appen.", "vanor", "#v13Row"],
+    ["🚶", "Res dig varje timme", "En notis varje timme mellan tiderna du väljer: res dig och gå en minut. Slå på Res dig under Påminnelser i mobilen.", "vanor", "#ntRow"],
     ["📓", "Sömndagbok", "Hade du inte klockan på? Skriv när du somnade och vaknade under Sömn 10 timmar, så räknas natten ändå.", "vanor", "#k5Somn .k5-zf, #k5Somn .k5-zl", '#v-vanor [data-h="somn"]', "Fälten visas de dagar klockan inte har någon sömn."],
     ["😴", "Tupplur 20 minuter", "En kort tupplur med väckning efter en dålig natt. Skärmen hålls tänd och klockan ringer i appen – helst före 15.", "vanor", '#k5Somn [data-k5="nap"]', '#v-vanor [data-h="somn"]', "Knappen står under Sömn 10 timmar när du tittar på i dag."],
     ["🔥", "Dagar i rad", "Varje vana har sin serie. En missad dag i veckan räddas av veckans frysdag ❄️.", "vanor", "#v-vanor .hstreak", "#v-vanor .hlist"],
@@ -9464,6 +9535,7 @@ const GU = [
     ["🏆", "Rekord", "Bästa setet i varje övning och veckor i rad med alla fyra passen.", "framsteg", "#v-framsteg .rk"],
     ["📏", "Hopptest", "Upphopp och längdhopp i cm varannan söndag, med graf.", "framsteg", "#atTest-f"],
     ["📏", "Tester: häng, rörlighet, split och balans", "Hängtest och rörlighetstest en gång i månaden, splitten varje vecka och balansen med mobilens rörelsesensor – med grafer.", "framsteg", "#a3Tests-f"],
+    ["🤸", "Handstående-klocka", "Under Tester: klockan räknar upp och rösten säger tiden var femte sekund, så hör du hur länge du stått. Målet är 30 sekunder mot väggen.", "framsteg", "#a3Tests-f"],
     ["🤸", "Atlet-minuter och stelhetskarta", "Hur många minuter av varje sort du gjort i veckan – rörlighet, spänst, teknik, slåss och kondition – och var du är stelast.", "framsteg", "#a3Min-f"],
     ["🏆", "Vägen till egna chins och styrka per kilo", "I Framsteg: hjälpvikten i chinsen ner mot noll med ett datum i din takt, styrkan delad med kroppsvikten, vilken tid på dygnet du lyfter tyngst och hur ofta du lämnade appen mellan seten.", "framsteg", "#v-framsteg .cr-card"],
     ["📈", "Grafer och prognos", "Kurvan för varje övning och när du når nästa vikt i din egen takt.", "framsteg", "#v-framsteg .chips"],
@@ -10692,7 +10764,7 @@ document.addEventListener("input", e => { if (e.target && e.target.id === "ntUrl
 // Texterna i appen är orörda: tecknet står kvar i texten (sökning, kopiering och röstuppläsning som förut), men läggs i ett eget
 // element <gs-ik class="ik ik-namn">, och stilmallen visar en linjeikon i textens färg i stället för tecknet. Kartan byggs i ikoner.py.
 // Egna elementnamn (gs-ik, gs-w) i stället för span, så att varken stilregler eller kod som letar efter span träffar dem.
-const IK = {"→":"arrow-right","←":"arrow-left","↑":"arrow-up","↓":"arrow-down","↗":"arrow-up-right","↪":"arrow-bend-up-right","↻":"arrow-clockwise","↺":"arrow-counter-clockwise","↯":"lightning","✓":"check","✅":"check-circle","▶":"play-f","▾":"caret-down","▴":"caret-up","★":"star-f","⭐":"star-f","♥":"heart-f","♡":"heart","❚❚":"pause-f","❚":"line-vertical","▦":"barcode","⚙":"gear","🏋":"barbell","💪":"hand-fist","🥊":"boxing-glove","🏃":"person-simple-run","🤸":"person-arms-spread","🧘":"flower-lotus","🧍":"person","🦶":"footprints","🚀":"rocket-launch","🦵":"person-simple-walk","🧱":"wall","🐉":"yin-yang","🙃":"hand-palm","🏄":"waves","🔄":"arrows-clockwise","🔥":"fire","⚡":"lightning","🎯":"target","🏆":"trophy","📏":"ruler","⚖":"scales","💡":"lightbulb","🧠":"brain","🫀":"heartbeat","🪶":"feather","🎉":"confetti","🔁":"repeat","🎲":"dice-five","🤖":"robot","🏠":"house","⏱":"timer","⏰":"alarm","📅":"calendar-blank","🗓":"calendar-dots","⌚":"watch","🌙":"moon","☾":"moon","😴":"bed","🍽":"fork-knife","🥤":"pint-glass","🥛":"pint-glass","🥡":"bowl-food","🧊":"cube","👨‍🍳":"chef-hat","🛒":"shopping-cart","💊":"pill","💧":"drop","🍬":"cookie","🛡":"shield-check","❄":"snowflake","🐔":"bird","🐄":"cow","🌱":"plant","✋":"hand-palm","🤲":"hand-grabbing","✊":"hand-fist","👍":"thumbs-up","🙂":"smiley","😐":"smiley-meh","🙁":"smiley-sad","😣":"smiley-nervous","⚠":"warning","📌":"push-pin","🦷":"tooth","🩹":"bandaids","🩺":"stethoscope","🌅":"sun-horizon","📓":"notebook","⏮":"skip-back-f","⏭":"skip-forward-f","🔀":"shuffle","📵":"device-mobile-slash","🍞":"bread","📬":"envelope-open","🎤":"microphone","✎":"note-pencil","📝":"note","🧪":"flask","↘":"arrow-down-right","♪":"metronome","🔋":"battery-medium","↶":"arrow-u-up-left","🛞":"steering-wheel","⏳":"hourglass-medium","🎁":"gift","🏅":"medal","🔂":"repeat-once","🔉":"speaker-low","🎶":"playlist","🕘":"clock-counter-clockwise","📷":"camera","🎵":"music-notes","🎥":"video-camera","🎬":"film-slate","🔊":"speaker-high","🔇":"speaker-slash","💾":"floppy-disk","📤":"export","📱":"device-mobile","🔔":"bell","🔒":"lock","🔓":"lock-open","✏":"pencil-simple","📊":"chart-bar","📈":"chart-line-up","📋":"clipboard-text","🪟":"app-window","☀":"sun","🌦":"cloud-sun","🌤":"cloud-sun","☁":"cloud","🌫":"cloud-fog","🌨":"cloud-snow","⛈":"cloud-lightning","🌧":"cloud-rain","👕":"t-shirt","👟":"sneaker","💨":"wind","🔦":"flashlight"};
+const IK = {"→":"arrow-right","←":"arrow-left","↑":"arrow-up","↓":"arrow-down","↗":"arrow-up-right","↪":"arrow-bend-up-right","↻":"arrow-clockwise","↺":"arrow-counter-clockwise","↯":"lightning","✓":"check","✅":"check-circle","▶":"play-f","▾":"caret-down","▴":"caret-up","★":"star-f","⭐":"star-f","♥":"heart-f","♡":"heart","❚❚":"pause-f","❚":"line-vertical","▦":"barcode","⚙":"gear","🏋":"barbell","💪":"hand-fist","🥊":"boxing-glove","🏃":"person-simple-run","🤸":"person-arms-spread","🧘":"flower-lotus","🧍":"person","🦶":"footprints","🚀":"rocket-launch","🦵":"person-simple-walk","🧱":"wall","🐉":"yin-yang","🙃":"hand-palm","🏄":"waves","🔄":"arrows-clockwise","🔥":"fire","⚡":"lightning","🎯":"target","🏆":"trophy","📏":"ruler","⚖":"scales","💡":"lightbulb","🧠":"brain","🫀":"heartbeat","🪶":"feather","🎉":"confetti","🔁":"repeat","🎲":"dice-five","🤖":"robot","🏠":"house","⏱":"timer","⏰":"alarm","📅":"calendar-blank","🗓":"calendar-dots","⌚":"watch","🌙":"moon","☾":"moon","😴":"bed","🍽":"fork-knife","🥤":"pint-glass","🥛":"pint-glass","🥡":"bowl-food","🧊":"cube","👨‍🍳":"chef-hat","🛒":"shopping-cart","💊":"pill","💧":"drop","🍬":"cookie","🛡":"shield-check","❄":"snowflake","🐔":"bird","🐄":"cow","🌱":"plant","✋":"hand-palm","🤲":"hand-grabbing","✊":"hand-fist","👍":"thumbs-up","🙂":"smiley","😐":"smiley-meh","🙁":"smiley-sad","😣":"smiley-nervous","⚠":"warning","📌":"push-pin","🦷":"tooth","🩹":"bandaids","🩺":"stethoscope","🌅":"sun-horizon","📓":"notebook","⏮":"skip-back-f","⏭":"skip-forward-f","🔀":"shuffle","📵":"device-mobile-slash","🍞":"bread","📬":"envelope-open","🎤":"microphone","✎":"note-pencil","📝":"note","🧪":"flask","↘":"arrow-down-right","♪":"metronome","🔋":"battery-medium","↶":"arrow-u-up-left","🛞":"steering-wheel","⏳":"hourglass-medium","🎁":"gift","🏅":"medal","🌬":"wind","☕":"coffee","🚶":"person-simple-walk","🔂":"repeat-once","🔉":"speaker-low","🎶":"playlist","🕘":"clock-counter-clockwise","📷":"camera","🎵":"music-notes","🎥":"video-camera","🎬":"film-slate","🔊":"speaker-high","🔇":"speaker-slash","💾":"floppy-disk","📤":"export","📱":"device-mobile","🔔":"bell","🔒":"lock","🔓":"lock-open","✏":"pencil-simple","📊":"chart-bar","📈":"chart-line-up","📋":"clipboard-text","🪟":"app-window","☀":"sun","🌦":"cloud-sun","🌤":"cloud-sun","☁":"cloud","🌫":"cloud-fog","🌨":"cloud-snow","⛈":"cloud-lightning","🌧":"cloud-rain","👕":"t-shirt","👟":"sneaker","💨":"wind","🔦":"flashlight"};
 const IK_RE = new RegExp("(" + Object.keys(IK).sort((a, b) => b.length - a.length).map(k => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")\\uFE0F?", "g");
 const IK_SKIP = "script,style,textarea,select,option,svg,noscript,title,gs-ik,.rx-e,.rx-big,.mn-e,.mn-mix,[data-noik]";   // matbilderna i recepten och menyn är innehåll, inte ikoner
 function ikText(node){
@@ -11099,15 +11171,26 @@ show = (sh => function(v){ rgShown = "\u0000"; return sh.apply(this, arguments);
 const TEMA_KEY = "gymschema.theme";
 const temaDark = () => document.documentElement.getAttribute("data-theme") === "dark";
 function temaMeta(){ const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", temaDark() ? "#0D0E11" : "#E8E9ED"); }
-function temaSet(dark){
-  document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
-  try { localStorage.setItem(TEMA_KEY, dark ? "dark" : "light"); } catch(e){}
+// Två saker kan göra appen mörk: Filips eget val (temaMan) och Mörkt på kvällen (temaAuto, sätts av vardag13.js).
+let temaMan = (() => { try { return localStorage.getItem(TEMA_KEY) === "dark"; } catch(e){ return temaDark(); } })();
+let temaAuto = () => false;
+function temaApply(){
+  const dark = temaMan || !!temaAuto();
+  if (temaDark() !== dark) document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
   temaMeta();
-  toast(dark ? "Mörkt läge – ändras under Allt" : "Ljust läge");
+  return dark;
+}
+function temaSet(dark){
+  temaMan = !!dark;
+  try { localStorage.setItem(TEMA_KEY, dark ? "dark" : "light"); } catch(e){}
+  const now = temaApply();
+  toast(dark ? "Mörkt läge – ändras under Allt" : now ? "Mörkt på kvällen är på – appen blir ljus igen i morgon" : "Ljust läge");
 }
 temaMeta();
-const temaSwitchHTML = () => '<label class="mn-sw card tema-sw"><span><b>☾ Mörkt läge</b><small>Appen är ljus som standard. Valet sparas på telefonen och följer inte telefonens inställning.</small></span>' +
-  '<input type="checkbox" data-tema' + (temaDark() ? " checked" : "") + ' aria-label="Mörkt läge"><i></i></label>';
+function temaSwitchHTML(){
+  return '<label class="mn-sw card tema-sw"><span><b>☾ Mörkt läge</b><small>Appen är ljus som standard. Valet sparas på telefonen och följer inte telefonens inställning.</small></span>' +
+    '<input type="checkbox" data-tema' + (temaMan ? " checked" : "") + ' aria-label="Mörkt läge"><i></i></label>';
+}
 document.addEventListener("change", e => { const t = e.target; if (t && t.hasAttribute && t.hasAttribute("data-tema")) temaSet(t.checked); });
 
 
@@ -15269,14 +15352,15 @@ const AL_SHORT = {
   "Vägen till egna chins och styrka per kilo": "Egna chins", "Vad ska jag äta? och 140 recept": "Recept", "Veckomeny och inköpslista": "Veckomeny",
   "Månadens sammanfattning": "Månaden", "Historik och backup": "Backup", "Hållningen varje dag": "Hållningen", "Boxning med timer": "Boxning",
   "Programmet med bild": "Programmet", "Klippen i appen": "Klippen", "Hemmagym steg för steg": "Hemmagym", "Till sjukgymnasten": "Sjukgymnast",
-  "Maskinens inställning": "Maskinen", "Lapp till nästa gång": "Lappen", "Rekordet att slå": "Rekordet", "Styrketest var fjärde vecka": "Styrketest", "Ett ord efter passet": "Ett ord",
+  "Maskinens inställning": "Maskinen", "Lapp till nästa gång": "Lappen", "Rekordet att slå": "Rekordet", "Styrketest var fjärde vecka": "Styrketest", "Ett ord efter passet": "Ett ord", "Kväll på en knapp": "Kvällen", "Tidigare kväll före gymdagar": "Tidigare kväll",
+  "Väckning med gardinen": "Väckning", "Res dig varje timme": "Res dig", "Handstående-klocka": "Handstående", "Andningscirkel": "Andas",
   "Intervaller 4 × 4 på fredagar": "Intervaller 4\u00a0×\u00a04"
 };
 // Långa sammansatta ord delas där svenskan delar dem (mjukt bindestreck), aldrig mitt i en stavelse
 const AL_HY = ("Upp-värm-ning Morgon-känsla Muskel-kartan Progress-bilder Sjuk-gymnast Program-mets Program-met program-met Atlet-program-met " +
   "Ömhets-karta Sömn-dagbok Hemma-pass Hemma-gym På-minnel-ser på-minnel-ser Vecko-brevet Måltids-rytm Kropps-mått Socker-vakt Mag-dagbok " +
   "Vecko-meny Löp-rundan Form-check Snabb-läge Upp-tagen Belast-ning Vecko-koll Håll-ningen Vilo-timern Röst-logg Till-skott " +
-  "Mun-vård Skärm-tid Löp-väder Hopp-test Vikt-ratten Styrke-test Rekor-det Ned-räkning").split(" ")
+  "Mun-vård Skärm-tid Löp-väder Hopp-test Vikt-ratten Styrke-test Rekor-det Ned-räkning Koffein-stopp Hand-stående").split(" ")
   .reduce((m, w) => (m[w.replace(/-/g, "")] = w.replace(/-/g, "\u00AD"), m), {});
 const alHy = s => s.replace(/[A-Za-zÅÄÖåäöÉé]{6,}/g, w => AL_HY[w] || w);
 const AL_COL = {"Pass": "red", "Vanor": "green", "Boxning": "run", "Framsteg": "blue", "Kropp": "rest", "Program och historik": "yellow"};
@@ -15302,8 +15386,10 @@ guHTML = function(){
   const q = guNorm(guQ).trim(), n = GU.reduce((a, s) => a + s[1].length, 0);
   let list = "";
   if (q){
-    const hits = [];
-    GU.forEach((s, si) => s[1].forEach((x, i) => { if (guNorm(x[1] + " " + alShort(x[1]) + " " + x[2] + " " + s[0]).indexOf(q) >= 0) hits.push(alRow(si, i, x)); }));
+    const hits = [], more = [];
+    // träffar i namnet först, sedan de som bara nämner ordet i förklaringen
+    GU.forEach((s, si) => s[1].forEach((x, i) => { if (guNorm(x[1] + " " + alShort(x[1])).indexOf(q) >= 0) hits.push(alRow(si, i, x)); else if (guNorm(x[2] + " " + s[0]).indexOf(q) >= 0) more.push(alRow(si, i, x)); }));
+    more.forEach(h => hits.push(h));
     const ex = alExHits(q);
     list = (hits.length ? '<div class="gu-sec al-hits">' + hits.join("") + '</div>' : '') +
       (ex.length ? '<div class="al-exs"><div class="pr-sub">Övningar i programmet</div>' + ex.join("") + '</div>' : '');
@@ -15330,9 +15416,9 @@ document.addEventListener("click", e => {
   const b = t.closest('#guOv [data-gu="go"]');
   if (b){
     const s = GU[+b.dataset.s], x = s && s[1][+b.dataset.i];
-    if (x && x[1] === "Mörkt läge"){
+    if (x && (x[1] === "Mörkt läge" || x[1] === "Mörkt på kvällen")){
       e.stopPropagation(); e.preventDefault();
-      const sw = document.querySelector("#guOv .tema-sw");
+      const sw = document.querySelector(x[1] === "Mörkt läge" ? "#guOv .tema-sw" : "#guOv .v13-dsw") || document.querySelector("#guOv .tema-sw");
       if (sw){ sw.scrollIntoView({block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); sw.classList.add("gu-hl"); setTimeout(() => sw.classList.remove("gu-hl"), 2600); }
       return;
     }
@@ -16029,12 +16115,405 @@ document.addEventListener("click", e => {
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && $("m12Ov") && !$("m12Ov").hidden){ e.preventDefault(); m12EdClose(); } });
 
+/* ---------- Sömn och vardag, omgång 13 (19 nov 2026) ---------- */
+// Kväll på en knapp, andningscirkel, koffeinstopp, tidigare kväll före gymdagar, mörkt på kvällen, väckning med gardinen,
+// Res dig varje timme och en klocka för handståendet. Det som gör något av sig självt (mörkt, gardinen, Res dig) är avstängt
+// tills Filip slår på det. Inget ändrar programmet.
+const V13_K = "gymschema.kvall.v1";    // {early, dark, gard, from, to, force, started, opened} – bara på telefonen
+const V13_A = "gymschema.andas.v1";    // {d: {"2026-11-19": minuter}}
+const V13_KOFF = 9 * 60;               // minuter före läggdags: kaffe minst 8,8 timmar före (Gardiner m.fl. 2023)
+const V13_DARK = 120;                  // mörkt så många minuter före läggdags
+const V13_EARLY = 30;                  // så mycket tidigare kvällen före ett gympass
+let v13 = Object.assign({early: true, dark: false, gard: false}, (() => { const v = store(V13_K); return v && typeof v === "object" && !Array.isArray(v) ? v : {}; })());
+const v13Now = () => { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); };
+const v13Hm = m => ntHm(m);                                    // 1245 → "20.45"
+const v13Col = m => v13Hm(m).replace(".", ":");                // "20:45"
+const v13In = (n, a, b) => a <= b ? n >= a && n < b : n >= a || n < b;   // fönster som kan gå över midnatt
+
+/* ----- tidigare kväll före gymdagar ----- */
+const v13Early = d => { try { return v13.early && gymOn(addDays(d, 1)) ? V13_EARLY : 0; } catch(e){ return 0; } };
+const _v13Bed = gmBedtime;
+gmBedtime = function(){
+  const b = _v13Bed.apply(this, arguments), e = v13Early(today());
+  b.early = e;
+  if (e) b.hm = v13Hm(ntMin(b.hm) - e);
+  return b;
+};
+// Läggdags en viss kväll, i minuter: kvällens tid med eller utan halvtimmen
+const v13BedMin = d => ((ntMin(gmBedtime().hm) + v13Early(today()) - v13Early(d || today())) % 1440 + 1440) % 1440;
+const _v13BedLine = gmBedLine;
+gmBedLine = function(){
+  const h = _v13BedLine.apply(this, arguments);
+  try { return v13Early(today()) ? h.replace("då får du 10 timmar", "då får du 10,5 timmar") + ' Gympass i morgon, därför en halvtimme tidigare.' : h; } catch(e){ return h; }
+};
+const v13KoffMin = d => ((v13BedMin(d) - V13_KOFF) % 1440 + 1440) % 1440;
+
+/* ----- mörkt på kvällen, och mörkt resten av kvällen efter Starta kvällen ----- */
+function v13Win(){ return {from: v13Col(v13BedMin() - V13_DARK), to: gmWake()}; }
+function v13DarkNow(){
+  if (v13.force && Date.now() < v13.force) return true;
+  if (!v13.dark) return false;
+  const w = v13Win();
+  return v13In(v13Now(), ntMin(w.from), ntMin(w.to));
+}
+// tiderna sparas, så att sidan kan bli mörk innan något ritas nästa gång appen öppnas
+function v13Save(){ const w = v13Win(); v13.from = w.from; v13.to = w.to; store(V13_K, v13); }
+temaAuto = v13DarkNow;
+function v13DarkSwHTML(){
+  const w = v13Win();
+  return '<label class="mn-sw card v13-dsw"><span><b>🌙 Mörkt på kvällen</b><small>Appen blir mörk två timmar före läggdags (' + w.from.replace(":", ".") + ') och ljus igen när du vaknar (' + w.to.replace(":", ".") + ').</small></span>' +
+    '<input type="checkbox" data-v13sw="dark"' + (v13.dark ? " checked" : "") + ' aria-label="Mörkt på kvällen"><i></i></label>';
+}
+temaSwitchHTML = (f => function(){ return f.apply(this, arguments) + v13DarkSwHTML(); })(temaSwitchHTML);
+
+/* ----- väckning med gardinen ----- */
+function v13Morning(){
+  try {
+    if (!v13.gard || readOnly || typeof sbOn !== "function" || !sbOn()) return;
+    const ti = iso(today()); if (v13.opened === ti) return;
+    const w = ntMin(gmWake()), n = v13Now();
+    if (n < w - 45 || n > w + 180) return;
+    v13.opened = ti; v13Save(); sbRun("turnOn");
+  } catch(e){}
+}
+
+/* ----- kväll på en knapp ----- */
+// Rutan Kvällen på Pass: från tre timmar före läggdags till tre på natten
+function v13Evening(){ const b = v13BedMin(); return v13In(v13Now(), ((b - 180) % 1440 + 1440) % 1440, 180); }
+// kvällen räknas till dagen den började, också efter midnatt
+const v13Night = () => iso(v13Now() < 180 ? addDays(today(), -1) : today());
+const v13Started = () => v13.started === v13Night();
+function v13KvBlock(){
+  try { const ti = iso(today()), day = atDay(ti), b = day.blocks.find(x => x.id === "kvall"); if (!b || !b.ex) return null; const c = atBlkCount(b, ti); return {min: b.min, done: c[1] > 0 && c[0] >= c[1]}; } catch(e){ return null; }
+}
+const v13AndasToday = () => { const v = store(V13_A); return v && v.d ? (v.d[iso(today())] || 0) : 0; };
+function v13KvHTML(){
+  try {
+    if (readOnly || !v13Evening()) return "";
+    const bed = gmBedtime(), on = v13Started();
+    return '<div class="card v13-kv" id="v13Kv"><div class="gm-top"><b>' + (on ? "Kvällen är igång ✓" : "Kvällen") + '</b><span class="lead">släck ' + bed.hm + '</span></div>' +
+      '<p class="small v13-kvt">' + (on ? "Mörkt till " + gmWake().replace(":", ".") + (typeof sbOn === "function" && sbOn() ? " och gardinen stängd" : "") + "." : (bed.early ? "Gympass i morgon – läggdags en halvtimme tidigare. " : "") + "Ett tryck gör appen mörk" + (typeof sbOn === "function" && sbOn() ? ", stänger gardinen" : "") + " och visar kvällens steg.") + '</p>' +
+      '<div class="bk"><button type="button" class="btn sm" data-v13="' + (on ? "ksheet" : "kstart") + '">🌙 ' + (on ? "Kvällens steg" : "Starta kvällen") + '</button><button type="button" class="btn sm ghost" data-v13="andas">🌬 Andas</button></div></div>';
+  } catch(e){ return ""; }
+}
+// Rutan ritas i passet före Morgonkänslan (build_app.py lägger in v13KvHTML() där)
+function v13KvStart(){
+  const d = new Date(), w = ntMin(gmWake()), wake = new Date(d); wake.setHours(0, w, 0, 0); if (wake <= d) wake.setDate(wake.getDate() + 1);
+  v13.started = v13Night(); v13.force = wake.getTime(); v13Save(); temaApply();
+  if (typeof sbOn === "function" && sbOn()) sbRun("turnOff");
+  v13Again(); v13KvSheet();
+}
+function v13KvUndo(){ v13.force = 0; v13.started = ""; v13Save(); temaApply(); v13Close(); v13Again(); toast(v13DarkNow() ? "Kvällen avbruten – Mörkt på kvällen är fortfarande på" : "Kvällen avbruten – ljust igen"); }
+function v13Sheet(html, label){
+  let o = $("v13Ov");
+  if (!o){ o = document.createElement("div"); o.id = "v13Ov"; o.className = "sheet v13-sh"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); document.body.appendChild(o); }
+  o.setAttribute("aria-label", label); o.dataset.kind = label;
+  const keep = o.hidden ? 0 : o.scrollTop;
+  o.innerHTML = '<div class="sh-in">' + html + '</div>'; o.hidden = false; o.scrollTop = keep; document.documentElement.classList.add("noscroll");
+}
+function v13Close(){ const o = $("v13Ov"); if (o){ o.hidden = true; o.innerHTML = ""; } if (typeof a3Unlock === "function") a3Unlock(); else document.documentElement.classList.remove("noscroll"); }
+function v13KvSheet(){
+  const bed = gmBedtime(), kv = v13KvBlock(), an = v13AndasToday(), sbok = typeof sbOn === "function" && sbOn();
+  const step = (ic, t, s, btn) => '<li class="v13-st"><span class="v13-si" aria-hidden="true">' + ic + '</span><span class="v13-stt"><b>' + t + '</b><small>' + s + '</small></span>' + (btn || '') + '</li>';
+  v13Sheet('<div class="sh-top"><b>🌙 Kvällen</b><button type="button" class="sh-x" data-v13="close" aria-label="Stäng">×</button></div>' +
+    '<div class="card v13-did"><b>Klart nu</b><ul><li>✓ Appen är mörk till ' + gmWake().replace(":", ".") + '</li>' + (sbok ? '<li>✓ Gardinen stängs</li>' : '') + '</ul></div>' +
+    '<ol class="card v13-steps">' +
+      (kv ? step("🧘", "Kvällsvila", kv.done ? "Klar i dag ✓" : kv.min + " minuter stretch, sist benen upp mot väggen", kv.done ? '' : '<button type="button" class="btn sm" data-v13="kvall">▶ Kör</button>') : '') +
+      step("🌬", "Andas", an ? an + " min i dag ✓" : "Fem minuter lugn andning", '<button type="button" class="btn sm' + (an ? " ghost" : "") + '" data-v13="andas">▶ Starta</button>') +
+      step("✓", "Kvällens vanor", "Bocka av dagen", '<button type="button" class="btn sm ghost" data-v13="vanor">Till Vanor</button>') +
+    '</ol>' +
+    '<div class="card v13-bed"><b>Släck ' + bed.hm + '</b><span>Lägg mobilen på laddning en bit från sängen.' + (bed.early ? " Gympass i morgon, därför en halvtimme tidigare." : "") + '</span></div>' +
+    '<button type="button" class="btn ghost" data-v13="kundo">Ångra kvällen – ljust igen</button>', "Kvällen");
+}
+
+/* ----- bladet Kväll och sömn (Vanor) ----- */
+function v13RowHTML(){
+  const bed = gmBedtime();
+  return '<button type="button" class="card nt-row v13-row" id="v13Row" data-v13="sheet"><span class="nt-ic" aria-hidden="true">🌙</span><span class="nt-tx"><b>Kväll och sömn</b><small>Släck ' + bed.hm + ' · koffeinstopp ' + v13Hm(v13KoffMin()) + ' · andas</small></span><span class="rx-go" aria-hidden="true">›</span></button>';
+}
+function v13SomnSheet(){
+  const bed = gmBedtime(), w = v13Win(), sbok = typeof sbOn === "function" && sbOn(), on = v13Started();
+  const sw = (k, ic, t, s, dis) => '<label class="mn-sw card v13-sw' + (dis ? " off" : "") + '"><span><b>' + ic + ' ' + t + '</b><small>' + s + '</small></span><input type="checkbox" data-v13sw="' + k + '"' + (v13[k] ? " checked" : "") + (dis ? " disabled" : "") + ' aria-label="' + t + '"><i></i></label>';
+  v13Sheet('<div class="sh-top"><b>Kväll och sömn</b><button type="button" class="sh-x" data-v13="close" aria-label="Stäng">×</button></div>' +
+    '<div class="card v13-now"><div class="v13-big"><span>Släck i kväll</span><b class="num">' + bed.hm + '</b></div>' +
+      '<p class="small">Då får du ' + (bed.early ? "10,5" : "10") + ' timmar till ' + gmWake().replace(":", ".") + '.' + (bed.early ? " Gympass i morgon, därför en halvtimme tidigare." : "") + (bed.extra ? " Du ligger efter med sömnen, därför " + bed.extra + " min tidigare." : "") + '</p>' +
+      '<div class="bk"><button type="button" class="btn sm" data-v13="' + (on ? "ksheet" : "kstart") + '">🌙 ' + (on ? "Kvällens steg" : "Starta kvällen") + '</button><button type="button" class="btn sm ghost" data-v13="andas">🌬 Andas</button></div></div>' +
+    '<div class="card v13-koff" id="v13Koff"><div class="v13-big"><span>☕ Koffeinstopp</span><b class="num">' + v13Hm(v13KoffMin()) + '</b></div>' +
+      '<p class="small">Sista kaffet senast nio timmar före läggdags – koffeinet sitter kvar i kroppen i många timmar. En pre-workout eller stor energidryck sitter kvar ännu längre: ta den på morgonen. Påminnelsen heter Koffeinstopp under Påminnelser i mobilen.</p></div>' +
+    '<div class="pr-sub">Av sig självt</div>' +
+    sw("early", "🌙", "Tidigare kväll före gymdagar", "Läggdags en halvtimme tidigare kvällen före ett gympass.") +
+    sw("dark", "☾", "Mörkt på kvällen", "Appen blir mörk två timmar före läggdags (" + w.from.replace(":", ".") + ") och ljus igen när du vaknar (" + w.to.replace(":", ".") + ").") +
+    sw("gard", "🪟", "Gardinen öppnas på morgonen", sbok ? "När du öppnar appen första gången på morgonen. Vill du att den öppnas innan du vaknar: lägg ett schema i SwitchBot-appen." : "Koppla gardinen först – under Pass → Gardinen.", !sbok) +
+    '<p class="small">En webbapp kan inte göra något medan den är stängd. Därför öppnas gardinen när du öppnar appen – eller trycker på morgonens notis.</p>', "Kväll och sömn");
+}
+function v13Again(){
+  try { const c = $("v13Kv"); if (c){ const h = v13KvHTML(); if (h) c.outerHTML = h; else c.remove(); } } catch(e){}
+  try { const r = $("v13Row"); if (r) r.outerHTML = v13RowHTML(); } catch(e){}
+  try { const o = $("v13Ov"); if (o && !o.hidden){ if (o.dataset.kind === "Kvällen") v13KvSheet(); else v13SomnSheet(); } } catch(e){}
+  try { const g = document.querySelector("#guOv .v13-dsw input"); if (g) g.checked = !!v13.dark; } catch(e){}
+}
+const _v13RV = renderVanor;
+renderVanor = function(){
+  const r = _v13RV.apply(this, arguments);
+  try { const el = $("v-vanor"), nr = $("ntRow"); if (el && !$("v13Row")){ const t = document.createElement("div"); t.innerHTML = v13RowHTML(); if (nr && nr.parentNode === el) el.insertBefore(t.firstElementChild, nr.nextSibling); else el.appendChild(t.firstElementChild); } } catch(e){}
+  return r;
+};
+
+/* ----- andningscirkeln ----- */
+const V13_PAT = {lugn: {n: "Lugn", s: "in 4 · ut 6", ph: [["Andas in", 4, 1], ["Andas ut", 6, 0]]}, box: {n: "Box", s: "4 · 4 · 4 · 4", ph: [["Andas in", 4, 1], ["Håll", 4, 1], ["Andas ut", 4, 0], ["Håll", 4, 0]]}};
+let V13B = null, v13BT = 0, v13BPat = "lugn", v13BMin = 5;
+function v13AndasOpen(){
+  let o = $("v13Av");
+  if (!o){ o = document.createElement("div"); o.id = "v13Av"; o.className = "scan v13-an"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Andas"); document.body.appendChild(o); }
+  v13AndasPaint(); o.hidden = false; document.documentElement.classList.add("noscroll");
+}
+function v13AndasPaint(){
+  const o = $("v13Av"); if (!o) return;
+  const P = V13_PAT[v13BPat], seg = (items, cur, a) => items.map(x => '<button type="button" class="v13-ab" data-v13="' + a + '" data-v="' + x[0] + '" aria-pressed="' + (x[0] === cur) + '">' + x[1] + '</button>').join("");
+  if (!V13B){
+    o.innerHTML = '<div class="scan-top"><b>Andas</b><button type="button" class="scan-x" data-v13="andasx" aria-label="Stäng">×</button></div>' +
+      '<div class="v13-amid"><div class="v13-ring idle" aria-hidden="true"><i></i><span class="v13-rt"><b>' + v13BMin + '</b><small>min</small></span></div>' +
+      '<p class="v13-atip">Följ cirkeln: andas in genom näsan när den växer och ut när den krymper. Sitt eller ligg bekvämt.</p></div>' +
+      '<div class="v13-aset"><div class="v13-aseg" role="group" aria-label="Sorts andning">' + seg([["lugn", "Lugn<small>in 4 · ut 6</small>"], ["box", "Box<small>4 · 4 · 4 · 4</small>"]], v13BPat, "apat") + '</div>' +
+      '<div class="v13-aseg" role="group" aria-label="Hur länge">' + seg([[2, "2 min"], [5, "5 min"], [10, "10 min"]], v13BMin, "amin") + '</div></div>' +
+      '<div class="scan-btns"><button type="button" class="btn" data-v13="ago">▶ Starta</button></div>';
+    return;
+  }
+  if (V13B.done){
+    o.innerHTML = '<div class="scan-top"><b>Andas</b><button type="button" class="scan-x" data-v13="andasx" aria-label="Stäng">×</button></div>' +
+      '<div class="v13-amid"><div class="v13-ring idle done" aria-hidden="true"><i></i><span class="v13-rt"><b>✓</b></span></div><p class="v13-aph" role="status">Klart – ' + V13B.min + ' minuter</p><p class="v13-atip">Bra. Ligg kvar en stund om du vill.</p></div>' +
+      '<div class="scan-btns"><button type="button" class="btn" data-v13="andasx">Klar</button></div>';
+    return;
+  }
+  o.innerHTML = '<div class="scan-top"><b>Andas · ' + P.n.toLowerCase() + '</b><button type="button" class="scan-x" data-v13="andasx" aria-label="Avsluta">×</button></div>' +
+    '<div class="v13-amid"><div class="v13-ring" id="v13Ring" aria-hidden="true"><i id="v13RingI"></i><span class="v13-rt"><b class="num" id="v13RingN"></b></span></div>' +
+    '<p class="v13-aph" id="v13Ph" role="status" aria-live="polite"></p><p class="v13-atip num" id="v13Left"></p></div>' +
+    '<div class="scan-btns"><button type="button" class="btn ghost" data-v13="andasx">Avsluta</button></div>';
+}
+function v13AndasGo(){
+  V13B = {pat: v13BPat, min: v13BMin, t0: Date.now(), end: Date.now() + v13BMin * 60e3, ph: -1, cyc: -1};
+  try { keepAwake(); } catch(e){}
+  v13AndasPaint(); v13AndasTick();
+}
+function v13AndasTick(){
+  clearTimeout(v13BT); const o = $("v13Av"); if (!V13B || V13B.done || !o || o.hidden) return;
+  const now = Date.now(), P = V13_PAT[V13B.pat].ph, tot = P.reduce((a, x) => a + x[1], 0);
+  if (now >= V13B.end){ v13AndasDone(); return; }
+  const el = Math.max(0, (now - V13B.t0) / 1000), cyc = Math.floor(el / tot); let t = el - cyc * tot, i = 0;
+  while (i < P.length - 1 && t >= P[i][1]){ t -= P[i][1]; i++; }
+  if (i !== V13B.ph || cyc !== V13B.cyc){
+    V13B.ph = i; V13B.cyc = cyc;
+    const ring = $("v13RingI"), ph = $("v13Ph");
+    if (ph) ph.textContent = P[i][0];
+    if (ring){ void ring.offsetWidth; ring.style.transitionDuration = (P[i][0] === "Håll" ? 0.2 : P[i][1]) + "s"; ring.style.transform = "scale(" + (P[i][2] ? 1 : 0.5) + ")"; }
+  }
+  const n = $("v13RingN"); if (n) n.textContent = String(Math.max(1, Math.ceil(P[i][1] - t)));
+  const l = $("v13Left"); if (l){ const left = Math.ceil((V13B.end - now) / 1000); l.textContent = Math.floor(left / 60) + ":" + pad(left % 60) + " kvar"; }
+  v13BT = setTimeout(v13AndasTick, 200);
+}
+function v13AndasDone(){
+  clearTimeout(v13BT); if (!V13B) return;
+  V13B.done = true;
+  try { const v = store(V13_A) || {}, d = v.d && typeof v.d === "object" ? v.d : {}, ti = iso(today()), lim = iso(addDays(today(), -60)); d[ti] = (d[ti] || 0) + V13B.min; Object.keys(d).forEach(k => { if (k < lim) delete d[k]; }); store(V13_A, {d}); } catch(e){}
+  try { navigator.vibrate && navigator.vibrate([120, 80, 120]); } catch(e){}
+  v13AndasPaint(); v13Again();
+}
+function v13AndasClose(){
+  clearTimeout(v13BT); V13B = null;
+  const o = $("v13Av"); if (o){ o.hidden = true; o.innerHTML = ""; }
+  try { if (!(draft && draft.started && !justSaved)) releaseAwake(); } catch(e){}
+  if (typeof a3Unlock === "function") a3Unlock(); else document.documentElement.classList.remove("noscroll");
+}
+
+/* ----- påminnelserna: Koffeinstopp och Res dig ----- */
+const V13_RES = ["Gå några steg och sträck på dig. En minut räcker.", "Res dig, rulla axlarna bakåt och hämta ett glas vatten.", "Stå upp och sträck armarna mot taket. Sätt dig sedan med fötterna i golvet."];
+Object.assign(NT_DEF, {koff: {on: true}, res: {on: false, f: "09:00", u: "17:00"}});
+NT_ROWS.push(["koff", "☕", "Koffeinstopp", "Nio timmar före läggdags"], ["res", "🚶", "Res dig", "Varje timme mellan tiderna du väljer"]);
+(() => { const g = NT_GROUPS.find(x => x[0] === "Sömn och dagen"); if (g) g[1].push("koff", "res"); })();
+const v13ResSet = () => { const s = ntSet("res"), ok = x => /^([01]\d|2[0-3]):[0-5]\d$/.test(x || ""); return {on: !!s.on, f: ok(s.f) ? s.f : "09:00", u: ok(s.u) ? s.u : "17:00"}; };
+NT_DESC.koff = () => n6Desc("Nio timmar före läggdags – sista koffeinet för dagen", "koff-");
+NT_DESC.res = () => { const s = v13ResSet(); return n6Desc("Varje timme " + s.f.replace(":", ".") + "–" + s.u.replace(":", ".") + " – inte medan du tränar", "res-"); };
+NT_EXTRA.res = s => {
+  if (!s.on) return "";
+  const r = v13ResSet();
+  return '<div class="n6-x v13-res" id="v13Res"><label class="n6-ptt"><span>Från</span><input type="time" class="nt-time" data-v13t="f" value="' + r.f + '" aria-label="Res dig från"></label><label class="n6-ptt"><span>Till</span><input type="time" class="nt-time" data-v13t="u" value="' + r.u + '" aria-label="Res dig till"></label></div>';
+};
+const _v13Nt = ntEvents;
+ntEvents = function(){
+  const base = _v13Nt.apply(this, arguments);
+  try {
+    const now = Date.now(), t0 = today(), eT = v13Early(t0), hmT = gmBedtime().hm, out = [];
+    // läggdags-notiserna räknas med i kvällens tid: de andra kvällarna får sin egen halvtimme
+    base.forEach(e => {
+      const m = /^(bed30|bed|ner)-(\d{4}-\d{2}-\d{2})$/.exec(e.id);
+      if (m){
+        const eD = v13Early(parseIso(m[2]));
+        if (eD !== eT){ const hmD = v13Hm(ntMin(hmT) + eT - eD); e = Object.assign({}, e, {at: e.at + (eT - eD) * 60e3, body: e.body.split(hmT).join(hmD)}); }
+        if (eD) e = Object.assign({}, e, {body: e.body.replace("10 timmar", "10,5 timmar") + (m[1] === "bed" ? "" : " Gympass i morgon – därför en halvtimme tidigare.")});
+      }
+      out.push(e);
+    });
+    const res = v13ResSet(), rak = ntSet("rak").on ? n6RakTimes().map(ntMin) : [];
+    for (let i = 0; i < 7; i++){
+      const d = addDays(t0, i), ds = iso(d), day = Math.round(d.getTime() / 864e5);
+      if (ntSet("koff").on){
+        const km = v13KoffMin(d);
+        out.push({id: "koff-" + ds, at: n6At(d, km), title: "Sista koffeinet nu ☕", body: "Koffein efter " + v13Hm(km) + " stör sömnen i natt – det sitter kvar i kroppen i många timmar. Vatten eller koffeinfritt resten av dagen.", url: "./#vanor"});
+      }
+      // Res dig: bara fyra dagar framåt – schemat fylls på varje gång appen öppnas
+      if (res.on && i < 4){
+        const gym = !!gymOn(d), pm = gym ? n6PassMin(d) : 0, a = ntMin(res.f), b = ntMin(res.u);
+        for (let m = a, j = 0; m <= b && j < 16; m += 60, j++){
+          if (gym && m >= pm - 20 && m <= pm + 90) continue;
+          if (rak.some(r => Math.abs(r - m) < 20)) continue;
+          out.push({id: "res-" + ds + "-" + v13Col(m).replace(":", ""), at: n6At(d, m), title: "Upp och gå en minut 🚶", body: V13_RES[(day + j) % V13_RES.length], url: "./#pass"});
+        }
+      }
+    }
+    return out.filter(e => e.at > now + 30e3).sort((a, b) => a.at - b.at);
+  } catch(e){ return base; }
+};
+
+/* ----- handstående-klockan: ett femte test under Tester ----- */
+if (!Array.isArray(atl.hand)) atl.hand = [];
+A3_T.hand = {key: "hand", name: "Handstående-klocka", every: 7, sub: "en gång i veckan"};
+if (A3_TK.indexOf("hand") < 0) A3_TK.push("hand");
+const V13_HGOAL = 30;   // steg 1 mot press till handstående: 30 sekunder mot väggen
+const _v13Sum = a3Summary;
+a3Summary = function(k){
+  if (k !== "hand") return _v13Sum.apply(this, arguments);
+  const arr = atl.hand, l = arr[arr.length - 1]; if (!l) return "Inte testat än";
+  const best = Math.max.apply(null, arr.map(r => r.s));
+  return l.s + " s" + (best > l.s ? " · bäst " + best + " s" : "") + " · mål " + V13_HGOAL + " s · " + dLabel(l.d);
+};
+const _v13Tests = a3TestsHTML;
+a3TestsHTML = function(){
+  const h = _v13Tests.apply(this, arguments);
+  try { return h.replace('häng, rörlighet, split och balans</span>', 'häng, rörlighet, split, balans och handstående</span>').replace("Häng, rörlighet och balans en gång i månaden, splitten varje vecka.", "Häng, rörlighet och balans en gång i månaden, splitten och handståendet varje vecka."); } catch(e){ return h; }
+};
+function v13HandHTML(){
+  const arr = atl.hand, best = arr.length ? Math.max.apply(null, arr.map(r => r.s)) : null;
+  return '<div class="card a3-how"><b>Så gör du</b><ul><li>Lägg mobilen på golvet med skärmen uppåt och ljudet på, en bit från händerna.</li><li>Tryck på klockan – du har åtta sekunder att komma upp. Magen mot väggen, raka armar, tryck axlarna upp mot öronen.</li><li>Rösten säger tiden var femte sekund. Tryck på klockan när du har kommit ner – var du sen, dra av en sekund eller två.</li></ul>' +
+      '<p class="small">Målet är ' + V13_HGOAL + ' sekunder mot väggen – första steget mot press till handstående.' + (best != null ? ' Ditt bästa: <b class="num">' + best + ' s</b>.' : '') + '</p></div>' +
+    (readOnly ? '' : '<div class="card a3-sw"><button type="button" class="a3-swt num" id="v13SwT" data-v13="hsw">0:00</button><span class="a3-sws" id="v13SwS" aria-live="polite">Tryck på klockan för att starta</span></div>' +
+      '<form class="at-log a3-log1" data-v13f="hand" novalidate><label>Sekunder<input name="s" id="v13HandIn" type="number" inputmode="numeric" min="1" max="600" placeholder="t.ex. 20" autocomplete="off"></label><button class="btn" type="submit">Spara</button></form>') +
+    '<p class="small a3-err" id="a3Err" hidden></p>' +
+    a3ChartHTML([{pts: a3Pts(arr, "s"), color: "var(--at-skill)", unit: "s", name: "Handstående", goal: V13_HGOAL}], "Handstående mot vägg · sekunder") +
+    a3HistHTML("hand", (r, p) => r.s + " s" + (p ? a3Diff(r.s, p.s, " s") : ""));
+}
+const _v13TS = a3TestSheetHTML;
+a3TestSheetHTML = function(k){
+  if (k !== "hand") return _v13TS.apply(this, arguments);
+  const T = A3_T.hand, nx = a3Next("hand"), ti = iso(today());
+  const when = !nx ? "Första gången blir ditt startvärde." : iso(nx) <= ti ? "Dags att testa igen." : "Nästa: " + dLong(iso(nx)) + ".";
+  return '<div class="sh-top"><b>' + esc(T.name) + '</b><button type="button" class="sh-x" data-a3t="close" aria-label="Stäng">×</button></div>' +
+    '<p class="lead a3-when">' + esc(atCap(T.sub)) + '. ' + esc(when) + '</p>' + v13HandHTML();
+};
+let V13W = null, v13WT = 0;
+function v13SwStop(){ clearTimeout(v13WT); if (V13W){ V13W = null; try { a3Awake(); } catch(e){} } }
+function v13SwTap(){
+  const t = $("v13SwT"), s = $("v13SwS"); if (!t) return;
+  ensureAudio();
+  if (!V13W || V13W.ph === "stop"){ V13W = {ph: "count", end: Date.now() + 8000, said: 0}; keepAwake(); say("Åtta sekunder. Upp mot väggen."); v13SwTick(); return; }
+  if (V13W.ph === "count"){ v13SwStop(); t.textContent = "0:00"; t.classList.remove("run"); s.textContent = "Avbrutet. Tryck på klockan för att starta igen."; return; }
+  const sec = Math.max(1, Math.round((Date.now() - V13W.t0) / 1000));
+  clearTimeout(v13WT); V13W.ph = "stop"; beep(); try { a3Awake(); } catch(e){}
+  t.classList.remove("run"); t.textContent = mmss(sec); s.textContent = sec + " sekunder. Ändra om du var sen, och tryck Spara.";
+  const inp = $("v13HandIn"); if (inp) inp.value = sec;
+}
+function v13SwTick(){
+  clearTimeout(v13WT); const t = $("v13SwT"), s = $("v13SwS"); if (!V13W || !t){ V13W = null; return; }
+  const now = Date.now();
+  if (V13W.ph === "count"){
+    const left = V13W.end - now;
+    if (left <= 0){ V13W.ph = "run"; V13W.t0 = now; beep1(); say("Nu!"); t.classList.add("run"); s.textContent = "Tryck på klockan när du kommit ner"; }
+    else { t.textContent = String(Math.ceil(left / 1000)); s.textContent = "Upp mot väggen …"; }
+  }
+  if (V13W.ph === "run"){
+    const sec = Math.floor((now - V13W.t0) / 1000); t.textContent = mmss(sec);
+    if (sec >= 5 && sec % 5 === 0 && V13W.said !== sec){ V13W.said = sec; say(String(sec)); }
+  }
+  v13WT = setTimeout(v13SwTick, 200);
+}
+const _v13TO = a3TestOpen; a3TestOpen = function(){ v13SwStop(); return _v13TO.apply(this, arguments); };
+const _v13TC = a3TestClose; a3TestClose = function(){ v13SwStop(); return _v13TC.apply(this, arguments); };
+const _v13Coach = atCoachLines;
+atCoachLines = function(){
+  const L = _v13Coach.apply(this, arguments);
+  try { if (atl.hand.length) L.push("HANDSTÅENDE MOT VÄGG (sekunder, mål " + V13_HGOAL + "): " + atl.hand.slice(-6).map(r => r.d + " " + r.s).join("; ")); } catch(e){}
+  return L;
+};
+const _v13Imp = a3Import;
+a3Import = function(ax){
+  let n = _v13Imp.apply(this, arguments);
+  try { (ax && Array.isArray(ax.hand) ? ax.hand : []).forEach(x => { if (!x || !/^\d{4}-\d{2}-\d{2}$/.test(x.d || "") || !(x.s >= 1 && x.s <= 600) || atl.hand.some(y => y.d === x.d)) return; atl.hand.push({d: x.d, s: Math.round(x.s)}); n++; }); atl.hand.sort((a, b) => a.d < b.d ? -1 : 1); } catch(e){}
+  return n;
+};
+
+/* ----- trycken ----- */
+document.addEventListener("click", e => {
+  const t = e.target; if (!t || !t.closest) return;
+  const b = t.closest("[data-v13]"); if (!b) return;
+  const a = b.dataset.v13;
+  if (a === "sheet"){ v13SomnSheet(); return; }
+  if (a === "close"){ v13Close(); return; }
+  if (a === "kstart"){ v13KvStart(); return; }
+  if (a === "ksheet"){ v13KvSheet(); return; }
+  if (a === "kundo"){ v13KvUndo(); return; }
+  if (a === "vanor"){ v13Close(); if (location.hash === "#vanor") show("vanor"); else location.hash = "vanor"; return; }
+  if (a === "kvall"){ v13Close(); try { a3RunStart(iso(today()), "kvall"); } catch(e2){ toast("Kvällsvilan finns under Atlet idag på Pass"); } return; }
+  if (a === "andas"){ v13AndasOpen(); return; }
+  if (a === "andasx"){ v13AndasClose(); return; }
+  if (a === "apat"){ v13BPat = b.dataset.v === "box" ? "box" : "lugn"; v13AndasPaint(); return; }
+  if (a === "amin"){ v13BMin = [2, 5, 10].indexOf(+b.dataset.v) >= 0 ? +b.dataset.v : 5; v13AndasPaint(); return; }
+  if (a === "ago"){ v13AndasGo(); return; }
+  if (a === "hsw"){ v13SwTap(); return; }
+});
+document.addEventListener("change", e => {
+  const t = e.target; if (!t || !t.dataset) return;
+  const k = t.dataset.v13sw;
+  if (k === "early" || k === "dark" || k === "gard"){
+    v13[k] = !!t.checked; v13Save(); temaApply();
+    if (k === "early" && typeof ntSoon === "function") ntSoon();
+    if (k === "gard" && t.checked) v13.opened = iso(today());   // börjar gälla i morgon bitti, inte nu
+    v13Save(); v13Again();
+    toast(k === "early" ? (t.checked ? "Tidigare kväll före gymdagar är på" : "Samma läggdags varje kväll") : k === "dark" ? (t.checked ? "Mörkt på kvällen är på" : "Mörkt på kvällen är av") : (t.checked ? "Gardinen öppnas i morgon bitti när du öppnar appen" : "Gardinen öppnas inte av sig själv"));
+    return;
+  }
+  const tk = t.dataset.v13t;
+  if ((tk === "f" || tk === "u") && /^\d{2}:\d{2}$/.test(t.value)) n6Put("res", {[tk]: t.value}, true);
+});
+document.addEventListener("submit", e => {
+  const f = e.target; if (!f || !f.matches || !f.matches('[data-v13f="hand"]')) return;
+  e.preventDefault();
+  const el = f.elements.s, v = parseFloat(String(el ? el.value : "").trim().replace(",", "."));
+  if (!isFinite(v) || v < 1 || v > 600){ a3Err("Skriv in sekunderna, 1–600."); return; }
+  const best = atl.hand.length ? Math.max.apply(null, atl.hand.map(r => r.s)) : null, s = Math.round(v);
+  a3Put("hand", {d: iso(today()), s}); v13SwStop();
+  toast("Handstående sparat: " + s + " s" + (best == null ? " – ditt startvärde" : s > best ? " – nytt rekord (+" + (s - best) + " s)" : s >= V13_HGOAL ? " – målet nått" : ""));
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  const av = $("v13Av"), ov = $("v13Ov");
+  if (av && !av.hidden){ e.preventDefault(); e.stopPropagation(); v13AndasClose(); }
+  else if (ov && !ov.hidden){ e.preventDefault(); e.stopPropagation(); v13Close(); }
+}, true);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible") return;
+  temaApply(); v13Morning();
+  if (V13B && !V13B.done){ try { keepAwake(); } catch(e){} v13AndasTick(); }
+  if (V13W && V13W.ph !== "stop"){ keepAwake(); v13SwTick(); }
+});
+setInterval(() => { try { temaApply(); } catch(e){} }, 60e3);
+try { v13Save(); temaApply(); } catch(e){}
+setTimeout(v13Morning, 1500);
+
 
 /* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611182154, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611191342, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -16066,7 +16545,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "18 nov 21.54", BUILD_NOTE = "Motivation: månadens utmaning, medaljer, nedräkning och belöning, bästa veckan, året i rutor och ett ord efter passet";
+const BUILD = "19 nov 13.42", BUILD_NOTE = "Sömn och vardag: kväll på en knapp, andningscirkel, koffeinstopp, mörkt på kvällen, gardinen på morgonen, Res dig och en klocka för handståendet";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;

@@ -281,6 +281,21 @@ Från 19 november 2026. Allt räknas ur det som redan är loggat, och inget änd
 - **📅 Året i rutor** (överst i Historik): en rad per månad och en ruta per dag, i passets färg de dagar du körde.
 - **✏️ Ett ord efter passet**: när passet är sparat trycker du *Stark*, *Pigg*, *Bra*, *Okej*, *Seg* eller *Trött*. Ordet sparas med passet (`ord`) och står i Historik.
 
+### Sömn och vardag
+
+Från 19 november 2026. Under **Vanor → Kväll och sömn** står kvällens läggdags och koffeinstoppet, och där finns brytarna. Det som gör något av sig självt – mörkt på kvällen, gardinen och Res dig – är avstängt tills det slås på.
+
+- **🌙 Kväll på en knapp**: på kvällen (från tre timmar före läggdags) kommer rutan *Kvällen* på Pass. *Starta kvällen* gör appen mörk till nästa morgon, stänger gardinen om den är kopplad och visar kvällens steg: Kvällsvila (kör blocket), andas och kvällens vanor. *Ångra kvällen* gör appen ljus igen.
+- **🌬 Andningscirkel**: följ cirkeln – in när den växer, ut när den krymper. Lugn andning (in 4, ut 6) eller box (4–4–4–4), i 2, 5 eller 10 minuter. Skärmen är mörk och hålls tänd. Med *Minska rörelse* på i telefonen står cirkeln still och texten visar andningen.
+- **☕ Koffeinstopp**: nio timmar före läggdags. En genomgång av 24 studier ([Gardiner m.fl. 2023](https://pubmed.ncbi.nlm.nih.gov/36870101/)) kom fram till att en kopp kaffe bör drickas minst 8,8 timmar före läggdags för att inte korta sömnen, och en pre-workout minst 13,2 timmar före. Påminnelsen *Koffeinstopp* kommer då (på från början).
+- **Tidigare kväll före gymdagar** (på från början): kvällen före ett gympass – tisdag, onsdag, fredag och lördag i grundschemat, och flyttade pass följer med – är läggdags en halvtimme tidigare. Läggdags-notiserna, *Mobilen ner* och koffeinstoppet flyttar med, och texten säger varför.
+- **☾ Mörkt på kvällen**: appen blir mörk två timmar före läggdags och ljus igen när du vaknar. Brytaren finns också längst ner under **Allt**. *Mörkt läge* är fortfarande ett eget val som gäller hela dygnet. Tiderna sparas så att sidan blir mörk innan något ritas.
+- **🪟 Väckning med gardinen**: gardinen öppnas när appen öppnas första gången på morgonen (från 45 minuter före till tre timmar efter väckningen) – till exempel med ett tryck på morgonens notis. En webbapp kan inte göra något medan den är stängd, så ska gardinen öppnas innan man vaknar lägger man ett schema i SwitchBot-appen.
+- **🚶 Res dig**: en notis varje hel timme mellan två tider man väljer (9–17 från början), inte runt passet. Slås på under *Påminnelser i mobilen*. Schemat läggs fyra dagar framåt och fylls på varje gång appen öppnas.
+- **🤸 Handstående-klocka** (femte raden under *Tester* i Framsteg): åtta sekunder att komma upp mot väggen, sedan räknar klockan upp och rösten säger tiden var femte sekund. Målet är 30 sekunder – första steget mot press till handstående. Följer med i backupen.
+- Inställningarna ligger i `gymschema.kvall.v1` och andningen i `gymschema.andas.v1`, bara på telefonen.
+- **Sök i Allt** visar nu träffar med ordet i namnet först, sedan de som bara nämner det i förklaringen.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
