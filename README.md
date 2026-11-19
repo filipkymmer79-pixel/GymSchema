@@ -270,6 +270,17 @@ Under **Boxning**: AI:n (samma MediaPipe Pose, den lätta modellen) följer dig 
 
 Sist i Framsteg: en bild i storyformat med månadens pass, set, ton, rekord, de övningar som gått mest framåt, vikt, löpning, sömn, perfekta dagar och boxning – att spara eller skicka.
 
+### Motivation
+
+Från 19 november 2026. Allt räknas ur det som redan är loggat, och inget ändrar programmet.
+
+- **🎯 Månadens utmaning** (överst i Framsteg): en ny varje månad, i tur och ordning – alla gympass, hållningen 25 dagar, 8 rekord och vatten 25 dagar – med en stapel och hur mycket som är kvar. Blir grön när den är klar.
+- **Att se fram emot** (under utmaningen): **⏳ Nedräkning** till en dag du väljer, och **🎁 Belöning** – något du får efter ett visst antal pass, räknat från dagen du bestämmer det. När stapeln är full säger appen till. Båda sparas på telefonen (`gymschema.framemot.v1`) och följer med i backupen.
+- **📈 Bästa veckan** (efter rekorden): veckan med mest volym hittills – pass, ton och rekord – och hur långt den här veckan har kvar dit.
+- **🏅 Medaljer**: tolv stycken – första passet, 10, 25, 50 och 100 pass, första rekordet och 25 rekord, alla fyra pass en vecka, fyra fulla veckor i rad, 10 ton i ett pass, chins utan hjälp och första styrketestet – med datum när de togs.
+- **📅 Året i rutor** (överst i Historik): en rad per månad och en ruta per dag, i passets färg de dagar du körde.
+- **✏️ Ett ord efter passet**: när passet är sparat trycker du *Stark*, *Pigg*, *Bra*, *Okej*, *Seg* eller *Trött*. Ordet sparas med passet (`ord`) och står i Historik.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
