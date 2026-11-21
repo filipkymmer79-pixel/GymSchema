@@ -933,7 +933,7 @@ span.mn-go{padding:10px 4px;background:none!important;color:var(--good)!importan
 .fk-fig{border-radius:14px;overflow:hidden;background:var(--fig-bg);display:flex;justify-content:center}
 .fk-fig svg{display:block;width:100%;height:auto;max-height:30vh}
 .fk-cue span{font-size:17px}
-.fk-yt{align-self:flex-start}
+.fk-yt{align-self:flex-start;white-space:normal;max-width:100%;line-height:1.3}
 .fk-last{font-size:14px;color:var(--muted);line-height:1.4}
 .fk-last b{color:var(--ink);font-weight:700}
 .fk-alt{padding:12px 14px;border-radius:14px;background:var(--warn-bg);font-size:14px;line-height:1.4}
@@ -3994,6 +3994,49 @@ html.ef-late #v-pass [data-fk="open"]{display:none}
 /* smal skärm: matbilderna ger plats åt texten, och månaderna står under varandra så att hela namnet syns */
 @media (max-width:359px){ .d14-big b{font-size:34px} .d14-h{grid-template-columns:36px minmax(0,1fr) 16px;gap:10px} .d14-hi{width:36px;height:36px} .d14-r{grid-template-columns:minmax(0,1fr) auto;gap:10px} .d14-e{display:none} .d14-bars{gap:3px}
   .d14-sel{grid-template-columns:minmax(0,1fr);gap:6px} .d14-sel > span{justify-self:center} }
+
+/* ---------- Kameran, omgång 15 (21 nov 2026) ---------- */
+/* Bladet ligger över allt annat – också över Kör passet och testbladen */
+.scan.k15{z-index:99}
+.k15-view{max-height:58vh}
+.k15-n{font-size:min(22vw,104px)}
+.k15-sub{position:absolute;left:16px;top:calc(14px + min(22vw,104px));font-size:15px;font-weight:800;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.75)}
+.k15-sub:empty{display:none}
+/* mätaren: fylls när du går mot vändpunkten, grön när du är hela vägen */
+.k15-gauge{position:absolute;right:12px;top:14%;bottom:24%;width:14px;border-radius:999px;background:rgba(255,255,255,.28);overflow:hidden}
+.k15-gauge i{position:absolute;left:0;right:0;bottom:0;height:0;background:#fff;border-radius:999px}
+.k15-gauge.ok i{background:#3DCB8A}
+/* mållinjen i sprinten */
+.k15-line{position:absolute;top:0;bottom:0;left:50%;width:0;border-left:3px dashed #FFE04A;margin-left:-1.5px;pointer-events:none}
+.k15-line span{position:absolute;top:46%;left:8px;font-size:13px;font-weight:800;color:#0B0D12;background:#FFE04A;border-radius:8px;padding:2px 8px}
+.k15-extra{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.k15-extra:empty{display:none}
+.k15-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%}
+.k15-chip{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;font-family:var(--body);font-size:14.5px;font-weight:700}
+button.k15-chip{min-height:44px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button.k15-chip[aria-pressed="true"]{background:#fff;color:#0B0D12}
+button.k15-chip:focus-visible{outline:2.5px solid #fff;outline-offset:2px}
+.k15-chip.best{background:#3DCB8A;color:#0B0D12}
+.k15-lbl{align-self:center;font-size:13.5px;font-weight:700;color:rgba(255,255,255,.72);margin-right:2px}
+.k15-btns .btn{min-height:50px;justify-content:center}
+.k15-btns .btn[disabled]{opacity:.45}
+.k15-btns .btn:first-child{flex:1 1 100%;font-size:17px}
+/* i testbladen (ljus botten) */
+.a3-tsheet .k15-chip{background:var(--p1);color:var(--ink)}
+.a3-tsheet button.k15-chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+.a3-tsheet button.k15-chip:focus-visible{outline-color:var(--ink)}
+.k15-dist{display:flex;flex-direction:column;gap:10px}
+.k15-dist > b{font-size:15.5px;font-weight:800}
+.k15-dist .k15-row{justify-content:flex-start}
+.a3-tsheet .sh-in > .k15-go{width:100%;justify-content:center}
+/* listan med övningar (Allt → Reps-räknare) */
+.k15-pl{display:flex;flex-direction:column;padding:6px 16px}
+.k15-pr{all:unset;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) 16px;gap:12px;align-items:center;min-height:58px;padding:8px 0;border-top:1px solid var(--line);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.k15-pr:first-child{border-top:0}
+.k15-pr:focus-visible{outline:2.5px solid var(--ink);outline-offset:2px;border-radius:10px}
+.k15-pc{color:var(--muted);font-size:20px}
+.k15-fps{position:absolute;right:10px;top:8px;font-size:11.5px;font-weight:700;color:rgba(255,255,255,.78);text-shadow:0 1px 6px rgba(0,0,0,.8)}
+.k15-fps:empty{display:none}
 </style>
 
 <div class="app">
@@ -5161,7 +5204,7 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, programMig: PR_MIG, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}, program: prog, goals: mal, bodyMeasures: matt, supplements: supp, water: vat, atlet: {done: atl.done, tests: atl.tests, start: atl.start || null, tips: atl.tips || {}, hang: atl.hang || [], mobt: atl.mobt || [], split: atl.split || [], bal: atl.bal || [], vo2: atl.vo2 || [], stel: atl.stel || {}, moved: atl.moved || {}, hand: atl.hand || []}, mat: m4Export(), kropp: k5Export(), sista: s7Export(), pass: p11Export(), framemot: m12Export(), data14: d14Export()};
+  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, programMig: PR_MIG, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}, program: prog, goals: mal, bodyMeasures: matt, supplements: supp, water: vat, atlet: {done: atl.done, tests: atl.tests, start: atl.start || null, tips: atl.tips || {}, hang: atl.hang || [], mobt: atl.mobt || [], split: atl.split || [], bal: atl.bal || [], vo2: atl.vo2 || [], stel: atl.stel || {}, moved: atl.moved || {}, hand: atl.hand || [], hoppk: atl.hoppk || [], sprint: atl.sprint || []}, mat: m4Export(), kropp: k5Export(), sista: s7Export(), pass: p11Export(), framemot: m12Export(), data14: d14Export()};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
@@ -9557,6 +9600,7 @@ const GU = [
     ["🧪", "Styrketest var fjärde vecka", "Vecka 4 och 8 i blocket frågar Kör passet om du vill testa. Säger du ja kör du sista setet i första övningen så långt det går med bra teknik, och appen räknar ut ett ungefärligt max. Programmet ändras inte.", "pass", '#v-pass [data-fk="open"]', "", "Frågan kommer i Kör passet vecka 4 och 8 i blocket."],
     ["↶", "Ångra", "Tryckte du Klart set för tidigt i Kör passet? Tryck Ångra i raden längst ner, så är setet inte klart och vilan stoppas. Ett dropset och en lapp som bockats av går också att ångra.", "pass", '#v-pass [data-fk="open"]', "", "Finns i Kör passet på en gymdag."],
     ["🛞", "Viktratten", "Tryck på siffran för vikt eller reps i Kör passet, så kommer en ratt där du snurrar fram rätt siffra. Plus och minus finns kvar.", "pass", '#v-pass [data-fk="open"]', "", "Finns i Kör passet på en gymdag."],
+    ["📷", "Reps-räknare med kameran", "Kameran räknar repsen och säger till om du inte går hela vägen eller sänker för fort. Tryck Räkna reps vid setet i Kör passet, så fylls antalet i. Rutan här öppnar en lista där du kan prova.", "pass", '#v-pass [data-fk="open"]'],
     ["⏱", "Vila med timer och röst", "Bocka ett set så startar vilan. Rösten säger när det är dags och vad nästa set är.", "pass", "#v-pass article.ex .set [data-chk]"],
     ["⚡", "Snabbläge – supersets", "Övningarna i par med mindre vila när du har bråttom.", "pass", "#v-pass .ss-card .mn-sw"],
     ["🔁", "Upptagen? Byt", "Kör något annat först, fråga om du får köra mellan, eller byt övning i dag.", "pass", "#v-pass .bz-link"],
@@ -9632,6 +9676,8 @@ const GU = [
     ["📏", "Hopptest", "Upphopp och längdhopp i cm varannan söndag, med graf.", "framsteg", "#atTest-f"],
     ["📏", "Tester: häng, rörlighet, split och balans", "Hängtest och rörlighetstest en gång i månaden, splitten varje vecka och balansen med mobilens rörelsesensor – med grafer.", "framsteg", "#a3Tests-f"],
     ["🤸", "Handstående-klocka", "Under Tester: klockan räknar upp och rösten säger tiden var femte sekund, så hör du hur länge du stått. Målet är 30 sekunder mot väggen.", "framsteg", "#a3Tests-f"],
+    ["📷", "Hopphöjd med kameran", "Ställ mobilen en bit bort och hoppa. Appen följer höften genom hoppet och räknar ut höjden i centimeter – utan måttband. Ligger under Tester i Framsteg.", "framsteg", '#a3Tests-f [data-a3="test"][data-k="hoppk"]', "#a3Tests-f"],
+    ["⏱", "Sprinttid med kameran", "Ställ mobilen vid mållinjen. Appen ger startsignal, ser när du passerar och säger tiden. Ligger under Tester i Framsteg.", "framsteg", '#a3Tests-f [data-a3="test"][data-k="sprint"]', "#a3Tests-f"],
     ["🤸", "Atlet-minuter och stelhetskarta", "Hur många minuter av varje sort du gjort i veckan – rörlighet, spänst, teknik, slåss och kondition – och var du är stelast.", "framsteg", "#a3Min-f"],
     ["🏆", "Vägen till egna chins och styrka per kilo", "I Framsteg: hjälpvikten i chinsen ner mot noll med ett datum i din takt, styrkan delad med kroppsvikten, vilken tid på dygnet du lyfter tyngst och hur ofta du lämnade appen mellan seten.", "framsteg", "#v-framsteg .cr-card"],
     ["📈", "Grafer och prognos", "Kurvan för varje övning och när du når nästa vikt i din egen takt.", "framsteg", "#v-framsteg .chips"],
@@ -15458,13 +15504,14 @@ const AL_SHORT = {
   "Väckning med gardinen": "Väckning", "Res dig varje timme": "Res dig", "Handstående-klocka": "Handstående", "Andningscirkel": "Andas",
   "Frukost på tre minuter": "Snabb frukost", "Fler kalorier utan mer mat": "Fler kalorier", "Vilopuls före passet": "Vilopuls", "Jämför två månader": "Jämför månader",
   "Passen i kalendern": "Kalendern", "Export till Excel": "Excel",
+  "Reps-räknare med kameran": "Reps-räknare", "Hopphöjd med kameran": "Hopphöjd", "Sprinttid med kameran": "Sprinttid",
   "Intervaller 4 × 4 på fredagar": "Intervaller 4\u00a0×\u00a04"
 };
 // Långa sammansatta ord delas där svenskan delar dem (mjukt bindestreck), aldrig mitt i en stavelse
 const AL_HY = ("Upp-värm-ning Morgon-känsla Muskel-kartan Progress-bilder Sjuk-gymnast Program-mets Program-met program-met Atlet-program-met " +
   "Ömhets-karta Sömn-dagbok Hemma-pass Hemma-gym På-minnel-ser på-minnel-ser Vecko-brevet Måltids-rytm Kropps-mått Socker-vakt Mag-dagbok " +
   "Vecko-meny Löp-rundan Form-check Snabb-läge Upp-tagen Belast-ning Vecko-koll Håll-ningen Vilo-timern Röst-logg Till-skott " +
-  "Mun-vård Skärm-tid Löp-väder Hopp-test Vikt-ratten Styrke-test Rekor-det Ned-räkning Koffein-stopp Hand-stående").split(" ")
+  "Mun-vård Skärm-tid Löp-väder Hopp-test Vikt-ratten Styrke-test Rekor-det Ned-räkning Koffein-stopp Hand-stående Hopp-höjd Sprint-tid").split(" ")
   .reduce((m, w) => (m[w.replace(/-/g, "")] = w.replace(/-/g, "\u00AD"), m), {});
 const alHy = s => s.replace(/[A-Za-zÅÄÖåäöÉé]{6,}/g, w => AL_HY[w] || w);
 const AL_COL = {"Pass": "red", "Vanor": "green", "Boxning": "run", "Framsteg": "blue", "Kropp": "rest", "Program och historik": "yellow"};
@@ -17041,12 +17088,625 @@ document.addEventListener("change", e => {
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !e.defaultPrevented && $("d14Ov") && !$("d14Ov").hidden){ e.preventDefault(); d14Close(); } });
 
+/* ---------- Kameran, omgång 15 (21 nov 2026) ---------- */
+// Idéerna 92, 93 och 94: kameran räknar reps och kollar djupet, mäter hopphöjden ur höftens bana genom luften och tar sprinttiden
+// vid mållinjen. Allt räknas i telefonen – bilden sparas inte och skickas ingenstans.
+// Reps och hopp använder samma AI som hållningskameran och Kameran som tränare (liveLoad). Sprinten behöver ingen AI:
+// den ser skillnaden mellan bildrutorna i en smal remsa mitt i bilden.
+
+/* ===== 92: reps-räknaren ===== */
+// j = leden kameran tittar på. far = repens vändpunkt: "lo" (böjd led) eller "hi" (sträckt). lo/hi = så långt det måste gå
+// för att en rep ska räknas. deep = så långt vändpunkten ska nå, back = så långt tillbaka i startläget (programmets egna ord).
+// ecc = var den långsamma delen ligger: "ut" (på väg mot vändpunkten) eller "hem" (på väg tillbaka). over = för långt.
+// v = varifrån kameran ska titta: "sida" (det vanliga) eller "fram" – armar som rör sig ut åt sidorna (latsdrag, axelpress, sidolyft)
+// ser från sidan ut som ett streck, och då går vinkeln inte att lita på.
+const K15_EX = {
+  chins:         {v: "fram", j: "arm", far: "lo", lo: 105, hi: 140, deep: 80, back: 150, ecc: "hem", cd: "Hakan över handtagen", cb: "Raka armar nere", cs: "Långsammare ner"},
+  latsdrag:      {v: "fram", j: "arm", far: "lo", lo: 105, hi: 140, deep: 90, back: 150, ecc: "hem", cd: "Stången till bröstet", cb: "Raka armar uppe", cs: "Långsammare upp"},
+  kabelrodd:     {j: "arm", far: "lo", lo: 110, hi: 140, deep: 95, back: 150, ecc: "hem", cd: "Dra till magen", cb: "Sträck fram armarna", cs: "Långsammare tillbaka"},
+  curls:         {j: "arm", far: "lo", lo: 95, hi: 135, deep: 65, back: 145, ecc: "hem", cd: "Hela vägen upp", cb: "Sänk till nästan raka armar", cs: "Långsammare ner", drift: 1},
+  hammarcurl:    {j: "arm", far: "lo", lo: 95, hi: 135, deep: 65, back: 145, ecc: "hem", cd: "Hela vägen upp", cb: "Sänk till nästan raka armar", cs: "Långsammare ner", drift: 1},
+  dips:          {j: "arm", far: "lo", lo: 115, hi: 145, deep: 100, back: 155, ecc: "ut", cd: "Ner till vågräta överarmar", cb: "Raka armar uppe", cs: "Långsammare ner", over: 70, co: "Inte djupare än vågräta överarmar"},
+  armhavning:    {j: "arm", far: "lo", lo: 110, hi: 145, deep: 95, back: 155, ecc: "ut", cd: "Längre ner", cb: "Raka armar uppe", cs: "Långsammare ner"},
+  brostpress:    {j: "arm", far: "hi", lo: 110, hi: 140, deep: 150, back: 100, ecc: "hem", cd: "Pressa ut – nästan raka armar", cb: "Sänk till brösthöjd", cs: "Långsammare tillbaka"},
+  axelpress:     {v: "fram", j: "arm", far: "hi", lo: 110, hi: 140, deep: 150, back: 100, ecc: "hem", cd: "Pressa upp – nästan raka armar", cb: "Sänk till axelhöjd", cs: "Långsammare ner"},
+  lutandehantel: {v: "fram", j: "arm", far: "hi", lo: 110, hi: 140, deep: 150, back: 100, ecc: "hem", cd: "Pressa hela vägen upp", cb: "Sänk till övre bröstet", cs: "Långsammare ner"},
+  triceps:       {j: "arm", far: "hi", lo: 105, hi: 140, deep: 160, back: 95, ecc: "hem", cd: "Raka armar i botten", cb: "Upp över vågrätt", cs: "Långsammare upp", drift: 1},
+  benpress:      {j: "kna", far: "lo", lo: 120, hi: 150, deep: 105, back: null, ecc: "ut", cd: "Djupare – om rumpan ligger kvar", cs: "Långsammare ner", lock: 176, cl: "Lås inte knäna"},
+  knaboj:        {j: "kna", far: "lo", lo: 120, hi: 155, deep: 100, back: 160, ecc: "ut", cd: "Djupare", cb: "Res dig helt", cs: "Långsammare ner"},
+  utfall:        {j: "kna", far: "lo", lo: 120, hi: 150, deep: 100, back: null, ecc: "ut", cd: "Djupare", cs: "Långsammare ner"},
+  benspark:      {j: "kna", far: "hi", lo: 115, hi: 145, deep: 160, back: 105, ecc: "hem", cd: "Sträck ut helt", cb: "Hela vägen ner", cs: "Långsammare ner"},
+  larcurl:       {j: "kna", far: "lo", lo: 115, hi: 145, deep: 95, back: 150, ecc: "hem", cd: "Hela vägen in", cb: "Sträck ut benen", cs: "Långsammare tillbaka"},
+  rdl:           {j: "hoft", far: "lo", lo: 135, hi: 160, deep: 115, back: 168, ecc: "ut", cd: "Höften längre bak", cb: "Res dig helt", cs: "Långsammare ner", knee: 125, ck: "Lås knäna mjukt – det är ingen knäböj"},
+  hoftlyft:      {j: "hoft", far: "hi", lo: 135, hi: 160, deep: 170, back: 125, ecc: "hem", cd: "Höften hela vägen upp", cb: "Sänk hela vägen", cs: "Långsammare ner"},
+  sidolyftk:     {v: "fram", j: "axel", far: "hi", lo: 35, hi: 60, deep: 75, back: 25, ecc: "hem", cd: "Upp till axelhöjd", cb: "Sänk hela vägen", cs: "Långsammare ner", over: 108, co: "Stanna vid axelhöjd"}
+};
+["hantelbank"].forEach(k => { K15_EX[k] = K15_EX.lutandehantel; }); K15_EX.ohp = K15_EX.axelpress; K15_EX.marklyft = K15_EX.rdl; K15_EX.sidolyft = K15_EX.sidolyftm = K15_EX.sidolyftk;
+// Punkterna i kroppen (MediaPipe): axel 11/12, armbåge 13/14, hand 15/16, höft 23/24, knä 25/26, fotled 27/28
+const K15_J = {arm: [[11, 13, 15], [12, 14, 16]], kna: [[23, 25, 27], [24, 26, 28]], hoft: [[11, 23, 25], [12, 24, 26]], axel: [[23, 11, 13], [24, 12, 14]]};
+const K15_JN = {arm: "axeln, armbågen och handen", kna: "höften, knät och foten", hoft: "axeln, höften och knät", axel: "höften, axeln och armbågen"};
+const K15_VT = {sida: "från sidan", fram: "rakt framifrån eller bakifrån"}, K15_VS = {sida: "Från sidan", fram: "Framifrån"};
+const k15Tip = cfg => "Ställ mobilen 2–3 meter bort, " + K15_VT[cfg.v || "sida"] + ", så att " + K15_JN[cfg.j] + " syns.";
+const K15_JW = {arm: "armbågen", kna: "knät", hoft: "höften", axel: "axeln"};
+// En övning som bytts för dagen (hemma, annat gym, upptagen maskin) känns igen på namnet
+const K15_ALT = [[/lårcurl/i, "larcurl"], [/curl/i, "curls"], [/armhävning/i, "armhavning"], [/knäböj|goblet/i, "knaboj"], [/utfall/i, "utfall"], [/benpress/i, "benpress"], [/benspark/i, "benspark"],
+  [/chins|latsdrag|pull.?up/i, "latsdrag"], [/rodd/i, "kabelrodd"], [/dips/i, "dips"], [/axelpress/i, "axelpress"], [/bänkpress|bröstpress|hantelpress/i, "brostpress"], [/sidolyft/i, "sidolyftk"],
+  [/triceps/i, "triceps"], [/marklyft/i, "rdl"], [/höftlyft|hip thrust/i, "hoftlyft"]];
+function k15Key(ex){
+  if (!ex || ex.lr || ex.unit === "sek") return null;
+  if (ex.alt){ const m = K15_ALT.find(x => x[0].test(ex.alt)); return m ? m[1] : null; }
+  return K15_EX[ex.k] ? ex.k : null;
+}
+// Räknaren: tar emot kroppens punkter för en bildruta och säger vad som hände (rep, kort rep, tips, status)
+function k15Tracker(cfg){
+  const T = {reps: 0, bad: 0, miss: 0, zone: null, armed: false, ang: null, side: -1, cueAt: {}, ext: null, extT: 0, homeExt: null, leaveT: 0, reached: false, lastEcc: null, lockN: 0, driftN: 0, kneeN: 0, slowAt: 0, leftExt: null};
+  const home = cfg.far === "lo" ? "hi" : "lo", vis = (lm, i) => lm && lm[i] ? (lm[i].visibility == null ? 1 : lm[i].visibility) : 0;
+  const zoneOf = a => home === "hi" ? (a > cfg.hi ? "home" : a < cfg.lo ? "far" : "mid") : (a < cfg.lo ? "home" : a > cfg.hi ? "far" : "mid");
+  const beyond = (a, lim) => cfg.far === "lo" ? a <= lim : a >= lim;                       // har vändpunkten nått så långt?
+  const farther = (a, b) => cfg.far === "lo" ? a < b : a > b;
+  T.step = (lm, w, h, now) => {
+    const ev = {}, P = i => ({x: lm[i].x * w, y: lm[i].y * h}), tri = K15_J[cfg.j], sc = tri.map(t => t.reduce((s, i) => s + vis(lm, i), 0) / 3);
+    const cue = (k, text, gap) => { if (text && now - (T.cueAt[k] || -1e9) > (gap || 4000)){ T.cueAt[k] = now; ev.cue = text; return true; } return false; };
+    let a, side = T.side;
+    if (cfg.j === "axel"){   // sidolyft: en arm i taget eller båda – den arm som är högst
+      const ok = sc.map(s => s > .5); if (!ok[0] && !ok[1]){ ev.status = "Jag ser inte " + K15_JN.axel; ev.lost = true; return ev; }
+      const as = tri.map((t, i) => ok[i] ? jAng(P(t[0]), P(t[1]), P(t[2])) : -1); side = as[0] >= as[1] ? 0 : 1; a = as[side];
+    } else {
+      if (side < 0 || sc[side] < .5){ const s = sc[0] >= sc[1] ? 0 : 1; if (sc[s] < .5){ ev.status = "Jag ser inte " + K15_JN[cfg.j]; ev.lost = true; return ev; } side = T.side = s; }
+      const t = tri[side]; a = jAng(P(t[0]), P(t[1]), P(t[2]));
+    }
+    T.ang = T.ang == null ? a : T.ang + (a - T.ang) * .6;   // lätt utjämning mot darr i punkterna
+    a = T.ang; ev.angle = Math.round(a);
+    const z = zoneOf(a);
+    if (!T.armed){
+      if (z !== "home"){ ev.status = "Börja i startläget"; return ev; }
+      T.armed = true; T.zone = "home"; T.homeExt = a; ev.status = "Redo – kör"; ev.ready = true; return ev;
+    }
+    if (T.zone === "home"){
+      T.homeExt = home === "hi" ? Math.max(T.homeExt, a) : Math.min(T.homeExt, a);
+      if (cfg.lock != null){ if (a >= cfg.lock) T.lockN++; else T.lockN = 0; if (T.lockN >= 3) cue("lock", cfg.cl, 6000); }
+      if (z !== "home"){
+        // lämnar startläget: var du hela vägen tillbaka?
+        if (T.reps > 0 && cfg.back != null && !(home === "hi" ? T.homeExt >= cfg.back : T.homeExt <= cfg.back)) cue("back", cfg.cb, 5000);
+        T.zone = "ute"; T.leaveT = now; T.leftExt = T.homeExt; T.ext = a; T.extT = now; T.reached = z === "far";
+      }
+    } else {
+      if (farther(a, T.ext)){ T.ext = a; T.extT = now; }
+      if (z === "far") T.reached = true;
+      // formen på vägen: armbågar som vandrar (curl, triceps) och knän som böjs (rumänska marklyft)
+      const sh = [11, 12][side], hip = [23, 24][side], el = [13, 14][side], kn = [25, 26][side], an = [27, 28][side], see = i => vis(lm, i) > .5;
+      if (cfg.drift && see(sh) && see(hip) && see(el)){ if (jAng(P(hip), P(sh), P(el)) > 38) T.driftN++; else T.driftN = 0; if (T.driftN >= 4) cue("drift", "Armbågarna mot sidan", 6000); }
+      if (cfg.knee != null && see(hip) && see(kn) && see(an)){ if (jAng(P(hip), P(kn), P(an)) < cfg.knee) T.kneeN++; else T.kneeN = 0; if (T.kneeN >= 4) cue("knee", cfg.ck, 6000); }
+      if (z === "home"){
+        if (T.reached){
+          T.reps++; ev.rep = T.reps;
+          // tiden mäts mellan zonkanten och vändpunkten och räknas upp till hela vägen (jämn fart antas, högst 1,8 gånger)
+          const edge = home === "hi" ? cfg.hi : cfg.lo, raw = (cfg.ecc === "ut" ? T.extT - T.leaveT : now - T.extT) / 1000, span = Math.abs(edge - T.ext);
+          const ecc = raw * (span > 5 && T.leftExt != null ? Math.min(1.8, Math.max(1, Math.abs(T.leftExt - T.ext) / span)) : 1); T.lastEcc = ecc; ev.ecc = ecc;
+          if (!beyond(T.ext, cfg.deep)){ T.bad++; ev.short = true; cue("deep", cfg.cd, 2500); }
+          else if (cfg.over != null && farther(T.ext, cfg.over)) cue("over", cfg.co, 4000);
+          else if (ecc < 1.2 && T.reps >= 2 && T.reps - T.slowAt >= 2 && cue("slow", cfg.cs, 5000)) T.slowAt = T.reps;
+        } else if (Math.abs(T.ext - (home === "hi" ? cfg.hi : cfg.lo)) > 12){ T.miss++; ev.miss = true; cue("deep", cfg.cd, 2500); }
+        T.zone = "home"; T.homeExt = a; T.reached = false; T.lockN = 0; T.driftN = 0; T.kneeN = 0;
+      }
+    }
+    // mätaren: 0 i startläget, 1 när vändpunkten nått ända fram
+    const a0 = cfg.back != null ? cfg.back : (home === "hi" ? cfg.hi : cfg.lo);
+    ev.p = Math.max(0, Math.min(1, (a - a0) / (cfg.deep - a0))); ev.full = beyond(a, cfg.deep);
+    ev.status = T.zone === "home" ? (T.reps ? "" : "Redo – kör") : ev.full ? "Hela vägen ✓" : "";
+    return ev;
+  };
+  return T;
+}
+
+/* ===== 93: hopphöjden ===== */
+// Höften följs genom hoppet. I luften faller kroppen fritt, och ett fritt fall har alltid samma form: en parabel vars krökning
+// är tyngdkraften. Parabeln som passar höftens bana ger därför skalan (bildpunkter per meter) – och toppen, mätt från där du
+// stod, ger höjden. Inget måttband behövs, och det spelar ingen roll hur långt bort mobilen står.
+// Provat mot AI:n på en bild som flyttas som i ett hopp (kamera15/offline2.js och fit2.py): höften ser AI:n på en halv bildpunkt
+// när, fötterna tio gånger sämre – därför höften och inte tiden mellan avstamp och landning. Den översta dryga halvan av banan
+// används: lägre ner trycker du ifrån, och högre upp blir punkterna för få. Med AI:ns vanliga utjämning blev åtta hopp i snitt
+// 1,8 cm för höga (som mest 2,9); utan utjämning eller med en bild i taget blev det sämre.
+const K15_G = 9.81, K15_TOP = .45;
+function k15Fit(pts){   // minsta kvadrat: y = a·x² + b·x + c, med x = sekunder från punkternas medeltid
+  const n = pts.length, tm = pts.reduce((q, p) => q + p.t, 0) / n; let s1 = 0, s2 = 0, s3 = 0, s4 = 0, y0 = 0, y1 = 0, y2 = 0;
+  pts.forEach(p => { const x = (p.t - tm) / 1000, x2 = x * x; s1 += x; s2 += x2; s3 += x2 * x; s4 += x2 * x2; y0 += p.y; y1 += p.y * x; y2 += p.y * x2; });
+  const D = s4 * (s2 * n - s1 * s1) - s3 * (s3 * n - s1 * s2) + s2 * (s3 * s1 - s2 * s2); if (!(Math.abs(D) > 1e-12)) return null;
+  const a = (y2 * (s2 * n - s1 * s1) - s3 * (y1 * n - s1 * y0) + s2 * (y1 * s1 - s2 * y0)) / D,
+    b = (s4 * (y1 * n - s1 * y0) - y2 * (s3 * n - s1 * s2) + s2 * (s3 * y0 - y1 * s2)) / D,
+    c = (s4 * (s2 * y0 - s1 * y1) - s3 * (s3 * y0 - y1 * s2) + y2 * (s3 * s1 - s2 * s2)) / D;
+  let r = 0; pts.forEach(p => { const x = (p.t - tm) / 1000, e = a * x * x + b * x + c - p.y; r += e * e; });
+  return {a, b, c, tm, rms: Math.sqrt(r / n)};
+}
+// air = höftens höjd över ståläget (bildpunkter) mot tiden. stat = näsa till fotled i bild, body = din längd i cm.
+function k15JumpCalc(air, stat, body){
+  const NO = "Det där blev inget hopp – stå still och hoppa igen";
+  let pi = 0; air.forEach((p, i) => { if (p.y > air[pi].y) pi = i; });
+  const peak = air[pi].y; if (!(peak >= stat * .07)) return {why: NO};
+  let i0 = pi, i1 = pi; while (i0 > 0 && air[i0 - 1].y >= peak * K15_TOP) i0--; while (i1 < air.length - 1 && air[i1 + 1].y >= peak * K15_TOP) i1++;
+  const top = air.slice(i0, i1 + 1);
+  if (top.length < 5) return {why: "Kameran hann inte med – för få bilder i luften. Prova med mer ljus.", few: true};
+  const f = k15Fit(top); if (!f || !(f.a < 0)) return {why: NO};
+  const S = -2 * f.a / K15_G, apex = f.c - f.b * f.b / (4 * f.a), k = S / (stat / (.88 * body / 100)), cm = apex / S * 100;
+  // ett riktigt hopp faller med tyngdkraften: skalan ska stämma ungefär med din längd i bild, och banan ska vara jämn
+  if (!(k > .6 && k < 1.6) || f.rms > stat * .015 || !(cm >= 8 && cm <= 130)) return {why: NO, k, cm};
+  return {cm, k, n: top.length, rms: f.rms};
+}
+function k15Jump(body){
+  const J = {ph: "sok", win: [], hip0: null, stat: null, thr: 0, air: [], tUp: 0, n: 0, lostT: 0, body: body || 183};
+  const ok = (lm, i, v) => lm && lm[i] && (lm[i].visibility == null || lm[i].visibility > (v || .5));
+  J.step = (lm, w, h, t) => {
+    const ev = {ph: J.ph}, air = J.ph === "luft" || J.ph === "redo";
+    // Före hoppet ska hela kroppen synas. När du väl är redo räcker höften: huvud och fötter får åka ur bild i luften.
+    const seen = air ? ok(lm, 23, .3) && ok(lm, 24, .3) : [0, 11, 12, 23, 24, 27, 28].every(i => ok(lm, i));
+    if (!seen){
+      if (air){
+        if (!J.lostT) J.lostT = t;
+        if (t - J.lostT < 400 && !(J.ph === "luft" && t - J.tUp > 1600)){ ev.status = J.ph === "luft" ? "I luften" : "Hoppa!"; return ev; }   // en suddig ruta: vänta på nästa
+        if (J.ph === "luft"){ J.ph = "still"; ev.status = "Jag tappade dig i luften – backa lite"; ev.lostAir = true; }
+        else { J.ph = "sok"; ev.status = "Hela kroppen ska synas – fötterna också"; }
+      } else { J.ph = "sok"; ev.status = "Hela kroppen ska synas – fötterna också"; }
+      J.win = []; J.lostT = 0; ev.ph = J.ph; return ev;
+    }
+    J.lostT = 0;
+    const Y = i => lm[i].y * h, hip = (Y(23) + Y(24)) / 2;
+    if (J.ph === "sok" || J.ph === "still"){
+      const stat = (Y(27) + Y(28)) / 2 - Y(0), back = m => { J.ph = "sok"; J.win = []; ev.status = m; ev.ph = J.ph; return ev; };
+      if (stat < h * .3) return back("Kom närmare – du ska fylla minst en tredjedel av bilden");
+      if (Math.max(Y(27), Y(28)) > h * .985) return back("Backa lite – fötterna ska synas");
+      if (Y(0) - stat * .12 < stat * .3) return back("Backa lite – det ska finnas luft över huvudet");
+      J.ph = "still"; J.win.push({t, hip, stat}); while (J.win.length && t - J.win[0].t > 900) J.win.shift();
+      // stilla = höften håller sig inom 2 % av din längd i bild. Enstaka punkter som hoppar till räknas inte (10:e till 90:e percentilen).
+      const hs = J.win.map(x => x.hip).sort((x, y) => x - y), n = hs.length, med = a => a.slice().sort((x, y) => x - y)[Math.floor(a.length / 2)];
+      if (n >= 5 && t - J.win[0].t >= 650 && hs[Math.ceil((n - 1) * .9)] - hs[Math.floor((n - 1) * .1)] < stat * .02){
+        J.hip0 = med(hs); J.stat = med(J.win.map(x => x.stat)); J.thr = J.stat * .04; J.ph = "redo"; ev.ready = true; ev.status = "Hoppa!";
+      } else ev.status = "Stå still …";
+      ev.ph = J.ph; return ev;
+    }
+    const rise = J.hip0 - hip;
+    if (J.ph === "redo"){
+      if (rise > J.thr){ J.ph = "luft"; J.air = [{t, y: rise}]; J.tUp = t; ev.status = "I luften"; }
+      else { if (Math.abs(rise) < J.stat * .008) J.hip0 += (hip - J.hip0) * .03; ev.status = "Hoppa!"; }   // ståläget följer med om du flyttar dig lite
+    } else {
+      J.air.push({t, y: rise});
+      if (rise <= J.thr){   // nere igen
+        J.ph = "still"; J.win = [];
+        const r = k15JumpCalc(J.air, J.stat, J.body);
+        if (r.cm == null || r.why){ ev.status = r.why; ev.bad = true; ev.few = !!r.few; }
+        else { J.n++; ev.jump = r; ev.status = Math.round(r.cm) + " cm"; }
+      } else if (t - J.tUp > 1600){ J.ph = "sok"; J.win = []; ev.status = "Ställ dig i bild igen"; ev.bad = true; }
+      else ev.status = "I luften";
+    }
+    ev.ph = J.ph; return ev;
+  };
+  return J;
+}
+
+/* ===== 94: mållinjen ===== */
+// Tre smala remsor ur bilden, i gråskala: mitten (mållinjen) och en på var sida. En löpare som passerar ändrar många rader i
+// mitten men inte i sidoremsorna i samma bildruta – ändras allt på en gång är det ljuset som skiftat, inte någon som sprungit förbi.
+const K15_SW = 8, K15_SH = 200, K15_ROWS = .12;
+function k15Finish(){
+  const F = {prev: null, pT: 0, noise: [], thr: 14, armed: false};
+  const rows = (cur, prev, x0) => { let n = 0; for (let y = 0; y < K15_SH; y++){ let d = 0; for (let x = 0; x < K15_SW; x++){ const i = y * K15_SW * 3 + x0 + x; d += Math.abs(cur[i] - prev[i]); } d /= K15_SW; if (F.cal) F.noise.push(d); if (d > F.thr) n++; } return n / K15_SH; };
+  // gray: K15_SW * 3 bred (vänster, mitten, höger) och K15_SH hög
+  F.feed = (gray, t) => {
+    const ev = {};
+    if (F.prev && F.prev.length === gray.length){
+      const l = rows(gray, F.prev, 0), c = rows(gray, F.prev, K15_SW), r = rows(gray, F.prev, K15_SW * 2);
+      ev.c = c; ev.l = l; ev.r = r;
+      if (F.armed && c >= K15_ROWS && !(l >= c * .6 && r >= c * .6)){ ev.cross = (F.pT + t) / 2; F.armed = false; }
+    }
+    F.prev = gray; F.pT = t; return ev;
+  };
+  // Bruset mäts medan bilden är stilla (under nedräkningen): gränsen läggs en bra bit över det
+  F.calStart = () => { F.cal = true; F.noise = []; };
+  F.calEnd = () => { F.cal = false; const a = F.noise.slice().sort((x, y) => x - y); if (a.length > 50) F.thr = Math.max(10, Math.min(60, a[Math.floor(a.length * .98)] * 3.5)); return F.thr; };
+  return F;
+}
+const k15SprintGate = m => Math.max(1, m / 11.5);   // snabbare än så springer ingen: det som rör sig i bild innan dess räknas inte
+
+/* ===== gemensamt: bladet, kameran och bildrutorna ===== */
+let K15 = null;   // det som pågår: {kind: "rep" | "hopp" | "sprint", …}
+function k15El(){
+  let o = $("k15Ov"); if (o) return o;
+  o = document.createElement("div"); o.id = "k15Ov"; o.className = "scan k15"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.hidden = true;
+  o.innerHTML = '<div class="scan-top"><b id="k15Title"></b><button type="button" class="scan-x" data-k15="close" aria-label="Stäng">×</button></div>' +
+    '<div class="live-view k15-view" id="k15View"><video id="k15Vid" playsinline muted autoplay></video><canvas id="k15Can"></canvas><div class="k15-line" id="k15Line" hidden><span>Mål</span></div>' +
+    '<div class="live-n k15-n num" id="k15N"></div><div class="k15-sub" id="k15Sub"></div><div class="k15-gauge" id="k15Gauge" hidden aria-hidden="true"><i></i></div><div class="k15-fps num" id="k15Fps" aria-hidden="true"></div>' +
+    '<div class="live-cue" id="k15Cue" role="status" aria-live="polite"></div></div>' +
+    '<div class="scan-msg" id="k15Msg"></div><div class="k15-extra" id="k15Extra"></div><div class="scan-btns k15-btns" id="k15Btns"></div>';
+  document.body.appendChild(o);
+  return o;
+}
+const k15Msg = t => { const m = $("k15Msg"); if (m) m.textContent = t || ""; };
+function k15Cue(t, hold){
+  if (!K15) return; const c = $("k15Cue"), now = Date.now();
+  if (hold){ K15.cueT = t; K15.cueU = now + hold; } else if (K15.cueU && now < K15.cueU) t = K15.cueT;
+  if (c && c.textContent !== (t || "")) c.textContent = t || "";
+}
+function k15StopCam(){ if (K15 && K15.stream){ try { K15.stream.getTracks().forEach(t => t.stop()); } catch(e){} K15.stream = null; } const v = $("k15Vid"); if (v) v.srcObject = null; }
+async function k15Cam(){
+  k15StopCam(); const me = K15, v = $("k15Vid"), m = me.facing === "user" ? "scaleX(-1)" : ""; v.style.transform = m; $("k15Can").style.transform = m;
+  try {
+    const st = await navigator.mediaDevices.getUserMedia({video: {facingMode: me.facing, width: {ideal: 720}, height: {ideal: 1280}, frameRate: {ideal: me.fps || 30}}, audio: false});
+    if (K15 !== me){ try { st.getTracks().forEach(t => t.stop()); } catch(e){} return false; }
+    me.stream = st; v.srcObject = st; await v.play().catch(() => {}); return true;
+  } catch(e){ if (K15 === me){ me.camErr = true; k15Msg("Kameran gick inte att starta. Kolla att appen får använda kameran."); } return false; }
+}
+// En gång per ny bildruta från kameran. Tiden är kamerans egen klocka när webbläsaren ger den (mediaTime), annars skärmens.
+function k15Loop(){
+  const me = K15, v = $("k15Vid"); if (!me || !v) return;
+  const next = () => { if (K15 !== me || me.stop) return; if (v.requestVideoFrameCallback && !me.noVfc) me.raf = v.requestVideoFrameCallback(tick); else me.raf = requestAnimationFrame(n => tick(n, null)); };
+  const tick = (now, meta) => {
+    if (K15 !== me || me.stop) return;
+    me.ticks = (me.ticks || 0) + 1;
+    next();
+    if (v.readyState < 2 || !v.videoWidth) return;
+    const mt = meta && isFinite(meta.mediaTime) ? meta.mediaTime * 1000 : null;
+    // kamerans klocka används först när den visat sig gå i takt med skärmens
+    if (mt != null){ if (me.mt0 == null){ me.mt0 = mt; me.now0 = now; } else if (me.mtOk == null && now - me.now0 > 600){ const r = (mt - me.mt0) / (now - me.now0); me.mtOk = r > .8 && r < 1.25; me.mtOff = now - mt; } }
+    const t = me.mtOk && mt != null ? mt + me.mtOff : now;
+    if (me.lastT != null && t <= me.lastT) return;
+    me.lastT = t;
+    me.fN = (me.fN || 0) + 1; if (me.fT0 == null) me.fT0 = now;
+    if (now - me.fT0 >= 1000){ me.fps = me.fN * 1000 / (now - me.fT0); me.fN = 0; me.fT0 = now; const f = $("k15Fps"); if (f) f.textContent = Math.round(me.fps) + " bilder/s"; }
+    try { me.onFrame(v, t, now, meta); } catch(e){}
+  };
+  next();
+  // säkerhetsnät: bilden spelar men inga bildrutor har kommit på två sekunder
+  if (v.requestVideoFrameCallback) me.vfcT = setTimeout(() => { if (K15 === me && !me.stop && !me.ticks && v.readyState >= 2){ me.noVfc = true; next(); } }, 2000);
+}
+function k15Pose(v, now, t){
+  if (K15 && K15.fake) return K15.fake(now, t);
+  let r; try { r = liveLm.detectForVideo(v, now); } catch(e){ return null; }
+  return r && r.landmarks && r.landmarks[0] ? r.landmarks[0] : null;
+}
+const K15_BONES = [[11, 12], [11, 13], [13, 15], [12, 14], [14, 16], [11, 23], [12, 24], [23, 24], [23, 25], [25, 27], [24, 26], [26, 28], [27, 31], [28, 32], [27, 29], [28, 30]];
+function k15Draw(lm, v, hot){
+  const c = $("k15Can"), x = c.getContext("2d"); if (c.width !== v.videoWidth){ c.width = v.videoWidth; c.height = v.videoHeight; }
+  x.clearRect(0, 0, c.width, c.height); if (!lm) return;
+  const P = i => [lm[i].x * c.width, lm[i].y * c.height], seen = i => lm[i] && (lm[i].visibility == null || lm[i].visibility > .5);
+  x.lineWidth = Math.max(3, c.width / 120); x.lineCap = "round"; x.strokeStyle = "rgba(107,149,255,.95)";
+  K15_BONES.forEach(b => { if (!seen(b[0]) || !seen(b[1])) return; x.beginPath(); x.moveTo.apply(x, P(b[0])); x.lineTo.apply(x, P(b[1])); x.stroke(); });
+  x.fillStyle = "#fff"; [0, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28].forEach(i => { if (!seen(i)) return; x.beginPath(); x.arc(P(i)[0], P(i)[1], x.lineWidth * 1.2, 0, 7); x.fill(); });
+  if (hot){ x.strokeStyle = "#FFE04A"; x.lineWidth *= 1.5; x.beginPath(); x.moveTo.apply(x, P(hot[0])); x.lineTo.apply(x, P(hot[1])); x.lineTo.apply(x, P(hot[2])); x.stroke(); }   // leden som räknas
+}
+function k15Pop(){ const n = $("k15N"); if (!n) return; n.classList.remove("pop"); void n.offsetWidth; n.classList.add("pop"); }
+async function k15Start(o){
+  if (K15) k15Close(true);
+  const el = k15El(); K15 = o; o.opener = document.activeElement;
+  $("k15Title").textContent = o.title; el.setAttribute("aria-label", o.title); $("k15N").textContent = ""; $("k15Sub").textContent = ""; $("k15Cue").textContent = ""; $("k15Fps").textContent = ""; $("k15Extra").innerHTML = ""; $("k15Btns").innerHTML = "";
+  $("k15Line").hidden = o.kind !== "sprint"; $("k15Gauge").hidden = true; el.dataset.kind = o.kind; el.classList.remove("done");
+  const c = $("k15Can"); try { c.getContext("2d").clearRect(0, 0, c.width, c.height); } catch(e){}
+  el.hidden = false; document.documentElement.classList.add("noscroll"); ensureAudio(); primeVoice(); try { keepAwake(); } catch(e){}
+  const x = el.querySelector(".scan-x"); if (x) try { x.focus({preventScroll: true}); } catch(e){}
+  o.paint(); k15Msg(o.tip);
+  const cam = await k15Cam(); if (K15 !== o) return;
+  if (o.ai){
+    try { await liveLoad(t => { if (K15 === o) k15Msg(t); }); }
+    catch(e){ if (K15 === o) k15Msg("AI:n gick inte att ladda. Är du uppkopplad? Första gången hämtas den från nätet."); return; }
+    if (K15 !== o) return;
+  }
+  if (!cam) return;
+  k15Msg(o.tip); if (o.onReady) o.onReady();
+  k15Loop();
+}
+function k15Close(quiet){
+  const me = K15; if (!me) return;
+  me.stop = true; clearTimeout(me.tm); clearTimeout(me.vfcT); clearInterval(me.iv);
+  try { const v = $("k15Vid"); if (v && v.cancelVideoFrameCallback && me.raf) v.cancelVideoFrameCallback(me.raf); else cancelAnimationFrame(me.raf); } catch(e){}
+  try { if (me.osc) me.osc.forEach(n => { try { n.stop(0); } catch(e){} }); } catch(e){}
+  k15StopCam(); K15 = null;
+  const o = $("k15Ov"); if (o) o.hidden = true;
+  try { if (me.opener && me.opener !== document.body && document.contains(me.opener)) me.opener.focus({preventScroll: true}); } catch(e){}
+  try { if (!(draft && draft.started && !justSaved)) releaseAwake(); } catch(e){}
+  if (typeof fkOpenNow === "function" && fkOpenNow()) return;
+  if (typeof a3Unlock === "function") a3Unlock(); else document.documentElement.classList.remove("noscroll");
+}
+function k15Flip(){ if (!K15) return; K15.facing = K15.facing === "user" ? "environment" : "user"; K15.mt0 = null; K15.mtOk = null; K15.lastT = null; K15.fT0 = null; K15.fN = 0; k15Cam(); }
+
+/* ----- reps: bladet ----- */
+function k15RepOpen(key, name, into){
+  const cfg = K15_EX[key]; if (!cfg) return;
+  k15Start({kind: "rep", ai: true, key, cfg, into: !!into, title: "Räknar · " + name, tip: k15Tip(cfg) + (voiceOn ? " Ljudet på, så hör du räkningen." : ""), T: k15Tracker(cfg), facing: "user", fps: 30,
+    paint: k15RepPaint, onFrame: k15RepFrame, onReady: () => { say("Ställ dig i startläget."); }});
+}
+const k15EccW = cfg => ((cfg.cs || "").match(/ (ner|upp|tillbaka)$/) || [0, "sänkt"])[1];   // "ner på 2,1 s" – ordet ur övningens eget tips
+function k15RepPaint(){
+  const me = K15, T = me.T;
+  $("k15N").textContent = String(T.reps);
+  $("k15Sub").textContent = [T.bad ? T.bad + (T.bad === 1 ? " kort" : " korta") : "", T.lastEcc != null ? k15EccW(me.cfg) + " på " + fmt(T.lastEcc, 1) + " s" : ""].filter(Boolean).join(" · ");
+  $("k15Btns").innerHTML = (me.into ? '<button type="button" class="btn" data-k15="use"' + (T.reps ? "" : " disabled") + '>✓ Använd ' + T.reps + ' reps</button>' : '<button type="button" class="btn" data-k15="close">Klar</button>') +
+    '<button type="button" class="btn ghost" data-k15="zero">Nollställ</button><button type="button" class="btn ghost" data-k15="flip">Byt kamera</button>';
+}
+function k15RepFrame(v, t, now){
+  const me = K15, T = me.T, lm = k15Pose(v, now, t), tri = lm && T.side >= 0 ? K15_J[me.cfg.j][T.side] : null;
+  k15Draw(lm, v, tri);
+  if (!lm){ k15Cue("Ingen kropp i bild"); $("k15Gauge").hidden = true; return; }
+  const ev = T.step(lm, v.videoWidth, v.videoHeight, now);
+  if (ev.rep){ k15RepPaint(); k15Pop(); }
+  const speak = [ev.rep ? String(ev.rep) : "", ev.cue || ""].filter(Boolean).join(". "); if (speak) say(speak);
+  if (ev.ready) say("Kör.");
+  if (ev.cue) k15Cue(ev.cue, 2500); else k15Cue(ev.status || "");
+  const g = $("k15Gauge"); g.hidden = ev.p == null; if (ev.p != null){ g.firstElementChild.style.height = Math.round(ev.p * 100) + "%"; g.classList.toggle("ok", !!ev.full); }
+}
+function k15RepUse(){
+  const me = K15; if (!me || me.kind !== "rep") return; const n = Math.min(99, me.T.reps), bad = me.T.bad;
+  k15Close();
+  if (!n || !fkOpenNow()) return;
+  try { fkVals.r = n; fkRender(); const nb = document.querySelector('#fkOv [data-k15="rep"]'); if (nb) nb.focus({preventScroll: true}); toast(n + " reps från kameran" + (bad ? " · " + bad + (bad === 1 ? " kort" : " korta") : "") + " – ändra om det inte stämmer"); } catch(e){}
+}
+// Knappen i Kör passet, bland de andra små knapparna under övningen
+p11ChipsHTML = (f => function(ex){
+  const h = f.apply(this, arguments);
+  try { const k = k15Key(ex); if (!k || readOnly) return h; const i = h.indexOf("</div>"); if (i < 0) return h;
+    return h.slice(0, i) + '<button type="button" class="p11-c" data-k15="rep" data-k="' + k + '" data-n="' + esc(ex.alt || ex.n) + '" aria-label="Räkna reps med kameran">📷 <span>Räkna reps</span></button>' + h.slice(i); } catch(e){ return h; }
+})(p11ChipsHTML);
+// Utan pass: välj en övning och prova (Allt → Reps-räknare)
+function k15PickSheet(){
+  let o = $("k15Sh");
+  if (!o){ o = document.createElement("div"); o.id = "k15Sh"; o.className = "sheet k15-sh"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Reps-räknare med kameran"); document.body.appendChild(o); }
+  const seen = {}, secs = [["Över", ["oA", "oB"]], ["Ben + över", ["uA", "uB"]]].map(s => { const l = []; s[1].forEach(t => PROGRAM[t].ex.forEach(ex => { const k = k15Key(ex); if (k && !seen[ex.k]){ seen[ex.k] = 1; l.push([k, ex.n]); } })); return [s[0], l]; });
+  o.innerHTML = '<div class="sh-in"><div class="sh-top"><b>📷 Reps-räknare</b><button type="button" class="sh-x" data-k15="pickx" aria-label="Stäng">×</button></div>' +
+    '<p class="lead">Kameran räknar repsen och säger till om du inte går hela vägen eller sänker för fort. Välj en övning och prova. I Kör passet finns knappen <b>Räkna reps</b> vid varje set – då fylls antalet i åt dig.</p>' +
+    secs.filter(s => s[1].length).map(s => '<div class="pr-sub">' + s[0] + '</div><div class="card k15-pl">' + s[1].map(x => '<button type="button" class="k15-pr" data-k15="pick" data-k="' + x[0] + '" data-n="' + esc(x[1]) + '"><span class="d14-t"><b>' + esc(x[1]) + '</b><small>' + K15_VS[K15_EX[x[0]].v || "sida"] + ' · kameran följer ' + K15_JW[K15_EX[x[0]].j] + '</small></span><span class="k15-pc" aria-hidden="true">›</span></button>').join("") + '</div>').join("") +
+    '<p class="small">Fungerar bäst när kroppen syns från sidan utan något i vägen – en maskin som skymmer kan lura den. Räknar den fel ändrar du siffran själv. Bilden lämnar aldrig telefonen. Vadpress, shrugs, höftabduktion, plankan och dead bug räknar kameran inte.</p></div>';
+  o.hidden = false; o.scrollTop = 0; document.documentElement.classList.add("noscroll");
+  const x = o.querySelector(".sh-x"); if (x) try { x.focus({preventScroll: true}); } catch(e){}
+}
+function k15PickClose(){ const o = $("k15Sh"); if (o){ o.hidden = true; o.innerHTML = ""; } if (typeof a3Unlock === "function") a3Unlock(); else document.documentElement.classList.remove("noscroll"); }
+
+/* ----- hopp: bladet och testet ----- */
+if (!Array.isArray(atl.hoppk)) atl.hoppk = [];
+if (!Array.isArray(atl.sprint)) atl.sprint = [];
+A3_T.hoppk = {key: "hoppk", name: "Hopphöjd med kameran", every: 14, sub: "varannan vecka"};
+A3_T.sprint = {key: "sprint", name: "Sprint med kameran", every: 14, sub: "varannan vecka"};
+["hoppk", "sprint"].forEach(k => { if (A3_TK.indexOf(k) < 0) A3_TK.push(k); });
+const K15_DIST = [10, 20, 30, 40, 60];
+let k15Dist = 30, k15Delay = 30;
+const k15Best = m => { const v = atl.sprint.map(r => r["s" + m]).filter(x => x != null); return v.length ? Math.min.apply(null, v) : null; };
+const k15Sec = s => fmt(s, 2).replace(/,(\d)$/, ",$10");   // alltid två decimaler: 4,60
+function k15HoppOpen(){
+  k15Start({kind: "hopp", ai: true, title: "Hopphöjd", tip: "Ställ mobilen 2–3 meter bort, lutad mot något. Hela kroppen ska synas, med luft över huvudet.", J: k15Jump(bodyCm()), tries: [], facing: "user", fps: 60,
+    paint: k15HoppPaint, onFrame: k15HoppFrame, onReady: () => { say("Ställ dig så att hela kroppen syns."); }});
+}
+function k15HoppPaint(){
+  const me = K15, best = me.tries.length ? me.tries.reduce((a, b) => b.cm > a.cm ? b : a) : null, last = me.tries[me.tries.length - 1];
+  $("k15N").textContent = last ? String(Math.round(last.cm)) : "–";
+  $("k15Sub").textContent = "cm";
+  $("k15Extra").innerHTML = me.tries.map((x, i) => '<span class="k15-chip' + (x === best ? " best" : "") + '">Hopp ' + (i + 1) + ': <b class="num">' + Math.round(x.cm) + ' cm</b></span>').join("");
+  $("k15Btns").innerHTML = '<button type="button" class="btn" data-k15="hsave"' + (best ? "" : " disabled") + '>' + (best ? "Spara bästa · " + Math.round(best.cm) + " cm" : "Spara bästa") + '</button><button type="button" class="btn ghost" data-k15="flip">Byt kamera</button>';
+}
+function k15HoppFrame(v, t, now){
+  const me = K15, lm = k15Pose(v, now, t);
+  k15Draw(lm, v);
+  if (!lm){ k15Cue("Ingen kropp i bild"); me.J.step(null, v.videoWidth, v.videoHeight, t); return; }
+  const ev = me.J.step(lm, v.videoWidth, v.videoHeight, t);
+  if (ev.ready){ say("Hoppa!"); beep1(); }
+  if (ev.jump){ me.tries.push(ev.jump); k15HoppPaint(); k15Pop(); say(Math.round(ev.jump.cm) + " centimeter"); k15Cue(Math.round(ev.jump.cm) + " cm – stå still för nästa hopp", 2500); return; }
+  if (ev.bad || ev.lostAir){ k15Cue(ev.status, 3000); if (ev.bad) say(ev.few ? "För få bilder. Prova med mer ljus." : "Det blev inget hopp. Stå still och hoppa igen."); return; }
+  k15Cue(me.fps != null && me.fps < 12 && ev.ph !== "luft" ? "Kameran går för långsamt här (" + Math.round(me.fps) + " bilder/s) – prova med mer ljus" : ev.status || "");
+}
+function k15HoppSave(){
+  const me = K15; if (!me || me.kind !== "hopp" || !me.tries.length) return;
+  const best = me.tries.reduce((a, b) => b.cm > a.cm ? b : a), d = iso(today()), old = atl.hoppk.find(r => r.d === d), cm = Math.round(best.cm);
+  k15Close();
+  if (old && old.cm >= cm){ toast("Dagens bästa står kvar: " + old.cm + " cm"); return; }
+  a3Put("hoppk", {d, cm, n: me.tries.length});
+  toast("Sparat: " + cm + " cm");
+}
+function k15HoppHTML(){
+  const arr = atl.hoppk, best = arr.length ? Math.max.apply(null, arr.map(r => r.cm)) : null;
+  return '<div class="card a3-how"><b>Så gör du</b><ul><li>Ställ mobilen 2–3 meter bort, lutad mot något – gärna på en bänk. Hela kroppen ska synas, med luft över huvudet.</li><li>Stå still tills appen säger <b>Hoppa</b>. Hoppa rakt upp, så högt du kan, och landa på samma ställe.</li><li>Gör likadant varje gång – samma armsving, mobilen på samma plats – så går siffrorna att jämföra.</li></ul>' +
+      '<p class="small">Appen följer höften genom hoppet. I luften faller kroppen fritt, och det fallet ser alltid likadant ut – det ger skalan, så inget måttband behövs. Siffran är hur högt höften lyfter från där du stod: ungefär som Hopptestet mot väggen. Hoppa tre gånger, det bästa sparas.' + (best != null ? ' Ditt bästa: <b class="num">' + best + ' cm</b>.' : '') + '</p></div>' +
+    (readOnly ? '' : '<button type="button" class="btn k15-go" data-k15="hopp">📷 Mät med kameran</button>' +
+      '<form class="at-log a3-log1" data-k15f="hoppk" novalidate><label>Centimeter<input name="cm" type="number" inputmode="numeric" min="5" max="150" placeholder="t.ex. 35" autocomplete="off"></label><button class="btn ghost" type="submit">Spara</button></form>') +
+    '<p class="small a3-err" id="a3Err" hidden></p>' +
+    a3ChartHTML([{pts: a3Pts(arr, "cm"), color: "var(--at-exp)", unit: "cm", name: "Hopphöjd"}], "Hopphöjd med kameran · cm") +
+    a3HistHTML("hoppk", (r, p) => r.cm + " cm" + (r.t ? " · " + fmt(r.t, 2) + " s" : "") + (p ? a3Diff(r.cm, p.cm, " cm") : "")) +
+    '<p class="small">Räkna med ± 2–3 cm mellan hoppen. Bilden lämnar aldrig telefonen.</p>';
+}
+
+/* ----- sprint: bladet och testet ----- */
+function k15SprintOpen(){
+  k15Start({kind: "sprint", ai: false, title: "Sprint · " + k15Dist + " m", tip: "Ställ mobilen vid mållinjen, 3–5 meter från banan. Det gula strecket är mållinjen – spring rakt igenom det.", facing: "environment", fps: 60,
+    ph: "setup", dist: k15Dist, delay: k15Delay, F: k15Finish(), tries: [], paint: k15SprintPaint, onFrame: k15SprintFrame});
+}
+function k15SprintPaint(){
+  const me = K15, best = me.tries.length ? Math.min.apply(null, me.tries) : null, last = me.tries[me.tries.length - 1], n = $("k15N"), sub = $("k15Sub");
+  const chips = (list, cur, act, f) => list.map(x => '<button type="button" class="k15-chip" data-k15="' + act + '" data-v="' + x + '" aria-pressed="' + (x === cur) + '">' + f(x) + '</button>').join("");
+  const tries = me.tries.map((x, i) => '<span class="k15-chip' + (x === best ? " best" : "") + '">Lopp ' + (i + 1) + ': <b class="num">' + k15Sec(x) + ' s</b></span>').join("");
+  if (me.ph === "setup"){
+    n.textContent = last != null ? k15Sec(last) : ""; sub.textContent = last != null ? "s · " + me.dist + " m · " + fmt(me.dist / last * 3.6, 1) + " km/h" : "";
+    $("k15Extra").innerHTML = (tries ? '<div class="k15-row">' + tries + '</div>' : '') +
+      '<div class="k15-row" role="group" aria-label="Sträcka">' + chips(K15_DIST, me.dist, "sdist", x => x + " m") + '</div>' +
+      '<div class="k15-row" role="group" aria-label="Tid att gå till starten"><span class="k15-lbl" aria-hidden="true">Start om</span>' + chips([15, 30, 45], me.delay, "sdelay", x => x + " s") + '</div>';
+    $("k15Btns").innerHTML = '<button type="button" class="btn" data-k15="sgo">▶ ' + (last != null ? "En gång till" : "Starta") + ' – gå till starten</button>' +
+      (best != null ? '<button type="button" class="btn ghost" data-k15="ssave">Spara bästa · ' + k15Sec(best) + ' s</button>' : '') + '<button type="button" class="btn ghost" data-k15="flip">Byt kamera</button>';
+    k15Msg(me.note || me.tip); return;
+  }
+  $("k15Extra").innerHTML = tries ? '<div class="k15-row">' + tries + '</div>' : '';
+  $("k15Btns").innerHTML = '<button type="button" class="btn ghost" data-k15="sstop">Avbryt</button>';
+  if (me.ph === "count"){ sub.textContent = "sekunder till start"; k15Msg("Gå till starten " + me.dist + " meter bort. " + (voiceOn ? "Rösten säger På din plats och Färdiga" : "Två korta toner, sedan en lång") + " – spring när signalen kommer."); }
+  else { sub.textContent = "sekunder"; k15Msg("Spring rakt igenom det gula strecket."); }
+}
+// Startsignalen: en stark ton. Tiden den hörs räknas om till skärmens klocka, så att bildrutorna går att jämföra med den.
+function k15Signal(inMs){
+  const me = K15; if (!audio) return performance.now() + inMs;
+  let at = audio.currentTime + inMs / 1000, perf = performance.now() + inMs + (audio.outputLatency || audio.baseLatency || .02) * 1000;
+  // ljudets egen tidsstämpel är bäst, men bara om den är rimlig: mellan nu + väntan och en halv sekund senare
+  try { const ts = audio.getOutputTimestamp ? audio.getOutputTimestamp() : null, lo = performance.now() + inMs - 30;
+    if (ts && ts.performanceTime > 0 && ts.contextTime > 0){ const p2 = ts.performanceTime + (at - ts.contextTime) * 1000; if (p2 >= lo && p2 <= lo + 530) perf = p2; } } catch(e){}
+  try {
+    me.osc = [1760, 2640].map(f => { const o = audio.createOscillator(), g = audio.createGain(); o.type = "square"; o.frequency.value = f; g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(.55, at + .01); g.gain.setValueAtTime(.55, at + .55); g.gain.exponentialRampToValueAtTime(.0001, at + .65);
+      o.connect(g); g.connect(audio.destination); o.start(at); o.stop(at + .7); return o; });
+  } catch(e){}
+  return perf;
+}
+function k15Tone(f, dur){ try { if (!audio) return; const o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime; o.frequency.value = f; g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.4, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + dur); o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + dur + .05); } catch(e){} }
+function k15SprintGo(){
+  const me = K15; if (!me || me.kind !== "sprint") return;
+  ensureAudio(); try { if (audio && audio.state === "suspended") audio.resume(); } catch(e){}
+  me.ph = "count"; me.note = ""; me.t0 = performance.now(); me.tSet = me.t0 + me.delay * 1000; me.said = {}; me.tGo = 0; me.F = k15Finish(); me.cross = 0;
+  k15SprintPaint(); say("Gå till starten. " + me.delay + " sekunder.");
+  clearInterval(me.iv); me.iv = setInterval(k15SprintTick, 100); k15SprintTick();
+}
+function k15SprintTick(){
+  const me = K15; if (!me || me.kind !== "sprint"){ return; }
+  const now = performance.now(), n = $("k15N");
+  if (me.ph === "count"){
+    const left = me.tSet - now;
+    if (!me.said.cal && left <= 4000){ me.said.cal = 1; me.F.calStart(); }
+    if (!me.said.plats && left <= 4000){ me.said.plats = 1; say("På din plats."); k15Tone(660, .18); }
+    if (!me.said.klar && left <= 0){
+      me.said.klar = 1; say("Färdiga."); k15Tone(880, .18);
+      const wait = 1300 + Math.round((me.rnd != null ? me.rnd : Math.random()) * 1100);   // signalen kommer efter 1,3–2,4 s, så att den inte går att gissa
+      me.tGo = k15Signal(wait);
+    }
+    if (me.tGo && now >= me.tGo){ me.ph = "run"; me.F.calEnd(); me.F.armed = false; me.gate = me.tGo + k15SprintGate(me.dist) * 1000; me.tEnd = me.tGo + (6 + me.dist * .5) * 1000; k15SprintPaint(); }
+    else { n.textContent = me.tGo ? "0" : String(Math.max(0, Math.ceil(left / 1000))); k15Cue(left > 4000 ? "Gå till starten" : me.tGo ? "Färdiga …" : "På din plats"); return; }
+  }
+  if (me.ph === "run"){
+    if (!me.F.armed && !me.cross && now >= me.gate) me.F.armed = true;
+    if (now > me.tEnd){ k15SprintEnd(null); return; }
+    n.textContent = fmt(Math.max(0, now - me.tGo) / 1000, 1); k15Cue("Spring!");
+  }
+}
+function k15SprintFrame(v, t, now, meta){
+  const me = K15; if (me.ph !== "count" && me.ph !== "run") return;
+  if (me.ph === "count" && !me.F.cal) return;
+  // bildrutans tid på skärmens klocka: när kameran tog den, om webbläsaren säger det – annars ungefär 70 ms före visningen
+  const ft = meta && meta.captureTime > 0 ? meta.captureTime : (meta && meta.expectedDisplayTime > 0 ? meta.expectedDisplayTime : now) - 70;
+  let c = me.cv; if (!c){ c = me.cv = document.createElement("canvas"); c.width = K15_SW * 3; c.height = K15_SH; me.cx = c.getContext("2d", {willReadFrequently: true}); }
+  const W = v.videoWidth, H = v.videoHeight, sw = Math.max(2, Math.round(W * .04));
+  [.2, .5, .8].forEach((p, i) => me.cx.drawImage(v, Math.round(W * p - sw / 2), 0, sw, H, i * K15_SW, 0, K15_SW, K15_SH));
+  const d = me.cx.getImageData(0, 0, K15_SW * 3, K15_SH).data, g = new Uint8ClampedArray(K15_SW * 3 * K15_SH);
+  for (let i = 0, j = 0; i < d.length; i += 4, j++) g[j] = (d[i] * 77 + d[i + 1] * 150 + d[i + 2] * 29) >> 8;
+  const ev = me.F.feed(g, ft);
+  if (ev.cross && me.ph === "run") k15SprintEnd(ev.cross);
+}
+function k15SprintEnd(cross){
+  const me = K15; clearInterval(me.iv); me.ph = "setup";
+  if (cross == null){ me.note = "Ingen passerade mållinjen. Kolla att det gula strecket ligger över banan och att mobilen står stilla."; say("Ingen passerade mållinjen."); k15SprintPaint(); k15Cue(""); return; }
+  const s = Math.round(((cross - me.tGo) / 1000 - me.dist / 340) * 100) / 100;   // ljudet behöver en stund för att nå starten: den tiden dras av
+  me.tries.push(s); me.note = "";
+  k15SprintPaint(); k15Pop(); k15Cue(k15Sec(s) + " sekunder", 4000);
+  say(k15Sec(s).replace(",", " komma ") + " sekunder");
+}
+function k15SprintSave(){
+  const me = K15; if (!me || me.kind !== "sprint" || !me.tries.length) return;
+  const best = Math.min.apply(null, me.tries), d = iso(today()), key = "s" + me.dist, old = atl.sprint.find(r => r.d === d), m = me.dist;
+  k15Close();
+  if (old && old[key] != null && old[key] <= best){ toast("Dagens bästa står kvar: " + k15Sec(old[key]) + " s"); return; }
+  a3Put("sprint", {d, [key]: best});
+  toast("Sparat: " + m + " m på " + k15Sec(best) + " s");
+}
+// skillnaden mot förra gången, med två decimaler (lägre tid är bättre)
+const k15Diff = (a, b) => a === b ? "" : ' <i class="' + (a < b ? "up" : "") + '">(' + (a < b ? "−" : "+") + k15Sec(Math.abs(a - b)) + ' s)</i>';
+function k15SprintHTML(){
+  const arr = atl.sprint, m = k15Dist, best = k15Best(m), has = K15_DIST.filter(x => arr.some(r => r["s" + x] != null));
+  return '<div class="card a3-how"><b>Så gör du</b><ul><li>Ställ mobilen vid mållinjen, 3–5 meter från banan, lutad mot något. Det gula strecket i bilden är mållinjen.</li><li>Volymen på max och ljudlöst läge av. Tryck <b>Starta</b> och gå till starten – appen räknar ner.</li><li>Rösten säger <b>På din plats</b> och <b>Färdiga</b>. Spring när signalen kommer. Appen ser när du passerar strecket och säger tiden.</li></ul>' +
+      '<p class="small">Tiden går från startsignalen, så din reaktionstid är med – som i en tävling. Appen drar av tiden ljudet behöver för att nå dig. Räkna med ± 0,05 sekunder: jämför dina egna tider med varandra, inte med elektronisk tidtagning. Hör du inte signalen borta vid starten? Välj en kortare sträcka.' + (best != null ? ' Ditt bästa på ' + m + ' m: <b class="num">' + k15Sec(best) + ' s</b>.' : '') + '</p></div>' +
+    '<div class="card k15-dist"><b id="k15DistL">Sträcka</b><div class="k15-row" role="group" aria-labelledby="k15DistL">' + K15_DIST.map(x => '<button type="button" class="k15-chip" data-k15="tdist" data-v="' + x + '" aria-pressed="' + (x === m) + '">' + x + ' m</button>').join("") + '</div></div>' +
+    (readOnly ? '' : '<button type="button" class="btn k15-go" data-k15="sprint">📷 Ta tid med kameran</button>' +
+      '<form class="at-log a3-log1" data-k15f="sprint" novalidate><label>Sekunder på ' + m + ' m<input name="s" inputmode="decimal" placeholder="t.ex. 4,85" autocomplete="off"></label><button class="btn ghost" type="submit">Spara</button></form>') +
+    '<p class="small a3-err" id="a3Err" hidden></p>' +
+    a3ChartHTML([{pts: a3Pts(arr, "s" + m), color: "var(--at-kond)", unit: "s", name: m + " m"}], "Sprint " + m + " m · sekunder, lägre är snabbare") +
+    a3HistHTML("sprint", (r, p) => K15_DIST.filter(x => r["s" + x] != null).map(x => x + " m " + k15Sec(r["s" + x]) + " s" + (p && p["s" + x] != null ? k15Diff(r["s" + x], p["s" + x]) : "")).join(" · ")) +
+    (has.length > 1 ? '<p class="small">Kurvan visar sträckan du valt här ovanför.</p>' : '') + '<p class="small">Bilden lämnar aldrig telefonen.</p>';
+}
+
+/* ----- testerna i listan under Framsteg ----- */
+a3Summary = (f => function(k){
+  if (k === "hoppk"){ const arr = atl.hoppk, l = arr[arr.length - 1]; if (!l) return "Inte testat än"; const best = Math.max.apply(null, arr.map(r => r.cm)); return l.cm + " cm" + (best > l.cm ? " · bäst " + best + " cm" : "") + " · " + dLabel(l.d); }
+  if (k === "sprint"){ const arr = atl.sprint, l = arr[arr.length - 1]; if (!l) return "Inte testat än"; const m = K15_DIST.filter(x => l["s" + x] != null); return m.map(x => x + " m på " + k15Sec(l["s" + x]) + " s").join(" · ") + " · " + dLabel(l.d); }
+  return f.apply(this, arguments);
+})(a3Summary);
+a3TestsHTML = (f => function(){
+  const h = f.apply(this, arguments);
+  try { return h.replace("splitten och handståendet varje vecka.", "splitten och handståendet varje vecka. Hopphöjden och sprinten mäter du med kameran."); } catch(e){ return h; }
+})(a3TestsHTML);
+a3TestSheetHTML = (f => function(k){
+  if (k !== "hoppk" && k !== "sprint") return f.apply(this, arguments);
+  const T = A3_T[k], nx = a3Next(k), ti = iso(today());
+  const when = !nx ? "Första gången blir ditt startvärde." : iso(nx) <= ti ? "Dags att testa igen." : "Nästa: " + dLong(iso(nx)) + ".";
+  return '<div class="sh-top"><b>' + esc(T.name) + '</b><button type="button" class="sh-x" data-a3t="close" aria-label="Stäng">×</button></div>' +
+    '<p class="lead a3-when">' + esc(atCap(T.sub)) + '. ' + esc(when) + '</p>' + (k === "hoppk" ? k15HoppHTML() : k15SprintHTML());
+})(a3TestSheetHTML);
+atCoachLines = (f => function(){
+  const L = f.apply(this, arguments);
+  try {
+    if (atl.hoppk.length) L.push("HOPPHÖJD MED KAMERAN (cm, höftens lyft från stående): " + atl.hoppk.slice(-6).map(r => r.d + " " + r.cm).join("; "));
+    if (atl.sprint.length) L.push("SPRINT MED KAMERAN (sekunder från startsignal): " + atl.sprint.slice(-6).map(r => r.d + " " + K15_DIST.filter(x => r["s" + x] != null).map(x => x + " m " + r["s" + x]).join(", ")).join("; "));
+  } catch(e){}
+  return L;
+})(atCoachLines);
+a3Import = (f => function(ax){
+  let n = f.apply(this, arguments);
+  try {
+    const okD = d => /^\d{4}-\d{2}-\d{2}$/.test(d || "");
+    (ax && Array.isArray(ax.hoppk) ? ax.hoppk : []).forEach(x => { if (!x || !okD(x.d) || !(x.cm >= 5 && x.cm <= 150) || atl.hoppk.some(y => y.d === x.d)) return; atl.hoppk.push(Object.assign({d: x.d, cm: Math.round(x.cm)}, x.t > 0 && x.t < 2 ? {t: Math.round(x.t * 100) / 100} : {})); n++; });
+    (ax && Array.isArray(ax.sprint) ? ax.sprint : []).forEach(x => { if (!x || !okD(x.d) || atl.sprint.some(y => y.d === x.d)) return; const r = {d: x.d}; K15_DIST.forEach(m => { const v = x["s" + m]; if (typeof v === "number" && v >= 1 && v <= 60) r["s" + m] = Math.round(v * 100) / 100; }); if (Object.keys(r).length > 1){ atl.sprint.push(r); n++; } });
+    atl.hoppk.sort((a, b) => a.d < b.d ? -1 : 1); atl.sprint.sort((a, b) => a.d < b.d ? -1 : 1);
+  } catch(e){}
+  return n;
+})(a3Import);
+
+/* ----- trycken ----- */
+document.addEventListener("click", e => {
+  const t = e.target; if (!t || !t.closest) return;
+  const b = t.closest("[data-k15]"); if (!b) return;
+  const a = b.dataset.k15, me = K15;
+  if (a === "close"){ k15Close(); return; }
+  if (a === "flip"){ k15Flip(); return; }
+  if (a === "rep"){ k15RepOpen(b.dataset.k, b.dataset.n || "reps", true); return; }
+  if (a === "pick"){ const k = b.dataset.k, n = b.dataset.n; k15PickClose(); k15RepOpen(k, n, false); return; }
+  if (a === "pickx"){ k15PickClose(); return; }
+  if (a === "use"){ k15RepUse(); return; }
+  if (a === "zero"){ if (me && me.kind === "rep"){ me.T = k15Tracker(me.cfg); k15RepPaint(); k15Cue("Nollställd", 1500); } return; }
+  if (a === "hopp"){ k15HoppOpen(); return; }
+  if (a === "hsave"){ k15HoppSave(); return; }
+  if (a === "sprint"){ k15SprintOpen(); return; }
+  if (a === "tdist"){ const v = +b.dataset.v; if (K15_DIST.indexOf(v) >= 0){ k15Dist = v; a3TestRefresh(); const nb = document.querySelector('#a3tOv [data-k15="tdist"][data-v="' + v + '"]'); if (nb) try { nb.focus({preventScroll: true}); } catch(e2){} } return; }
+  if (!me || me.kind !== "sprint") return;
+  if (a === "sdist"){ const v = +b.dataset.v; if (K15_DIST.indexOf(v) >= 0 && me.ph === "setup"){ if (v !== me.dist) me.tries = []; me.dist = k15Dist = v; $("k15Title").textContent = "Sprint · " + v + " m"; k15SprintPaint(); } return; }
+  if (a === "sdelay"){ const v = +b.dataset.v; if ([15, 30, 45].indexOf(v) >= 0 && me.ph === "setup"){ me.delay = k15Delay = v; k15SprintPaint(); } return; }
+  if (a === "sgo"){ k15SprintGo(); return; }
+  if (a === "sstop"){ clearInterval(me.iv); try { if (me.osc) me.osc.forEach(n => { try { n.stop(0); } catch(e2){} }); } catch(e2){} try { speechSynthesis.cancel(); } catch(e2){} me.ph = "setup"; me.note = ""; k15SprintPaint(); k15Cue(""); $("k15N").textContent = ""; return; }
+  if (a === "ssave"){ k15SprintSave(); return; }
+});
+document.addEventListener("submit", e => {
+  const f = e.target; if (!f || !f.dataset || !f.dataset.k15f) return;
+  e.preventDefault();
+  const k = f.dataset.k15f, d = iso(today());
+  if (k === "hoppk"){ const v = Math.round(num(f.elements.cm.value)); if (!(v >= 5 && v <= 150)){ a3Err("Skriv höjden i centimeter, mellan 5 och 150."); return; } a3Put("hoppk", {d, cm: v}); toast("Sparat: " + v + " cm"); return; }
+  if (k === "sprint"){ const v = Math.round(num(f.elements.s.value) * 100) / 100; if (!(v >= 1 && v <= 60)){ a3Err("Skriv tiden i sekunder, till exempel 4,85."); return; } a3Put("sprint", {d, ["s" + k15Dist]: v}); toast("Sparat: " + k15Dist + " m på " + k15Sec(v) + " s"); }
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape" || e.defaultPrevented) return;
+  if (K15){ e.preventDefault(); k15Close(); return; }
+  const o = $("k15Sh"); if (o && !o.hidden){ e.preventDefault(); k15PickClose(); }
+});
+// Appen göms (låst skärm, annan app): kameran stängs, och en nedräkning eller ett lopp avbryts
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && K15) k15Close(); });
+// Allt: rutan Reps-räknare öppnar listan med övningar, de två testerna öppnas direkt
+const K15_OPEN = {"Reps-räknare med kameran": k15PickSheet, "Hopphöjd med kameran": () => a3TestOpen("hoppk"), "Sprinttid med kameran": () => a3TestOpen("sprint")};
+document.addEventListener("click", e => {
+  const b = e.target && e.target.closest ? e.target.closest('#guOv [data-gu="go"]') : null; if (!b) return;
+  const s = GU[+b.dataset.s], x = s && s[1][+b.dataset.i], fn = x && K15_OPEN[x[1]]; if (!fn) return;
+  e.stopPropagation(); e.preventDefault();
+  try { const st = alStore(); st.recent = [x[1]].concat(st.recent.filter(y => y !== x[1])).slice(0, 6); store(AL_KEY, st); } catch(err){}
+  guClose(); fn();
+}, true);
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {k15Tracker, k15Jump, k15JumpCalc, k15Fit, k15Finish, K15_EX, k15SprintGate, k15Fake: f => { if (K15) K15.fake = f; return !!K15; }, k15State: () => K15, k15SprintEnd, K15_SW, K15_SH, k15Key, k15Lm: () => liveLm, k15Load: () => liveLoad(() => {})});
+
 
 /* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611191437, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611210321, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -17078,7 +17738,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "19 nov 14.37", BUILD_NOTE = "Maten och datan: frukost på tre minuter, fler kalorier utan mer mat, butikens ordning, vilopuls före passet, Excel, jämför två månader, steg och passen i kalendern";
+const BUILD = "21 nov 03.21", BUILD_NOTE = "Kameran: räknar reps och kollar djupet i Kör passet, mäter hopphöjden och tar sprinttiden";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
