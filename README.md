@@ -296,6 +296,19 @@ Från 19 november 2026. Under **Vanor → Kväll och sömn** står kvällens lä
 - Inställningarna ligger i `gymschema.kvall.v1` och andningen i `gymschema.andas.v1`, bara på telefonen.
 - **Sök i Allt** visar nu träffar med ordet i namnet först, sedan de som bara nämner det i förklaringen.
 
+### Maten och datan
+
+Från 21 november 2026 (version 19 nov 14.37). Inget av det här ändrar programmet – appen föreslår och man väljer själv.
+
+- **🍳 Frukost på tre minuter** (Kropp → Mat, raden under *Vad ska jag äta?*): fem frukostar utan spis och utan socker – kvarg med havregryn och banan, keso på knäckebröd, äggröra i mikron, mikrogröt med kvarg och ostmackor med mjölk. Varje rad visar hur man gör, kalorier och protein, och siffran till höger loggar frukosten med ett tryck.
+- **➕ Fler kalorier utan mer mat** (raden under): sex tillägg som loggas med ett tryck – olivolja, smör, mjölk i gröten, riven ost, vispgrädde och ett ägg – och tre byten som ger mer energi i samma portion (kvarg med 10 % fett, turkisk yoghurt, standardmjölk). Värdena är ungefärliga: tilläggen kommer från [Regionala cancercentrums kalorilista](https://cancercentrum.se/download/18.1d612326194d82b988315a49/1740242355494/10-kostrad_kalorilista-over-vanliga-livsmedel_tillagg.pdf) (energiberikning) och kvargen från förpackningarna. Är det mer än 300 kcal kvar på dagen säger raden hur mycket.
+- **🏪 Butikens ordning**: under knapparna i inköpslistan flyttar man avdelningarna med pilarna till den ordning man går i sin butik. Listan, *Kopiera till Handla* och *Dela listan* följer ordningen. Sparas i `gymschema.butik.v1` och följer med i backupen (`data14.butik`). Adressen `#vikt/mat/butik` öppnar listan med ordningen utfälld.
+- **🫀 Vilopuls före passet**: första skärmen i Kör passet visar dagens vilopuls från klockan mot snittet de senaste fyra veckorna. Är den hög – samma gräns som i Garmin-rutan: mer än en standardavvikelse, och minst två slag, över snittet – föreslår appen en lätt dag med en knapp, i Kör passet och i rutan Morgonkänsla på Pass. Har man tryckt en morgonkänsla gäller dess besked i stället. Vilopulsen sparas med passet (`rhr`) och står i Historik.
+- **📗 Export till Excel** (Historik → Backup → *Excel-fil*): en `.xlsx` med tre blad – *Set* (ett set per rad: datum, pass, övning, vikt, reps, kvar i tanken, dropset och testset), *Pass* (set, volym, minuter, rekord, vilopuls, ordet och anteckningen) och *Vikt*. Filen byggs i telefonen med JSZip, som redan används för klippen, och skickas ingenstans. Det är ingen backup – den går inte att läsa in igen. Kontrollerad med openpyxl och LibreOffice.
+- **📊 Jämför två månader** (Framsteg, före Månadens sammanfattning): två månader sida vid sida – gympass, set, volym, rekord, vikt, sömn och perfekta dagar – med skillnaden. Från början förra månaden mot den här.
+- **👟 Steg** (Vanor): dagens steg från klockan, snittet de senaste sju dagarna mot veckan före och 14 dagar i staplar. Visas när Garmin är kopplad.
+- **📅 Passen i kalendern** (Program → *Mer om programmet*): en kalenderfil (`.ics`) för 7 dagar, 2 veckor eller 4 veckor. Gympassen läggs på tiden man brukar börja. Med *Atlet-blocken också* räknas blocken på gymmet in i passet, och dagens övriga block blir en heldagsrad. Kalendern uppdateras inte av sig själv: flyttar man ett pass i appen ligger händelsen kvar.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
