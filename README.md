@@ -355,6 +355,23 @@ Från 21 november 2026.
 - **🔗 Dela ett pass som länk**: knappen Dela länk när passet är sparat, och Dela som länk i det öppna passet under Historik. Länken är `…/#delat/<passet>`: passtyp, datum, minuter och varje övnings set som base64url efter `#` – den delen av adressen skickas aldrig till någon server. Den som öppnar länken får bladet Delat pass i sin egen GymSchema, och inget sparas där. Allt i länken kontrolleras innan det visas (känd passtyp, riktigt datum, kända övningar, rimliga tal), text visas som text, och en länk som inte går att läsa ger ett besked i stället.
 - **🔠 Extra stora knappar** (brytaren under Utseende i Allt): större knappar och siffror i passet – setraderna i Pass (56 px höga fält och bockar), vilotimern och Kör passet, där vikt och reps står var för sig i full bredd. Bara mått och textstorlekar, ingen zoom. Valet ligger i `gymschema.xl`.
 
+### Egna övningar och puls per set
+
+Från 21 november 2026.
+
+- **🧩 Egna övningar** (Program → Över eller Ben + över, eller Allt): lägg till en egen övning med namn, pass, set, reps, vila, minsta steg uppåt, en egen text och ett eget klipp från mobilen. Den ligger sist i passet, loggas som de andra och får förslag, rekord och kurvor. Högst tolv. Övningarna sparas i `gymschema.egna.v1` och följer med i backupen. Klippen ligger bara i telefonen (IndexedDB) och följer inte med. En övning som finns i sparade pass står kvar i historiken när den tas bort. I ett pass som delas som länk skickas namnet och enheten med, eftersom mottagaren inte har övningen.
+- **💓 Puls per set** (Historik → det öppna passet): appen sparar när varje set bockas av. Är Garmin kopplat och gympasset inspelat på klockan hämtar knappen dagens pulskurva från intervals.icu och visar pulsens topp i varje set (från 75 sekunder före bocken till 20 sekunder efter). Gäller pass som sparats från och med den här versionen, och inte pass som loggats i efterhand. Topparna sparas med passet.
+
+### Skjut fram schemat
+
+Från 22 november 2026.
+
+- **⏩ Skjut fram schemat** (Program → Mer om programmet, Flytta passet eller Allt): schemat är en cykel på sju dagar – Över 1, Ben + över 1, intervaller, Över 2, Ben + över 2, vila och löpning. En dag som inte blir av kan läggas in som en extra vilodag. Då flyttas det som skulle ha gjorts och allt efter det en dag fram, och inget pass hoppas över. Välj från i dag eller i morgon, och en, två eller tre dagar eller en vecka. Bladet visar hur de närmaste dagarna blir innan något sparas, och varje inlagd dag går att ångra där.
+- **Fortsätt där du slutade**: har ett gympass inte blivit av föreslår appen att skjuta fram schemat så att det passet hamnar i dag – som en rad i Pass när passet låg i förra veckan (Flytta passet gäller bara inom veckan), och som ett kort i bladet. Appen flyttar aldrig något själv.
+- Det här följer med: dagens pass, veckan, löpdagen och intervallerna, blocken i Atlet (den inlagda dagen har bara de dagliga blocken), hopptestet, notiserna, löppasset till klockan, kalenderfilen, menyns snabba rätter på gymdagar och texterna som nämner veckodagar (Program, Atlet, Grundtipsen, guiden och texten till Coachen). Programmets ändringar får en rad om var dagarna ligger nu.
+- Veckans mål räknas mot gympassen som ligger i schemat den veckan: tre i stället för fyra i en vecka med en inlagd dag. Det gäller Veckokoll, veckobrevet, Framsteg, veckorna i rad och Året planerat.
+- De inlagda dagarna sparas som datum i `gymschema.skjut.v1` och följer med i backupen. Dagarna före en inlagd dag ändras aldrig i efterhand. Lördag 21 november 2026 är inlagd för den som uppdaterar från en äldre version; en ny installation börjar på grundschemat.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
