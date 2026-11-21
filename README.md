@@ -336,6 +336,16 @@ Från 21 november 2026.
 - **✨ Nytt i appen** (överst i Allt): vad som kommit de senaste gångerna, nyast först, med en knapp per sak som hoppar dit. En röd prick på Allt-knappen visar att något är nytt tills man har öppnat bladet. Listan står i `Q17_NYTT` och fylls på vid varje ny omgång.
 - **🥁 Stegtakten** (Allt → Stegtakten): en metronom för löpningen, 140–210 steg i minuten, med vartannat klick starkare så att det faller på samma fot. Klicken läggs på ljudets egen klocka en kvarts sekund i förväg. Fem till tio procent fler steg i minuten vid samma fart minskar belastningen på knä och höft ([Heiderscheit m.fl. 2011](https://pubmed.ncbi.nlm.nih.gov/20581720/)). Skärmen hålls tänd medan takten går; låser man telefonen tystnar den.
 
+### Bildläge, spellista per pass och flikar som följer med
+
+Från 21 november 2026.
+
+- **🖼 Bildläge** (överst i Program): en strömbrytare som visar varje övnings bild direkt i listan, utan att man öppnar kortet. Valet ligger i `gymschema.bildlage`. Bilden i listan är en kopia med egna id:n, så att pilspetsarna (`<marker>`) inte krockar med bilden i kortet.
+- **🎶 Spellista per pass**: bladet Spotify har tre fält till – Över, Ben + över och Löpning. Musikknappen i Kör passet öppnar spellistan för passet man kör, och på löpdagar och intervalldagar står knappen **Musik** uppe i dagens ruta. Ett tomt fält betyder den vanliga länken. Båda Spara-knapparna sparar alla fält, och Klistra in vid ett pass sparar det direkt. Länkarna ligger i `gymschema.spotify.typ.v1`, bara på telefonen – de följer inte med i backupen. Rutan Spellistor under Allt öppnar bladet direkt.
+- **Underflikarna följer med**: Vikt, Mat, Bilder och Hållning i Kropp, och Över, Ben + över, Mage, Hållning och Atlet i Program, står kvar överst när man rullar.
+- **Hopp hamnar rätt**: ett hopp till en övning eller ett kort (Passets ordning, länkar till en övning) hamnar under kapitelraden och underflikarna, inte bakom dem.
+- Flikfältets namn är 10 px på skärmar upp till 430 px, så att Framsteg ryms i den valda flikens ruta.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
