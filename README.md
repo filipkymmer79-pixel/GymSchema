@@ -328,6 +328,14 @@ Från 21 november 2026. Inget i flikarna har flyttats eller tagits bort – det 
 - **Ringarna**: varje stor ruta har skivans ringar med mitten på den runda knappen. Den inre ringen fylls lika mycket som stapeln. Ringarna är pynt (`aria-hidden`) och ligger under texten.
 - Sidans topp tonas svagt i flikens färg.
 
+### Anteckna, Nytt i appen och stegtakten
+
+Från 21 november 2026.
+
+- **✎ Anteckna**: datumet högst upp är en knapp, i alla flikar. Ett tryck öppnar ett blad med en ruta att skriva i och de tidigare anteckningarna under, nyast först, med tid och flik. Stänger man med text i rutan sparas den ändå. Anteckningarna ligger i `gymschema.anteckning.v1`, följer med i backupen (`anteckningar`) och de sex senaste står i texten till Coachen.
+- **✨ Nytt i appen** (överst i Allt): vad som kommit de senaste gångerna, nyast först, med en knapp per sak som hoppar dit. En röd prick på Allt-knappen visar att något är nytt tills man har öppnat bladet. Listan står i `Q17_NYTT` och fylls på vid varje ny omgång.
+- **🥁 Stegtakten** (Allt → Stegtakten): en metronom för löpningen, 140–210 steg i minuten, med vartannat klick starkare så att det faller på samma fot. Klicken läggs på ljudets egen klocka en kvarts sekund i förväg. Fem till tio procent fler steg i minuten vid samma fart minskar belastningen på knä och höft ([Heiderscheit m.fl. 2011](https://pubmed.ncbi.nlm.nih.gov/20581720/)). Skärmen hålls tänd medan takten går; låser man telefonen tystnar den.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
