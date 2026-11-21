@@ -346,6 +346,15 @@ Från 21 november 2026.
 - **Hopp hamnar rätt**: ett hopp till en övning eller ett kort (Passets ordning, länkar till en övning) hamnar under kapitelraden och underflikarna, inte bakom dem.
 - Flikfältets namn är 10 px på skärmar upp till 430 px, så att Framsteg ryms i den valda flikens ruta.
 
+### Året planerat, dela ett pass som länk och extra stora knappar
+
+Från 21 november 2026.
+
+- **🗓 Året planerat** (Program → Mer om programmet, eller Allt): blocket man är i och de fem som följer – åtta veckor var, med en inriktning (muskler, styrka eller spänst) och en lätt vecka sist. Blocket man är i visar fyra rutor per vecka, en per sparat pass. Inriktningen går Muskler, Muskler, Styrka, Muskler, Styrka, Spänst och börjar sedan om. Ett eget val för ett block sparas i `gymschema.ar.v1` och följer med i backupen (`ar`). Finns ett viktmål med datum står vikten enligt planen vid varje blocks slut.
+- **Planerad lätt vecka**: appen ändrar aldrig programmet själv. Blockets sista vecka föreslår Pass en lätt vecka med samma två knappar som förut (Kör lätt vecka / Inte nu) – inte om en lätt vecka redan körts de senaste fyra veckorna.
+- **🔗 Dela ett pass som länk**: knappen Dela länk när passet är sparat, och Dela som länk i det öppna passet under Historik. Länken är `…/#delat/<passet>`: passtyp, datum, minuter och varje övnings set som base64url efter `#` – den delen av adressen skickas aldrig till någon server. Den som öppnar länken får bladet Delat pass i sin egen GymSchema, och inget sparas där. Allt i länken kontrolleras innan det visas (känd passtyp, riktigt datum, kända övningar, rimliga tal), text visas som text, och en länk som inte går att läsa ger ett besked i stället.
+- **🔠 Extra stora knappar** (brytaren under Utseende i Allt): större knappar och siffror i passet – setraderna i Pass (56 px höga fält och bockar), vilotimern och Kör passet, där vikt och reps står var för sig i full bredd. Bara mått och textstorlekar, ingen zoom. Valet ligger i `gymschema.xl`.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
