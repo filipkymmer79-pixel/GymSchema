@@ -319,6 +319,15 @@ Från 21 november 2026. Allt räknas i telefonen – bilden sparas inte och skic
 
 Hopp och sprint följer med i backupen och i texten till Coachen. Kameran stängs när appen göms.
 
+### Kapitelraden, Nu-knappen och ringarna
+
+Från 21 november 2026. Inget i flikarna har flyttats eller tagits bort – det här gör det lättare att hitta i dem.
+
+- **🧭 Kapitelraden**: de långa flikarna har en rad med kapitel under rutorna – *Idag, Atlet, Passet, Övningar, Efteråt* i Pass, *Vanorna, Skärmtid, Steg, Nivå och regler* i Vanor och *Veckan, Klockan, Styrka, Tester, Rekord, Kurvor, Månaden* i Framsteg. Raden fastnar överst när man rullar och visar var man är; ett tryck hoppar dit. Ett kapitel vars kort inte visas (till exempel Steg utan klocka) står inte med. Kapitlen och deras väljare står i `L16_KAP`.
+- **▶ Nu-knappen** står först i raden när något passar klockan: *Morgonsträck* från en halvtimme före väckningen till tre timmar efter, *Kvällsvila* de två sista timmarna före läggdags och en timme efter, och *Fortsätt passet* när man har börjat logga och står i en annan flik. Ett tryck startar blocket, eller går till Pass och öppnar Kör passet. Den syns i alla flikar, också de utan kapitel, och försvinner när blocket är klart.
+- **Ringarna**: varje stor ruta har skivans ringar med mitten på den runda knappen. Den inre ringen fylls lika mycket som stapeln. Ringarna är pynt (`aria-hidden`) och ligger under texten.
+- Sidans topp tonas svagt i flikens färg.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
