@@ -404,6 +404,8 @@ Från 22 november 2026.
 - **Kvällen**: första steget är *Protein före sängen* – 250 g naturell kvarg eller keso, ca 30 g protein. Det räknas inte som ett av de fem målen.
 - **Boxning**: värm upp med hopprep 2–3 minuter (inget rep: hoppa lätt på stället) – i blocket Slåss och på boxningssidan.
 - **Mage** står som eget block i Atlet idag på Över-dagarna, direkt efter Över: *Starta magen* kör magen i passet med guiden, och *Markera klar* bockar den. Över räknas som 52 minuter och Mage 8, så dagen blir inte längre.
+- **Öppna boken** (uppvärmningen före Över): huvudet vilar på en kudde, och blicken följer handen bara så långt nacken går lätt. Vridningen ska komma från bröstryggen. Hantelshrugs säger inte längre något om hakan.
+- **Mage-blocket**: står det *Klart ✓* kan du trycka på det för att ta bort bocken, så länge passet inte är sparat.
 
 ## Dagsschema
 
