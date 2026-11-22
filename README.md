@@ -161,7 +161,7 @@ Notiser när det är läggdags (30 minuter innan och när det är dags – tiden
 
 Sedan 17 november 2026 är raderna i bladet ordnade i grupper (Träning, Mat, Sömn och dagen, Koll), och sju påminnelser till finns:
 
-- **Sträck på dig**: några gånger om dagen – 10.30, 13.30 och 16.30 från början, upp till sex tider som du väljer. Tre texter turas om, och på gymdagar hoppas tiderna runt passet över (från 20 minuter före till en och en halv timme efter att det börjat).
+- **Sträck på dig**: några gånger om dagen – 10.30, 13.30 och 16.30 från början, upp till sex tider som du väljer. Fem texter turas om, och på gymdagar hoppas tiderna runt passet över (från 20 minuter före till en och en halv timme efter att det börjat).
 - **Ät före passet**: 90 minuter före passet på gymdagar. Hoppas över om ett mål i *Fem mål om dagen* eller ett shakeglas ändå ligger inom 40 minuter, och när passet redan är loggat eller i gång.
 - **Bricka mobilen**: när passet börjar. *När börjar passet?* är antingen *Som jag brukar* – medianen av när de senaste passen samma veckodag började – eller en fast tid.
 - **Mobilen ner**: en timme före läggdags.
@@ -389,6 +389,17 @@ Från 22 november 2026.
 - **Hållningen** (varje dag, 22 min, 10 övningar): nackrelease liggande (2 min med timer) ersätter chin tucks, och wall angels (2 × 10) och serratus wall slides (2 × 8) ersätter dead hang. Alla tre har egen teckning och video.
 - **Över-dagarna**: Y-T-W-lyft liggande (2 × 8, utan vikt) kommer först i Mage, direkt efter face pulls. Övningen har en egen teckning under Program → Mage.
 - **Ben + över-dagarna**: couch stretch (1 min per sida) i stället för höftböjarstretch på knä, först i Stretch underkropp.
+
+### Fler tips ur klippen
+
+Från 22 november 2026.
+
+- **Sträck på dig** har två nya texter bland dem som turas om: *Släpp nacken* (Alexandertekniken – nacken mjuk, hjässan mot taket, ingenting tvingas) och *Mobilen i ögonhöjd*.
+- **Progressbilder**: jämför aldrig ansiktet med en selfie – på armlängds avstånd blir näsan större och hakan mindre.
+- **Hållning**: längden mäts på morgonen, utan skor och på samma sätt varje gång – på kvällen är man 1–2 cm kortare.
+- **Kväll och sömn**: rutan *I sängen* – huvudet lite högre (höj huvudändan eller använd en kilkudde, inte flera kuddar) och strumpor om fötterna är kalla.
+- **Slåss**: sparring alltid med tandskydd.
+- Hållningen står som 22 minuter överallt: i Atlet i dag, under Vanor och i påminnelsen.
 
 ## Dagsschema
 
