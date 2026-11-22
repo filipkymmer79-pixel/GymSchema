@@ -382,6 +382,14 @@ Från 22 november 2026.
 - Sjukdagarna syns i veckan, under Vanor, i Året i rutor och i texten till Coachen. De sparas som datum i `gymschema.sjuk.v1` och följer med i backupen.
 - **⏱ Tiden i passet**: under passet står det när övningarna är klara om man fortsätter i samma takt, i rutan högst upp på Pass och i Kör passet. Appen räknar med vilan och tiden för varje set i programmet, och med den egna takten när några set är bockade. Efteråt visar Historik (och kortet när passet just är sparat) ett band med en bit per övning och ett streck per set, snittvilan mot planen, den längsta pausen och en rad per övning. Bygger på tiden när varje set bockades, så det gäller pass från 21 november och inte pass som loggas i efterhand.
 
+### Hållningen och nya övningar
+
+Från 22 november 2026.
+
+- **Hållningen** (varje dag, 22 min, 10 övningar): nackrelease liggande (2 min med timer) ersätter chin tucks, och wall angels (2 × 10) och serratus wall slides (2 × 8) ersätter dead hang. Alla tre har egen teckning och video.
+- **Över-dagarna**: Y-T-W-lyft liggande (2 × 8, utan vikt) kommer först i Mage, direkt efter face pulls. Övningen har en egen teckning under Program → Mage.
+- **Ben + över-dagarna**: couch stretch (1 min per sida) i stället för höftböjarstretch på knä, först i Stretch underkropp.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
