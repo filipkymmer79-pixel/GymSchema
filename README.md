@@ -372,6 +372,16 @@ Från 22 november 2026.
 - Veckans mål räknas mot gympassen som ligger i schemat den veckan: tre i stället för fyra i en vecka med en inlagd dag. Det gäller Veckokoll, veckobrevet, Framsteg, veckorna i rad och Året planerat.
 - De inlagda dagarna sparas som datum i `gymschema.skjut.v1` och följer med i backupen. Dagarna före en inlagd dag ändras aldrig i efterhand. Lördag 21 november 2026 är inlagd för den som uppdaterar från en äldre version; en ny installation börjar på grundschemat.
 
+### Sjuk i dag och tiden i passet
+
+Från 22 november 2026.
+
+- **🤒 Sjuk i dag** (knappen längst ner i morgonkänslan på Pass, Flytta passet eller Allt): dagen blir en sjukdag. Har den träning och inget är gjort läggs den in som en extra vilodag, så att det som skulle ha gjorts blir i morgon och allt efter det flyttas en dag fram (som Skjut fram schemat). Annars står schemat kvar. Bladet visar vad som händer innan något sparas.
+- En sjukdag bryter ingen serie och tar inte veckans frysdag, Atlet vilar, och påminnelserna om träning, hållning, dagsljus och rörelse är tysta. Rutan högst upp på Pass visar sjukdagen, vattnet och nästa pass, och kortet har en knapp för vatten och råden om när man kan träna igen, från 1177. Har klockan vilopulsen står den mot snittet.
+- Dagen efter frågar appen om man mår bättre (Jag är frisk eller Sjuk i dag också). Första gympasset efter sjukdagarna, inom en vecka, kan bli en lätt dag – appen frågar, och väljer aldrig själv. Allt går att ångra.
+- Sjukdagarna syns i veckan, under Vanor, i Året i rutor och i texten till Coachen. De sparas som datum i `gymschema.sjuk.v1` och följer med i backupen.
+- **⏱ Tiden i passet**: under passet står det när övningarna är klara om man fortsätter i samma takt, i rutan högst upp på Pass och i Kör passet. Appen räknar med vilan och tiden för varje set i programmet, och med den egna takten när några set är bockade. Efteråt visar Historik (och kortet när passet just är sparat) ett band med en bit per övning och ett streck per set, snittvilan mot planen, den längsta pausen och en rad per övning. Bygger på tiden när varje set bockades, så det gäller pass från 21 november och inte pass som loggas i efterhand.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
