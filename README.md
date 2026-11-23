@@ -389,7 +389,7 @@ Från 22 november 2026.
 Från 22 november 2026.
 
 - **Hållningen** (varje dag, 22 min, 10 övningar): nackrelease liggande (2 min med timer) ersätter chin tucks, och wall angels (2 × 10) och serratus wall slides (2 × 8) ersätter dead hang. Alla tre har egen teckning och video.
-- **Över-dagarna**: Y-T-W-lyft liggande (2 × 8, utan vikt) kommer först i Mage, direkt efter face pulls. Övningen har en egen teckning under Program → Mage.
+- **Över-dagarna**: Y-T-W-lyft liggande (8 st, utan vikt) ligger i uppvärmningen före Över, efter band pull-aparts (från 23 november – först låg den i Mage).
 - **Ben + över-dagarna**: couch stretch (1 min per sida) i stället för höftböjarstretch på knä, först i Stretch underkropp.
 
 ### Fler tips ur klippen
@@ -408,6 +408,7 @@ Från 22 november 2026.
 - **Mage** står som eget block i Atlet idag på Över-dagarna, direkt efter Över: *Starta magen* kör magen i passet med guiden, och *Markera klar* bockar den. Över räknas som 52 minuter och Mage 8, så dagen blir inte längre.
 - **Öppna boken** (uppvärmningen före Över): huvudet vilar på en kudde, och blicken följer handen bara så långt nacken går lätt. Vridningen ska komma från bröstryggen. Hantelshrugs säger inte längre något om hakan.
 - **Mage-blocket**: står det *Klart ✓* kan du trycka på det för att ta bort bocken, så länge passet inte är sparat.
+- **Riktiga magövningar** (23 november 2026): Mage efter Över är två varv av hängande knälyft (10 st – hemma utan stång blir det omvända crunches), cykelcrunches (20 st), crunches med viktväst eller viktskiva (12 st) och sidoplanka (30 sek per sida), ca 8 minuter. De ersatte bear hold, shoulder taps och suitcases, som mest var stabilitet. Alla fyra har teckning, steg, vanliga fel och video under Program → Mage, och där står hur du gör dem tyngre.
 
 ## Dagsschema
 
