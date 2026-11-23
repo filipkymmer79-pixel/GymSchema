@@ -4512,6 +4512,73 @@ textarea.eg-in{resize:none}
 .ny-tx small{display:block;font-size:11.5px;color:var(--muted);line-height:1.3;margin-top:2px}
 /* Idag: Atlet-blocken som rader – anteckningen och dagens fokus syns när du fäller ut blocket */
 .ny #v-pass #atCard .at-blk:not(.open) > .at-note,.ny #v-pass #atCard .at-blk:not(.open) > .gt-line{display:none}
+
+/* ---------- Fem nya, omgång 24 (23 nov 2026): Sug-knappen, Onyttigt-vakten, Ord under vilan, Tomma gymmet, Du om ett år ---------- */
+/* 116 Sug-knappen */
+#f24sOv .lead{margin:0 0 4px}
+.f24s-clock{font-size:52px;font-weight:800;line-height:1;text-align:center;margin:8px 0 14px;letter-spacing:-.02em}
+.f24s-why{display:grid;gap:8px;margin:0 0 12px}
+.f24s-why > b{font-size:15px}
+.f24s-wb{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.f24s-do{color:var(--muted);font-size:14px;line-height:1.4}
+.f24s-list{display:grid;padding:2px 14px}
+.f24s-st{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:6px 10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.f24s-st:last-child{border-bottom:0}
+.f24s-ic{font-size:20px;text-align:center}
+.f24s-st.ok .f24s-ic{font-size:18px;font-weight:800}
+.f24s-st.ok .f24s-tx b{text-decoration:line-through;text-decoration-thickness:1.5px;opacity:.7}
+.f24s-tx{display:grid;gap:2px;min-width:0}
+.f24s-tx small{color:var(--muted);font-size:13px;line-height:1.35}
+.f24s-q{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:6px}
+.f24s-q .btn{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.f24s-hon{margin:12px 2px 0;color:var(--muted);line-height:1.45}
+.f24s-end{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.f24s-lw{margin:8px 0 10px}
+.f24s-vet{width:100%}
+/* 119 Ord under vilan */
+.f24o{display:grid;gap:4px;padding:12px 16px}
+.f24o-top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.f24o-l{all:unset;cursor:pointer;font-size:13px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:6px 0}
+.f24o-q{font-size:14px;color:var(--muted)}
+.f24o-w{font-size:22px;font-weight:800;line-height:1.2;overflow-wrap:anywhere}
+.f24o-a{font-size:22px;line-height:1.25;overflow-wrap:anywhere}
+.f24o-k{font-size:15px;color:var(--muted)}
+.f24o-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.f24o-b .btn{flex:1 1 0;min-width:0}
+.f24o-c{grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:8px;padding:10px 8px 10px 16px}
+.f24o-cl{display:grid;gap:1px;min-width:0}
+.f24o-cl small{font-size:12px;color:var(--muted)}
+.f24o-c .f24o-w{font-size:18px;line-height:1.25}
+.f24o-x{all:unset;cursor:pointer;width:36px;height:36px;display:grid;place-items:center;font-size:22px;line-height:1;color:var(--muted);border-radius:50%}
+.f24o-float{position:fixed;left:50%;transform:translateX(-50%);width:min(calc(100% - 32px),420px);z-index:27}
+.f24o-float .f24o{margin:0;box-shadow:0 12px 32px rgba(0,0,0,.22)}
+.f24o-seg{margin:6px 0 10px}
+/* 123 Tomma gymmet: fyra steg i samma blå (ljust = tomt, mörkt = kö), i mörkt läge omvänt mot den mörka botten */
+.f24f .m12-ws{grid-template-columns:repeat(4,minmax(0,1fr))}
+.f24hc{display:grid;gap:10px}
+.f24h{display:grid;gap:4px}
+.f24h-r{display:grid;grid-template-columns:30px repeat(var(--cols),minmax(0,1fr));gap:4px;align-items:center}
+.f24h-th{font-size:11px;color:var(--muted);text-align:center;white-space:nowrap}
+.f24h-rh{font-size:12px;color:var(--muted)}
+.f24h-c{display:block;height:26px;border-radius:6px;background:var(--f1)}
+.f24h-c.none{background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
+.f24h-c.l0{background:#86b6ef}.f24h-c.l1{background:#3987e5}.f24h-c.l2{background:#1c5cab}.f24h-c.l3{background:#0d366b}
+[data-theme="dark"] .f24h-c.l0{background:#184f95}[data-theme="dark"] .f24h-c.l1{background:#2a78d6}[data-theme="dark"] .f24h-c.l2{background:#6da7ec}[data-theme="dark"] .f24h-c.l3{background:#b7d3f6}
+.f24h-r .f24h-c[data-l]{cursor:pointer}
+.f24h-r .f24h-c.sel{outline:2px solid var(--ink);outline-offset:1px}
+.f24h-leg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted)}
+.f24h-leg span{display:inline-flex;align-items:center;gap:6px}
+.f24h-leg i.f24h-c{width:14px;height:14px;border-radius:4px}
+.f24h-sel{font-size:13px;min-height:18px;color:var(--ink)}
+.f24h-t{margin:0}
+/* 125 Du om ett år */
+.f24y{display:grid;gap:8px}
+.f24y-rows{display:grid}
+.f24y-r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line)}
+.f24y-r:last-child{border-bottom:0}
+.f24y-r > span{font-size:15px}
+.f24y-r > b{font-size:17px;text-align:right}
+.f24y-r > small{grid-column:1/-1;color:var(--muted);font-size:13px}
 </style>
 
 <div class="app">
@@ -5681,6 +5748,7 @@ class LocalDB {
     n += k5Import(data.kropp);   // 17 nov: morgonkänslan, ömhetskartan, sömndagboken och smärtloggen (kropp5.js)
     n += s7Import(data.sista);
     n += p11Import(data.pass);   // 19 nov: maskinen, lappen, tempot och styrketesten (pass11.js)
+    n += f24Import(data.fem);   // 23 nov: sockersuget och orden under vilan (fem24.js)
     n += skImport(data.sjuk);   // 22 nov: sjukdagarna (sjuk22.js)
     n += sjImport(data.skjut);   // 22 nov: schemat framflyttat (skjut21.js)
     n += egImport(data.egna);   // 21 nov: egna övningar (egna20.js)
@@ -5726,7 +5794,7 @@ function initDb(){
 
 /* ---------- Backup ---------- */
 function backupBlob(){
-  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, programMig: PR_MIG, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}, program: prog, goals: mal, bodyMeasures: matt, supplements: supp, water: vat, atlet: {done: atl.done, tests: atl.tests, start: atl.start || null, tips: atl.tips || {}, hang: atl.hang || [], mobt: atl.mobt || [], split: atl.split || [], bal: atl.bal || [], vo2: atl.vo2 || [], stel: atl.stel || {}, moved: atl.moved || {}, hand: atl.hand || [], hoppk: atl.hoppk || [], sprint: atl.sprint || []}, mat: m4Export(), kropp: k5Export(), sista: s7Export(), pass: p11Export(), framemot: m12Export(), data14: d14Export(), anteckningar: q17Export(), ar: q19Export(), egna: egExport(), skjut: sjExport(), sjuk: skExport()};
+  const data = {app: "GymSchema", version: 6, exported: new Date().toISOString(), sessions, weights, habits, boxing: boxLog, food: foodLog, shakeGlasses: shakeGl, foodSettings: foodSet, posture, home: homeLog, prime: prime.days, programMig: PR_MIG, meals: {menus: meny, fav: rxFav, cooked: rxLog, boxes: lador}, program: prog, goals: mal, bodyMeasures: matt, supplements: supp, water: vat, atlet: {done: atl.done, tests: atl.tests, start: atl.start || null, tips: atl.tips || {}, hang: atl.hang || [], mobt: atl.mobt || [], split: atl.split || [], bal: atl.bal || [], vo2: atl.vo2 || [], stel: atl.stel || {}, moved: atl.moved || {}, hand: atl.hand || [], hoppk: atl.hoppk || [], sprint: atl.sprint || []}, mat: m4Export(), kropp: k5Export(), sista: s7Export(), pass: p11Export(), framemot: m12Export(), data14: d14Export(), anteckningar: q17Export(), ar: q19Export(), egna: egExport(), skjut: sjExport(), sjuk: skExport(), fem: f24Export()};
   return new Blob([JSON.stringify(data, null, 1)], {type: "application/json"});
 }
 async function exportBackup(){
@@ -6711,7 +6779,7 @@ async function scanLookup(code){
   scanStop(); $("scanOv").classList.add("found");
   scanMsg("Söker " + code + " i Open Food Facts…", false);
   let j = null;
-  try { const r = await fetch("https://world.openfoodfacts.org/api/v2/product/" + encodeURIComponent(code) + ".json?fields=product_name,product_name_sv,brands,nutriments,serving_size,serving_quantity,quantity,ingredients_text,ingredients_text_sv,ingredients_text_en", {cache: "no-store"}); j = await r.json(); }
+  try { const r = await fetch("https://world.openfoodfacts.org/api/v2/product/" + encodeURIComponent(code) + ".json?fields=product_name,product_name_sv,brands,nutriments,serving_size,serving_quantity,quantity,ingredients_text,ingredients_text_sv,ingredients_text_en,nova_group,additives_tags", {cache: "no-store"}); j = await r.json(); }
   catch(e){ scanBusy = false; scanMsg("Fick ingen kontakt med Open Food Facts. Är du uppkopplad?", true); return; }
   scanBusy = false;
   const pr = j && j.status === 1 && j.product, nu = pr && pr.nutriments || {};
@@ -9233,7 +9301,7 @@ function sjLoad(){
   // Första gången. Schemat sköts fram en dag lördag 21 nov 2026. Den som redan körde programmet då (appen uppdateras från en äldre
   // version) får med den dagen. En ny installation börjar på grundschemat.
   let prev = null; try { prev = localStorage.getItem("gymschema.build"); } catch(e){}
-  sjL = prev && prev !== "23 nov 14.29" ? ["2026-11-21"] : [];
+  sjL = prev && prev !== "23 nov 15.20" ? ["2026-11-21"] : [];
   sjFresh = sjL.length > 0;
   sjStore();
   return sjL;
@@ -10362,6 +10430,7 @@ const GU = [
     ["🛞", "Viktratten", "Tryck på siffran för vikt eller reps i Kör passet, så kommer en ratt där du snurrar fram rätt siffra. Plus och minus finns kvar.", "pass", '#v-pass [data-fk="open"]', "", "Finns i Kör passet på en gymdag."],
     ["📷", "Reps-räknare med kameran", "Kameran räknar repsen och säger till om du inte går hela vägen eller sänker för fort. Tryck Räkna reps vid setet i Kör passet, så fylls antalet i. Rutan här öppnar en lista där du kan prova.", "pass", '#v-pass [data-fk="open"]'],
     ["⏱", "Vila med timer och röst", "Bocka ett set så startar vilan. Rösten säger när det är dags och vad nästa set är.", "pass", "#v-pass article.ex .set [data-chk]"],
+    ["🗣", "Ord under vilan", "Under vilan visar appen ett ord på svenska. Säg det högt på franska eller japanska, tryck Visa och lyssna och hör om det blev rätt. Det du kunde kommer tillbaka efter 1, 2, 4, 8 och 16 dagar, och högst tio nya ord om dagen. Visa var öppnar språkvalet.", "pass", ""],
     ["⚡", "Snabbläge – supersets", "Övningarna i par med mindre vila när du har bråttom.", "pass", "#v-pass .ss-card .mn-sw"],
     ["🔁", "Upptagen? Byt", "Kör något annat först, fråga om du får köra mellan, eller byt övning i dag.", "pass", "#v-pass .bz-link"],
     ["🩹", "Gör det ont?", "Länken under varje övning. Välj var och hur mycket, så sparas det i smärtloggen och appen föreslår en ersättare. Loggen ligger på sidan för sjukgymnasten.", "pass", "#v-pass .k5-ontbtn"],
@@ -10403,6 +10472,7 @@ const GU = [
     ["📵", "Skärmtid", "Skriv in dagens skärmtid från iPhone på kvällen. Då ser du de två senaste veckorna, snittet och hur det går mot ditt mål.", "vanor", "#s7Skarm"],
     ["👟", "Steg", "Dagens steg från klockan, snittet de senaste sju dagarna och två veckor i staplar.", "vanor", "#d14Steg", "", "Kommer när klockan är kopplad och har skickat steg."],
     ["✓", "Vanorna", "Bocka av på kvällen. Sömnen, proteinet och shaken bockas av sig själva från klockan och Mat.", "vanor", "#v-vanor .hlist"],
+    ["🍬", "Sug-knappen", "Tryck på Sockersug när suget kommer. En klocka på tio minuter och fyra saker att göra medan den går: vatten, protein, armhävningar och andning. Välj vad suget egentligen är – hungrig, trött, stressad eller uttråkad – så ser du efter några gånger vad som är vanligast.", "vanor", "#f24sRow"],
     ["🌙", "Kväll på en knapp", "Starta kvällen gör appen mörk till i morgon, stänger gardinen och visar kvällens steg: Kvällsvila, andas och vanorna. Knappen finns under Vanor → Kväll och sömn, och på kvällen i rutan Kvällen på Pass.", "vanor", "#v13Row"],
     ["🌬", "Andningscirkel", "Följ cirkeln: andas in när den växer och ut när den krymper. Två, fem eller tio minuter – lugn andning eller box. Under Vanor → Kväll och sömn.", "vanor", "#v13Row"],
     ["☕", "Koffeinstopp", "Sista kaffet senast nio timmar före läggdags. Tiden står under Vanor → Kväll och sömn, och påminnelsen heter Koffeinstopp under Påminnelser.", "vanor", "#v13Row"],
@@ -10423,9 +10493,11 @@ const GU = [
   ]],
   ["Framsteg", [
     ["📊", "Veckokoll", "Hur veckan gick och det viktigaste att göra nästa vecka.", "framsteg", "#vkCard"],
+    ["🔭", "Du om ett år", "Var du är om ett år i samma takt som de senaste åtta veckorna: antal pass, kroppsvikt, chins och de tre övningar du loggar oftast. Styrkan räknas försiktigt, med halva takten.", "framsteg", "#f24Year"],
     ["📬", "Veckobrevet", "Veckan på en sida: passen, rekorden, sömnen, maten, vanorna och det som gick bäst. Knappen ligger i Veckokoll, och söndagens påminnelse öppnar brevet.", "framsteg", '#vkCard [data-s7="brev"]', "#vkCard"],
     ["🤖", "Coachen", "Kopierar dina senaste fyra veckor och öppnar Claude med en färdig fråga.", "framsteg", "#coachCard"],
     ["📈", "Belastning", "En siffra per vecka för gym, löpning och spänst. Appen säger till när något ökar mer än en tredjedel mot snittet av de tre veckorna före.", "framsteg", "#s7Load"],
+    ["🏋", "Tomma gymmet", "Efter passet trycker du hur fullt gymmet var: tomt, lagom, fullt eller kö. Efter sex pass visar Framsteg vilka dagar och tider det brukar vara tommast.", "framsteg", "#f24Gym", "", "Kommer när du har tryckt hur fullt det var efter ett pass."],
     ["🏃", "Löprundan på kartan", "Tryck på en runda under Löpning, så ritas rutten från klockan på en karta med tempot för varje kilometer.", "framsteg", "#v-framsteg .k7-run", "", "Rundorna syns när klockan är kopplad och har en löprunda."],
     ["🫀", "Muskelkartan", "Vilka muskler som fått set den här veckan.", "framsteg", "#v-framsteg .mmap"],
     ["📊", "Sömn mot lyft", "Hur passen går efter korta och långa nätter: varje pass mot förra gången, delat efter sömnen natten före.", "framsteg", "#k5SL"],
@@ -10462,6 +10534,7 @@ const GU = [
     ["🥛", "Shaken i glas", "Bocka varje glas – kalorierna och proteinet räknas.", "vikt/mat", "#v-vikt .fd-shake"],
     ["▦", "Skanna streckkod", "Skanna förpackningen så hämtas kalorier och protein.", "vikt/mat", "#v-vikt .fd-add"],
     ["⚠", "Sockervakt i skannern", "När du skannar en vara varnar appen för socker och rapsolja i ingredienserna. Honung är okej och står av, men du väljer själv vad den ska leta efter.", "vikt/mat", "#m4Watch"],
+    ["🧪", "Onyttigt i skannern", "Skannern visar hur processad varan är, från oprocessad till ultraprocessad (NOVA 1–4 i Open Food Facts), och vilka tillsatser den har med namn på svenska. En ultraprocessad vara får en varning i listan över det du ätit.", "vikt/mat", "#v-vikt .fd-add"],
     ["✋", "Handen som mått", "Äter du borta: räkna handflator, kupade händer, knytnävar och tummar i stället för gram.", "vikt/mat", '#v-vikt [data-m4="hand"]', "#v-vikt .fd-add"],
     ["📷", "Fota maten", "Fota det du äter. Dagens bilder ligger i en rad, och ett fotat mål räknas som ätet.", "vikt/mat", '#v-vikt [data-m4="foto"]', "#v-vikt .fd-add"],
     ["📌", "Fäst dina snabbval", "Det du äter ofta ligger först. Under Ändra fäster du det som alltid ska finnas kvar och döljer det du inte vill se.", "vikt/mat", '#v-vikt [data-m4="quick"]', "#v-vikt .fd-add", "Länken Ändra syns när du har lagt in mat minst en gång."],
@@ -13736,7 +13809,7 @@ function m4MageFind(){
   if (days.length < 7) return res;
   const fac = {}, add = (d, key, label) => { const f = fac[key] || (fac[key] = {label, days: {}}); f.days[d] = 1; };
   days.forEach(d => {
-    (foodLog[d] || []).forEach(x => { const nm = String(x.n || "").split(" · ")[0].trim(); if (nm.length >= 2) add(d, "f:" + nm.toLowerCase(), nm); (Array.isArray(x.w) ? x.w : []).forEach(w => add(d, "w:" + w, "Varor med " + String(w).toLowerCase())); });
+    (foodLog[d] || []).forEach(x => { const nm = String(x.n || "").split(" · ")[0].trim(); if (nm.length >= 2) add(d, "f:" + nm.toLowerCase(), nm); (Array.isArray(x.w) ? x.w : []).forEach(w => add(d, "w:" + w, w === "Ultraprocessad" ? "Ultraprocessade varor" : "Varor med " + String(w).toLowerCase())); });
     rxLog.forEach(l => { if (l.d === d && RXM[l.id]) add(d, "r:" + l.id, RXM[l.id].n); });
     if ((shakeGl[d] || 0) >= 4) add(d, "g4", "Minst fyra glas shake");
   });
@@ -18697,6 +18770,7 @@ atCoachLines = (f => function(){
 /* ===== 87: Nytt i appen ===== */
 // [datum, rubrik, [sakernas namn i Allt …]] – nyast först. Namnen ska finnas i guiden; ett som saknas visas utan knapp.
 const Q17_NYTT = [
+  ["23 nov", "Sug-knappen, ord under vilan, tomma gymmet, du om ett år och onyttigt i skannern", ["Sug-knappen", "Ord under vilan", "Tomma gymmet", "Du om ett år", "Onyttigt i skannern"]],
   ["23 nov", "Ny ordning: fem flikar och underflikar – appen som förut finns kvar i Allt", ["Appens ordning"]],
   ["23 nov", "Grodgungning, rödbetsdrink före intervallerna och magalternativ", ["Atlet idag", "Programmet med bild"]],
   ["23 nov", "Honung är okej: Sockervakten varnar inte för den längre", ["Sockervakt i skannern"]],
@@ -20466,12 +20540,468 @@ if (NY){
 }
 if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {NY, NY_SUB, nyState: () => ({t: Object.assign({}, nyT), eff: Object.assign({}, nyEff), has: {pass: nyHas.pass.slice(), framsteg: nyHas.framsteg.slice()}}), nyApply, nyReveal});
 
+/* ---------- Orden till Vilan som pluggtid (idé 119, 23 nov 2026) ---------- */
+// Filip vill lära sig franska och japanska och lägga fokus på att prata och lyssna. Därför visar kortet svenskan först:
+// du säger det högt, trycker Visa och hör hur det låter. Vanliga ord och fraser först, sedan kroppen och gymmet.
+// Franska: [franska, svenska]. Japanska: [kana, romaji, svenska]. Nyckeln för det du kan är franskan respektive romaji.
+const F24_FR = [
+  ["bonjour", "hej / god dag"], ["bonsoir", "god kväll"], ["salut", "hej (till kompisar)"], ["au revoir", "hej då"],
+  ["merci beaucoup", "tack så mycket"], ["s'il te plaît", "snälla (till en kompis)"], ["s'il vous plaît", "snälla (artigt)"], ["de rien", "ingen orsak"],
+  ["excusez-moi", "ursäkta mig"], ["pardon", "förlåt"], ["oui", "ja"], ["non", "nej"], ["d'accord", "okej"],
+  ["ça va ?", "hur är det?"], ["ça va bien, merci", "det är bra, tack"], ["comment tu t'appelles ?", "vad heter du?"], ["je m'appelle Filip", "jag heter Filip"],
+  ["enchanté", "trevligt att träffas"], ["je ne comprends pas", "jag förstår inte"], ["tu peux répéter ?", "kan du säga det igen?"],
+  ["plus lentement, s'il vous plaît", "långsammare, tack"], ["je parle un peu français", "jag pratar lite franska"], ["je ne sais pas", "jag vet inte"],
+  ["qu'est-ce que c'est ?", "vad är det?"], ["où sont les toilettes ?", "var är toaletten?"], ["combien ça coûte ?", "vad kostar det?"],
+  ["l'addition, s'il vous plaît", "notan, tack"], ["je voudrais un café", "jag skulle vilja ha en kaffe"], ["de l'eau, s'il vous plaît", "vatten, tack"],
+  ["je suis", "jag är"], ["j'ai", "jag har"], ["je vais", "jag går / jag ska"], ["je veux", "jag vill"], ["je peux", "jag kan"], ["je dois", "jag måste"],
+  ["j'aime", "jag gillar"], ["je n'aime pas", "jag gillar inte"], ["je pense que", "jag tror att"], ["on y va !", "nu kör vi!"],
+  ["j'ai faim", "jag är hungrig"], ["j'ai soif", "jag är törstig"], ["je suis fatigué", "jag är trött"], ["j'ai froid", "jag fryser"], ["j'ai chaud", "jag är varm"],
+  ["je suis en retard", "jag är sen"], ["à demain", "vi ses i morgon"], ["à bientôt", "vi ses snart"], ["bonne nuit", "god natt"],
+  ["aujourd'hui", "i dag"], ["demain", "i morgon"], ["hier", "i går"], ["maintenant", "nu"], ["toujours", "alltid"], ["jamais", "aldrig"], ["souvent", "ofta"],
+  ["la semaine", "veckan"], ["lundi", "måndag"], ["le matin", "morgonen"], ["le soir", "kvällen"],
+  ["un, deux, trois", "ett, två, tre"], ["dix", "tio"], ["vingt", "tjugo"], ["cent", "hundra"],
+  ["la salle de sport", "gymmet"], ["s'entraîner", "att träna"], ["la force", "styrkan"], ["le dos", "ryggen"], ["les jambes", "benen"], ["les bras", "armarna"],
+  ["le ventre", "magen"], ["les épaules", "axlarna"], ["la poitrine", "bröstet"], ["le genou", "knät"], ["le pied", "foten"], ["la tête", "huvudet"], ["le cœur", "hjärtat"],
+  ["courir", "att springa"], ["sauter", "att hoppa"], ["une série", "ett set"], ["le poids", "vikten"], ["lourd", "tung"], ["léger", "lätt"],
+  ["encore une !", "en till!"], ["je suis prêt", "jag är redo"], ["dormir", "att sova"], ["le sommeil", "sömnen"], ["manger", "att äta"], ["boire", "att dricka"],
+  ["le petit-déjeuner", "frukosten"], ["le déjeuner", "lunchen"], ["le dîner", "middagen"], ["le poulet", "kycklingen"], ["le poisson", "fisken"],
+  ["les œufs", "äggen"], ["le riz", "riset"], ["les légumes", "grönsakerna"], ["le fromage", "osten"], ["le pain", "brödet"],
+  ["un ami", "en kompis"], ["la famille", "familjen"], ["mon père", "min pappa"], ["le travail", "jobbet"], ["l'argent", "pengarna"], ["la ville", "staden"],
+  ["il fait froid", "det är kallt ute"], ["il pleut", "det regnar"], ["il neige", "det snöar"], ["c'est bon", "det är gott / det är bra"], ["c'est cher", "det är dyrt"],
+  ["pas de problème", "inga problem"], ["bien sûr", "självklart"], ["peut-être", "kanske"], ["vraiment ?", "verkligen?"], ["je suis d'accord", "jag håller med"],
+  ["bonne chance", "lycka till"], ["félicitations", "grattis"], ["ça marche", "det funkar"]
+];
+const F24_JA = [
+  ["こんにちは", "konnichiwa", "hej"], ["おはよう", "ohayō", "god morgon (till kompisar)"], ["おはようございます", "ohayō gozaimasu", "god morgon (artigt)"],
+  ["こんばんは", "konbanwa", "god kväll"], ["おやすみ", "oyasumi", "god natt"], ["さようなら", "sayōnara", "adjö"], ["じゃあね", "jā ne", "vi ses"],
+  ["ありがとう", "arigatō", "tack"], ["ありがとうございます", "arigatō gozaimasu", "tack (artigt)"], ["すみません", "sumimasen", "ursäkta"],
+  ["ごめんなさい", "gomen nasai", "förlåt"], ["はい", "hai", "ja"], ["いいえ", "iie", "nej"], ["だいじょうぶ", "daijōbu", "det är okej"],
+  ["わかりました", "wakarimashita", "jag förstår"], ["わかりません", "wakarimasen", "jag förstår inte"], ["もう いちど おねがいします", "mō ichido onegai shimasu", "en gång till, tack"],
+  ["ゆっくり おねがいします", "yukkuri onegai shimasu", "långsammare, tack"], ["にほんご が すこし わかります", "nihongo ga sukoshi wakarimasu", "jag förstår lite japanska"],
+  ["はじめまして", "hajimemashite", "trevligt att träffas"], ["わたし は フィリップ です", "watashi wa Firippu desu", "jag är Filip"], ["おなまえ は?", "onamae wa?", "vad heter du?"],
+  ["これ は なん ですか", "kore wa nan desu ka", "vad är det här?"], ["いくら ですか", "ikura desu ka", "vad kostar det?"], ["トイレ は どこ ですか", "toire wa doko desu ka", "var är toaletten?"],
+  ["おねがいします", "onegai shimasu", "tack (när du ber om något)"], ["いただきます", "itadakimasu", "det man säger innan man äter"], ["ごちそうさまでした", "gochisōsama deshita", "tack för maten"],
+  ["おいしい", "oishii", "gott"], ["みず", "mizu", "vatten"], ["ごはん", "gohan", "mat / ris"], ["たまご", "tamago", "ägg"], ["とりにく", "toriniku", "kyckling"],
+  ["さかな", "sakana", "fisk"], ["やさい", "yasai", "grönsaker"], ["おちゃ", "ocha", "te"], ["コーヒー", "kōhī", "kaffe"],
+  ["あさごはん", "asagohan", "frukost"], ["ひるごはん", "hirugohan", "lunch"], ["ばんごはん", "bangohan", "middag"],
+  ["きょう", "kyō", "i dag"], ["あした", "ashita", "i morgon"], ["きのう", "kinō", "i går"], ["いま", "ima", "nu"], ["あさ", "asa", "morgon"], ["よる", "yoru", "kväll / natt"],
+  ["まいにち", "mainichi", "varje dag"], ["いつも", "itsumo", "alltid"], ["ときどき", "tokidoki", "ibland"], ["しゅうまつ", "shūmatsu", "helgen"],
+  ["いち", "ichi", "ett"], ["に", "ni", "två"], ["さん", "san", "tre"], ["よん", "yon", "fyra"], ["ご", "go", "fem"], ["ろく", "roku", "sex"], ["なな", "nana", "sju"],
+  ["はち", "hachi", "åtta"], ["きゅう", "kyū", "nio"], ["じゅう", "jū", "tio"],
+  ["ジム", "jimu", "gym"], ["トレーニング", "torēningu", "träning"], ["からだ", "karada", "kroppen"], ["あたま", "atama", "huvudet"], ["て", "te", "handen"],
+  ["あし", "ashi", "benet / foten"], ["せなか", "senaka", "ryggen"], ["おなか", "onaka", "magen"], ["かた", "kata", "axeln"], ["むね", "mune", "bröstet"], ["ひざ", "hiza", "knät"],
+  ["つよい", "tsuyoi", "stark"], ["よわい", "yowai", "svag"], ["おもい", "omoi", "tung"], ["かるい", "karui", "lätt"],
+  ["はしる", "hashiru", "att springa"], ["あるく", "aruku", "att gå"], ["ねる", "neru", "att sova"], ["たべる", "taberu", "att äta"], ["のむ", "nomu", "att dricka"],
+  ["いく", "iku", "att åka / gå dit"], ["くる", "kuru", "att komma"], ["みる", "miru", "att se"], ["きく", "kiku", "att lyssna / fråga"], ["はなす", "hanasu", "att prata"], ["する", "suru", "att göra"],
+  ["がんばって", "ganbatte", "kämpa! / lycka till"], ["がんばります", "ganbarimasu", "jag ska kämpa"], ["つかれた", "tsukareta", "jag är trött"],
+  ["おなか が すいた", "onaka ga suita", "jag är hungrig"], ["のど が かわいた", "nodo ga kawaita", "jag är törstig"], ["さむい", "samui", "kallt"], ["あつい", "atsui", "varmt"],
+  ["たのしい", "tanoshii", "roligt"], ["すごい", "sugoi", "häftigt / wow"], ["かっこいい", "kakkoii", "cool"], ["ほんとう?", "hontō?", "på riktigt?"],
+  ["ちょっと まって", "chotto matte", "vänta lite"], ["いっしょに", "isshoni", "tillsammans"], ["ともだち", "tomodachi", "kompis"], ["かぞく", "kazoku", "familj"],
+  ["ちち", "chichi", "min pappa"], ["しごと", "shigoto", "jobb"], ["おかね", "okane", "pengar"], ["にほん", "nihon", "Japan"], ["えき", "eki", "station"], ["でんしゃ", "densha", "tåg"],
+  ["みぎ", "migi", "höger"], ["ひだり", "hidari", "vänster"], ["まっすぐ", "massugu", "rakt fram"], ["どこ", "doko", "var"], ["なに", "nani", "vad"], ["いつ", "itsu", "när"],
+  ["だれ", "dare", "vem"], ["なぜ", "naze", "varför"], ["すき", "suki", "tycker om"], ["きらい", "kirai", "ogillar"], ["いい", "ii", "bra"], ["わるい", "warui", "dålig"], ["また ね", "mata ne", "vi ses"]
+];
+
+/* ---------- Fem nya, omgång 24 (23 nov 2026): idéerna 116, 118, 119, 123 och 125 ---------- */
+// 116 Sug-knappen: en plan för tio minuter när sockersuget kommer, och en serie för varje sug du klarar.
+// 118 Onyttigt-vakten: skannern säger hur processad varan är (NOVA i Open Food Facts) och vilka tillsatser den har.
+// 119 Vilan som pluggtid: ett franskt eller japanskt ord under vilan – säg det högt, tryck och lyssna.
+// 123 Tomma gymmet: efter passet trycker du hur fullt det var, och Framsteg visar när det brukar vara tommast.
+// 125 Du om ett år: var pass, vikt, chins och huvudövningar hamnar om ett år i samma takt som nu.
+// Allt sparas på telefonen och följer med i backupen. Ingenting här ändrar programmet.
+const F24_SUG = "gymschema.sug.v1", F24_ORD = "gymschema.ord.v1";
+
+/* ===== 116 Sug-knappen ===== */
+let f24s = (() => { const v = store(F24_SUG); return v && typeof v === "object" && Array.isArray(v.log) ? v : {log: []}; })();
+const f24sSave = () => { f24s.log = f24s.log.filter(x => x && typeof x.t === "number").slice(-400); store(F24_SUG, f24s); };
+const f24sRun = () => { let n = 0; for (let i = f24s.log.length - 1; i >= 0; i--){ if (f24s.log[i].ok) n++; else break; } return n; };
+const f24sWon = () => f24s.log.filter(x => x.ok).length;
+const F24S_MIN = 10;
+// Suget är ofta ett sätt att lösa något annat. Vad det var sparas med suget, och raden visar vad som är vanligast.
+const F24_WHY = [["hungrig", "Hungrig", "Ät något med protein"], ["trott", "Trött", "Vila en stund, eller lägg dig tidigare i kväll"],
+  ["stress", "Stressad", "Andas lugnt i två minuter"], ["tradig", "Uttråkad", "Rör på dig: 15 armhävningar eller en kort promenad"]];
+let F24S = null, f24sIv = 0;   // bladet: {t0, why, learn, done: {vatten, protein, arm, andas}}
+function f24sTop(){
+  const c = {}; f24s.log.forEach(x => { if (x.why) c[x.why] = (c[x.why] || 0) + 1; });
+  if (Object.values(c).reduce((a, b) => a + b, 0) < 5) return null;
+  const k = Object.keys(c).sort((a, b) => c[b] - c[a])[0]; return F24_WHY.find(w => w[0] === k) || null;
+}
+function f24sRowHTML(){
+  const run = f24sRun(), won = f24sWon(), top = f24sTop();
+  const sub = won ? (run ? run + " klarade i rad · " : "") + won + " klarade totalt" + (top ? " · oftast " + top[1].toLowerCase() : "") : "Tryck när suget kommer – en plan för tio minuter";
+  return '<button type="button" class="card nt-row f24s-row" id="f24sRow" data-f24s="open"><span class="nt-ic" aria-hidden="true">🍬</span><span class="nt-tx"><b>Sockersug?</b><small>' +
+    sub + '</small></span><span class="rx-go" aria-hidden="true">›</span></button>';
+}
+function f24sProt(){ try { return foodRecent().map((x, i) => ({x, i})).filter(o => (o.x.p || 0) >= 6).slice(0, 3); } catch(e){ return []; } }
+function f24sSheet(){
+  let o = $("f24sOv");
+  if (!o){ o = document.createElement("div"); o.id = "f24sOv"; o.className = "sheet"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Sockersug"); document.body.appendChild(o); }
+  const S = F24S, d = S.done, left = Math.max(0, S.t0 + F24S_MIN * 60000 - Date.now()), prot = f24sProt();
+  const top = '<div class="sh-in"><div class="sh-top"><b>Sockersug</b><button type="button" class="sh-x" data-f24s="close" aria-label="Stäng">×</button></div>';
+  if (S.learn){
+    // efter Jag åt sött: inget straff, bara vad du lär dig av det
+    o.innerHTML = top + '<p class="lead">Okej, det lär du dig av. Vad hände precis innan?</p><div class="f24s-wb f24s-lw">' +
+      F24_WHY.map(w => '<button type="button" class="btn ghost" data-f24s="lw" data-w="' + w[0] + '">' + w[1] + '</button>').join("") +
+      '</div><button type="button" class="btn ghost f24s-vet" data-f24s="lw" data-w="">Vet inte</button></div>';
+    o.hidden = false; document.documentElement.classList.add("noscroll"); clearInterval(f24sIv); return;
+  }
+  const why = S.why && F24_WHY.find(w => w[0] === S.why);
+  const step = (k, ic, t, sub, btn) => '<div class="f24s-st' + (d[k] ? ' ok' : '') + '" data-st="' + k + '"><span class="f24s-ic" aria-hidden="true">' + (d[k] ? "✓" : ic) + '</span><span class="f24s-tx"><b>' + t + '</b><small>' + sub + '</small></span>' + btn + '</div>';
+  const did = (k, a, b) => '<button type="button" class="btn sm' + (d[k] ? ' ghost' : '') + '" data-f24s="' + k + '">' + (d[k] ? b : a) + '</button>';
+  o.innerHTML = top +
+    '<p class="lead">Suget kommer som en våg och går över om du väntar ut den. Gör stegen medan klockan går.</p>' +
+    '<div class="f24s-clock num" id="f24sClock" aria-live="off">' + mmss(left / 1000) + '</div>' +
+    '<div class="f24s-why"><b>Vad är suget egentligen?</b><div class="f24s-wb" role="group" aria-label="Vad är suget egentligen">' +
+      F24_WHY.map(w => '<button type="button" class="p11-qb' + (S.why === w[0] ? ' on' : '') + '" data-f24s="why" data-w="' + w[0] + '" aria-pressed="' + (S.why === w[0]) + '">' + w[1] + '</button>').join("") +
+      '</div>' + (why ? '<small class="f24s-do">' + why[2] + '</small>' : '') + '</div>' +
+    '<div class="card f24s-list">' +
+      step("vatten", "💧", "Ett stort glas vatten", "Räknas som ett glas under Vanor", did("vatten", "Druckit", "Druckit ✓")) +
+      step("protein", "🥚", "Något med protein", prot.length ? "Ett tryck lägger in det i Mat" : "Kvarg, ägg eller en macka med pålägg",
+        prot.length ? '<div class="f24s-q">' + prot.map(p => '<button type="button" class="btn sm ghost" data-f24s="mat" data-i="' + p.i + '">' + esc(String(p.x.n || "").split(" · ")[0]) + '</button>').join("") + '</div>' : did("protein", "Ätit", "Ätit ✓")) +
+      step("arm", "💪", "15 armhävningar", "Eller 20 knäböj – pulsen upp, suget ner", did("arm", "Gjort", "Gjort ✓")) +
+      step("andas", "🌬", "Andas lugnt i två minuter", "Andningscirkeln öppnas", '<button type="button" class="btn sm ghost" data-f24s="andas">▶ Andas</button>') +
+    '</div>' +
+    '<p class="small f24s-hon">Fortfarande sugen när klockan är slut? En tesked honung i kvarg eller te – honung är okej enligt dina regler.</p>' +
+    '<div class="f24s-end"><button type="button" class="btn" data-f24s="ok">Suget gick över</button><button type="button" class="btn ghost" data-f24s="ate">Jag åt sött</button></div></div>';
+  o.hidden = false; document.documentElement.classList.add("noscroll");
+  clearInterval(f24sIv);
+  f24sIv = setInterval(() => { const c = $("f24sClock"); if (!c || !F24S || o.hidden){ clearInterval(f24sIv); return; } c.textContent = mmss(Math.max(0, F24S.t0 + F24S_MIN * 60000 - Date.now()) / 1000); }, 1000);
+}
+function f24sClose(){ const o = $("f24sOv"); if (o) o.hidden = true; clearInterval(f24sIv); if (!Array.from(document.querySelectorAll(".sheet,.scan,.guide")).some(x => !x.hidden)) document.documentElement.classList.remove("noscroll"); }
+function f24sLog(ok, why){
+  const e = {t: Date.now(), ok: ok ? 1 : 0}, w = why && F24_WHY.find(x => x[0] === why); if (w) e.why = w[0];
+  f24s.log.push(e); f24sSave(); F24S = null; f24sClose();
+  toast(ok ? "💪 " + f24sRun() + " sug klarade i rad" : w ? "Nästa gång du är " + w[1].toLowerCase() + ": " + w[2].charAt(0).toLowerCase() + w[2].slice(1) : "Nästa sug tar du.");
+  const r = $("f24sRow"); if (r) r.outerHTML = f24sRowHTML();
+}
+// Jag åt sött utan att ha valt varför: bladet frågar först vad som hände precis innan
+function f24sDone(ok){ if (!ok && !F24S.why){ F24S.learn = true; f24sSheet(); return; } f24sLog(ok, F24S.why); }
+function f24sVanor(){
+  const el = $("v-vanor"); if (!el || readOnly || $("f24sRow")) return;
+  const p = $("primeCard"); if (p && p.parentElement === el) p.insertAdjacentHTML("afterend", f24sRowHTML()); else el.insertAdjacentHTML("afterbegin", f24sRowHTML());
+}
+
+/* ===== 118 Onyttigt-vakten ===== */
+// NOVA-gruppen och tillsatserna kommer från Open Food Facts. Namnen på de vanligaste tillsatserna på svenska; resten visas som E-nummer.
+const F24_NOVA = {1: ["ok", "Oprocessad eller lite processad", "Råvaror som de är, eller nästan."], 2: ["na", "Ingrediens att laga mat med", "Till exempel olja, smör, mjöl eller salt."],
+  3: ["na", "Processad", "Enkla förädlade varor, som ost, konserver och bröd med få ingredienser."],
+  4: ["warn", "Ultraprocessad", "Tillverkad med ingredienser och tillsatser du inte har i köket. Mycket sådan mat hänger ihop med sämre hälsa i stora studier."]};
+const F24_E = {E100: "kurkumin", E101: "riboflavin", E120: "karmin", E129: "allurarött", E133: "briljantblått", E140: "klorofyll", E141: "kopparklorofyll", E150A: "sockerkulör", E150C: "ammoniaksockerkulör",
+  E150D: "ammoniumsulfitsockerkulör", E153: "vegetabiliskt kol", E160A: "betakaroten", E160C: "paprikaextrakt", E162: "rödbetsrött", E163: "antocyaner", E170: "kalciumkarbonat", E171: "titandioxid",
+  E200: "sorbinsyra", E202: "kaliumsorbat", E211: "natriumbensoat", E220: "svaveldioxid", E223: "natriumdisulfit", E224: "kaliumdisulfit", E250: "natriumnitrit", E251: "natriumnitrat", E252: "kaliumnitrat",
+  E260: "ättiksyra", E262: "natriumacetater", E270: "mjölksyra", E280: "propionsyra", E281: "natriumpropionat", E282: "kalciumpropionat", E290: "koldioxid", E296: "äppelsyra",
+  E300: "askorbinsyra", E301: "natriumaskorbat", E306: "tokoferoler", E307: "alfatokoferol", E322: "lecitiner", E325: "natriumlaktat", E330: "citronsyra", E331: "natriumcitrater", E332: "kaliumcitrater",
+  E333: "kalciumcitrater", E334: "vinsyra", E338: "fosforsyra", E339: "natriumfosfater", E340: "kaliumfosfater", E341: "kalciumfosfater", E392: "rosmarinextrakt",
+  E400: "alginsyra", E401: "natriumalginat", E406: "agar", E407: "karragenan", E410: "johannesbrödkärnmjöl", E412: "guarkärnmjöl", E414: "gummi arabicum", E415: "xantangummi", E418: "gellangummi",
+  E420: "sorbitol", E422: "glycerol", E440: "pektin", E450: "difosfater", E451: "trifosfater", E452: "polyfosfater", E460: "cellulosa", E461: "metylcellulosa", E466: "karboximetylcellulosa",
+  E471: "mono- och diglycerider av fettsyror", E472E: "diacetylvinsyraestrar av mono- och diglycerider", E476: "polyglycerolpolyricinoleat", E481: "natriumstearoyllaktylat", E491: "sorbitanmonostearat",
+  E500: "natriumkarbonater", E501: "kaliumkarbonater", E503: "ammoniumkarbonater", E504: "magnesiumkarbonater", E508: "kaliumklorid", E509: "kalciumklorid", E516: "kalciumsulfat", E551: "kiseldioxid",
+  E621: "natriumglutamat", E627: "dinatriumguanylat", E631: "dinatriuminosinat", E635: "dinatriumribonukleotider", E900: "dimetylpolysiloxan", E901: "bivax", E903: "karnaubavax", E920: "L-cystein",
+  E950: "acesulfam K", E951: "aspartam", E952: "cyklamat", E954: "sackarin", E955: "sukralos", E960: "steviolglykosider", E965: "maltitol", E967: "xylitol", E968: "erytritol"};
+function f24EName(code){
+  const c = String(code).toUpperCase(); if (F24_E[c]) return F24_E[c];
+  const b = c.replace(/(I{1,3}|IV|V|VI)$/, ""); if (F24_E[b]) return F24_E[b];
+  if (/^E14\d\d$/.test(c)) return "modifierad stärkelse";
+  return "";
+}
+// m4Scan läser ingredienserna; här läggs NOVA och tillsatserna på varan. Ultraprocessad följer med som varning i listan över det du ätit.
+m4Scan = (f => function(pr, nu){
+  const r = f.apply(this, arguments);
+  try {
+    const g = +pr.nova_group; scanProduct.nova = g >= 1 && g <= 4 ? g : null;   // okänt: Open Food Facts har inte räknat ut det
+    scanProduct.add = (Array.isArray(pr.additives_tags) ? pr.additives_tags : []).map(t => String(t).replace(/^[a-z]{2}:/, "").toUpperCase()).filter((t, i, a) => /^E\d{3,4}[A-Z]*$/.test(t) && a.indexOf(t) === i).slice(0, 24);
+    if (scanProduct.nova === 4) scanProduct.w = (Array.isArray(scanProduct.w) ? scanProduct.w : []).concat("Ultraprocessad");
+  } catch(e){}
+  return r;
+})(m4Scan);
+// Rutan under sockervakten. Okänd NOVA och inga tillsatser: ingen ruta alls, hellre än en gissning.
+function f24NovaHTML(p){
+  if (!p) return "";
+  const n = F24_NOVA[p.nova], add = Array.isArray(p.add) ? p.add : [];
+  const addH = add.length ? '<span>Tillsatser (' + add.length + '): ' + esc(add.map(c => { const nm = f24EName(c); return c + (nm ? " " + nm : ""); }).join(", ")) + '</span>' : (n ? '<span>Inga tillsatser enligt Open Food Facts.</span>' : '');
+  if (!n) return add.length ? '<div class="m4-sv na f24n" id="f24Nv"><b>Tillsatser</b>' + addH + '<span>Hur processad varan är har Open Food Facts inte räknat ut.</span></div>' : "";
+  return '<div class="m4-sv ' + n[0] + ' f24n" id="f24Nv"><b>' + (p.nova === 4 ? "⚠ " : p.nova === 1 ? "✓ " : "") + n[1] + ' (NOVA ' + p.nova + ')</b><span>' + n[2] + '</span>' + addH + '</div>';
+}
+scanSheet = (f => function(){
+  const r = f.apply(this, arguments);
+  try { if (scanProduct && !$("f24Nv")){ const a = $("m4Sv") || document.querySelector("#scanBody .scan-prod"); if (a) a.insertAdjacentHTML("afterend", f24NovaHTML(scanProduct)); } } catch(e){}
+  return r;
+})(scanSheet);
+
+/* ===== 119 Vilan som pluggtid ===== */
+// Kortet: svenskan först – säg det högt – Visa och lyssna – Kunde eller Igen. Det du kunde kommer tillbaka efter 1, 2, 4, 8 och 16 dagar.
+// Högst tio nya ord om dagen. Under vilan i Kör passet och ovanför vilan-rutan när du loggar själv.
+const F24_OI = [0, 1, 2, 4, 8, 16], F24_NEW = 10, F24_LANG = {fr: ["Franska", "fr-FR", "franska"], ja: ["Japanska", "ja-JP", "japanska"]};
+let f24o = (() => { const v = store(F24_ORD), o = v && typeof v === "object" && !Array.isArray(v) ? v : {}; return Object.assign({lang: "fr", fr: {}, ja: {}, nd: "", nn: 0}, o); })();
+["fr", "ja"].forEach(k => { if (!f24o[k] || typeof f24o[k] !== "object" || Array.isArray(f24o[k])) f24o[k] = {}; });
+const f24oSave = () => store(F24_ORD, f24o);
+const f24oList = l => l === "ja" ? F24_JA : F24_FR, f24oKey = (l, x) => l === "ja" ? x[1] : x[0];
+let F24C = null, f24oPickL = false;   // kortet just nu: {lang, i, open}
+// skip: ordet som just visades – det kommer inte direkt igen, om det finns något annat att ta
+function f24oPick(skip){
+  const l = f24o.lang; if (!F24_LANG[l]) return -1;
+  const L = f24oList(l), M = f24o[l], t = iso(today()), last = skip != null ? skip : -1;
+  if (f24o.nd !== t){ f24o.nd = t; f24o.nn = 0; }
+  let best = -1, bd = null, bb = 9;
+  L.forEach((x, i) => { const m = M[f24oKey(l, x)]; if (!m || i === last || m[1] > t) return; if (bd == null || m[1] < bd || (m[1] === bd && m[0] < bb)){ best = i; bd = m[1]; bb = m[0]; } });
+  if (best >= 0) return best;
+  if (f24o.nn < F24_NEW){ const i = L.findIndex((x, j) => !M[f24oKey(l, x)] && j !== last); if (i >= 0) return i; }
+  L.forEach((x, i) => { const m = M[f24oKey(l, x)]; if (!m || i === last) return; if (bd == null || m[1] < bd){ best = i; bd = m[1]; } });
+  return best >= 0 ? best : last;
+}
+const f24oKnown = l => Object.values(f24o[l] || {}).filter(m => Array.isArray(m) && m[0] >= 2).length;
+function f24oCardHTML(compact){
+  if (readOnly) return "";
+  if (f24oPickL) return '<div class="card f24o" id="f24oC"><div class="f24o-top"><span>Ord under vilan</span></div><div class="f24o-q">Vilket språk?</div><div class="f24o-b">' +
+    [["fr", "Franska"], ["ja", "Japanska"], ["off", "Av"]].map(x => '<button type="button" class="btn sm' + (f24o.lang === x[0] ? '' : ' ghost') + '" data-f24o="set" data-l="' + x[0] + '">' + x[1] + '</button>').join("") + '</div></div>';
+  const l = f24o.lang; if (!F24_LANG[l]) return "";
+  if (!F24C || F24C.lang !== l){ const i = f24oPick(); if (i < 0) return ""; F24C = {lang: l, i, open: false}; }
+  const x = f24oList(l)[F24C.i]; if (!x) return "";
+  const sv = l === "ja" ? x[2] : x[1];
+  // ovanför vilan-rutan: en rad tills du trycker Visa, så att seten syns
+  if (compact && !F24C.open) return '<div class="card f24o f24o-c" id="f24oC"><div class="f24o-cl"><small>Säg på ' + F24_LANG[l][2] + ':</small><b class="f24o-w">' + esc(sv) + '</b></div>' +
+    '<button type="button" class="btn sm" data-f24o="show">Visa</button><button type="button" class="f24o-x" data-f24o="hide" aria-label="Dölj ordet under den här vilan">×</button></div>';
+  return '<div class="card f24o" id="f24oC"><div class="f24o-top"><span>Ord under vilan · ' + F24_LANG[l][0] + '</span><button type="button" class="f24o-l" data-f24o="lang">' + f24oKnown(l) + ' kan du · byt</button></div>' +
+    '<div class="f24o-q">Säg på ' + F24_LANG[l][2] + ':</div><div class="f24o-w">' + esc(sv) + '</div>' +
+    (F24C.open ? (l === "ja" ? '<div class="f24o-a" lang="ja">' + esc(x[0]) + '</div><div class="f24o-k">' + esc(x[1]) + '</div>' : '<div class="f24o-a" lang="fr">' + esc(x[0]) + '</div>') +
+      '<div class="f24o-b"><button type="button" class="btn sm ghost" data-f24o="say">▶ Lyssna</button><button type="button" class="btn sm ghost" data-f24o="no">Igen</button><button type="button" class="btn sm" data-f24o="yes">Kunde ✓</button></div>'
+    : '<div class="f24o-b"><button type="button" class="btn sm" data-f24o="show">Visa och lyssna</button></div>') + '</div>';
+}
+function f24oSay(){
+  try {
+    const l = F24C && F24C.lang, x = l && f24oList(l)[F24C.i]; if (!x || !("speechSynthesis" in window)) return;
+    const u = new SpeechSynthesisUtterance(l === "ja" ? x[0].replace(/\s+/g, "") : x[0]); u.lang = F24_LANG[l][1]; u.rate = 0.85;
+    const v = (speechSynthesis.getVoices() || []).find(v => String(v.lang || "").replace("_", "-").toLowerCase().indexOf(l) === 0); if (v) u.voice = v;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  } catch(e){}
+}
+function f24oGrade(ok){
+  const l = F24C && F24C.lang; if (!l) return;
+  const x = f24oList(l)[F24C.i], k = f24oKey(l, x), M = f24o[l], t = iso(today()), m = M[k];
+  if (!m) f24o.nn++;
+  const box = ok ? Math.min(5, (m ? m[0] : 0) + 1) : 0;
+  M[k] = [box, ok ? iso(addDays(today(), F24_OI[box])) : t]; f24oSave();
+  const i = f24oPick(F24C.i); F24C = i >= 0 ? {lang: l, i, open: false} : null;
+}
+function f24oPaint(){ const c = $("f24oC"); if (c){ const h = f24oCardHTML(!!c.closest("#f24oF")); if (h) c.outerHTML = h; else c.remove(); } f24oFloat(); }
+// I Kör passet: kortet under vilan
+fkRestHTML = (f => function(){ const h = f.apply(this, arguments); try { return h + f24oCardHTML(); } catch(e){ return h; } })(fkRestHTML);
+// När du loggar själv: kortet ovanför vilan-rutan, medan vilan går
+// × döljer ordet resten av den här vilan. Dolt eller av: tomt, så att det bara finns ett kort med id f24oC åt gången.
+let f24oHid = false;
+function f24oFloat(){
+  let w = $("f24oF");
+  const t = $("timer"), rest = t && !t.hidden && !t.classList.contains("go");
+  if (!rest) f24oHid = false;
+  const on = rest && view === "pass" && !(typeof fkOpenNow === "function" && fkOpenNow()) && !readOnly && !f24oHid && (F24_LANG[f24o.lang] || f24oPickL);
+  if (!on){ if (w){ w.hidden = true; w.innerHTML = ""; } return; }
+  if (!w){ w = document.createElement("div"); w.id = "f24oF"; w.className = "f24o-float"; document.body.appendChild(w); }
+  if (!w.querySelector("#f24oC")) w.innerHTML = f24oCardHTML(true);
+  w.hidden = !w.innerHTML;
+  try { w.style.bottom = Math.round(window.innerHeight - t.getBoundingClientRect().top + 8) + "px"; } catch(e){}
+}
+(() => { const t = $("timer"); if (t) new MutationObserver(() => { try { f24oFloat(); } catch(e){} }).observe(t, {attributes: true, attributeFilter: ["hidden", "class"]}); })();
+// byter du flik eller stänger Kör passet mitt i vilan: kortet följer med eller försvinner
+show = (f => function(){ const r = f.apply(this, arguments); try { f24oFloat(); } catch(e){} return r; })(show);
+fkClose = (f => function(){ const r = f.apply(this, arguments); try { f24oFloat(); } catch(e){} return r; })(fkClose);
+// Språket: i kortet, i Allt (Inställningar) och i guiden
+function f24oLangSheet(){
+  let o = $("f24oOv");
+  if (!o){ o = document.createElement("div"); o.id = "f24oOv"; o.className = "sheet"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Ord under vilan"); document.body.appendChild(o); }
+  o.innerHTML = '<div class="sh-in"><div class="sh-top"><b>Ord under vilan</b><button type="button" class="sh-x" data-f24o="lclose" aria-label="Stäng">×</button></div>' +
+    '<p class="lead">Under vilan visar appen ett ord på svenska. Du säger det högt på språket, trycker Visa och lyssna och hör om det blev rätt.</p>' +
+    '<div class="seg f24o-seg" role="group" aria-label="Språk">' + [["fr", "Franska"], ["ja", "Japanska"], ["off", "Av"]].map(x => '<button type="button" data-f24o="set" data-l="' + x[0] + '" aria-pressed="' + (f24o.lang === x[0]) + '">' + x[1] + '</button>').join("") + '</div>' +
+    '<p class="small">Franska: ' + f24oKnown("fr") + ' av ' + F24_FR.length + ' kan du. Japanska: ' + f24oKnown("ja") + ' av ' + F24_JA.length + '. Högst tio nya ord om dagen.</p></div>';
+  o.hidden = false; document.documentElement.classList.add("noscroll");
+}
+
+/* ===== 123 Tomma gymmet ===== */
+const F24_FULL = [["Tomt", 0], ["Lagom", 1], ["Fullt", 2], ["Kö", 3]], F24_DOW = ["mån", "tis", "ons", "tor", "fre", "lör", "sön"],
+  F24_DOW_L = ["Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag"],
+  F24_SLOT = [[6, 9], [9, 12], [12, 15], [15, 18], [18, 21], [21, 24]], F24_MINN = 6;
+let f24Place = "gym";
+// var passet kördes: läses precis innan det sparas (gymmet, hemma eller annat gym)
+saveSession = (f => function(){ try { f24Place = typeof plDay === "function" ? plDay() : "gym"; } catch(e){ f24Place = "gym"; } return f.apply(this, arguments); })(saveSession);
+function f24FullHTML(r){
+  const s = sessions.find(x => x.id === r.id), cur = s && s.fullt != null ? s.fullt : null;
+  return '<section class="card m12-ord f24f" id="f24Full"><b>Hur fullt var gymmet?</b><div class="m12-ws" role="group" aria-label="Hur fullt var gymmet">' +
+    F24_FULL.map(x => '<button type="button" class="p11-qb m12-w' + (x[1] === cur ? ' on' : '') + '" data-f24f="' + x[1] + '" aria-pressed="' + (x[1] === cur) + '">' + x[0] + '</button>').join("") + '</div>' +
+    '<small class="m12-foot">' + (cur != null ? "Sparat. Framsteg visar när gymmet brukar vara tommast." : "Efter sex pass visar Framsteg när gymmet brukar vara tommast.") + '</small></section>';
+}
+doneHTML = (f => function(r){
+  const h = f.apply(this, arguments);
+  try { if (r && r.id && r.f24p == null) r.f24p = f24Place; return r && r.id && r.f24p === "gym" && !readOnly ? h + f24FullHTML(r) : h; } catch(e){ return h; }
+})(doneHTML);
+function f24FullData(){
+  const ss = sessions.filter(s => s.fullt != null && s.fullt >= 0 && s.fullt <= 3 && s.ts), cells = {};
+  ss.forEach(s => {
+    const st = new Date(s.ts - (s.min > 0 ? s.min : 60) * 60000), d = (st.getDay() + 6) % 7, h = st.getHours();
+    const si = Math.max(0, F24_SLOT.findIndex(x => h >= x[0] && h < x[1])), k = d + "|" + si, c = cells[k] || (cells[k] = {d, si, sum: 0, n: 0});
+    c.sum += s.fullt; c.n++;
+  });
+  const list = Object.values(cells).map(c => Object.assign(c, {avg: c.sum / c.n}));
+  return {n: ss.length, list};
+}
+// Ett tal per ruta (snittet, 0–3) blir ett av fyra steg i samma blå – ljust är tomt, mörkt är kö. Tomma rutor: inga pass där.
+const f24Lvl = a => Math.max(0, Math.min(3, Math.round(a)));
+function f24FullCardHTML(){
+  const D = f24FullData(); if (!D.n) return "";
+  const has = D.list.length ? D.list : [], at = (d, si) => has.find(c => c.d === d && c.si === si);
+  const used = F24_SLOT.map((x, si) => has.some(c => c.si === si));
+  const cols = F24_SLOT.map((x, si) => si).filter(si => used[si]);
+  const grid = '<div class="f24h" role="table" aria-label="Hur fullt gymmet brukar vara, per dag och tid" style="--cols:' + cols.length + '">' +
+    '<div role="row" class="f24h-r"><span role="columnheader"></span>' + cols.map(si => '<span role="columnheader" class="f24h-th num">' + F24_SLOT[si][0] + '–' + F24_SLOT[si][1] + '</span>').join("") + '</div>' +
+    F24_DOW.map((dn, d) => '<div role="row" class="f24h-r"><span role="rowheader" class="f24h-rh">' + dn + '</span>' + cols.map(si => {
+      const c = at(d, si), when = F24_DOW_L[d] + ' ' + F24_SLOT[si][0] + '–' + F24_SLOT[si][1];
+      if (!c) return '<span role="cell" class="f24h-c none" aria-label="' + when + ': inga pass"></span>';
+      const lv = f24Lvl(c.avg), lbl = when + ': ' + F24_FULL[lv][0].toLowerCase() + ', ' + c.n + ' pass';
+      return '<span role="cell" class="f24h-c l' + lv + '" data-l="' + lbl + '" title="' + lbl + '" aria-label="' + lbl + '"></span>';
+    }).join("") + '</div>').join("") + '</div>';
+  const legend = '<div class="f24h-leg" aria-hidden="true">' + F24_FULL.map((x, i) => '<span><i class="f24h-c l' + i + '"></i>' + x[0] + '</span>').join("") + '<span><i class="f24h-c none"></i>Inga pass</span></div>' +
+    '<div class="f24h-sel" id="f24hSel" aria-live="polite">Tryck på en ruta för att se dagen och tiden.</div>';
+  let txt;
+  if (D.n < F24_MINN) txt = 'Tryck hur fullt det var efter passen. Efter ' + F24_MINN + ' pass visar kortet när det brukar vara tommast – ' + D.n + ' av ' + F24_MINN + ' hittills.';
+  else {
+    const good = has.filter(c => c.n >= 2).sort((a, b) => a.avg - b.avg || b.n - a.n).slice(0, 2), bad = has.filter(c => c.n >= 2 && c.avg >= 2).sort((a, b) => b.avg - a.avg)[0];
+    const nm = c => F24_DOW_L[c.d].toLowerCase() + " " + F24_SLOT[c.si][0] + "–" + F24_SLOT[c.si][1];
+    txt = good.length ? 'Tommast brukar det vara <b>' + good.map(nm).join("</b> och <b>") + '</b>.' + (bad ? ' Fullast: ' + nm(bad) + '.' : '') : 'Kör samma tider några gånger till, så syns mönstret.';
+    txt += ' Räknat på ' + D.n + ' pass, efter när passet började.';
+  }
+  return '<div class="card f24hc" id="f24Gym"><div class="gm-top"><b>Tomma gymmet</b><span class="lead">när det brukar vara tomt</span></div>' + grid + legend + '<p class="small f24h-t">' + txt + '</p></div>';
+}
+
+/* ===== 125 Du om ett år ===== */
+// Samma takt som de senaste åtta veckorna. Styrkan räknas med halva takten och högst 40 % mer på ett år – ökningen avtar
+// ju längre du har tränat. Kroppsvikten med högst +2 kg i månaden, och chinsen med datumet från Vägen till egna chins.
+// Övningarna: de tre i kilo som du loggat oftast de senaste åtta veckorna.
+const F24_MAXUP = 0.4;
+function f24YearData(){
+  const now = Date.now(), d56 = now - 56 * 864e5, all = sessions.filter(s => s && s.date);
+  if (all.length < 3) return null;
+  const first = Math.min.apply(null, all.map(s => parseIso(s.date).getTime())), recent = all.filter(s => parseIso(s.date).getTime() >= d56);
+  const weeks = Math.max(2, Math.min(8, (now - Math.max(first, d56)) / (7 * 864e5)));
+  const perW = recent.length / weeks, more = Math.round(perW * 52);
+  let w = null;
+  try {
+    const wp = weights.map(x => ({t: parseIso(x.date).getTime(), y: x.kg})).filter(p => p.t >= d56).sort((a, b) => a.t - b.t);
+    if (wp.length >= 3 && (wp[wp.length - 1].t - wp[0].t) / 864e5 >= 13){ const f = trendFit(wp); if (f){ const cur = f.at(now / 864e5), m = Math.max(-1.5, Math.min(2, f.k * 30.4)); w = {cur, m, y: cur + m * 12}; } }
+  } catch(e){}
+  let ch = null; try { ch = typeof chinsRoad === "function" ? chinsRoad() : null; } catch(e){}
+  const lifts = [];
+  Object.keys(EXMAP).forEach(k => {
+    const ex = EXMAP[k]; if (!ex || ex.unit !== "kg" || ex.lr || ex.m) return;
+    const pts = [];
+    recent.forEach(s => { if (s.deload) return; let v = null; (setsOf(s, k) || []).forEach(x => { const sc = setScore(ex, x); if (sc != null && (v == null || sc > v)) v = sc; }); if (v != null) pts.push({t: parseIso(s.date).getTime(), y: v}); });
+    pts.sort((a, b) => a.t - b.t);
+    if (pts.length < 3 || (pts[pts.length - 1].t - pts[0].t) / 864e5 < 12) return;
+    const f = trendFit(pts); if (!f) return;
+    const cur = f.at(now / 864e5); if (!(cur > 0)) return;
+    const up = Math.min(F24_MAXUP, Math.max(0, f.k) * 365 * 0.5 / cur), step = 2.5, r8 = v => Math.max(step, Math.round(v / (1 + 8 / 30) / step) * step);
+    lifts.push({k, n: SHORT[k] || ex.n || k, now: r8(cur), y: r8(cur * (1 + up)), n8: pts.length});
+  });
+  lifts.sort((a, b) => b.n8 - a.n8);
+  return {perW, more, total: all.length, w, ch, lifts: lifts.slice(0, 3), end: addDays(today(), 365)};
+}
+function f24YearHTML(){
+  const D = f24YearData();
+  const head = '<div class="card f24y" id="f24Year"><div class="gm-top"><b>Du om ett år</b><span class="lead">om du fortsätter som nu</span></div>';
+  if (!D) return head + '<p class="small">Kommer när du har sparat några pass. Då räknar appen ut var du är om ett år i den takt du håller.</p></div>';
+  const row = (k, v, s) => '<div class="f24y-r"><span>' + k + '</span><b class="num">' + v + '</b>' + (s ? '<small>' + s + '</small>' : '') + '</div>';
+  const nf = x => fmt(x, 1), kgH = v => fmt(Math.max(0, Math.round(v / 2.5) * 2.5)) + " kg hjälp";
+  let rows = row("Pass", "ca " + D.more + " till", nf(D.perW) + " i veckan som nu – " + (D.total + D.more) + " totalt");
+  if (D.w) rows += row("Kroppsvikt", "ca " + nf(D.w.y) + " kg", "Nu " + nf(D.w.cur) + " kg, " + (D.w.m >= 0 ? "+" : "−") + nf(Math.abs(D.w.m)) + " kg i månaden");
+  const c = D.ch;
+  if (c && c.last){
+    if (c.done) rows += row("Chins", "utan hjälp ✓", "Nästa steg: fler reps, sedan viktväst");
+    else if (c.eta && c.eta <= 365) rows += row("Chins", "utan hjälp", "Runt " + progDate(c.eta) + ". Nu " + kgH(c.last.y) + ".");
+    else if (c.eta) rows += row("Chins", "ca " + kgH(c.last.y * (1 - 365 / c.eta)), "Nu " + kgH(c.last.y));
+    else rows += row("Chins", kgH(c.last.y), c.stall ? "Hjälpen står still just nu" : "Prognosen kommer efter fler pass");
+  }
+  D.lifts.forEach(x => { rows += row(esc(x.n), "ca " + fmt(x.y) + " kg × 8", "Nu " + fmt(x.now) + " kg × 8"); });
+  return head + '<div class="f24y-rows">' + rows + '</div><p class="small">' + D.end.getDate() + ' ' + MON[D.end.getMonth()] + ' ' + D.end.getFullYear() +
+    '. Räknat på dina senaste åtta veckor. Styrkan ökar långsammare ju längre du har tränat, så den är räknad med halva takten och högst 40 % mer. Det är din riktning – ingen garanti.</p></div>';
+}
+// In i Framsteg, sist under Veckan: Du om ett år efter veckokollen, veckobrevet, utmaningen, coachen och belastningen, och Tomma gymmet efter det
+function f24Prog(){
+  const el = $("v-framsteg"); if (!el) return;
+  const old = [$("f24Year"), $("f24Gym")]; old.forEach(x => { if (x) x.remove(); });
+  const at = ["s7Load", "coachCard", "m12Fram", "m12Ch", "vkCard"].map(id => $(id)).find(x => x && x.parentElement === el), yh = f24YearHTML();
+  if (at) at.insertAdjacentHTML("afterend", yh); else el.insertAdjacentHTML("afterbegin", yh);
+  const gh = f24FullCardHTML(); if (gh) $("f24Year").insertAdjacentHTML("afterend", gh);
+}
+
+/* ===== kopplingarna ===== */
+renderVanor = rgAfter(renderVanor, f24sVanor);
+renderProg = rgAfter(renderProg, f24Prog);
+document.addEventListener("click", e => {
+  const t = e.target && e.target.closest ? e.target : null; if (!t) return;
+  const s = t.closest("[data-f24s]");
+  if (s){
+    const a = s.dataset.f24s;
+    if (a === "open"){ F24S = F24S && Date.now() - F24S.t0 < 30 * 60000 ? F24S : {t0: Date.now(), done: {}}; f24sSheet(); return; }
+    if (!F24S){ f24sClose(); return; }
+    if (a === "close"){ if (F24S.learn) f24sLog(0, ""); else f24sClose(); return; }
+    if (a === "ok" || a === "ate"){ f24sDone(a === "ok"); return; }
+    if (a === "lw"){ f24sLog(0, s.dataset.w || ""); return; }
+    if (a === "why"){ F24S.why = F24S.why === s.dataset.w ? null : s.dataset.w; f24sSheet(); return; }
+    if (a === "vatten" && !F24S.done.vatten){ const d = iso(today()); vat[d] = Math.min(30, (vat[d] || 0) + 1); vatSave(); F24S.done.vatten = true; toast("💧 Ett glas till – " + vat[d] + " i dag"); }
+    else if (a === "mat"){ const x = foodRecent()[+s.dataset.i]; if (x){ foodDate = iso(today()); foodAdd(x); } F24S.done.protein = true; }
+    else if (a === "protein" || a === "arm") F24S.done[a] = true;
+    else if (a === "andas"){ F24S.done.andas = true; f24sClose(); const b = document.createElement("button"); b.type = "button"; b.setAttribute("data-v13", "andas"); b.style.display = "none"; document.body.appendChild(b); try { b.click(); } catch(err){} b.remove(); return; }
+    f24sSheet(); return;
+  }
+  const o = t.closest("[data-f24o]");
+  if (o){
+    const a = o.dataset.f24o;
+    if (a === "show"){ if (F24C){ F24C.open = true; f24oSay(); } f24oPaint(); return; }
+    if (a === "say"){ f24oSay(); return; }
+    if (a === "hide"){ f24oHid = true; f24oFloat(); return; }
+    if (a === "yes" || a === "no"){ f24oGrade(a === "yes"); f24oPaint(); return; }
+    if (a === "lang"){ f24oPickL = true; f24oPaint(); return; }
+    if (a === "langsheet"){ f24oLangSheet(); return; }
+    if (a === "lclose"){ const ov = $("f24oOv"); if (ov) ov.hidden = true; if (!Array.from(document.querySelectorAll(".sheet,.scan,.guide")).some(x => !x.hidden)) document.documentElement.classList.remove("noscroll"); return; }
+    if (a === "set"){ f24o.lang = o.dataset.l === "ja" ? "ja" : o.dataset.l === "fr" ? "fr" : "off"; f24oSave(); f24oPickL = false; F24C = null;
+      const ov = $("f24oOv"); if (ov && !ov.hidden) f24oLangSheet(); f24oPaint(); toast(f24o.lang === "off" ? "Ord under vilan är av" : "Ord under vilan: " + F24_LANG[f24o.lang][2]); return; }
+  }
+  const hc = t.closest(".f24h-c[data-l]");
+  if (hc){ document.querySelectorAll(".f24h-c.sel").forEach(x => x.classList.remove("sel")); hc.classList.add("sel"); const sl = $("f24hSel"); if (sl) sl.textContent = hc.dataset.l; return; }
+  const f = t.closest("[data-f24f]");
+  if (f && justSaved && justSaved.id && db && !readOnly){
+    const v = +f.dataset.f24f, s2 = sessions.find(x => x.id === justSaved.id), nv = s2 && s2.fullt === v ? null : v;
+    db.doc("sessions/" + justSaved.id).update({fullt: nv}).then(() => { if (view === "pass") renderPass(); });
+  }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("f24sOv") && !$("f24sOv").hidden){ if (F24S && F24S.learn) f24sLog(0, ""); else f24sClose(); } });
+// Allt: Ord under vilan bland inställningarna i den nya ordningen, och Visa var i guiden öppnar språkvalet
+if (typeof NY_SETS !== "undefined") NY_SETS.push(["🗣", "Ord under vilan", "Franska, japanska eller av", "data-f24o", "langsheet"]);
+guGo = (f => function(x){
+  if (x && x[1] === "Ord under vilan"){ guClose(); f24oLangSheet(); return; }
+  return f.apply(this, arguments);
+})(guGo);
+
+/* ===== backupen ===== */
+function f24Export(){ return {sug: f24s.log.slice(-400), ord: {lang: f24o.lang, fr: f24o.fr, ja: f24o.ja}}; }
+function f24Import(x){
+  if (!x || typeof x !== "object") return 0;
+  let n = 0;
+  if (Array.isArray(x.sug) && !f24s.log.length){
+    f24s.log = x.sug.filter(e => e && typeof e.t === "number").map(e => Object.assign({t: e.t, ok: e.ok ? 1 : 0}, F24_WHY.some(w => w[0] === e.why) ? {why: e.why} : {})).slice(-400);
+    n += f24s.log.length; f24sSave();
+  }
+  if (x.ord && typeof x.ord === "object"){
+    ["fr", "ja"].forEach(l => { const src = x.ord[l]; if (!src || typeof src !== "object") return; Object.keys(src).forEach(k => { const m = src[k]; if (!f24o[l][k] && Array.isArray(m) && m.length === 2 && m[0] >= 0 && m[0] <= 5 && /^\d{4}-\d{2}-\d{2}$/.test(m[1])){ f24o[l][k] = [m[0], m[1]]; n++; } }); });
+    f24oSave();
+  }
+  return n;
+}
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {f24State: () => ({sug: f24s.log.slice(), ord: JSON.parse(JSON.stringify(f24o)), card: F24C}), f24YearData, f24FullData, f24EName, F24_FR, F24_JA});
+
 
 /* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611231429, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611231520, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -20503,7 +21033,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "23 nov 14.29", BUILD_NOTE = "Ny ordning: fem flikar och underflikar";
+const BUILD = "23 nov 15.20", BUILD_NOTE = "Sug-knappen, ord under vilan och tre nya till";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;

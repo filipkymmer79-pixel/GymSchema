@@ -424,6 +424,17 @@ Från 23 november 2026. Appen kändes rörig, så allt ligger nu i fem flikar i 
 - I Idag är Atlet-blocken rader: anteckningen syns när du fäller ut blocket.
 - Kontrollerat i Chromium på 390 px, i båda ordningarna. Inte provat på en riktig iPhone.
 
+### Sug-knappen, ord under vilan och tre till
+
+Från 23 november 2026. Inget av det här ändrar programmet.
+
+- **🍬 Sug-knappen** (Vanor, under Prime-nivåerna): tryck *Sockersug?* när suget kommer. En klocka på tio minuter och fyra steg medan den går: ett stort glas vatten (räknas under Vanor), något med protein (snabbval från det du brukar äta med minst 6 g protein, ett tryck lägger in det i Mat), 15 armhävningar och två minuters andning i andningscirkeln. Frågan *Vad är suget egentligen?* – hungrig, trött, stressad eller uttråkad – ger ett råd för varje svar. *Suget gick över* räknar en serie. *Jag åt sött* frågar vad som hände precis innan, utan straff. Efter fem sug med svar visar raden vad som är vanligast. Är du fortfarande sugen när klockan är slut går en tesked honung bra. Sparas på telefonen (`gymschema.sug.v1`) och följer med i backupen.
+- **🧪 Onyttigt i skannern**: skannern hämtar också hur processad varan är (NOVA 1–4) och tillsatserna från Open Food Facts. NOVA 4 får en röd ruta *Ultraprocessad* under sockervakten och en varning i listan över det du ätit, och magdagboken kallar dem *Ultraprocessade varor*. Tillsatserna står med E-nummer och namn på svenska. Har Open Food Facts varken NOVA eller tillsatser för varan visas ingen ruta.
+- **🗣 Ord under vilan**: under vilan visar appen ett ord på svenska. Du säger det högt på franska eller japanska och trycker *Visa och lyssna*, så läser telefonen upp det. Trycker du *Kunde* kommer ordet tillbaka efter 1, 2, 4, 8 och 16 dagar, och trycker du *Igen* kommer det tillbaka samma dag, men inte direkt. Högst tio nya ord om dagen. Det finns 117 franska och 120 japanska ord och fraser, vanliga först och sedan kroppen och gymmet, och japanskan står med kana och romaji. I Kör passet står kortet under vilan. Loggar du själv ligger ordet på en rad ovanför vilan-rutan, och × döljer det resten av vilan. Språket (franska, japanska eller av) väljer du i kortet och i Allt. Sparas på telefonen (`gymschema.ord.v1`) och följer med i backupen.
+- **🏋 Tomma gymmet**: efter passet trycker du hur fullt gymmet var: tomt, lagom, fullt eller kö. Hemma och på andra gym frågar appen inte. Svaret sparas på passet. Framsteg → Veckan visar dag och tid som rutor i fyra blå nyanser (ljust är tomt och mörkt är kö, i mörkt läge omvänt), bara för de tider du tränat på. Efter sex pass står det vilka tider som brukar vara tommast. Tiden räknas från när passet började.
+- **🔭 Du om ett år** (sist under Framsteg → Veckan): antal pass, kroppsvikt, chins och de tre övningar i kilo du loggat oftast, om ett år i samma takt som de senaste åtta veckorna. Styrkan räknas med halva takten och högst 40 % mer på ett år, kroppsvikten med högst +2 kg i månaden och chinsen med datumet från *Vägen till egna chins*. Det är en riktning, ingen garanti.
+- Kontrollerat i Chromium på 390 px, i båda ordningarna. Inte provat på en riktig iPhone. Uppläsningen beror på vilka röster telefonen har.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
