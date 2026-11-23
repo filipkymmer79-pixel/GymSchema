@@ -464,18 +464,20 @@ var SHAKE = (function () {
   var BY = {};
   ING.forEach(function (it) { it.stepG = it.g * it.step; BY[it.key] = it; });
 
-  // The four sizes, in household units. 2 700 is the everyday one: the same figure the gym app counts the shake as.
-  // Since 15 Nov 2026 there is no banana. A tub of keso (cottage cheese) and a decilitre of orange juice came in.
-  // The keso brings 32 g of protein, so the milk powder was halved (8 to 4 msk) and the whey is 1 dl in every size:
-  // protein stays near 5 g per 100 kcal, with less calcium and lactose than before.
+  // The four sizes, in household units. 2 000 is the everyday one from 23 Nov 2026: the same figure the gym app counts the shake as.
+  // Since 15 Nov 2026 there is no banana. A tub of keso (cottage cheese) came in; the keso brings 32 g of protein.
+  // 23 Nov 2026: the shake went down to 2 000 kcal ("behöver inte vara mer") and less volume, so that it can be mixed:
+  // yesterday's reached the rim. No orange juice any more (no sugar except honey) – the black currants give more vitamin C
+  // than the juice did. In the 2 000: at most 3 dl yoghurt, 1.5 dl oat flour and 5 msk oil, as Filip asked on 22 Nov;
+  // about 9.7 dl instead of 11. The bigger sizes lost the juice too, and got ½ msk more honey in its place.
   // No salt in the recipe, because the keso is salted. build() puts the pinch back when the keso is out.
   var SIZES = {
-    3000: { milk: 5,   smp: 4, yog: 3.5, keso: 2.5, oat: 5,   whey: 1, blue: 2,   currant: 1, spinach: 1, juice: 1, honey: 1, oil: 5 },
-    2700: { milk: 3,   smp: 4, yog: 3.5, keso: 2.5, oat: 4,   whey: 1, blue: 2,   currant: 1, spinach: 1, juice: 1, honey: 1, oil: 5 },
-    2500: { milk: 2.5, smp: 4, yog: 3,   keso: 2.5, oat: 3.5, whey: 1, blue: 1.5, currant: 1, spinach: 1, juice: 1, honey: 1, oil: 5 },
-    2000: { milk: 1,   smp: 4, yog: 2.5, keso: 2,   oat: 2,   whey: 1, blue: 1,   currant: 1, spinach: 1, juice: 1, honey: 1, oil: 5 }
+    3000: { milk: 5,   smp: 4, yog: 3.5, keso: 2.5, oat: 5,   whey: 1, blue: 2,   currant: 1, spinach: 1,   honey: 1.5, oil: 5 },
+    2700: { milk: 3,   smp: 4, yog: 3.5, keso: 2.5, oat: 4,   whey: 1, blue: 2,   currant: 1, spinach: 1,   honey: 1.5, oil: 5 },
+    2500: { milk: 2.5, smp: 4, yog: 3,   keso: 2.5, oat: 3.5, whey: 1, blue: 1.5, currant: 1, spinach: 1,   honey: 1.5, oil: 5 },
+    2000: { milk: 1,   smp: 6, yog: 3,   keso: 2,   oat: 1.5, whey: 1, blue: 0.5, currant: 1, spinach: 0.5, honey: 1.5, oil: 5 }
   };
-  var STANDARD = 2700;
+  var STANDARD = 2000;
 
   // What may be turned up or down to get back to the energy target when something is missing,
   // how far (in steps above the recipe), and how reluctantly (higher = moved less).
@@ -708,7 +710,7 @@ var SHAKE = (function () {
   "use strict";
   var S = SHAKE;
   var KEY = "shake.v1";
-  var REV = 2;   // 2: the recipe without banana (15 Nov 2026). The size moves to the everyday 2 700 once.
+  var REV = 3;   // 2: the recipe without banana (15 Nov 2026). 3: 2 000 kcal with less volume and no juice (23 Nov 2026). The size moves to the everyday one once.
   var NB = " ";
   var WEEKDAYS = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
   var MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];

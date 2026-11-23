@@ -56,7 +56,7 @@ Version 3.0 kom 18 november 2026: **bröstpress i maskin** ersatte hantelbänkpr
 
 ### Atletprogrammet
 
-Sedan 14 november 2026 ligger Atletprogrammet runt gympassen: 124 övningar i 18 grupper – fötter och balans, kvällsvila, spänst, starka ben, backe och sprint, isometriskt, slåss, Shaolin, yoga, rörlighet, stå rak, kalistenik, Dirty thirty och surf på land.
+Sedan 14 november 2026 ligger Atletprogrammet runt gympassen: 126 övningar i 18 grupper – fötter och balans, kvällsvila, spänst, starka ben, backe och sprint, isometriskt, slåss, Shaolin, yoga, rörlighet, stå rak, kalistenik, Dirty thirty och surf på land.
 
 16 november kom nya övningar från Filips klipp: tålyft mot vägg i Fötter och balans (varje dag), Dirty thirty på måndagar (sit-ups, benlyft, tåtouch, cykelcrunch, kick-outs och sit-up till tårna, 30 av varje), kick-through 360 i Kalistenik, växelhopp och dropphopp i Spänst A, djuphopp och stegupphopp i Spänst B, Kvällsvila med benen upp mot väggen sist varje dag, och Backflip i 19 steg under Backflip (på klubb med tränare). Övningar i klippen som redan fanns – katten, framåtfällningarna, hjulning, handstående, 90/90, split, sidohopp över häck och sittande hopp – fick inga dubbletter.
 
@@ -216,7 +216,7 @@ Sedan 17 november 2026 finns det här också under Mat:
 
 **Kalorimålet** räknas varje dag: grunden är vikten från Vikt, 183 cm och 20 år (Mifflin–St Jeor) gånger 1,4 för vardagen plus 300 kcal för ca +1 kg i månaden (eller den takt viktmålet behöver). Till det läggs det klockan säger att du bränt på dagens pass (kcal från intervals.icu minus vilan under passet). När du vägt dig minst fyra gånger på två veckor jämförs vikten med +1 kg i månaden och målet flyttas upp eller ner (högst −300/+500 kcal).
 
-**Vad ska jag äta?** räknar med hela shaken (2 700 kcal som standard) och föreslår mat för resten av dagen utifrån vad klockan är. **Recepten** är 140 egna: 21 frukostar, 100 middagar och 19 mellanmål – utan socker, honung, rapsolja, avokado, jordnötter, pumpafrön och alkohol. I listan går det att söka (även utan å, ä och ö), filtrera på huvudråvara (kyckling, nöt & lamm, fläsk, fisk & skaldjur, vego) och på max 30 minuter, matlåda och går att frysa, och 🎲 Slumpa väljer en middag åt dig. Näringen per portion är uträknad från gram per ingrediens (`recipes.py` i byggskripten), portionerna går att skala, ingredienserna kan kopieras som inköpslista till Handla i Dagsschema och en portion läggs till i dagens mat med en tryckning.
+**Vad ska jag äta?** räknar med hela shaken (2 000 kcal som standard sedan 23 november, förut 2 700) och föreslår mat för resten av dagen utifrån vad klockan är. **Recepten** är 140 egna: 21 frukostar, 100 middagar och 19 mellanmål – utan socker, honung, rapsolja, avokado, jordnötter, pumpafrön och alkohol. I listan går det att söka (även utan å, ä och ö), filtrera på huvudråvara (kyckling, nöt & lamm, fläsk, fisk & skaldjur, vego) och på max 30 minuter, matlåda och går att frysa, och 🎲 Slumpa väljer en middag åt dig. Näringen per portion är uträknad från gram per ingrediens (`recipes.py` i byggskripten), portionerna går att skala, ingredienserna kan kopieras som inköpslista till Handla i Dagsschema och en portion läggs till i dagens mat med en tryckning.
 
 **Veckomeny** (knapp under Vad ska jag äta? och i receptlistan) lägger upp veckans sju middagar: 2 kyckling, 2 nöt, 2 fisk och 1 fläsk – ibland vego i stället för en kyckling eller en nöt – och aldrig samma sorts kött två dagar i rad. Snabba rätter (högst 45 minuter) på gymdagarna onsdag och torsdag, fredagsmys (tacos, burgare, pizza, quesadillas …) på fredag, helgmat på lördag och på söndag en rätt som räcker till matlådor. Favoriterna kommer oftare och det du ätit de senaste tre veckorna mer sällan. 🎲 byter en dag (och försöker hålla veckans mix), 🔒 låser den så att den ligger kvar när du trycker *Ny meny*, och en dag kan sättas till *Ingen middag*. Portionerna ställs in med tre val: hur många som äter middag, matlådor från varje middag och extra matlådor från söndagens middag – lunch till veckan. Med tre eller fler söndagslådor väljs bara rätter som går att frysa eller håller 4–5 dagar. Det går att bläddra till nästa vecka (på söndagar öppnas nästa vecka direkt), och ett recept kan läggas på valfri dag med *Lägg i veckomenyn*. Dagens middag syns som *I kväll* överst under Mat och efter att du sparat passet.
 
@@ -415,7 +415,7 @@ Från 22 november 2026.
 
 ### Ny ordning: fem flikar och underflikar
 
-Från 23 november 2026. Appen kändes rörig, så allt ligger nu i fem flikar i stället för sju. Inget har tagits bort, och knappen *Som förut* ger appen precis som den var.
+Från 23 november 2026. Appen kändes rörig, så allt ligger nu i fem flikar i stället för sju (sex samma kväll, när Mat fick en egen flik – se nedan). Inget har tagits bort, och knappen *Som förut* ger appen precis som den var.
 
 - **Fem flikar**: *Idag* (tidigare Pass), *Vanor*, *Program*, *Framsteg* och *Kropp*. **Boxningen** är en knapp i Program, bredvid passen, och **Historik** är en underflik i Framsteg.
 - **Underflikar**: Idag har *Dagen* (morgonkänslan och Atlet idag) och *Passet* (passet och övningarna). Har du börjat logga ett pass öppnas Passet direkt, och när passet är sparat syns det sparade passet. Framsteg har *Veckan, Styrka, Rekord, Kondition, Tester* och *Historik*. Allt som hoppar till något i appen – *Visa var* i Allt, länkar och rekord – öppnar rätt underflik.
@@ -434,6 +434,19 @@ Från 23 november 2026. Inget av det här ändrar programmet.
 - **🏋 Tomma gymmet**: efter passet trycker du hur fullt gymmet var: tomt, lagom, fullt eller kö. Hemma och på andra gym frågar appen inte. Svaret sparas på passet. Framsteg → Veckan visar dag och tid som rutor i fyra blå nyanser (ljust är tomt och mörkt är kö, i mörkt läge omvänt), bara för de tider du tränat på. Efter sex pass står det vilka tider som brukar vara tommast. Tiden räknas från när passet började.
 - **🔭 Du om ett år** (sist under Framsteg → Veckan): antal pass, kroppsvikt, chins och de tre övningar i kilo du loggat oftast, om ett år i samma takt som de senaste åtta veckorna. Styrkan räknas med halva takten och högst 40 % mer på ett år, kroppsvikten med högst +2 kg i månaden och chinsen med datumet från *Vägen till egna chins*. Det är en riktning, ingen garanti.
 - Kontrollerat i Chromium på 390 px, i båda ordningarna. Inte provat på en riktig iPhone. Uppläsningen beror på vilka röster telefonen har.
+
+### Mina regler, fliken Mat och en mindre shake
+
+Från 23 november 2026. Inget av det här ändrar programmet.
+
+- **📜 Mina regler** (Vanor, direkt under bockarna): Filips regler till och med 31 december 2026, i hans egna ord, och hur många dagar som är kvar. Allt är ett måste, och varje regel är en bock som sätts ärligt på kvällen. Två bockar kom till: *Inget onyttigt* (ingen snabbmat och inget ultraprocessat) och *Ingen prokrastinering* (inte hela dagen framför telefonen). De räknas från 23 november, så serien och dagarna före ändras inte. Har en ultraprocessad vara skannats i dag står den på raden *Inget onyttigt*. *Sömn* heter nu *Somna senast 22.30 – sov 10 timmar*, och *Tillskott* heter *Magnesium, omega-3 och selen*.
+- **Ta bort allt med GDPR** (i kortet Mina regler): Filip skriver själv in kontona och bockar *Sparad* när datan är nedladdad och *Borta* när kontot är raderat. Listan sparas bara på telefonen (`gymschema.gdpr.v1`) och följer med i backupen – inga kontonamn i koden eller i repot.
+- **Somna senast 22.30**: läggdags blir aldrig senare än 22.15 (en kvart att somna), även i påminnelsen. Ger väckningen en tidigare tid står den kvar, och före gymdagar är det en halvtimme tidigare som förut. Står *Jag går upp* senare än 08.30 säger raden om läggdags att 08.30 ger exakt 10 timmar.
+- **🍴 Fliken Mat** i den nya ordningen, som nu har sex flikar: Idag, Vanor, Mat, Program, Framsteg och Kropp. Mat är samma sida som Kropp → Mat, med **Shaken** överst: *Öppna shaken* visar Shake-appen i appen. Kropp har kvar Vikt, Bilder och Hållning. Som förut är som det var.
+- **Garmin-rutan** står först under Framsteg → Kondition och **gardinen** längst ner under Vanor, i den nya ordningen – inte längre överst i Idag. *Visa var* i Allt hittar dem där.
+- **Fötter och balans** fick två övningar ur klippen 23 november, som teckningar: **Spreta tårna** (2 × 10, håll 5 s) efter handduken och **Flygplanet** (2 × 5 per ben) efter enbensbalansen. Blocket tar 18 minuter i stället för 15.
+- GymSchema räknar shaken som 2 000 kcal i tre glas från 23 november (en gång), med proteinet från Shake-appens nya recept.
+- Kontrollerat i Chromium på 390 px, i båda ordningarna. Inte provat på en riktig iPhone.
 
 ## Dagsschema
 
@@ -458,11 +471,18 @@ Fliken **Handla** är en egen lista för inköp, med samma format. Varor läggs 
 Dagens shake som app: https://filipkymmer79-pixel.github.io/GymSchema/shake/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*.
 
 - **Idag** visar receptet i lager i kannan och allt som ska tas fram. Tryck *Slut* på det som saknas, så räknas resten om. **Börja mixa** går igenom omgångarna steg för steg med timers, och efteråt bockas glasen av ett i taget.
-- **Recept** ställer in storlek (2 000, 2 500, 2 700 eller 3 000 kcal – 2 700 är grundreceptet), tjocklek, honung, mjölkpulver, mjölksort, mixerkannans storlek och mått eller gram.
+- **Recept** ställer in storlek (2 000, 2 500, 2 700 eller 3 000 kcal – 2 000 är grundreceptet sedan 23 november), tjocklek, honung, mjölkpulver, mjölksort, mixerkannans storlek och mått eller gram.
 - **Näring** visar näringsvärdet och hur stor del av dagsbehovet som shaken och tillskotten täcker.
 - **Handla** räknar ut vad som går åt för 1–14 dagar. **Kopiera listan** ger en lista som går att klistra in under Handla i Dagsschema.
 
 Allt sparas bara på telefonen. Näringsvärdena är standardvärden per 100 g (Livsmedelsverket och USDA), och dagsbehoven kommer från de nordiska näringsrekommendationerna 2023. Vasslen är Star Nutrition Whey-80 Naturell och mäts i dl (37 g per dl enligt påsen): 1 dl i alla storlekar. Keson är räknad efter förpackningen (Keso 4 %: 93 kcal, 13 g protein och 0,82 g salt per 100 g) med vitaminer och mineraler från Livsmedelsverket, och apelsinjuicen efter förpackningen (45 kcal och 28 mg C-vitamin per 100 g). Typsnittet är Sofia Sans, under SIL Open Font License (`shake/fonts/LICENSE.txt`).
+
+### Receptet sedan 23 november 2026
+
+- **2 000 kcal är grundreceptet**, och shaken är mindre: 1 993 kcal, 103 g protein, ca 9,7 dl i tre glas (förut ca 11 dl). Filip ville ha ca 2 000 kcal, och gårdagens nådde kanten. En telefon med den förra versionen flyttas en gång till 2 000. Övriga val ligger kvar, och en shake som redan är påbörjad följer sitt gamla recept.
+- I 2 000: 1 dl mjölk, 6 msk mjölkpulver, 3 dl grekisk yoghurt, 2 dl keso, 1,5 dl havremjöl, 1 dl whey, ½ dl blåbär, 1 dl svarta vinbär, ½ dl spenat, 1½ msk honung och 5 msk olivolja. Det håller sig inom Filips gränser: högst 3 dl yoghurt, 1,5 dl havremjöl och 5 msk olja.
+- **Ingen apelsinjuice** i någon storlek, eftersom regeln är inget socker förutom honung. Vinbären ger ändå ca 105 mg C-vitamin i 2 000. De större storlekarna fick ½ msk honung mer i stället för juicen: 2 486, 2 690 och 2 985 kcal med 124, 132 och 145 g protein.
+- 9,7 dl ryms i en omgång i en mixer på 1,5 liter. Väljer man 1 liter under *Mixer* delar appen upp den i två omgångar.
 
 ### Receptet sedan 15 november 2026
 
