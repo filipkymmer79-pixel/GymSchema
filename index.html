@@ -548,6 +548,8 @@ body.timer-on .app{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
 .ph-grid span{font-size:11.5px;font-weight:700;color:var(--muted)}
 .film{position:relative;display:flex;justify-content:center}
 .film img{max-width:100%;max-height:66vh;border-radius:16px}
+.film canvas{display:block;width:auto;height:auto;max-width:100%;max-height:62vh;aspect-ratio:9/16;border-radius:16px;background:#0B0D12}
+.film-btns{flex-wrap:wrap}
 .film-lbl{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(11,13,18,.8);color:#fff;font-family:var(--display);font-stretch:var(--cond);font-weight:800;font-size:22px;padding:6px 14px;border-radius:999px;white-space:nowrap}
 .pos-how{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center}
 .pos-how svg{width:54px;height:auto;color:var(--ink)}
@@ -6832,7 +6834,7 @@ function photosHTML(){
     const wa = weightOn(first.date), wb = weightOn(last.date), wk = Math.round((parseIso(last.date) - parseIso(first.date)) / 864e5 / 7);
     h += '<div class="card"><div class="gm-top"><b>Före och nu</b><span class="lead">' + wk + (wk === 1 ? " vecka" : " veckor") + '</span></div><div class="ph-cmp">' +
       [[first, wa, "Första"], [last, wb, "Senaste"]].map(([p, w, l]) => '<figure><button type="button" class="ph-open" data-phopen="' + p.id + '" aria-label="Öppna ' + l.toLowerCase() + ' bilden"><img src="' + photoUrl(p) + '" alt="' + l + ' bilden, ' + dLabel(p.date) + '"></button><figcaption><b>' + l + '</b> · ' + dLabel(p.date) + (w ? ' · ' + fmt(w.kg) + ' kg' : '') + '</figcaption></figure>').join("") + '</div>' +
-      '<button class="btn sm ghost" type="button" data-ph="film">▶ Spela upp som film (' + list.length + ' bilder)</button></div>';
+      '<button class="btn sm ghost" type="button" data-ph="film">▶ Kroppens film (' + list.length + ' bilder)</button></div>';
   }
   if (list.length){
     h += '<div class="card"><div class="gm-top"><b>Alla bilder</b><span class="lead">' + list.length + '</span></div><div class="ph-grid">' +
@@ -6975,41 +6977,143 @@ async function photoSave(p){
   const a = document.createElement("a"); a.href = photoUrl(p); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 1000);
   toast("Bilden laddas ner");
 }
-async function photoFilm(){
-  const list = photos.filter(p => p.kind === "progress" && p.view === photoView); if (list.length < 2) return;
-  let o = $("filmOv"); if (!o){ o = document.createElement("div"); o.id = "filmOv"; o.className = "scan"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); document.body.appendChild(o);
-    o.addEventListener("click", e => { const b = e.target.closest("[data-film]"); if (!b) return; if (b.dataset.film === "close"){ clearInterval(o.t); o.hidden = true; document.documentElement.classList.remove("noscroll"); } else if (b.dataset.film === "save") filmSave(); }); }
-  o.innerHTML = '<div class="scan-top"><b>Förändringen</b><button type="button" class="scan-x" data-film="close" aria-label="Stäng">×</button></div><div class="film"><img id="filmImg" alt=""><div class="film-lbl" id="filmLbl"></div></div>' +
-    ('MediaRecorder' in window ? '<div class="scan-btns"><button type="button" class="btn" data-film="save">Spara som film</button></div>' : '') + '<div class="scan-msg" id="filmMsg"></div>';
-  o.hidden = false; document.documentElement.classList.add("noscroll");
-  let i = 0; const show = () => { const p = list[i % list.length], w = weightOn(p.date); $("filmImg").src = photoUrl(p); $("filmLbl").textContent = dLabel(p.date) + " " + parseIso(p.date).getFullYear() + (w ? " · " + fmt(w.kg) + " kg" : ""); i++; };
-  show(); clearInterval(o.t); o.t = setInterval(show, 700);
+/* ---------- Kroppens film 2.0 (idé 108, 23 nov 2026) ----------
+   AI:n (samma som hållningsmätaren) hittar axlar och höfter i varje progressbild. Varje bild skalas och flyttas så att axelmitten
+   hamnar på samma ställe och avståndet axel–höft blir lika långt: kroppen står still och bara förändringen syns. Mjuka övergångar,
+   vecka och vikt i bild och ett slutkort. Punkterna sparas med bilden i telefonen (p.al), så AI:n körs en gång per bild.
+   Ingenting lämnar telefonen. Går AI:n inte att ladda visas bilderna som de är tagna. */
+const FILM = {W: 720, H: 1280, SX: 360, SY: 440, TORSO: 280, HOLD: 650, FADE: 300, END: 1600};
+let FL = null;
+const filmList = () => (photos || []).filter(p => p.kind === "progress" && p.view === photoView);
+const filmCalm = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } };
+const filmImg = p => new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = photoUrl(p); });
+// Axel och höft ur AI:ns punkter (0–1 i bilden). Från sidan: den sida som syns bäst. Annars mitten mellan vänster och höger.
+function filmKey(lm, view){
+  if (!lm || lm.length < 25) return {v: 1, ok: false};
+  const vis = i => lm[i].visibility == null ? 1 : lm[i].visibility;
+  let sh, hip;
+  if (view === "sida"){ const a = vis(11) + vis(23) >= vis(12) + vis(24) ? [11, 23] : [12, 24]; sh = lm[a[0]]; hip = lm[a[1]]; }
+  else { sh = {x: (lm[11].x + lm[12].x) / 2, y: (lm[11].y + lm[12].y) / 2}; hip = {x: (lm[23].x + lm[24].x) / 2, y: (lm[23].y + lm[24].y) / 2}; }
+  const r = v => Math.round(v * 1e4) / 1e4;
+  return {v: 1, ok: Math.hypot(hip.x - sh.x, hip.y - sh.y) > 0.04, sx: r(sh.x), sy: r(sh.y), hx: r(hip.x), hy: r(hip.y)};
 }
+async function filmMarks(list, say){
+  const todo = list.filter(p => !p.al || p.al.v !== 1); if (!todo.length) return true;
+  let lmk; try { lmk = await poseLoad(say); } catch(e){ return false; }
+  for (let i = 0; i < todo.length; i++){
+    const p = todo[i]; say && say("Linjerar kroppen i bild " + (i + 1) + " av " + todo.length + "…");
+    const im = await filmImg(p); if (!im) continue;
+    let al = {v: 1, ok: false};
+    try { const r = lmk.detect(im); al = filmKey(r && r.landmarks && r.landmarks[0], p.view); } catch(e){}
+    p.al = al; try { await PDB.put(p); } catch(e){}
+  }
+  return true;
+}
+// Var bilden ska ritas. Linjerad: axelmitten på (SX, SY) och axel–höft = TORSO. Annars hela bilden centrerad.
+function filmFit(w, h, al, align){
+  const c = Math.min(FILM.W / w, (FILM.H - 200) / h), plain = {s: c, dx: (FILM.W - w * c) / 2, dy: 120 + (FILM.H - 200 - h * c) / 2, ok: false};
+  if (!align || !al || !al.ok) return plain;
+  const t = Math.hypot((al.hx - al.sx) * w, (al.hy - al.sy) * h), s = FILM.TORSO / t;
+  if (!(s > 0.25 * c && s < 6 * c)) return plain;   // orimligt: AI:n tog fel – visa bilden som den är
+  return {s, dx: FILM.SX - al.sx * w * s, dy: FILM.SY - al.sy * h * s, ok: true};
+}
+const filmWeek = (p, first) => Math.round((parseIso(p.date) - parseIso(first.date)) / 864e5 / 7) + 1;
+function filmLabel(p, first){ const w = weightOn(p.date); return "Vecka " + filmWeek(p, first) + " · " + dLabel(p.date) + " " + parseIso(p.date).getFullYear() + (w ? " · " + fmt(w.kg) + " kg" : ""); }
+function filmEnd(list){
+  const a = list[0], b = list[list.length - 1], wa = weightOn(a.date), wb = weightOn(b.date), d = wa && wb ? Math.round((wb.kg - wa.kg) * 10) / 10 : null;
+  return "Vecka 1 → vecka " + filmWeek(b, a) + (d != null ? " · " + (d > 0 ? "+" : d < 0 ? "−" : "±") + fmt(Math.abs(d)) + " kg" : "");
+}
+function filmFrames(align){ FL.frames.forEach(f => { f.fit = filmFit(f.w, f.h, f.p.al, align); }); }
+// Tidslinjen: varje bild står HOLD ms och glider över i nästa på FADE ms. Sist står slutkortet END ms.
+function filmAt(e){
+  const n = FL.frames.length, per = FILM.HOLD + FILM.FADE, last = per * (n - 1);
+  if (e >= last) return {i: n - 1, t: 0, end: e >= last + FILM.HOLD};
+  const i = Math.floor(e / per), r = e - i * per;
+  return {i, t: r > FILM.HOLD && !filmCalm() ? (r - FILM.HOLD) / FILM.FADE : 0, end: false};
+}
+const filmTotal = () => (FILM.HOLD + FILM.FADE) * (FL.frames.length - 1) + FILM.HOLD + FILM.END;
+function filmPaint(x, st, text){
+  const fr = FL.frames, img = (f, a) => { if (!f || !f.im) return; x.globalAlpha = a; x.drawImage(f.im, f.fit.dx, f.fit.dy, f.w * f.fit.s, f.h * f.fit.s); };
+  x.globalAlpha = 1; x.fillStyle = "#0B0D12"; x.fillRect(0, 0, FILM.W, FILM.H);
+  img(fr[st.i], 1); if (st.t > 0) img(fr[st.i + 1], st.t);
+  x.globalAlpha = 1;
+  if (!text) return;
+  const band = (y, h, txt, size) => { x.fillStyle = "rgba(11,13,18,.78)"; x.fillRect(0, y, FILM.W, h); x.fillStyle = "#fff"; x.textAlign = "center"; x.textBaseline = "middle"; x.font = '800 ' + size + 'px "Big Shoulders Display", "Arial Narrow", sans-serif'; x.fillText(txt, FILM.W / 2, y + h / 2); };
+  const cur = fr[st.t > 0.5 ? st.i + 1 : st.i] || fr[st.i];
+  band(0, 110, filmLabel(cur.p, fr[0].p), 40);
+  if (st.end) band(FILM.H - 170, 170, filmEnd(fr.map(f => f.p)), 46);
+}
+async function photoFilm(){
+  const list = filmList(); if (list.length < 2) return;
+  let o = $("filmOv"); if (!o){ o = document.createElement("div"); o.id = "filmOv"; o.className = "scan"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); document.body.appendChild(o);
+    o.addEventListener("click", e => { const b = e.target.closest("[data-film]"); if (!b) return; const a = b.dataset.film;
+      if (a === "close") filmClose();
+      else if (a === "save") filmSave();
+      else if (a === "align" && FL){ FL.align = !FL.align; filmFrames(FL.align); b.setAttribute("aria-pressed", FL.align); b.textContent = FL.align ? "Linjerad ✓" : "Som tagna"; if (!FL.playing) filmDrawNow(); }
+      else if (a === "play" && FL){ FL.playing = !FL.playing; b.textContent = FL.playing ? "Pausa" : "Spela"; if (FL.playing){ FL.last = null; FL.raf = requestAnimationFrame(filmTick); } }
+    }); }
+  o.innerHTML = '<div class="scan-top"><b>Kroppens film</b><button type="button" class="scan-x" data-film="close" aria-label="Stäng">×</button></div>' +
+    '<div class="film"><canvas id="filmCv" width="' + FILM.W + '" height="' + FILM.H + '" aria-label="Progressbilderna som film"></canvas><div class="film-lbl" id="filmLbl"></div></div>' +
+    '<div class="scan-btns film-btns"><button type="button" class="btn ghost sm" data-film="play">Pausa</button><button type="button" class="btn ghost sm" data-film="align" aria-pressed="true" disabled>Linjerad ✓</button>' +
+    ('MediaRecorder' in window ? '<button type="button" class="btn sm" data-film="save">Spara som film</button>' : '') + '</div><div class="scan-msg" id="filmMsg"></div>';
+  o.hidden = false; document.documentElement.classList.add("noscroll");
+  $("filmLbl").textContent = filmLabel(list[0], list[0]);   // texten syns direkt, medan bilderna laddas
+  if (FL && FL.raf) cancelAnimationFrame(FL.raf);
+  FL = {list, frames: [], align: true, playing: false, e: 0, last: null, raf: 0, li: -1};
+  const say = t => { const m = $("filmMsg"); if (m) m.textContent = t; };
+  const ims = await Promise.all(list.map(filmImg));
+  FL.frames = list.map((p, k) => ({p, im: ims[k], w: ims[k] ? ims[k].naturalWidth : 1, h: ims[k] ? ims[k].naturalHeight : 1})).filter(f => f.im);
+  if (FL.frames.length < 2){ say("Bilderna gick inte att läsa."); return; }
+  filmFrames(false); FL.playing = true; FL.raf = requestAnimationFrame(filmTick);   // spela direkt, linjera medan den spelar
+  const me = FL; me.ready = filmMarks(list, say); const aiOk = await me.ready;
+  if (FL !== me) return;
+  filmFrames(true);
+  const bad = FL.frames.filter(f => !f.fit.ok).length;
+  say(!aiOk ? "AI:n gick inte att ladda – bilderna visas som de är tagna. Första gången behöver telefonen vara uppkopplad."
+    : bad === FL.frames.length ? "Hittade ingen kropp att linjera – hela kroppen behöver synas i bilderna."
+    : bad ? bad + (bad === 1 ? " bild" : " bilder") + " gick inte att linjera och visas som de är tagna. Hela kroppen behöver synas." : "Kroppen är linjerad i alla " + FL.frames.length + " bilder.");
+  const al = o.querySelector('[data-film="align"]'); if (al && aiOk && bad < FL.frames.length) al.disabled = false; else if (al){ al.textContent = "Som tagna"; al.setAttribute("aria-pressed", "false"); FL.align = false; filmFrames(false); }
+}
+function filmDrawNow(){ const c = $("filmCv"); if (!c || !FL) return; const st = filmAt(FL.e); filmPaint(c.getContext("2d"), st, false); filmShowLbl(st); }
+function filmShowLbl(st){
+  const fr = FL.frames, k = st.t > 0.5 ? st.i + 1 : st.i, key = st.end ? "end" : k; if (FL.li === key) return; FL.li = key;
+  const l = $("filmLbl"); if (l) l.textContent = st.end ? filmEnd(fr.map(f => f.p)) : filmLabel(fr[k].p, fr[0].p);
+}
+function filmTick(now){
+  if (!FL || !FL.playing) return;
+  const c = $("filmCv"); if (!c || !c.isConnected){ FL.playing = false; return; }
+  // tiden räknas av skillnaden mellan bildrutorna – samma klocka hela vägen, och ett hopp (låst skärm) blir högst 0,1 s
+  if (FL.last != null) FL.e = (FL.e + Math.min(100, Math.max(0, now - FL.last))) % filmTotal();
+  FL.last = now;
+  const st = filmAt(FL.e); filmPaint(c.getContext("2d"), st, false); filmShowLbl(st);
+  FL.raf = requestAnimationFrame(filmTick);
+}
+function filmClose(){ const o = $("filmOv"); if (FL){ FL.playing = false; if (FL.raf) cancelAnimationFrame(FL.raf); } FL = null; if (o){ o.hidden = true; o.innerHTML = ""; } document.documentElement.classList.remove("noscroll"); }
+// Samma film som i appen, med vecka, vikt och slutkort inritade, som video i telefonen (dela eller spara)
 async function filmSave(){
-  const list = photos.filter(p => p.kind === "progress" && p.view === photoView), msg = $("filmMsg");
-  const W = 720, H = 1280, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
-  const imgs = await Promise.all(list.map(p => new Promise(res => { const im = new Image(); im.onload = () => res({im, p}); im.onerror = () => res(null); im.src = photoUrl(p); })));
-  const frames = imgs.filter(Boolean);
+  if (!FL || FL.saving) return; const msg = $("filmMsg"), me = FL;
+  if (me.ready){ msg.textContent = "Linjerar bilderna först…"; await me.ready; await new Promise(r => setTimeout(r, 0)); if (FL !== me) return; }
+  const c = document.createElement("canvas"); c.width = FILM.W; c.height = FILM.H; const x = c.getContext("2d");
   const types = ["video/mp4", "video/webm;codecs=vp9", "video/webm"], type = types.find(t => { try { return MediaRecorder.isTypeSupported(t); } catch(e){ return false; } });
   if (!type || !c.captureStream){ msg.textContent = "Telefonen kan inte spara film härifrån. Filmen spelas fortfarande upp här."; return; }
-  msg.textContent = "Gör filmen…";
+  FL.saving = true; msg.textContent = "Gör filmen… (" + Math.round(filmTotal() / 1000) + " sekunder)";
+  filmPaint(x, filmAt(0), true);
   const rec = new MediaRecorder(c.captureStream(30), {mimeType: type}), chunks = [];
   rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
   const done = new Promise(res => { rec.onstop = res; });
   rec.start();
-  for (const f of frames){
-    x.fillStyle = "#0B0D12"; x.fillRect(0, 0, W, H);
-    const s = Math.min(W / f.im.naturalWidth, (H - 120) / f.im.naturalHeight), w = f.im.naturalWidth * s, h = f.im.naturalHeight * s;
-    x.drawImage(f.im, (W - w) / 2, 40, w, h);
-    const wt = weightOn(f.p.date); x.fillStyle = "#fff"; x.font = '800 44px "Big Shoulders Display", "Arial Narrow", sans-serif'; x.textAlign = "center"; x.fillText(dLabel(f.p.date) + " " + parseIso(f.p.date).getFullYear() + (wt ? " · " + fmt(wt.kg) + " kg" : ""), W / 2, H - 40);
-    await new Promise(r => setTimeout(r, 700));
-  }
+  const total = filmTotal(); let e = 0;   // en bildruta var 33:e ms, i samma takt som videon spelas in
+  await new Promise(res => { const step = () => { if (!FL || e >= total){ res(); return; } filmPaint(x, filmAt(e), true); e += 33; setTimeout(step, 33); }; step(); });
   rec.stop(); await done;
+  if (FL) FL.saving = false;
   const blob = new Blob(chunks, {type: type.split(";")[0]}), name = "gymschema-forandring." + (type.indexOf("mp4") >= 0 ? "mp4" : "webm"), file = new File([blob], name, {type: blob.type});
-  msg.textContent = "";
-  try { if (navigator.canShare && navigator.canShare({files: [file]})){ await navigator.share({files: [file], title: "Förändringen"}); return; } } catch(e){ if (e && e.name === "AbortError") return; }
+  if (msg) msg.textContent = "";
+  try { if (navigator.canShare && navigator.canShare({files: [file]})){ await navigator.share({files: [file], title: "Kroppens film"}); return; } } catch(e){ if (e && e.name === "AbortError") return; }
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 1000);
 }
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {filmKey, filmFit, filmState: () => FL ? {n: FL.frames.length, align: FL.align, playing: FL.playing,
+  fits: FL.frames.map(f => { const al = f.p.al; return {ok: f.fit.ok, al: !!(al && al.ok), sx: al && al.ok ? Math.round(f.fit.dx + al.sx * f.w * f.fit.s) : null, sy: al && al.ok ? Math.round(f.fit.dy + al.sy * f.h * f.fit.s) : null,
+    torso: al && al.ok ? Math.round(Math.hypot((al.hx - al.sx) * f.w, (al.hy - al.sy) * f.h) * f.fit.s) : null}; })} : null});
 document.addEventListener("click", e => {
   const v = e.target.closest("[data-pview]"), ph = e.target.closest("[data-ph]"), op = e.target.closest("[data-phopen]");
   if (v){ photoView = v.dataset.pview; kroppRender(); return; }
@@ -7060,7 +7164,7 @@ function poseMeasure(lm, w, h, view, height){
   const tilt = (a, b) => Math.round(Math.atan2(P(b).y - P(a).y, Math.abs(P(b).x - P(a).x)) * 1800 / Math.PI) / 10;
   return {view, pts: {lSh: P(11), rSh: P(12), lHip: P(23), rHip: P(24), lEar: P(7), rEar: P(8)}, pxcm, m: {sh: dCm(11, 12), hip: dCm(23, 24), head: dCm(7, 8), shAng: tilt(11, 12), hipAng: tilt(23, 24)}};
 }
-if (/[?&]selftest\b/.test(location.search)) window.__gs = {poseMeasure};
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {poseMeasure});
 function poseDraw(c, r){
   const x = c.getContext("2d"), u = Math.max(2, c.width / 260);
   x.lineWidth = u * 1.6; x.lineCap = "round"; x.font = '800 ' + Math.round(u * 9) + 'px "Archivo", Arial, sans-serif';
@@ -9097,7 +9201,7 @@ function sjLoad(){
   // Första gången. Schemat sköts fram en dag lördag 21 nov 2026. Den som redan körde programmet då (appen uppdateras från en äldre
   // version) får med den dagen. En ny installation börjar på grundschemat.
   let prev = null; try { prev = localStorage.getItem("gymschema.build"); } catch(e){}
-  sjL = prev && prev !== "23 nov 03.17" ? ["2026-11-21"] : [];
+  sjL = prev && prev !== "23 nov 04.30" ? ["2026-11-21"] : [];
   sjFresh = sjL.length > 0;
   sjStore();
   return sjL;
@@ -10331,7 +10435,7 @@ const GU = [
     ["🙂", "Magdagbok", "Tryck hur magen känns på kvällen. Efter en vecka letar appen efter mat som hänger ihop med dåliga kvällar.", "vikt/mat", "#m4Mage"],
     ["📅", "Veckomeny och inköpslista", "Veckans middagar, inköpslista per avdelning och laga-läge steg för steg.", "vikt/mat/meny", ""],
     ["🏪", "Butikens ordning", "Lägg avdelningarna i inköpslistan i den ordning du går i din butik. Listan du kopierar eller delar följer samma ordning.", "vikt/mat/butik", ""],
-    ["📷", "Progressbilder", "Samma ställe och ljus varje vecka, före och nu sida vid sida. En tom ruta bland bilderna visar vilken dag nästa ska tas, och den dagen kommer en påminnelse.", "vikt/bilder", "#v-vikt .card.coach"],
+    ["📷", "Progressbilder", "Samma ställe och ljus varje vecka, före och nu sida vid sida. Kroppens film spelar upp dem med kroppen linjerad av AI:n. En tom ruta bland bilderna visar vilken dag nästa ska tas, och den dagen kommer en påminnelse.", "vikt/bilder", "#v-vikt .card.coach"],
     ["🧍", "Hållning", "AI:n i telefonen mäter hållningen från sidan och framifrån.", "vikt/hallning", "#v-vikt .card.coach"],
     ["🩺", "Till sjukgymnasten", "Smärtloggen, hållningen, testerna, träningsvärken och de senaste veckornas träning på en sida – att visa på besöket.", "vikt/hallning", "#k5Sjk"]
   ]],
@@ -18555,6 +18659,7 @@ atCoachLines = (f => function(){
 /* ===== 87: Nytt i appen ===== */
 // [datum, rubrik, [sakernas namn i Allt …]] – nyast först. Namnen ska finnas i guiden; ett som saknas visas utan knapp.
 const Q17_NYTT = [
+  ["23 nov", "Kroppens film: AI:n linjerar kroppen i progressbilderna", ["Progressbilder"]],
   ["23 nov", "Mer i morgonen, och tre boxningstips till", ["Atlet idag", "Boxning med timer"]],
   ["23 nov", "Riktiga magövningar i Mage, och Y-T-W i uppvärmningen", ["Programmet med bild", "Programmets ändringar"]],
   ["22 nov", "Sittande dips i maskin i Över pass 2", ["Programmet med bild", "Programmets ändringar"]],
@@ -20125,7 +20230,7 @@ if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window._
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611230317, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611230430, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -20157,7 +20262,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "23 nov 03.17", BUILD_NOTE = "Mer i morgonen: åtta övningar som väcker kroppen";
+const BUILD = "23 nov 04.30", BUILD_NOTE = "Kroppens film: AI:n linjerar kroppen i progressbilderna";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
