@@ -413,6 +413,17 @@ Från 22 november 2026.
 - **Mer i morgonen** (23 november 2026): Morgonsträck är 10 minuter och åtta övningar, från lugnt till pigg – sträck dig upp på tå, katten och kon, sidböj längs låret, utfall med rotation, raka bensvingar, höftlyft och pogohopp. Katten, kon, utfallet, bensvingarna, höftlyften och pogohoppen visar samma klipp som i yogan, rörligheten, Shaolin, Starka ben och spänsten, men bockas för sig – en bock på morgonen bockar inte samma övning senare samma dag. Först ett glas vatten och lampan tänd. Samma dag fick Boxning tre tips till: skuggboxa som om någon står framför dig, titta på boxare med samma stil som du, och andas lugnt inför sparring.
 - **Riktiga magövningar** (23 november 2026): Mage efter Över är två varv av hängande knälyft (10 st – hemma utan stång blir det omvända crunches), cykelcrunches (20 st), crunches med viktväst eller viktskiva (12 st) och sidoplanka (30 sek per sida), ca 8 minuter. De ersatte bear hold, shoulder taps och suitcases, som mest var stabilitet. Alla fyra har teckning, steg, vanliga fel och video under Program → Mage, och där står hur du gör dem tyngre. Som omväxling går **heel taps** i stället för cykelcrunches (axlarna lyfta, nå hälarna växelvis, 20 st) och **spider crunches** i stället för sidoplankan (planka på underarmarna, knät mot armbågen på samma sida, 30 sek per sida) – det står i guidens tips och under *Byt mot*.
 
+### Ny ordning: fem flikar och underflikar
+
+Från 23 november 2026. Appen kändes rörig, så allt ligger nu i fem flikar i stället för sju. Inget har tagits bort, och knappen *Som förut* ger appen precis som den var.
+
+- **Fem flikar**: *Idag* (tidigare Pass), *Vanor*, *Program*, *Framsteg* och *Kropp*. **Boxningen** är en knapp i Program, bredvid passen, och **Historik** är en underflik i Framsteg.
+- **Underflikar**: Idag har *Dagen* (morgonkänslan och Atlet idag) och *Passet* (passet och övningarna). Har du börjat logga ett pass öppnas Passet direkt, och när passet är sparat syns det sparade passet. Framsteg har *Veckan, Styrka, Rekord, Kondition, Tester* och *Historik*. Allt som hoppar till något i appen – *Visa var* i Allt, länkar och rekord – öppnar rätt underflik.
+- **Inställningarna i Allt**: Påminnelser, Kväll och sömn, Gardinen, Spotify, Klippen och Backup är rutor överst i Allt. Påminnelser och Kväll och sömn står inte längre som rader i Vanor, och Vanor har ingen kapitelrad.
+- **Appens ordning**: överst i Allt väljer du *Ny* eller *Som förut*. Som förut ger de sju flikarna och kapitelraden som innan. Valet sparas på telefonen, och första gången förklarar ett kort överst i Idag den nya ordningen.
+- I Idag är Atlet-blocken rader: anteckningen syns när du fäller ut blocket.
+- Kontrollerat i Chromium på 390 px, i båda ordningarna. Inte provat på en riktig iPhone.
+
 ## Dagsschema
 
 Dagens lista som app: https://filipkymmer79-pixel.github.io/GymSchema/dag/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Listan skrivs i appen och sparas bara på telefonen.
