@@ -7,6 +7,8 @@
 <title>Ansiktsplanen</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preload" as="image" type="image/webp" href="img/lat_skull.webp">
+<link rel="preload" as="image" type="image/webp" href="img/lat_mand.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -126,20 +128,15 @@ textarea{display:block;width:100%;min-height:88px;font:inherit;font-size:16px;pa
 .foot{max-width:860px;margin:36px auto 56px;padding:0 max(5vw,16px);color:var(--mut);font-size:14px}
 button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 /* drawing */
-.ln{fill:none;stroke:#a99f86;stroke-width:1.4;stroke-linecap:round}
-.hole{fill:#1d2c25}
+.stage image{pointer-events:none}
 .cut{fill:none;stroke:#ff4f73;stroke-width:3.2;stroke-linecap:round}
 .zig{fill:none;stroke:#7fd1ff;stroke-width:2.6;stroke-linejoin:round}
-.tooth{fill:#fbf8ef;stroke:#9c937d;stroke-width:1.2}
 .plate rect{fill:#a7b4bd;stroke:#55636c;stroke-width:1}
 .plate circle{fill:#55636c}
 .brk rect{fill:#d5dde2;stroke:#6c7a83;stroke-width:.8}
-.brk polyline{fill:none;stroke:#9aa7b0;stroke-width:1.6}
+.brk polyline{fill:none;stroke:#9aa7b0;stroke-width:2.2}
 .lbl{fill:#ffffff;font:700 22px "Schibsted Grotesk",system-ui,sans-serif;paint-order:stroke;stroke:#0a1f17;stroke-width:5px;stroke-linejoin:round}
 .lblS{fill:#cfe9dc;font:600 19px "Schibsted Grotesk",system-ui,sans-serif;paint-order:stroke;stroke:#0a1f17;stroke-width:5px;stroke-linejoin:round}
-.fb{fill:#ebe6d8;stroke:#9c937d;stroke-width:1.6;stroke-linejoin:round}
-.fbd{fill:#ddd6c4;stroke:#9c937d;stroke-width:1.4}
-.ftooth{fill:var(--tc,#f8f6ee);stroke:#9c937d;stroke-width:1.2}
 @media(min-width:760px){.head{grid-template-columns:minmax(0,1fr) auto;align-items:end}}
 @media(min-width:900px){.vgrid{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);align-items:start}.phases{position:sticky;top:0;z-index:2}.vinfo{position:sticky;top:76px}}
 @media(max-width:480px){.meta{grid-template-columns:minmax(0,1fr)}}
@@ -170,168 +167,106 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
     <div class="vgrid">
       <div class="stage" id="stage">
 
-<svg id="svgL" viewBox="0 0 640 520" role="img" aria-label="Skallen från sidan">
+<svg id="svgL" viewBox="0 0 640 520" role="img" aria-label="Skallen från sidan, renderad från en CT">
   <defs>
     <linearGradient id="scanG" x1="0" x2="1"><stop offset="0" stop-color="#5ee0a8" stop-opacity="0"/><stop offset=".5" stop-color="#5ee0a8" stop-opacity=".85"/><stop offset="1" stop-color="#5ee0a8" stop-opacity="0"/></linearGradient>
-    <g id="skull">
-      <path style="fill:var(--sf,#ebe6d8)" stroke="#8f866f" stroke-width="2" stroke-linejoin="round" d="M232 372 C190 372 128 340 104 288 C82 240 84 170 120 118 C160 62 236 34 318 34 C400 34 468 72 497 132 C512 162 514 192 508 208 C506 214 500 220 492 224 L490 226 L503 248 L524 280 C512 284 500 296 500 312 C500 322 506 328 514 330 L532 333 L512 340 C513 352 515 364 512 374 L470 372 L430 368 L398 362 C388 360 382 352 380 344 L372 330 C360 318 330 314 300 316 C292 316 286 312 278 310 C268 309 262 312 258 318 C254 330 250 348 246 360 C242 368 238 372 232 372 Z"/>
-      <g fill="none" stroke="#b4aa90" stroke-width="1.4" stroke-linecap="round">
-        <path d="M326 36 C330 70 320 96 334 128 C342 152 332 178 346 204 C352 220 356 236 368 248"/>
-        <path d="M150 84 C146 120 134 150 140 190 C144 230 130 262 140 300"/>
-        <path d="M368 248 C340 252 300 262 284 290"/>
-        <path d="M480 118 C430 86 330 78 240 96 C190 108 150 150 142 210"/>
-        <path d="M300 300 C330 296 380 292 420 290"/>
-        <path d="M418 266 C410 282 412 302 426 318 C436 328 448 332 462 332"/>
-        <path d="M488 230 C482 250 488 268 500 282"/>
-        <path d="M424 222 C428 206 444 200 462 204"/>
-      </g>
-      <ellipse cx="452" cy="238" rx="30" ry="31" fill="#1d2c25"/>
-      <path d="M436 216 C446 210 462 212 470 222" fill="none" stroke="#334a3f" stroke-width="3"/>
-      <ellipse cx="262" cy="330" rx="10" ry="12" fill="#1d2c25"/>
-      <ellipse cx="470" cy="292" rx="4" ry="3" fill="#1d2c25"/>
-    </g>
-    <g id="mand">
-      <path style="fill:var(--bf,#ebe6d8)" stroke="#8f866f" stroke-width="2" stroke-linejoin="round" d="M262 334 C266 360 272 400 276 430 C279 452 288 468 302 474 C340 482 400 486 440 490 C462 492 480 496 492 494 C506 490 512 476 510 462 C508 452 500 446 498 438 C498 428 502 420 506 414 L470 412 L430 410 L392 410 C372 408 358 392 352 372 C346 350 342 332 340 318 C334 322 322 340 310 344 C300 344 292 336 286 330 C284 326 282 322 280 320 L270 318 Z"/>
-      <ellipse style="fill:var(--bf,#ebe6d8)" stroke="#8f866f" stroke-width="2" cx="273" cy="322" rx="13" ry="9" transform="rotate(-18 273 322)"/>
-      <path d="M354 378 C366 398 388 412 420 420" fill="none" stroke="#b4aa90" stroke-width="1.4" stroke-linecap="round"/>
-      <ellipse cx="458" cy="446" rx="4.5" ry="3.5" fill="#1d2c25"/>
-      <path style="opacity:var(--nerve,0)" d="M318 384 C350 420 400 438 454 446" fill="none" stroke="#ffd24a" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round"/>
-      <g fill="#fbf8ef" stroke="#9c937d" stroke-width="1.2">
-        <rect x="407" y="396" width="18" height="16" rx="4"/>
-        <rect x="426" y="396" width="19" height="17" rx="4"/>
-        <rect x="447" y="396" width="13" height="17" rx="4"/>
-        <rect x="461" y="395" width="12" height="18" rx="4"/>
-        <rect x="474" y="390" width="11" height="24" rx="5"/>
-        <rect x="485" y="392" width="9" height="22" rx="4"/>
-        <rect x="494" y="391" width="9" height="23" rx="4" transform="rotate(6 498 402)"/>
-      </g>
-    </g>
-    <clipPath id="cUpper"><path clip-rule="evenodd" d="M-60 -60H700V600H-60Z M372 343 L545 325 L560 440 L372 440Z"/></clipPath>
-    <clipPath id="cLefort"><path d="M372 342 L545 324 L560 440 L372 440Z"/></clipPath>
-    <clipPath id="cProx"><path clip-rule="evenodd" d="M-60 -60H700V600H-60Z M347 360 C353 386 373 404 403 412 L407 490 L407 560 L620 560 L620 360Z"/></clipPath>
-    <clipPath id="cDist"><path clip-rule="evenodd" d="M318 378 L346 360 L620 360 L620 560 L318 560Z M425 491 L433 473 C457 467 487 461 507 456 L620 456 L620 560 L425 560Z"/></clipPath>
-    <clipPath id="cChin"><path d="M424 490 L432 472 C456 466 486 460 506 455 L620 455 L620 560 L424 560Z"/></clipPath>
-    <clipPath id="cScaf"><path d="M476 458 C494 446 518 450 524 468 C528 486 514 500 494 500 C478 498 470 476 476 458 Z"/></clipPath>
+    <clipPath id="cUpper"><path clip-rule="evenodd" d="M-60 -60H700V600H-60Z M372 251 L548 241 L600 233 L660 233 L660 450 L372 450Z"/></clipPath>
+    <clipPath id="cProx"><path clip-rule="evenodd" d="M-60 -60H700V600H-60Z M372 288 L372 296 C376 328 394 352 430 366 L440 470 L440 600 L700 600 L700 288Z"/></clipPath>
+    <clipPath id="cDist"><path d="M372 288 L700 288 L700 600 L330 600 L330 332 L372 296Z"/></clipPath>
+    <clipPath id="cNoChin"><path clip-rule="evenodd" d="M-60 -60H700V600H-60Z M455 474 L458 462 C480 452 510 438 540 422 L700 412 L700 600 L455 600Z"/></clipPath>
+    <clipPath id="cChin"><path d="M455 474 L458 462 C480 452 510 438 540 422 L700 412 L700 600 L455 600Z"/></clipPath>
+    <radialGradient id="ballG" cx=".62" cy=".38" r=".75"><stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#e6edf0"/><stop offset="1" stop-color="#b9c9d1"/></radialGradient>
+    <clipPath id="cScan"><rect id="scanR" x="0" y="0" width="0" height="520"/></clipPath>
   </defs>
 
-  <g clip-path="url(#cUpper)"><use href="#skull" id="useUp"/></g>
+  <image id="imUp" href="img/lat_skull.webp" width="640" height="520"/>
+  <image id="imM" href="img/lat_mand.webp" width="640" height="520"/>
   <g id="mdist">
-    <g clip-path="url(#cDist)"><use href="#mand" id="useMD"/></g>
-    <g class="brk" id="brkL">
-      <rect x="413.5" y="399" width="5" height="5"/><rect x="433" y="399" width="5" height="5"/><rect x="451" y="400" width="5" height="5"/><rect x="464.5" y="400" width="5" height="5"/><rect x="477" y="399" width="5" height="5"/><rect x="487" y="399" width="5" height="5"/><rect x="496" y="399" width="5" height="5"/>
-      <polyline points="416,401.5 435.5,401.5 453.5,402.5 467,402.5 479.5,401.5 489.5,401.5 498.5,401.5"/>
-    </g>
+    <image id="imMD" href="img/lat_mand.webp" width="640" height="520" clip-path="url(#cDist)"/>
+    <g class="brk" id="brkL"><rect x="420" y="347" width="10" height="10" rx="2"/><rect x="450" y="347" width="10" height="10" rx="2"/><rect x="480" y="347" width="10" height="10" rx="2"/><rect x="507" y="347" width="10" height="10" rx="2"/><rect x="531" y="346" width="10" height="10" rx="2"/><rect x="551" y="345" width="10" height="10" rx="2"/><polyline points="425,352 455,352 485,352 512,352 536,351 556,350"/></g>
     <g id="chin">
-      <g clip-path="url(#cChin)"><use href="#mand" id="useCH"/></g>
-      <g class="plate" id="plGE" transform="rotate(-16 500 463)"><rect x="497" y="446" width="7" height="34" rx="3"/><circle cx="500.5" cy="451" r="1.8"/><circle cx="500.5" cy="459" r="1.8"/><circle cx="500.5" cy="468" r="1.8"/><circle cx="500.5" cy="476" r="1.8"/></g>
+      <image id="imCH" href="img/lat_mand.webp" width="640" height="520" clip-path="url(#cChin)"/>
+      <g class="plate" id="plGE" transform="rotate(16 531 424)"><rect x="527.5" y="403" width="7" height="42" rx="3"/><circle cx="531" cy="408" r="1.9"/><circle cx="531" cy="416" r="1.9"/><circle cx="531" cy="432" r="1.9"/><circle cx="531" cy="440" r="1.9"/></g>
     </g>
   </g>
-  <g clip-path="url(#cProx)"><use href="#mand" id="usePX"/></g>
-  <g class="plate" id="plBS"><rect x="388" y="434" width="44" height="7" rx="3"/><circle cx="393" cy="437.5" r="1.8"/><circle cx="403" cy="437.5" r="1.8"/><circle cx="417" cy="437.5" r="1.8"/><circle cx="427" cy="437.5" r="1.8"/></g>
-  <rect id="wisL" class="tooth" x="388" y="398" width="17" height="15" rx="4"/>
+  <image id="imPX" href="img/lat_mand.webp" width="640" height="520" clip-path="url(#cProx)"/>
+  <g class="plate" id="plBS"><rect x="410" y="379" width="46" height="7" rx="3"/><circle cx="415" cy="382.5" r="1.9"/><circle cx="425" cy="382.5" r="1.9"/><circle cx="441" cy="382.5" r="1.9"/><circle cx="451" cy="382.5" r="1.9"/></g>
   <g id="lefort">
-    <g clip-path="url(#cLefort)"><use href="#skull" id="useLF"/></g>
-    <g fill="#fbf8ef" stroke="#9c937d" stroke-width="1.2">
-      <rect x="414" y="366" width="18" height="28" rx="4"/>
-      <rect x="433" y="368" width="19" height="28" rx="4"/>
-      <rect x="454" y="369" width="13" height="27" rx="4"/>
-      <rect x="468" y="370" width="13" height="27" rx="4"/>
-      <rect x="484" y="371" width="12" height="31" rx="5"/>
-      <rect x="496" y="372" width="10" height="27" rx="4" transform="rotate(-8 501 385)"/>
-      <rect x="506" y="372" width="12" height="30" rx="5" transform="rotate(-12 512 387)"/>
-    </g>
-    <rect id="wisU" class="tooth" x="396" y="362" width="16" height="28" rx="4"/>
-    <g class="brk" id="brkU">
-      <rect x="420.5" y="380" width="5" height="5"/><rect x="440" y="380" width="5" height="5"/><rect x="458" y="381" width="5" height="5"/><rect x="472" y="381" width="5" height="5"/><rect x="487.5" y="382" width="5" height="5"/><rect x="498.5" y="382" width="5" height="5"/><rect x="509" y="382" width="5" height="5"/>
-      <polyline points="423,382.5 442.5,382.5 460.5,383.5 474.5,383.5 490,384.5 501,384.5 511.5,384.5"/>
-    </g>
-    <g class="plate" id="plLF"><rect x="496" y="318" width="7" height="38" rx="3"/><circle cx="499.5" cy="323" r="1.8"/><circle cx="499.5" cy="331" r="1.8"/><circle cx="499.5" cy="343" r="1.8"/><circle cx="499.5" cy="351" r="1.8"/><rect x="437" y="322" width="7" height="38" rx="3"/><circle cx="440.5" cy="327" r="1.8"/><circle cx="440.5" cy="335" r="1.8"/><circle cx="440.5" cy="347" r="1.8"/><circle cx="440.5" cy="355" r="1.8"/></g>
+    <image id="imLF" href="img/lat_lf.webp" x="371.5" y="239" width="202.5" height="104"/>
+    <g class="brk" id="brkU"><rect x="443" y="311" width="10" height="10" rx="2"/><rect x="475" y="312" width="10" height="10" rx="2"/><rect x="503" y="313" width="10" height="10" rx="2"/><rect x="533" y="313" width="10" height="10" rx="2"/><rect x="557" y="311" width="10" height="10" rx="2"/><polyline points="448,316 480,317 508,318 538,318 562,316"/></g>
+    <g class="plate" id="plLF"><rect x="444.5" y="227" width="7" height="40" rx="3"/><circle cx="448" cy="232" r="1.9"/><circle cx="448" cy="240" r="1.9"/><circle cx="448" cy="254" r="1.9"/><circle cx="448" cy="262" r="1.9"/><rect x="524.5" y="222" width="7" height="40" rx="3"/><circle cx="528" cy="227" r="1.9"/><circle cx="528" cy="235" r="1.9"/><circle cx="528" cy="249" r="1.9"/><circle cx="528" cy="257" r="1.9"/></g>
   </g>
+  <image href="img/lat_front.webp" x="313" y="178.5" width="70.5" height="37"/>
 
-  <path id="cutLF" class="cut" pathLength="1" d="M382 342 L512 329"/>
-  <path id="cutBS" class="cut" pathLength="1" d="M346 360 C352 386 372 404 402 412 L406 488"/>
-  <path id="cutGE" class="cut" pathLength="1" d="M426 489 L432 472 C456 466 486 460 506 455"/>
+  <g id="nerveG"><path id="nerve" d="M290 320 C300 370 360 402 473 415" fill="none" stroke="#ffd24a" stroke-width="3.2" stroke-dasharray="8 6" stroke-linecap="round"/><circle id="nerveDot" cx="473" cy="415" r="5.5" fill="#ffd24a" stroke="#0a1f17" stroke-width="1.5"/></g>
+  <path id="cutLF" class="cut" pathLength="1" d="M380 250 L548 241"/>
+  <path id="cutBS" class="cut" pathLength="1" d="M372 296 C376 328 394 352 430 366 L438 466"/>
+  <path id="cutGE" class="cut" pathLength="1" d="M456 470 L458 462 C480 452 510 438 540 422"/>
   <path id="zig" class="zig" pathLength="1" d=""/>
 
   <g id="eyeG">
-    <ellipse id="sinusL" cx="452" cy="306" rx="40" ry="24" fill="none" stroke="#7fd1ff" stroke-width="2" stroke-dasharray="6 5"/>
-    <ellipse id="blobL" cx="456" cy="272" rx="22" ry="3" fill="#f2c48d"/>
-    <path id="floorL" d="M428 266 C448 272 470 272 490 265" fill="none" stroke="#ebe6d8" stroke-width="4" stroke-linecap="round"/>
-    <g id="ball"><circle cx="470" cy="238" r="23" fill="#f4f7f8" stroke="#9fb3bd" stroke-width="1.5"/><ellipse cx="490" cy="238" rx="4.5" ry="12" fill="#4d7d9c"/><ellipse cx="492" cy="238" rx="2" ry="6" fill="#16222a"/></g>
+    <ellipse id="sinusL" cx="500" cy="198" rx="58" ry="40" fill="none" stroke="#7fd1ff" stroke-width="2.4" stroke-dasharray="7 6"/>
+    <ellipse id="blobL" cx="505" cy="152" rx="34" ry="4" fill="#f2c48d"/>
+    <path id="floorL" d="M462 150 C488 157 520 157 548 146" fill="none" stroke="#ebe6d8" stroke-width="5" stroke-linecap="round"/>
+    <g id="ball"><circle cx="510" cy="107" r="44" fill="url(#ballG)" stroke="#9fb3bd" stroke-width="2"/><ellipse cx="547" cy="107" rx="7" ry="21" fill="#4d7d9c"/><ellipse cx="551" cy="107" rx="3" ry="9.5" fill="#16222a"/></g>
   </g>
 
-  <g id="scaf"><g clip-path="url(#cScaf)" id="scafCells"></g><path d="M476 458 C494 446 518 450 524 468 C528 486 514 500 494 500 C478 498 470 476 476 458 Z" fill="none" stroke="#7fd1ff" stroke-width="2"/></g>
-
-  <rect id="scan" x="-8" y="20" width="16" height="480" fill="url(#scanG)"/>
+  <g id="xr" clip-path="url(#cScan)">
+    <image href="img/lat_xray.webp" width="640" height="520"/>
+    <image href="img/lat_xray_now.webp" x="316" y="198" width="77.5" height="221" id="xrNow"/>
+    <image href="img/lat_xray_hl.webp" x="316" y="198" width="77.5" height="221" id="xrHl"/>
+  </g>
+  <rect id="scan" x="-8" y="0" width="16" height="520" fill="url(#scanG)"/>
   <g id="ceph" fill="none">
-    <path id="lSN" pathLength="1" d="M318 238 L490 226" stroke="#5ee0a8" stroke-width="2.4"/>
-    <path id="lNA" pathLength="1" d="M490 226 L511 352" stroke="#5ee0a8" stroke-width="2.4"/>
-    <path id="lNB" pathLength="1" d="M490 226 L499 440" stroke="#7fd1ff" stroke-width="2.4"/>
+    <path id="lSN" pathLength="1" d="M285 86 L567 40" stroke="#5ee0a8" stroke-width="2.4"/>
+    <path id="lNA" pathLength="1" d="M567 40 L549 262" stroke="#5ee0a8" stroke-width="2.4"/>
+    <path id="lNB" pathLength="1" d="M567 40 L540 410" stroke="#7fd1ff" stroke-width="2.4"/>
     <g id="cpts"></g>
   </g>
 </svg>
 
-<svg id="svgF" viewBox="0 0 640 520" role="img" aria-label="Skallen framifrån" hidden>
-  <path class="fb" d="M178 262 C150 170 200 52 320 48 C440 52 490 170 462 262 Z"/>
-  <g class="ln"><path d="M200 214 C198 150 240 92 300 82"/><path d="M440 214 C442 150 400 92 340 82"/><path d="M320 52 L320 150"/></g>
-  <path class="fb" d="M172 250 C160 280 166 318 186 336 C202 350 230 350 246 338 L236 268 Z"/>
-  <path class="fb" d="M468 250 C480 280 474 318 454 336 C438 350 410 350 394 338 L404 268 Z"/>
-  <path class="fb" d="M226 288 C212 322 218 366 240 398 L400 398 C422 366 428 322 414 288 C380 298 260 298 226 288 Z"/>
-  <path class="hole" d="M214 206 C230 188 280 186 298 200 C307 214 305 244 295 258 C279 271 236 271 221 259 C207 245 204 221 214 206 Z"/>
-  <path class="hole" d="M426 206 C410 188 360 186 342 200 C333 214 335 244 345 258 C361 271 404 271 419 259 C433 245 436 221 426 206 Z"/>
-  <g class="ln"><path d="M218 206 C236 192 278 192 294 204"/><path d="M422 206 C404 192 362 192 346 204"/></g>
-  <path class="fb" d="M304 204 L336 204 L330 268 L310 268 Z"/>
-  <path class="hole" d="M320 266 C300 270 290 300 292 322 C294 342 306 352 320 352 C334 352 346 342 348 322 C350 300 340 270 320 266 Z"/>
-  <ellipse cx="303" cy="328" rx="7" ry="13" fill="#3a4a42"/><ellipse cx="337" cy="328" rx="7" ry="13" fill="#3a4a42"/>
-  <path id="sept" d="M320 272 Q338 312 320 349" fill="none" stroke="#ebe6d8" stroke-width="6" stroke-linecap="round"/>
-  <path class="fb" d="M313 352 L320 364 L327 352 Z"/>
-  <ellipse class="hole" cx="252" cy="290" rx="4" ry="3"/><ellipse class="hole" cx="388" cy="290" rx="4" ry="3"/>
-  <path class="fb" d="M200 340 C200 382 208 430 238 466 C262 490 292 500 320 500 C348 500 378 490 402 466 C432 430 440 382 440 340 L424 344 C422 380 414 412 398 436 L242 436 C226 412 218 380 216 344 Z"/>
-  <ellipse class="hole" cx="262" cy="452" rx="5" ry="4"/><ellipse class="hole" cx="378" cy="452" rx="5" ry="4"/>
-  <g id="fUT">
-    <rect class="ftooth" x="244" y="384" width="12" height="17" rx="3"/><rect class="ftooth" x="384" y="384" width="12" height="17" rx="3"/>
-    <rect class="ftooth" x="257" y="384" width="10" height="19" rx="3"/><rect class="ftooth" x="373" y="384" width="10" height="19" rx="3"/>
-    <rect class="ftooth" x="268" y="384" width="11" height="21" rx="3"/><rect class="ftooth" x="361" y="384" width="11" height="21" rx="3"/>
-    <rect class="ftooth" x="280" y="384" width="12" height="26" rx="4"/><rect class="ftooth" x="348" y="384" width="12" height="26" rx="4"/>
-    <rect class="ftooth" x="293" y="384" width="11" height="23" rx="4"/><rect class="ftooth" x="336" y="384" width="11" height="23" rx="4"/>
-    <rect class="ftooth" x="305" y="384" width="14" height="27" rx="4"/><rect class="ftooth" x="321" y="384" width="14" height="27" rx="4"/>
-  </g>
-  <g id="fLT">
-    <rect class="ftooth" x="252" y="420" width="11" height="15" rx="3"/><rect class="ftooth" x="377" y="420" width="11" height="15" rx="3"/>
-    <rect class="ftooth" x="264" y="418" width="10" height="17" rx="3"/><rect class="ftooth" x="366" y="418" width="10" height="17" rx="3"/>
-    <rect class="ftooth" x="275" y="416" width="10" height="19" rx="3"/><rect class="ftooth" x="355" y="416" width="10" height="19" rx="3"/>
-    <rect class="ftooth" x="286" y="413" width="11" height="22" rx="4"/><rect class="ftooth" x="343" y="413" width="11" height="22" rx="4"/>
-    <rect class="ftooth" x="298" y="414" width="10" height="21" rx="3"/><rect class="ftooth" x="332" y="414" width="10" height="21" rx="3"/>
-    <rect class="ftooth" x="309" y="414" width="10" height="21" rx="3"/><rect class="ftooth" x="321" y="414" width="10" height="21" rx="3"/>
-  </g>
+<svg id="svgF" viewBox="0 0 640 520" role="img" aria-label="Skallen framifrån, renderad från en CT" hidden>
+  <defs>
+    <clipPath id="cEyeL"><use href="#eyeL"/></clipPath>
+    <clipPath id="cEyeR"><use href="#eyeR"/></clipPath>
+    <clipPath id="cFsL"><path d="M140 128 C172 154 246 160 284 142 C278 178 176 182 140 128Z"/></clipPath>
+    <clipPath id="cFsR"><path d="M526 128 C494 154 420 160 382 142 C388 178 490 182 526 128Z"/></clipPath>
+  </defs>
+  <image href="img/fr_skull.webp" width="640" height="520"/>
+  <image href="img/fr_teeth.webp" x="152.5" y="257" width="335" height="126" id="frWhite"/>
+  <path id="sept" d="M320 176 Q320 209 320 242" fill="none" stroke="#e6eef2" stroke-width="6" stroke-linecap="round"/>
   <g id="fEyes">
-    <path id="skinR" d="M352 220 C372 205 402 205 418 222 C402 213 372 213 352 220 Z" fill="#ff8fa8" opacity=".85"/>
-    <path id="eyeL" d="M222 234 C240 214 274 214 292 232 C274 246 240 248 222 234 Z" fill="#f4f7f8" stroke="#c9a58d" stroke-width="2"/>
-    <circle cx="258" cy="232" r="10" fill="#4d7d9c"/><circle cx="258" cy="232" r="4.5" fill="#16222a"/>
-    <path id="eyeR" d="M348 232 C366 214 400 214 418 234 C400 248 366 246 348 232 Z" fill="#f4f7f8" stroke="#c9a58d" stroke-width="2"/>
-    <circle id="irisR" cx="382" cy="232" r="10" fill="#4d7d9c"/><circle id="pupR" cx="382" cy="232" r="4.5" fill="#16222a"/>
-    <path id="tendon" d="M418 234 L429 236" stroke="#ff4f73" stroke-width="2.4" stroke-linecap="round"/>
-    <circle id="anchor" cx="429" cy="236" r="2.6" fill="#ff4f73"/>
+    <path id="skinR" d="M408 76 C432 52 490 50 514 70 C490 60 432 62 408 76 Z" fill="#ff8fa8" opacity=".85"/>
+    <path id="eyeL" d="M150 86 C176 60 232 58 262 84 C232 106 176 106 150 86 Z" fill="#f4f7f8" stroke="#c9a58d" stroke-width="2"/>
+    <g clip-path="url(#cEyeL)"><circle cx="206" cy="84" r="17.5" fill="#4d7d9c"/><circle cx="206" cy="84" r="8" fill="#16222a"/></g>
+    <path id="eyeR" d="M404 88 C432 62 488 60 516 84 C488 106 432 108 404 88 Z" fill="#f4f7f8" stroke="#c9a58d" stroke-width="2"/>
+    <g clip-path="url(#cEyeR)"><circle id="irisR" cx="460" cy="85" r="17.5" fill="#4d7d9c"/><circle id="pupR" cx="460" cy="85" r="8" fill="#16222a"/></g>
+    <path id="tendon" d="M516 84 L533 86" stroke="#ff4f73" stroke-width="2.6" stroke-linecap="round"/>
+    <circle id="anchor" cx="533" cy="86" r="3.6" fill="#ff4f73"/>
   </g>
   <g id="fat"></g>
-  <g id="impl" fill="#7fd1ff" stroke="#2b6b8f" stroke-width="1.5">
-    <path d="M220 266 C238 280 274 282 296 268 C284 290 236 292 220 266 Z"/><circle cx="240" cy="279" r="2" fill="#2b6b8f"/><circle cx="276" cy="281" r="2" fill="#2b6b8f"/>
-    <path d="M420 266 C402 280 366 282 344 268 C356 290 404 292 420 266 Z"/><circle cx="400" cy="279" r="2" fill="#2b6b8f"/><circle cx="364" cy="281" r="2" fill="#2b6b8f"/>
+  <g id="scafF">
+    <path d="M140 128 C172 154 246 160 284 142 C278 178 176 182 140 128Z" fill="#7fd1ff" fill-opacity=".22" stroke="#7fd1ff" stroke-width="2"/>
+    <path d="M526 128 C494 154 420 160 382 142 C388 178 490 182 526 128Z" fill="#7fd1ff" fill-opacity=".22" stroke="#7fd1ff" stroke-width="2"/>
+    <g clip-path="url(#cFsL)" id="fsL"></g>
+    <g clip-path="url(#cFsR)" id="fsR"></g>
   </g>
   <g id="shade">
-    <text class="lblS" x="24" y="34">Färgskala</text>
-    <rect x="24" y="46" width="34" height="22" rx="4" fill="#d9c58c"/><rect x="62" y="46" width="34" height="22" rx="4" fill="#e3d29f"/><rect x="100" y="46" width="34" height="22" rx="4" fill="#ecdfb5"/><rect x="138" y="46" width="34" height="22" rx="4" fill="#f2ebcf"/><rect x="176" y="46" width="34" height="22" rx="4" fill="#f8f5ea"/>
-    <path id="shadeMk" d="M41 74 l-8 12 h16 Z" fill="#5ee0a8"/>
+    <text class="lblS" x="24" y="452">Färgskala</text>
+    <rect x="24" y="464" width="34" height="22" rx="4" fill="#d9c58c"/><rect x="62" y="464" width="34" height="22" rx="4" fill="#e3d29f"/><rect x="100" y="464" width="34" height="22" rx="4" fill="#ecdfb5"/><rect x="138" y="464" width="34" height="22" rx="4" fill="#f2ebcf"/><rect x="176" y="464" width="34" height="22" rx="4" fill="#f8f5ea"/>
+    <path id="shadeMk" d="M41 492 l-8 12 h16 Z" fill="#5ee0a8"/>
   </g>
 </svg>
 
-<svg id="svgP" viewBox="0 0 640 520" role="img" aria-label="Gommen underifrån" hidden>
-  <text class="lblS" x="320" y="40" text-anchor="middle">Framtänderna</text>
-  <rect x="314" y="230" width="12" height="16" rx="2" fill="#c9d3da"/>
-  <g id="pL"></g>
-  <g id="pR"></g>
-  <path d="M320 120 L320 340" stroke="#5ee0a8" stroke-width="2" stroke-dasharray="5 5" id="sut"/>
-  <text class="lblS" x="320" y="378" text-anchor="middle">Mittsuturen</text>
+<svg id="svgP" viewBox="0 0 640 520" role="img" aria-label="Gommen underifrån, renderad från en CT" hidden>
+  <text class="lblS" x="320" y="62" text-anchor="middle">Framtänderna</text>
+  <g id="pL"><image href="img/pal_L.webp" width="320" height="520"/></g>
+  <g id="pR"><image href="img/pal_R.webp" x="320" width="320" height="520"/></g>
+  <path d="M320 112 L320 392" stroke="#5ee0a8" stroke-width="2" stroke-dasharray="5 5" id="sut"/>
+  <g id="pLd"></g>
+  <g id="pRd"></g>
+  <rect id="jack" x="313" y="222" width="14" height="28" rx="3" fill="#c9d3da" stroke="#55636c" stroke-width="1.5"/>
+  <text class="lblS" x="320" y="452" text-anchor="middle">Mittsuturen</text>
 </svg>
 
 <svg id="svgB" viewBox="0 0 640 520" role="img" aria-label="Vikt och BMI" hidden>
@@ -362,7 +297,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
           <li><i style="background:#ff4f73"></i>Snitt</li>
           <li><i style="background:#ffd24a"></i>Nerv</li>
           <li><i style="background:#a7b4bd"></i>Plattor och skruvar</li>
-          <li><i style="background:#7fd1ff"></i>Implantat och bihåla</li>
+          <li><i style="background:#7fd1ff"></i>Byggställning och bihåla</li>
         </ul>
       </div>
     </div>
@@ -387,7 +322,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
 </section>
 
 <div class="tool">
-  <div class="prog"><span id="prog">0 av 16 klara</span><span id="booked">0 bokade</span></div>
+  <div class="prog"><span id="prog">0 av 15 klara</span><span id="booked">0 bokade</span></div>
   <div class="meter" aria-hidden="true"><i id="bar"></i></div>
   <div class="btns">
     <button type="button" id="toggle">Visa alla detaljer</button>
@@ -633,23 +568,25 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
   </article>
 
   <article class="step" id="s14" data-n="14">
-    <div class="top"><span class="num">14</span><div><h3>Implantat under ögonen</h3><p class="sub">Specialanpassat implantat på benkanten under ögat</p></div></div>
-    <dl class="meta"><div><dt>Vem</dt><dd>Plastikkirurg eller käkkirurg</dd></div><div><dt>När</dt><dd>Efter käkoperationerna</dd></div></dl>
+    <div class="top"><span class="num">14</span><div><h3>Byggställning under ögonen</h3><p class="sub">3D-printad, så att eget ben växer in i stället för ett implantat</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Kliniker som forskar på metoden</dd></div><div><dt>När</dt><dd>Oklart, metoden är inte standard än</dd></div></dl>
     <div class="status" role="group" aria-label="Status för steg 14"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
     <button type="button" class="sk" data-n="14">Visa på skelettet</button>
     <details><summary>Allt om steget</summary><div class="body">
-      <h4>Vad det är</h4><p>Ett implantat som läggs på benkanten under ögat. Det opereras in genom snitt i munnen och i nedre ögonlocket.</p>
-      <div class="risk"><h4>Risker</h4><ul><li>I en serie med 87 patienter behövde 5 % en ny operation för att implantatet låg fel eller syntes, och 3 % fick ta bort det på grund av infektion.</li><li>Andra risker är att implantatet syns eller tränger ut, nervskada och blödning.</li></ul></div>
-      <h4>Fråga specialisten</h4><p class="ask">Vad händer om implantatet behöver tas bort?</p>
+      <h4>Vad det är</h4><p>En byggställning formas efter en 3D-röntgen, till exempel CBCT, och läggs på benkanten under ögat, där ett implantat annars skulle sitta. Kroppens eget ben växer in i den medan den långsamt löses upp, så att det till slut ska bli ditt eget ben i den planerade formen.</p>
+      <h4>Läget i dag</h4><p>Metoden används främst för att återskapa ben som saknas efter missbildningar, olyckor eller cancerkirurgi, och forskarna beskriver den som lovande. Studierna som länkas här handlar om att återskapa ben, inte om att forma om ett friskt ansikte.</p>
+      <div class="risk"><h4>Osäkert</h4><ul><li>Hur snabbt materialet bryts ned är svårt att förutsäga.</li><li>I en studie växte tätt ben vid kanterna, men inne i ställningen bildades bara små öar av ben. Formen blir alltså inte säkert som den planerades.</li><li>Rapporterade komplikationer är att ställningen kommer fram genom huden eller slemhinnan, att såret går upp och infektion.</li></ul></div>
+      <h4>Alternativet: implantat</h4><p>Ett färdigt implantat läggs på benkanten under ögat genom snitt i munnen och i nedre ögonlocket. I en serie med 87 patienter behövde 5 % en ny operation för att implantatet låg fel eller syntes, och 3 % fick ta bort det på grund av infektion. Andra risker är att implantatet syns eller tränger ut, nervskada och blödning.</p>
+      <h4>Fråga specialisten</h4><p class="ask">Gör ni byggställningar under ögonen på friska personer, och i så fall inom en studie? Hur ofta blir formen som planerat?</p>
       <label for="note-14">Mina anteckningar</label><textarea id="note-14" data-n="14"></textarea>
-      <p class="src">Källor: <a href="https://thieme-connect.com/products/ejournals/pdf/10.1055/s-0029-1242037.pdf" target="_blank" rel="noopener">Facial Plast Surg</a>, <a href="https://stanfordhealthcare.org/publications/873/87352.html" target="_blank" rel="noopener">Stanford</a>, <a href="https://plasticsurgerykey.com/?p=171016" target="_blank" rel="noopener">Plastic Surgery Key</a></p>
+      <p class="src">Källor: <a href="https://link.springer.com/article/10.1557/s43577-021-00261-7" target="_blank" rel="noopener">MRS Bulletin</a>, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11506235" target="_blank" rel="noopener">Braz Dent J, översikt</a>, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7759279" target="_blank" rel="noopener">Tissue Eng Part A</a>, <a href="https://repository.lsu.edu/vetmed_pubs/1204" target="_blank" rel="noopener">LSU</a>, <a href="https://www.scielo.br/j/bdj/a/cPyCj5CvxQtvnLYFb6QPz6t/?lang=en" target="_blank" rel="noopener">SciELO</a>, implantatet: <a href="https://thieme-connect.com/products/ejournals/pdf/10.1055/s-0029-1242037.pdf" target="_blank" rel="noopener">Facial Plast Surg</a>, <a href="https://stanfordhealthcare.org/publications/873/87352.html" target="_blank" rel="noopener">Stanford</a>, <a href="https://plasticsurgerykey.com/?p=171016" target="_blank" rel="noopener">Plastic Surgery Key</a></p>
     </div></details>
   </article>
 </section>
 
 <section class="phase" id="efterat">
-  <h2>Uppföljande ingrepp och nya implantatmetoder</h2>
-  <p>Det som kan komma efter, och en metod som fortfarande forskas på.</p>
+  <h2>Uppföljande ingrepp</h2>
+  <p>Det som kan komma efter käkoperationerna.</p>
 
   <article class="step" id="s15" data-n="15">
     <div class="top"><span class="num">15</span><div><h3>Ta bort skruvar och plattor</h3><p class="sub">En separat operation efter käkoperationerna</p></div></div>
@@ -664,27 +601,12 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
       <p class="src">Källor: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11943589/" target="_blank" rel="noopener">Medicina 2025</a>, <a href="https://boris-portal.unibe.ch/entities/publication/efd9c55e-459d-46c3-b2f6-e9715e2df874" target="_blank" rel="noopener">Berns universitet</a></p>
     </div></details>
   </article>
-
-  <article class="step" id="s16" data-n="16">
-    <div class="top"><span class="num">16</span><div><h3>3D-printad byggställning</h3><p class="sub">Kroppens eget ben växer in i en planerad form</p></div></div>
-    <dl class="meta"><div><dt>Vem</dt><dd>Kliniker som forskar på metoden</dd></div><div><dt>När</dt><dd>Oklart, metoden är inte standard än</dd></div></dl>
-    <div class="status" role="group" aria-label="Status för steg 16"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
-    <button type="button" class="sk" data-n="16">Visa på skelettet</button>
-    <details><summary>Allt om steget</summary><div class="body">
-      <h4>Vad det är</h4><p>En byggställning formas efter en 3D-röntgen, till exempel CBCT. Kroppens eget ben växer in i den medan den långsamt löses upp.</p>
-      <h4>Läget i dag</h4><p>Metoden används främst för att återskapa ben som saknas efter missbildningar, olyckor eller cancerkirurgi. Forskarna beskriver den som lovande.</p>
-      <div class="risk"><h4>Osäkert</h4><ul><li>Hur snabbt materialet bryts ned är svårt att förutsäga.</li><li>I en studie växte tätt ben vid kanterna, men inne i ställningen bildades bara små öar av ben.</li><li>Rapporterade komplikationer är att ställningen kommer fram genom huden eller slemhinnan, att såret går upp och infektion.</li></ul></div>
-      <h4>Fråga specialisten</h4><p class="ask">Gör någon detta för att forma ett friskt ansikte, och i så fall inom en studie?</p>
-      <label for="note-16">Mina anteckningar</label><textarea id="note-16" data-n="16"></textarea>
-      <p class="src">Källor: <a href="https://link.springer.com/article/10.1557/s43577-021-00261-7" target="_blank" rel="noopener">MRS Bulletin</a>, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11506235" target="_blank" rel="noopener">Braz Dent J, översikt</a>, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7759279" target="_blank" rel="noopener">Tissue Eng Part A</a>, <a href="https://repository.lsu.edu/vetmed_pubs/1204" target="_blank" rel="noopener">LSU</a>, <a href="https://www.scielo.br/j/bdj/a/cPyCj5CvxQtvnLYFb6QPz6t/?lang=en" target="_blank" rel="noopener">SciELO</a></p>
-    </div></details>
-  </article>
 </section>
 
 </main>
 
 <footer class="foot">
-  <p>Bilderna är förenklade ritningar som visar principen, inte din egen anatomi. Siffrorna kommer från studierna som är länkade i varje steg och gäller grupper av patienter. Den som undersöker dig kan säga vad som gäller för just dig. Status och anteckningar sparas bara på den här telefonen.</p>
+  <p>Skallen är renderad från en riktig CT av en annan person, exempel-CT:n FullHead från VTK, hämtad ur <a href="https://github.com/pyvista/vtk-data" target="_blank" rel="noopener">PyVistas arkiv vtk-data</a> (Apache 2.0), inte från din egen. Skallens topp saknades i undersökningen och är förlängd, och visdomständerna i underkäken är inritade. Rörelserna visar principen, inte dina millimeter. Siffrorna kommer från studierna som är länkade i varje steg och gäller grupper av patienter. Den som undersöker dig kan säga vad som gäller för just dig. Status och anteckningar sparas bara på den här telefonen.</p>
 </footer>
 
 <script>
@@ -704,8 +626,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
 
   const STEPS = [
     {n:1, chip:'Vikt', view:'B', title:'Gå upp i vikt', cap:'Pilen visar ditt BMI. Med 56 kg på 183 cm ligger du på 16,7, och gränsen för undervikt går vid 18,5. Målet 75 kg på 184 cm ger 22,2.'},
-    {n:2, chip:'Röntgen', view:'L', title:'Ceph-röntgen och CBCT', cap:'Röntgen sveper över skallen. Sedan sätts mätpunkter ut: S (turksadeln), N (näsroten), A (överkäkens front) och B (underkäkens front). Vinklarna mellan linjerna visar hur käkarna ligger mot skallbasen.'},
-    {n:3, chip:'Visdomständer', view:'L', title:'Ta bort visdomständerna', cap:'De röda tänderna längst bak är visdomständerna. Den nedre sitter där underkäken delas vid BSSO, och därför tas de ofta bort minst 6 månader före.'},
+    {n:2, chip:'Röntgen', view:'L', title:'Ceph-röntgen och CBCT', cap:'Röntgen sveper över skallen och visar benet inuti. Sedan sätts mätpunkter ut: S (turksadeln), N (näsroten), A (överkäkens front) och B (underkäkens front). Vinklarna mellan linjerna visar hur käkarna ligger mot skallbasen.'},
+    {n:3, chip:'Visdomständer', view:'L', title:'Ta bort visdomständerna', cap:'Visdomständerna är röda på röntgenbilden, längst bak i båda käkarna. Den nedre sitter där underkäken delas vid BSSO, och därför tas de ofta bort minst 6 månader före.'},
     {n:4, chip:'Tandställning', view:'L', title:'Tandställning', cap:'Fästen limmas på tänderna och en båge förs genom dem. Tänderna flyttas så att de passar ihop när käkarna har flyttats.'},
     {n:5, chip:'MARPE', view:'P', title:'MARPE', cap:'Gommen sedd underifrån, framtänderna överst. Apparaten sitter fast med fyra miniskruvar. När den skruvas isär öppnas mittsuturen så att överkäken vidgas, och ett glapp uppstår mellan framtänderna.'},
     {n:6, chip:'Blekning', view:'F', title:'Tandblekning', cap:'Gelen gör tänderna ljusare steg för steg, som pilen på färgskalan visar. Fyllningar och kronor ändrar inte färg, och resultatet håller oftast ett till tre år.'},
@@ -716,48 +638,74 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
     {n:11, chip:'Orbital dekompression', view:'L', title:'Orbital dekompression', cap:'Ögonhålans golv, den röda linjen, tas bort. Vävnaden bakom ögat får plats ned i bihålan (blå), och ögat sjunker några millimeter bakåt.'},
     {n:12, chip:'Ögonlock och ögonvrå', view:'F', title:'Blefaroplastik och kantoplastik', cap:'Närbild på ett öga. Den yttre ögonvrån lossas och fästs om mot benkanten (röd prick), så att formen ändras. Den rosa strimman över ögonlocket är huden som tas bort vid blefaroplastik.'},
     {n:13, chip:'Fett runt ögonen', view:'F', title:'Fettransplantation runt ögonen', cap:'Fettet sprutas in i små droppar runt ögonbrynen och under ögonen. En del av dropparna försvinner igen, eftersom bara en del av fettet överlever.'},
-    {n:14, chip:'Implantat under ögonen', view:'F', title:'Implantat under ögonen', cap:'Implantaten (blå) läggs på benkanten under ögonen och skruvas fast.'},
-    {n:15, chip:'Ta bort metall', view:'L', title:'Ta bort skruvar och plattor', cap:'Plattorna och skruvarna från käkoperationerna (grå) tas bort i en separat operation, om det behövs.'},
-    {n:16, chip:'Byggställning', view:'L', title:'3D-printad byggställning', cap:'Gallret är byggställningen på hakan. Benet växer in tätt från kanterna, men inne i ställningen bildas bara små öar, som i en av studierna.'}
+    {n:14, chip:'Byggställning under ögonen', view:'F', title:'Byggställning under ögonen', cap:'Gallret läggs på benkanten under ögonen, där ett implantat annars skulle sitta. Eget ben växer in tätt från kanterna, men inne i ställningen bildades bara små öar i en av studierna.'},
+    {n:15, chip:'Ta bort metall', view:'L', title:'Ta bort skruvar och plattor', cap:'Plattorna och skruvarna från käkoperationerna (grå) tas bort i en separat operation, om det behövs.'}
   ];
   const VIEW = {L:'Från sidan', F:'Framifrån', P:'Gommen underifrån', B:'Diagram'};
+  const VIEWX = {2:'Röntgen från sidan', 3:'Röntgen från sidan'};
+
+  const bez = (P, u) => { const m = 1 - u; return [0, 1].map(k => m*m*m*P[0][k] + 3*m*m*u*P[1][k] + 3*m*u*u*P[2][k] + u*u*u*P[3][k]); };
 
   /* zigzag along the BSSO cut */
   {
-    const P = [[346,360],[352,386],[372,404],[402,412]];
-    const bez = (u) => { const m = 1 - u; return [0, 1].map(k => m*m*m*P[0][k] + 3*m*m*u*P[1][k] + 3*m*u*u*P[2][k] + u*u*u*P[3][k]); };
+    const P = [[372,296],[376,328],[394,352],[430,366]];
     const pts = [];
-    for (let i = 0; i <= 24; i++) pts.push(bez(i / 24));
-    for (let i = 1; i <= 20; i++) pts.push([402 + 4 * i / 20, 412 + 76 * i / 20]);
+    for (let i = 0; i <= 24; i++) pts.push(bez(P, i / 24));
+    for (let i = 1; i <= 22; i++) pts.push([430 + 8 * i / 22, 366 + 100 * i / 22]);
     const out = pts.map((p, i) => {
       const q = pts[Math.min(i + 1, pts.length - 1)], r = pts[Math.max(i - 1, 0)];
       const dx = q[0] - r[0], dy = q[1] - r[1], len = Math.hypot(dx, dy) || 1;
-      const o = (i % 2 ? 4 : -4);
+      const o = (i % 2 ? 5 : -5);
       return (p[0] - dy / len * o).toFixed(1) + ',' + (p[1] + dx / len * o).toFixed(1);
     });
     $('zig').setAttribute('d', 'M' + out.join(' L'));
   }
 
-  /* scaffold cells */
+  /* nerve: fixed start, the rest follows the front part of the lower jaw */
+  const tf = (x, y, tx, ty, a, cx, cy) => { const r = a * Math.PI / 180, c = Math.cos(r), s = Math.sin(r); return [cx + (x - cx) * c - (y - cy) * s + tx, cy + (x - cx) * s + (y - cy) * c + ty]; };
+  const setNerve = (tx, ty, a) => {
+    const c2 = tf(360, 402, tx, ty, a, 380, 330), e = tf(473, 415, tx, ty, a, 380, 330);
+    $('nerve').setAttribute('d', 'M290 320 C300 370 ' + c2[0].toFixed(1) + ' ' + c2[1].toFixed(1) + ' ' + e[0].toFixed(1) + ' ' + e[1].toFixed(1));
+    $('nerveDot').setAttribute('cx', e[0].toFixed(1)); $('nerveDot').setAttribute('cy', e[1].toFixed(1));
+  };
+
+  /* scaffold cells under the eyes */
   const cells = [];
   {
-    const g = $('scafCells');
-    for (let x = 466; x < 530; x += 6) for (let y = 444; y < 504; y += 6) {
-      const cx = x + 2.5, cy = y + 2.5;
-      const r = Math.hypot((cx - 499) / 25, (cy - 474) / 24);
-      const isl = rnd() < 0.22;
-      const c = el('rect', {x: x, y: y, width: 5, height: 5, fill: '#ebe6d8', stroke: '#7fd1ff', 'stroke-width': 0.8, 'fill-opacity': 0});
-      g.appendChild(c);
-      cells.push({c, edge: r > 0.72, isl, d: rnd()});
+    const crescent = sx => {
+      const segs = [[[140,128],[172,154],[246,160],[284,142]], [[284,142],[278,178],[176,182],[140,128]]];
+      const pts = [];
+      for (const S of segs) for (let i = 0; i < 24; i++) pts.push(bez(S, i / 24));
+      return pts.map(([x, y]) => [sx(x), y]);
+    };
+    const inside = (x, y, poly) => {
+      let c = false;
+      for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const [xi, yi] = poly[i], [xj, yj] = poly[j];
+        if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
+      }
+      return c;
+    };
+    for (const [gid, sx] of [['fsL', x => x], ['fsR', x => 666 - x]]) {
+      const poly = crescent(sx), g = $(gid);
+      const xs = poly.map(p => p[0]), ys = poly.map(p => p[1]);
+      for (let x = Math.min(...xs) - 6; x < Math.max(...xs) + 6; x += 7) for (let y = Math.min(...ys) - 6; y < Math.max(...ys) + 6; y += 7) {
+        const cx = x + 3, cy = y + 3;
+        if (!inside(cx, cy, poly) && !inside(cx + 3, cy, poly) && !inside(cx - 3, cy, poly) && !inside(cx, cy + 3, poly) && !inside(cx, cy - 3, poly)) continue;
+        const edge = [[9, 0], [-9, 0], [0, 9], [0, -9]].some(([dx, dy]) => !inside(cx + dx, cy + dy, poly));
+        const c = el('rect', {x: x, y: y, width: 6, height: 6, fill: '#f1ece0', stroke: '#7fd1ff', 'stroke-width': 0.9, 'fill-opacity': 0});
+        g.appendChild(c);
+        cells.push({c, edge, isl: rnd() < 0.22, d: rnd()});
+      }
     }
   }
 
   /* ceph points */
-  const CP = [['S',318,238],['N',490,226],['A',511,352],['B',499,440],['Pog',511,470],['Me',492,495],['Go',296,468]];
+  const CP = [['S',285,86],['N',567,40],['A',549,262],['B',540,410],['Pog',531,448],['Me',497,480],['Go',252,374]];
   const cpEls = CP.map(([t, x, y]) => {
     const g = el('g', {});
-    g.appendChild(el('circle', {cx: x, cy: y, r: 5.5, fill: '#5ee0a8', stroke: '#0a1f17', 'stroke-width': 2}));
-    const tx = el('text', {x: x + (t === 'Go' ? -16 : 10), y: y - 9, class: 'lbl', 'text-anchor': t === 'Go' ? 'end' : 'start'});
+    g.appendChild(el('circle', {cx: x, cy: y, r: 6, fill: '#5ee0a8', stroke: '#0a1f17', 'stroke-width': 2}));
+    const tx = el('text', {x: x + (t === 'Go' ? -14 : 11), y: y - 9, class: 'lbl', 'text-anchor': t === 'Go' ? 'end' : 'start'});
     tx.textContent = t;
     g.appendChild(tx);
     $('cpts').appendChild(g);
@@ -768,31 +716,23 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
   const fats = [];
   {
     const g = $('fat');
-    const zones = [[214,300,174,196],[340,426,174,196],[222,296,264,286],[344,418,264,286]];
+    const zones = [[150,265,13,31],[395,510,13,31],[152,268,140,160],[398,515,140,160]];
     for (const [x0, x1, y0, y1] of zones) for (let i = 0; i < 16; i++) {
-      const c = el('circle', {cx: mix(x0, x1, rnd()).toFixed(1), cy: mix(y0, y1, rnd()).toFixed(1), r: (2.4 + rnd() * 1.6).toFixed(1), fill: '#ffc36b', stroke: '#9a6a22', 'stroke-width': 0.6});
+      const c = el('circle', {cx: mix(x0, x1, rnd()).toFixed(1), cy: mix(y0, y1, rnd()).toFixed(1), r: (3.6 + rnd() * 2.6).toFixed(1), fill: '#ffc36b', stroke: '#9a6a22', 'stroke-width': 0.8});
       g.appendChild(c);
       fats.push({c, d: rnd() * 0.45, lost: rnd() < 0.42});
     }
   }
 
-  /* palate halves */
+  /* palate expander, one half per side so it opens with the bone */
   {
-    const R = [[334,108,15,22,13],[356,121,35,18,12],[373,144,55,18,16],[385,174,70,19,17],[393,206,80,20,18],[400,246,86,28,28],[404,290,88,27,26]];
-    const half = (side) => {
-      const g = $(side > 0 ? 'pR' : 'pL');
+    const half = side => {
+      const g = $(side > 0 ? 'pRd' : 'pLd');
       const X = x => side > 0 ? x : 640 - x;
-      const arch = el('path', {d: 'M320 104 C' + X(350) + ' 106 ' + X(372) + ' 130 ' + X(384) + ' 170 C' + X(394) + ' 204 ' + X(402) + ' 250 ' + X(404) + ' 300', fill: 'none', stroke: '#ebe6d8', 'stroke-width': 46, 'stroke-linecap': 'round'});
-      g.appendChild(arch);
-      g.appendChild(el('path', {d: 'M320 132 C' + X(350) + ' 134 ' + X(366) + ' 160 ' + X(374) + ' 200 C' + X(380) + ' 236 ' + X(382) + ' 280 ' + X(380) + ' 316 L320 322 Z', fill: '#d6cdb6', stroke: '#9c937d', 'stroke-width': 1.2}));
-      for (const [x, y, a, w, h] of R) {
-        const cx = X(x), rot = side > 0 ? a : -a;
-        g.appendChild(el('rect', {x: cx - w / 2, y: y - h / 2, width: w, height: h, rx: 5, class: 'tooth', transform: 'rotate(' + rot + ' ' + cx + ' ' + y + ')'}));
-      }
-      g.appendChild(el('rect', {x: side > 0 ? 320 : 302, y: 214, width: 18, height: 46, rx: 5, fill: '#a7b4bd', stroke: '#55636c'}));
-      g.appendChild(el('path', {d: 'M' + X(334) + ' 236 L' + X(386) + ' 246', stroke: '#a7b4bd', 'stroke-width': 6, 'stroke-linecap': 'round'}));
-      g.appendChild(el('rect', {x: X(400) - 16, y: 230, width: 32, height: 32, rx: 6, fill: 'none', stroke: '#a7b4bd', 'stroke-width': 4}));
-      for (const y of [204, 270]) g.appendChild(el('circle', {cx: X(342), cy: y, r: 6, fill: '#55636c', stroke: '#d5dde2', 'stroke-width': 2}));
+      g.appendChild(el('path', {d: 'M' + X(336) + ' 236 L' + X(444) + ' 262', stroke: '#a7b4bd', 'stroke-width': 7, 'stroke-linecap': 'round', fill: 'none'}));
+      g.appendChild(el('rect', {x: X(466) - 24, y: 244, width: 48, height: 46, rx: 10, fill: 'none', stroke: '#a7b4bd', 'stroke-width': 5}));
+      g.appendChild(el('rect', {x: side > 0 ? 320 : 300, y: 205, width: 20, height: 62, rx: 6, fill: '#a7b4bd', stroke: '#55636c', 'stroke-width': 1.5}));
+      for (const y of [212, 262]) g.appendChild(el('circle', {cx: X(345), cy: y, r: 6.5, fill: '#55636c', stroke: '#d5dde2', 'stroke-width': 2}));
     };
     half(1); half(-1);
   }
@@ -824,8 +764,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
       ['Bestående domning efter BSSO, 19–30 år', 7.9, '7,9 %', false, 'Leidens universitet', 'https://scholarlypublications.universiteitleiden.nl/access/item%3A2942416/view'],
       ['Känselbortfall i hakan efter genioplastik', 6.5, '6,5 %', false, 'Int J Dent 2021', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8612779/'],
       ['Infektion efter genioplastik', 6, '6,0 %', false, 'Int J Dent 2021', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8612779/'],
-      ['Implantat under ögat, ny operation', 5, '5 %', false, 'Stanford', 'https://stanfordhealthcare.org/publications/873/87352.html'],
-      ['Implantat under ögat, borttaget på grund av infektion', 3, '3 %', false, 'Stanford', 'https://stanfordhealthcare.org/publications/873/87352.html']
+      ['Implantat under ögat (alternativet), ny operation', 5, '5 %', false, 'Stanford', 'https://stanfordhealthcare.org/publications/873/87352.html'],
+      ['Implantat under ögat (alternativet), borttaget på grund av infektion', 3, '3 %', false, 'Stanford', 'https://stanfordhealthcare.org/publications/873/87352.html']
     ];
     $('riskList').innerHTML = rows.map(([a, v, t, range, s, u]) => '<div class="rk"><p><b>' + a + '</b><em>' + t + '</em></p><div class="bar"><i class="' + (range ? 'range' : '') + '" style="width:' + (v / 50 * 100).toFixed(1) + '%"></i></div><small>Källa: <a href="' + u + '" target="_blank" rel="noopener">' + s + '</a></small></div>').join('');
   }
@@ -836,23 +776,31 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
   let cur = 7, t = 0, raf = 0;
   const show = (id, o) => { $(id).style.opacity = o; };
   const draw = (id, p) => { const e = $(id); e.style.strokeDasharray = '1 1'; e.style.strokeDashoffset = String(1 - p); e.style.opacity = p > 0 ? 1 : 0; };
-  const BONE = '#ebe6d8', HI = '#bfefd8';
+  const BONE = '#ebe6d8';
+  const EYE_R = 'M404 88 C432 62 488 60 516 84 C488 106 432 108 404 88 Z';
+
+  const PIECES = {imUp: [1, 1, 1], imM: [1, 0, 1], imMD: [0, 1, 0], imPX: [0, 1, 0], imCH: [0, 0, 1], imLF: [1, 1, 1]};
+  const pieces = mode => {
+    const k = mode === 7 ? 1 : mode === 9 ? 2 : 0;
+    for (const id in PIECES) $(id).style.display = PIECES[id][k] ? '' : 'none';
+    if (k === 1) $('imUp').setAttribute('clip-path', 'url(#cUpper)'); else $('imUp').removeAttribute('clip-path');
+    if (k === 2) $('imM').setAttribute('clip-path', 'url(#cNoChin)'); else $('imM').removeAttribute('clip-path');
+  };
 
   const reset = () => {
-    const L = svgs.L;
-    L.style.setProperty('--nerve', 0);
-    for (const id of ['useUp', 'usePX', 'useMD', 'useCH', 'useLF']) { $(id).style.setProperty('--bf', BONE); $(id).style.setProperty('--sf', BONE); }
-    for (const id of ['lefort', 'mdist', 'chin', 'ball', 'impl', 'scan', 'plBS']) $(id).removeAttribute('transform');
-    for (const id of ['brkU', 'brkL', 'plLF', 'plBS', 'plGE', 'cutLF', 'cutBS', 'cutGE', 'zig', 'eyeG', 'scaf', 'scan', 'ceph', 'fEyes', 'fat', 'impl', 'shade']) show(id, 0);
-    for (const id of ['wisU', 'wisL']) { show(id, 1); $(id).style.stroke = ''; $(id).style.strokeWidth = ''; }
+    pieces(0);
+    for (const id of ['lefort', 'mdist', 'chin', 'ball', 'scan', 'plBS', 'pL', 'pR', 'pLd', 'pRd']) $(id).removeAttribute('transform');
+    for (const id of ['brkU', 'brkL', 'plLF', 'plBS', 'plGE', 'cutLF', 'cutBS', 'cutGE', 'zig', 'eyeG', 'xr', 'scan', 'ceph', 'nerveG', 'fEyes', 'fat', 'scafF', 'shade', 'frWhite', 'xrNow', 'xrHl', 'sept']) show(id, 0);
+    setNerve(0, 0, 0);
+    $('scanR').setAttribute('width', '0');
     svgs.F.setAttribute('viewBox', '0 0 640 520');
-    svgs.F.style.setProperty('--tc', '#f8f6ee');
-    $('sept').setAttribute('d', 'M320 272 Q320 312 320 349');
-    $('pL').removeAttribute('transform'); $('pR').removeAttribute('transform');
-    $('eyeR').setAttribute('d', 'M348 232 C366 214 400 214 418 234 C400 248 366 246 348 232 Z');
-    $('tendon').setAttribute('d', 'M418 234 L429 236');
-    $('anchor').setAttribute('cy', '236');
+    $('sept').setAttribute('d', 'M320 176 Q320 209 320 242');
+    $('eyeR').setAttribute('d', EYE_R);
+    $('tendon').setAttribute('d', 'M516 84 L533 86');
+    $('anchor').setAttribute('cy', '86');
     for (const id of ['skinR', 'tendon', 'anchor']) $(id).style.opacity = '';
+    $('jack').setAttribute('x', '313'); $('jack').setAttribute('width', '14');
+    $('sut').style.opacity = 1;
   };
 
   const apply = (n, t) => {
@@ -865,48 +813,52 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
     }
     if (n === 2) {
       const p1 = seg(t, 0, 0.45), p2 = seg(t, 0.4, 1);
+      show('xr', 1);
+      $('scanR').setAttribute('width', (640 * p1).toFixed(1));
       show('scan', p1 > 0 && p1 < 1 ? 1 : 0);
-      $('scan').setAttribute('transform', 'translate(' + mix(70, 570, p1).toFixed(1) + ' 0)');
+      $('scan').setAttribute('transform', 'translate(' + (640 * p1).toFixed(1) + ' 0)');
       show('ceph', 1);
       cpEls.forEach((g, i) => { g.style.opacity = cl(p2 * 8 - i); });
       draw('lSN', cl(p2 * 2 - 0.6)); draw('lNA', cl(p2 * 2 - 0.9)); draw('lNB', cl(p2 * 2 - 1));
     }
     if (n === 3) {
-      const p = seg(t, 0.35, 1);
-      for (const id of ['wisU', 'wisL']) { $(id).style.stroke = '#ff4f73'; $(id).style.strokeWidth = '3'; show(id, 1 - p); }
+      show('xr', 1);
+      $('scanR').setAttribute('width', '640');
+      const g = seg(t, 0.35, 0.95);
+      show('xrHl', 1 - g);
+      show('xrNow', g);
     }
     if (n === 4) {
       const p = seg(t, 0, 0.8);
       show('brkU', p); show('brkL', p);
     }
-    if (n === 7 || n === 8 || n === 9 || n === 15 || n === 16) { show('wisU', 0); show('wisL', 0); }
     if (n === 7) {
-      svgs.L.style.setProperty('--nerve', 1);
+      show('nerveG', 1);
       show('brkU', 1); show('brkL', 1);
       const p1 = seg(t, 0, 0.3), p2 = seg(t, 0.3, 0.9), p3 = seg(t, 0.85, 1);
       draw('cutLF', p1); draw('cutBS', p1);
       $('cutLF').style.opacity = p1 > 0 ? 1 - 0.65 * p2 : 0;
       $('cutBS').style.opacity = p1 > 0 ? 1 - 0.65 * p2 : 0;
-      $('lefort').setAttribute('transform', 'translate(' + (8 * p2).toFixed(2) + ' ' + (-2 * p2).toFixed(2) + ') rotate(' + (-4 * p2).toFixed(2) + ' 400 360)');
-      const md = 'translate(' + (18 * p2).toFixed(2) + ' ' + (-1 * p2).toFixed(2) + ') rotate(' + (-5 * p2).toFixed(2) + ' 400 380)';
+      if (p2 > 0) pieces(7);
+      $('lefort').setAttribute('transform', 'translate(' + (14 * p2).toFixed(2) + ' ' + (-4 * p2).toFixed(2) + ') rotate(' + (-3 * p2).toFixed(2) + ' 380 300)');
+      const tx = 30 * p2, ty = -3 * p2, a = -4 * p2;
+      const md = 'translate(' + tx.toFixed(2) + ' ' + ty.toFixed(2) + ') rotate(' + a.toFixed(2) + ' 380 330)';
       $('mdist').setAttribute('transform', md);
       $('plBS').setAttribute('transform', md);
-      const hc = mixc(BONE, HI, cl(p1 * 1.2));
-      for (const id of ['useMD', 'useCH']) $(id).style.setProperty('--bf', hc);
-      $('useLF').style.setProperty('--sf', hc);
+      setNerve(tx, ty, a);
       show('plLF', p3); show('plBS', p3);
     }
     if (n === 8) {
-      svgs.L.style.setProperty('--nerve', 1);
+      show('nerveG', 1);
       draw('zig', seg(t, 0, 0.9));
     }
     if (n === 9) {
-      svgs.L.style.setProperty('--nerve', 1);
+      show('nerveG', 1);
       const p1 = seg(t, 0, 0.3), p2 = seg(t, 0.3, 0.9), p3 = seg(t, 0.85, 1);
       draw('cutGE', p1);
       $('cutGE').style.opacity = p1 > 0 ? 1 - 0.65 * p2 : 0;
-      $('chin').setAttribute('transform', 'translate(' + (12 * p2).toFixed(2) + ' ' + (7 * p2).toFixed(2) + ')');
-      $('useCH').style.setProperty('--bf', mixc(BONE, HI, cl(p1 * 1.2)));
+      if (p2 > 0) pieces(9);
+      $('chin').setAttribute('transform', 'translate(' + (22 * p2).toFixed(2) + ' ' + (13 * p2).toFixed(2) + ')');
       show('plGE', p3);
     }
     if (n === 11) {
@@ -914,47 +866,45 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
       const p1 = seg(t, 0, 0.35), p2 = seg(t, 0.3, 1);
       const f = $('floorL');
       f.style.stroke = mixc(BONE, '#ff4f73', p1);
-      f.style.strokeDasharray = p1 > 0.5 ? '6 5' : 'none';
-      $('blobL').setAttribute('ry', (3 + 15 * p2).toFixed(1));
-      $('blobL').setAttribute('cy', (272 + 12 * p2).toFixed(1));
-      $('ball').setAttribute('transform', 'translate(' + (-8 * p2).toFixed(2) + ' 0)');
+      f.style.strokeDasharray = p1 > 0.5 ? '7 6' : 'none';
+      $('blobL').setAttribute('ry', (4 + 20 * p2).toFixed(1));
+      $('blobL').setAttribute('cy', (152 + 18 * p2).toFixed(1));
+      $('ball').setAttribute('transform', 'translate(' + (-12 * p2).toFixed(2) + ' 0)');
     }
     if (n === 15) {
       const p = seg(t, 0.15, 0.9);
       show('plLF', 1 - p); show('plBS', 1 - p); show('plGE', 1 - p);
     }
-    if (n === 16) {
-      show('scaf', 1);
-      for (const k of cells) {
-        const start = k.edge ? 0.05 + k.d * 0.25 : 0.35 + k.d * 0.4;
-        const max = k.edge ? 1 : (k.isl ? 0.95 : 0.12);
-        k.c.setAttribute('fill-opacity', (max * seg(t, start, start + 0.3)).toFixed(2));
-      }
-    }
     if (n === 5) {
       const p = seg(t, 0, 1);
-      $('pR').setAttribute('transform', 'rotate(' + (3.5 * p).toFixed(2) + ' 320 340) translate(' + (5 * p).toFixed(2) + ' 0)');
-      $('pL').setAttribute('transform', 'rotate(' + (-3.5 * p).toFixed(2) + ' 320 340) translate(' + (-5 * p).toFixed(2) + ' 0)');
+      const r = 'rotate(' + (0.8 * p).toFixed(2) + ' 320 400) translate(' + (11 * p).toFixed(2) + ' 0)';
+      const l = 'rotate(' + (-0.8 * p).toFixed(2) + ' 320 400) translate(' + (-11 * p).toFixed(2) + ' 0)';
+      $('pR').setAttribute('transform', r); $('pRd').setAttribute('transform', r);
+      $('pL').setAttribute('transform', l); $('pLd').setAttribute('transform', l);
+      const w = 14 + 22 * p;
+      $('jack').setAttribute('x', (320 - w / 2).toFixed(1)); $('jack').setAttribute('width', w.toFixed(1));
       $('sut').style.opacity = 1 - p * 0.7;
     }
     if (n === 6) {
       const p = seg(t, 0, 1);
-      svgs.F.style.setProperty('--tc', mixc('#e3cf96', '#f8f6ee', p));
+      show('frWhite', p);
       show('shade', 1);
-      $('shadeMk').setAttribute('transform', 'translate(' + (38 * 3.6 * p).toFixed(1) + ' 0)');
+      $('shadeMk').setAttribute('transform', 'translate(' + (38 * 4 * p).toFixed(1) + ' 0)');
     }
+    if (STEPS[n - 1].view === 'F' && n !== 6) show('frWhite', 1);
     if (n === 10) {
       const p = seg(t, 0, 1);
-      $('sept').setAttribute('d', 'M320 272 Q' + (346 - 26 * p).toFixed(1) + ' 312 320 349');
+      show('sept', 1);
+      $('sept').setAttribute('d', 'M320 176 Q' + (346 - 26 * p).toFixed(1) + ' 209 320 242');
     }
     if (n === 12) {
       show('fEyes', 1);
       const z = seg(t, 0, 0.25), p = seg(t, 0.25, 0.9);
-      const vb = [mix(0, 310, z), mix(0, 168, z), mix(640, 164, z), mix(520, 133, z)];
+      const vb = [mix(0, 380, z), mix(0, 30, z), mix(640, 180, z), mix(520, 146, z)];
       svgs.F.setAttribute('viewBox', vb.map(v => v.toFixed(1)).join(' '));
-      const lx = mix(418, 424, p), ly = mix(234, 226, p), ax = 429, ay = mix(236, 227, p);
-      $('eyeR').setAttribute('d', 'M348 232 C366 214 400 ' + mix(214, 210, p).toFixed(1) + ' ' + lx.toFixed(1) + ' ' + ly.toFixed(1) + ' C400 ' + mix(248, 244, p).toFixed(1) + ' 366 246 348 232 Z');
-      $('tendon').setAttribute('d', 'M' + lx.toFixed(1) + ' ' + ly.toFixed(1) + ' L' + ax + ' ' + ay.toFixed(1));
+      const lx = mix(516, 522, p), ly = mix(84, 76, p), ay = mix(86, 77, p);
+      $('eyeR').setAttribute('d', 'M404 88 C432 62 488 ' + mix(60, 56, p).toFixed(1) + ' ' + lx.toFixed(1) + ' ' + ly.toFixed(1) + ' C488 ' + mix(106, 102, p).toFixed(1) + ' 432 108 404 88 Z');
+      $('tendon').setAttribute('d', 'M' + lx.toFixed(1) + ' ' + ly.toFixed(1) + ' L533 ' + ay.toFixed(1));
       $('anchor').setAttribute('cy', ay.toFixed(1));
       $('skinR').style.opacity = 0.85 * (1 - seg(t, 0.5, 0.95));
     }
@@ -968,9 +918,12 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
       }
     }
     if (n === 14) {
-      const p = seg(t, 0, 0.7);
-      show('impl', p);
-      $('impl').setAttribute('transform', 'translate(0 ' + (10 * (1 - p)).toFixed(1) + ')');
+      show('scafF', 1);
+      for (const k of cells) {
+        const start = k.edge ? 0.05 + k.d * 0.25 : 0.35 + k.d * 0.4;
+        const max = k.edge ? 1 : (k.isl ? 0.95 : 0.12);
+        k.c.setAttribute('fill-opacity', (max * seg(t, start, start + 0.3)).toFixed(2));
+      }
     }
   };
 
@@ -1005,7 +958,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
     const s = STEPS[n - 1];
     $('vTitle').textContent = s.n + '. ' + s.title;
     $('vCap').textContent = s.cap;
-    $('vView').textContent = VIEW[s.view];
+    $('vView').textContent = VIEWX[n] || VIEW[s.view];
     $('vGo').setAttribute('href', '#s' + n);
     for (const b of chips.querySelectorAll('button')) b.setAttribute('aria-pressed', String(Number(b.dataset.n) === n));
     const cb = chips.querySelector('[data-n="' + n + '"]');
@@ -1017,8 +970,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
   chips.addEventListener('click', e => { const b = e.target.closest('button'); if (b) select(Number(b.dataset.n), true); });
   range.addEventListener('input', () => { stop(); t = Number(range.value) / 1000; render(); $('vPlay').textContent = t >= 0.999 ? 'Spela igen' : 'Spela upp'; });
   $('vPlay').addEventListener('click', () => { if (raf) stop(); else play(); });
-  $('vPrev').addEventListener('click', () => select(cur > 1 ? cur - 1 : 16, true));
-  $('vNext').addEventListener('click', () => select(cur < 16 ? cur + 1 : 1, true));
+  $('vPrev').addEventListener('click', () => select(cur > 1 ? cur - 1 : STEPS.length, true));
+  $('vNext').addEventListener('click', () => select(cur < STEPS.length ? cur + 1 : 1, true));
   for (const b of document.querySelectorAll('.sk')) b.addEventListener('click', () => {
     select(Number(b.dataset.n), true);
     const v = $('skelett');
@@ -1036,6 +989,12 @@ button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visibl
   const KEY = 'ansiktsplan-v1';
   let st = {};
   try { st = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { st = {}; }
+  if (st.n16 || st.s16) {
+    st.n14 = [st.n14, st.n16].filter(Boolean).join('\n\n');
+    st.s14 = Math.max(Number(st.s14 || 0), Number(st.s16 || 0));
+    delete st.n16; delete st.s16;
+    try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+  }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
   const steps = [...document.querySelectorAll('.step')];
   const total = steps.length;

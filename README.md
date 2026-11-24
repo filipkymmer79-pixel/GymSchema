@@ -569,9 +569,9 @@ Färger, mätning och bockar sparas bara på telefonen. Svar som sparades av fö
 
 Planen steg för steg som app: https://filipkymmer79-pixel.github.io/GymSchema/ansiktsplan/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*.
 
-- **Skelettet** visar varje steg på en ritad skalle: från sidan, framifrån eller gommen underifrån. Reglaget går från *Före* till *Efter*, och *Spela upp* visar rörelsen: snitten (röda), nerven till underläppen (gul), plattorna och hur käkarna flyttas och vrids. Alla 16 steg finns som knappar överst, och *Visa på skelettet* i varje steg hoppar dit.
+- **Skelettet** visar varje steg på en riktig skalle, renderad från en CT: från sidan, framifrån, gommen underifrån och som röntgenbild. Reglaget går från *Före* till *Efter*, och *Spela upp* visar rörelsen: snitten (röda), nerven till underläppen (gul), plattorna och hur käkarna flyttas och vrids. Alla 15 steg finns som knappar överst, och *Visa på skelettet* i varje steg hoppar dit. Steg 14 är den 3D-printade byggställningen under ögonen, med implantatet som alternativ.
 - **Tidslinjen** visar ungefär när varje steg kommer, i månader, med medianer från studierna: omkring 31 månader för tandställning och käkoperation.
 - **Risker i siffror** visar riskerna som studierna anger, med källan på varje rad.
 - **Stegen** har vad det är, vem som gör det, återhämtning, risker, en fråga till specialisten och länkar till källorna. Varje steg kan markeras som planerat, bokat eller klart och har plats för egna anteckningar. *Kopiera alla frågor* ger frågorna som en lista att ta med till ett besök.
 
-Status och anteckningar sparas bara på telefonen. Bilderna är förenklade ritningar som visar principen, inte någons egen anatomi. Kontrollerat i Chromium på 390 och 1280 px, ljust och mörkt. Inte provat på en riktig iPhone.
+Status och anteckningar sparas bara på telefonen. Skallen kommer från exempel-CT:n *FullHead* från VTK, hämtad ur PyVistas arkiv [vtk-data](https://github.com/pyvista/vtk-data) (Apache 2.0), alltså en annan persons huvud, så bilderna visar principen och inte någons egen anatomi. Skallens topp var avskuren i undersökningen och är förlängd, och visdomständerna i underkäken är inritade. Kontrollerat i Chromium på 390 och 1280 px, ljust och mörkt. Inte provat på en riktig iPhone.

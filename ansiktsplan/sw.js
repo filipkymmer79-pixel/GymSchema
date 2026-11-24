@@ -1,7 +1,7 @@
 // Ansiktsplanen: offline-skal. Bara den här appens egna cacher städas, eftersom GymSchema och de andra apparna ligger på samma webbplats och har egna.
 const PREFIX = "ansiktsplan-";
-const CACHE = PREFIX + "v202611241530";
-const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
+const CACHE = PREFIX + "v202611241805";
+const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png", "./img/lat_skull.webp", "./img/lat_mand.webp", "./img/lat_lf.webp", "./img/lat_front.webp", "./img/lat_xray.webp", "./img/lat_xray_now.webp", "./img/lat_xray_hl.webp", "./img/fr_skull.webp", "./img/fr_teeth.webp", "./img/pal_L.webp", "./img/pal_R.webp"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith(PREFIX) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {
