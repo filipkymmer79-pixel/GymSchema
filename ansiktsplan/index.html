@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00a86b">
+<title>Ansiktsplanen</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday and clinical: calm, exact, few hues
+   IDEA an X-ray light box beside a medicine-box treatment plan: bone on a dark viewer, labelled panels below
+   PICTURE a skull you can scrub from before to after, one animation per procedure, in side, front and palate views
+   COLOUR white ground, emerald band #00a86b, deep viewer #0a1f17, pale pink #ffd6e0 risk panels, red cut lines, yellow nerve
+   TYPE Schibsted Grotesk 800 display + Schibsted Grotesk text
+   LAYOUT band with title and figure; viewer (stage + controls) as the first-screen picture; timeline, risks, then one column of steps; phone stacks chips, stage, controls */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#04140d);--ink:light-dark(#0b0f0d,#e8f3ee);--mut:light-dark(#4b5650,#a9c1b5);--band:light-dark(#00a86b,#0b5a3d);--bink:light-dark(#03130c,#effff7);--pink:light-dark(#ffd6e0,#3b1821);--pinkink:light-dark(#4b1020,#ffe3ea);--line:light-dark(#dfe5e1,#18392c);--card:light-dark(#ffffff,#061a12);--soft:light-dark(#eef7f2,#0b2619);--acc:light-dark(#007a4d,#5ee0a8);--stage:#0a1f17}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:clip}
+a{color:var(--acc)}
+h2{margin:0;font-size:clamp(24px,3.4vw,32px);line-height:1.1;letter-spacing:-.01em;font-weight:800;text-wrap:balance}
+.band{background:var(--band);color:var(--bink);padding:clamp(24px,3.4vw,44px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.head{display:grid;gap:16px}
+h1{margin:0;font-size:clamp(34px,6vw,52px);line-height:1.05;letter-spacing:-.02em;font-weight:800;text-wrap:balance}
+.lede{margin:10px 0 0;font-size:17px;max-width:62ch}
+.big b{display:block;font-size:clamp(52px,8vw,80px);line-height:1;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.big span{display:block;font-size:14px;max-width:28ch;margin-top:6px}
+.big a{color:inherit}
+.viewer{padding:22px max(5vw,16px) 8px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+.chips button{flex:none;scroll-snap-align:start;min-height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--line);background:var(--soft);color:var(--ink);font:inherit;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap}
+.chips button b{color:var(--acc);margin-right:6px}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips button[aria-pressed="true"] b{color:var(--bg)}
+.vgrid{display:grid;gap:18px;margin-top:6px}
+.stage{position:relative;background:var(--stage);border-radius:16px;aspect-ratio:640/520;overflow:hidden}
+.stage svg{position:absolute;inset:0;width:100%;height:100%}
+.stage svg[hidden]{display:none}
+.vview{margin:0;font-size:14px;color:var(--mut);font-weight:600}
+.vinfo h2{margin-top:2px}
+#vCap{margin:10px 0 0;max-width:60ch}
+.scrub{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;margin-top:18px;font-weight:700;font-size:15px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--band) var(--p,0%),var(--soft) var(--p,0%))}
+input[type=range]::-moz-range-track{height:8px;border-radius:4px;background:var(--soft)}
+input[type=range]::-moz-range-progress{height:8px;border-radius:4px;background:var(--band)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--ink);margin-top:-10px;border:3px solid var(--bg)}
+input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--ink);border:3px solid var(--bg)}
+.vbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.vbtns button,.btns button,.sk{min-height:44px;padding:0 16px;border-radius:22px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+.vbtns #vPlay{background:var(--ink);color:var(--bg)}
+#vGo{display:inline-flex;align-items:center;min-height:44px;margin-top:6px;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:14px 0 0;padding:0;list-style:none;font-size:14px;color:var(--mut)}
+.legend i{display:inline-block;width:18px;height:4px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.sec{padding:clamp(28px,4vw,48px) max(5vw,16px)}
+.sec .in{max-width:1040px;margin:0 auto}
+.note{margin:8px 0 0;color:var(--mut)}
+.axis{position:relative;height:22px;margin:20px 0 4px;font-size:13px;color:var(--mut)}
+.axis span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
+.axis span:first-child{transform:none}
+.axis span:last-child{transform:translateX(-100%)}
+.gr{padding:9px 0;border-top:1px solid var(--line)}
+.gr p{margin:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;font-size:15px}
+.gr p b{font-weight:700}
+.gr p span{color:var(--mut)}
+.track{position:relative;height:14px;margin-top:6px;background:repeating-linear-gradient(90deg,var(--soft) 0 calc(16.666% - 1px),var(--line) calc(16.666% - 1px) 16.666%);border-radius:3px}
+.track i{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--band);min-width:6px}
+.track i.op{background:repeating-linear-gradient(135deg,var(--band) 0 6px,color-mix(in srgb,var(--band) 35%,transparent) 6px 12px)}
+.track i.fade{background:linear-gradient(90deg,var(--band),color-mix(in srgb,var(--band) 0%,transparent))}
+.track i.cut{background:#e0284f}
+.rk{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;padding:10px 0;border-top:1px solid var(--line)}
+.rk p{margin:0;display:flex;justify-content:space-between;gap:12px;font-size:15px}
+.rk p b{font-weight:600}
+.rk p em{font-style:normal;font-weight:800;white-space:nowrap}
+.rk .bar{height:12px;background:var(--soft);border-radius:3px;position:relative}
+.rk .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:#e0284f}
+.rk .bar i.range{background:repeating-linear-gradient(135deg,#e0284f 0 6px,#f28aa0 6px 12px)}
+.rk small{font-size:13px;color:var(--mut)}
+.tool{max-width:860px;margin:0 auto;padding:22px max(5vw,16px) 0}
+.prog{display:flex;justify-content:space-between;gap:12px;font-weight:700}
+.meter{height:10px;background:var(--soft);border-radius:5px;overflow:hidden;margin-top:8px}
+.meter i{display:block;height:100%;width:0;background:var(--band);transition:width .4s}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.phases{display:flex;gap:8px;overflow-x:auto;padding:12px max(5vw,16px);margin-top:18px;border-block:1px solid var(--line);background:var(--bg)}
+.phases a{flex:none;min-height:44px;display:inline-flex;align-items:center;padding:0 14px;border-radius:22px;background:var(--soft);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+.phase{max-width:860px;margin:0 auto;padding:30px max(5vw,16px) 4px}
+.phase h2{font-size:26px}
+.phase>p{margin:6px 0 0;color:var(--mut)}
+.step{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:18px;margin-top:14px}
+.top{display:flex;gap:14px;align-items:flex-start}
+.num{flex:none;width:36px;height:36px;border-radius:50%;background:var(--soft);color:var(--acc);font-weight:800;display:grid;place-items:center}
+.step[data-status="1"] .num{background:var(--ink);color:var(--bg)}
+.step[data-status="2"] .num{background:var(--band);color:var(--bink)}
+.step h3{margin:3px 0 0;font-size:19px;line-height:1.25}
+.sub{margin:3px 0 0;color:var(--mut);font-size:15px}
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px;margin:14px 0 0}
+.meta dt{font-size:13px;color:var(--mut)}
+.meta dd{margin:0;font-size:15px;font-weight:600}
+.status{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.status button{min-height:44px;padding:0 15px;border-radius:22px;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-size:15px;cursor:pointer}
+.status button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sk{margin-top:10px;border-color:var(--acc);color:var(--acc)}
+details{margin-top:14px;border-top:1px solid var(--line)}
+summary{min-height:48px;display:flex;align-items:center;cursor:pointer;font-weight:700;color:var(--acc);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";margin-left:auto;font-size:24px;line-height:1}
+details[open] summary::after{content:"−"}
+.body h4{margin:16px 0 4px;font-size:15px}
+.body h4:first-child{margin-top:4px}
+.body p{margin:0}
+.risk{background:var(--pink);color:var(--pinkink);border-radius:10px;padding:12px 14px;margin-top:16px}
+.risk h4{margin:0 0 4px}
+.risk ul{margin:0;padding-left:18px}
+.risk li+li{margin-top:4px}
+.ask{font-weight:600}
+label{display:block;font-weight:700;font-size:15px;margin-top:16px}
+textarea{display:block;width:100%;min-height:88px;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);margin-top:6px;resize:vertical}
+.src{font-size:14px;color:var(--mut);margin-top:14px}
+.foot{max-width:860px;margin:36px auto 56px;padding:0 max(5vw,16px);color:var(--mut);font-size:14px}
+button:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+/* drawing */
+.ln{fill:none;stroke:#a99f86;stroke-width:1.4;stroke-linecap:round}
+.hole{fill:#1d2c25}
+.cut{fill:none;stroke:#ff4f73;stroke-width:3.2;stroke-linecap:round}
+.zig{fill:none;stroke:#7fd1ff;stroke-width:2.6;stroke-linejoin:round}
+.tooth{fill:#fbf8ef;stroke:#9c937d;stroke-width:1.2}
+.plate rect{fill:#a7b4bd;stroke:#55636c;stroke-width:1}
+.plate circle{fill:#55636c}
+.brk rect{fill:#d5dde2;stroke:#6c7a83;stroke-width:.8}
+.brk polyline{fill:none;stroke:#9aa7b0;stroke-width:1.6}
+.lbl{fill:#ffffff;font:700 22px "Schibsted Grotesk",system-ui,sans-serif;paint-order:stroke;stroke:#0a1f17;stroke-width:5px;stroke-linejoin:round}
+.lblS{fill:#cfe9dc;font:600 19px "Schibsted Grotesk",system-ui,sans-serif;paint-order:stroke;stroke:#0a1f17;stroke-width:5px;stroke-linejoin:round}
+.fb{fill:#ebe6d8;stroke:#9c937d;stroke-width:1.6;stroke-linejoin:round}
+.fbd{fill:#ddd6c4;stroke:#9c937d;stroke-width:1.4}
+.ftooth{fill:var(--tc,#f8f6ee);stroke:#9c937d;stroke-width:1.2}
+@media(min-width:760px){.head{grid-template-columns:minmax(0,1fr) auto;align-items:end}}
+@media(min-width:900px){.vgrid{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);align-items:start}.phases{position:sticky;top:0;z-index:2}.vinfo{position:sticky;top:76px}}
+@media(max-width:480px){.meta{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.band{padding-block:22px}.lede{font-size:16px}.big b{font-size:46px}.big span{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.meter i{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <h1>Ansiktsplanen, steg för steg</h1>
+        <p class="lede">Din lista i den ordning du skrev den. Varje steg visas på skelettet, före och efter, med vad det innebär, vem som gör det, återhämtning och risker. Siffrorna kommer från källorna som är länkade i varje steg.</p>
+      </div>
+      <div class="big">
+        <b>31 mån</b>
+        <span>så lång tid tog tandställning och käkoperation tillsammans, i median, i en finsk studie. <a href="https://informahealthcare.com/doi/abs/10.1080/00016357.2017.1317830" target="_blank" rel="noopener">Källa</a></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="viewer" id="skelett" aria-label="Skelettet">
+  <div class="wrap">
+    <div class="chips" id="chips" aria-label="Välj steg"></div>
+    <div class="vgrid">
+      <div class="stage" id="stage">
+
+<svg id="svgL" viewBox="0 0 640 520" role="img" aria-label="Skallen från sidan">
+  <defs>
+    <linearGradient id="scanG" x1="0" x2="1"><stop offset="0" stop-color="#5ee0a8" stop-opacity="0"/><stop offset=".5" stop-color="#5ee0a8" stop-opacity=".85"/><stop offset="1" stop-color="#5ee0a8" stop-opacity="0"/></linearGradient>
+    <g id="skull">
+      <path style="fill:var(--sf,#ebe6d8)" stroke="#8f866f" stroke-width="2" stroke-linejoin="round" d="M232 372 C190 372 128 340 104 288 C82 240 84 170 120 118 C160 62 236 34 318 34 C400 34 468 72 497 132 C512 162 514 192 508 208 C506 214 500 220 492 224 L490 226 L503 248 L524 280 C512 284 500 296 500 312 C500 322 506 328 514 330 L532 333 L512 340 C513 352 515 364 512 374 L470 372 L430 368 L398 362 C388 360 382 352 380 344 L372 330 C360 318 330 314 300 316 C292 316 286 312 278 310 C268 309 262 312 258 318 C254 330 250 348 246 360 C242 368 238 372 232 372 Z"/>
+      <g fill="none" stroke="#b4aa90" stroke-width="1.4" stroke-linecap="round">
+        <path d="M326 36 C330 70 320 96 334 128 C342 152 332 178 346 204 C352 220 356 236 368 248"/>
+        <path d="M150 84 C146 120 134 150 140 190 C144 230 130 262 140 300"/>
+        <path d="M368 248 C340 252 300 262 284 290"/>
+        <path d="M480 118 C430 86 330 78 240 96 C190 108 150 150 142 210"/>
+        <path d="M300 300 C330 296 380 292 420 290"/>
+        <path d="M418 266 C410 282 412 302 426 318 C436 328 448 332 462 332"/>
+        <path d="M488 230 C482 250 488 268 500 282"/>
+        <path d="M424 222 C428 206 444 200 462 204"/>
+      </g>
+      <ellipse cx="452" cy="238" rx="30" ry="31" fill="#1d2c25"/>
+      <path d="M436 216 C446 210 462 212 470 222" fill="none" stroke="#334a3f" stroke-width="3"/>
+      <ellipse cx="262" cy="330" rx="10" ry="12" fill="#1d2c25"/>
+      <ellipse cx="470" cy="292" rx="4" ry="3" fill="#1d2c25"/>
+    </g>
+    <g id="mand">
+      <path style="fill:var(--bf,#ebe6d8)" stroke="#8f866f" stroke-width="2" stroke-linejoin="round" d="M262 334 C266 360 272 400 276 430 C279 452 288 468 302 474 C340 482 400 486 440 490 C462 492 480 496 492 494 C506 490 512 476 510 462 C508 452 500 446 498 438 C498 428 502 420 506 414 L470 412 L430 410 L392 410 C372 408 358 392 352 372 C346 350 342 332 340 318 C334 322 322 340 310 344 C300 344 292 336 286 330 C284 326 282 322 280 320 L270 318 Z"/>
+      <ellipse style="fill:var(--bf,#ebe6d8)" stroke="#8f866f" stroke-width="2" cx="273" cy="322" rx="13" ry="9" transform="rotate(-18 273 322)"/>
+      <path d="M354 378 C366 398 388 412 420 420" fill="none" stroke="#b4aa90" stroke-width="1.4" stroke-linecap="round"/>
+      <ellipse cx="458" cy="446" rx="4.5" ry="3.5" fill="#1d2c25"/>
+      <path style="opacity:var(--nerve,0)" d="M318 384 C350 420 400 438 454 446" fill="none" stroke="#ffd24a" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round"/>
+      <g fill="#fbf8ef" stroke="#9c937d" stroke-width="1.2">
+        <rect x="407" y="396" width="18" height="16" rx="4"/>
+        <rect x="426" y="396" width="19" height="17" rx="4"/>
+        <rect x="447" y="396" width="13" height="17" rx="4"/>
+        <rect x="461" y="395" width="12" height="18" rx="4"/>
+        <rect x="474" y="390" width="11" height="24" rx="5"/>
+        <rect x="485" y="392" width="9" height="22" rx="4"/>
+        <rect x="494" y="391" width="9" height="23" rx="4" transform="rotate(6 498 402)"/>
+      </g>
+    </g>
+    <clipPath id="cUpper"><path clip-rule="evenodd" d="M-60 -60H700V600H-60Z M372 343 L545 325 L560 440 L372 440Z"/></clipPath>
+    <clipPath id="cLefort"><path d="M372 342 L545 324 L560 440 L372 440Z"/></clipPath>
+    <clipPath id="cProx"><path clip-rule="evenodd" d="M-60 -60H700V600H-60Z M347 360 C353 386 373 404 403 412 L407 490 L407 560 L620 560 L620 360Z"/></clipPath>
+    <clipPath id="cDist"><path clip-rule="evenodd" d="M318 378 L346 360 L620 360 L620 560 L318 560Z M425 491 L433 473 C457 467 487 461 507 456 L620 456 L620 560 L425 560Z"/></clipPath>
+    <clipPath id="cChin"><path d="M424 490 L432 472 C456 466 486 460 506 455 L620 455 L620 560 L424 560Z"/></clipPath>
+    <clipPath id="cScaf"><path d="M476 458 C494 446 518 450 524 468 C528 486 514 500 494 500 C478 498 470 476 476 458 Z"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#cUpper)"><use href="#skull" id="useUp"/></g>
+  <g id="mdist">
+    <g clip-path="url(#cDist)"><use href="#mand" id="useMD"/></g>
+    <g class="brk" id="brkL">
+      <rect x="413.5" y="399" width="5" height="5"/><rect x="433" y="399" width="5" height="5"/><rect x="451" y="400" width="5" height="5"/><rect x="464.5" y="400" width="5" height="5"/><rect x="477" y="399" width="5" height="5"/><rect x="487" y="399" width="5" height="5"/><rect x="496" y="399" width="5" height="5"/>
+      <polyline points="416,401.5 435.5,401.5 453.5,402.5 467,402.5 479.5,401.5 489.5,401.5 498.5,401.5"/>
+    </g>
+    <g id="chin">
+      <g clip-path="url(#cChin)"><use href="#mand" id="useCH"/></g>
+      <g class="plate" id="plGE" transform="rotate(-16 500 463)"><rect x="497" y="446" width="7" height="34" rx="3"/><circle cx="500.5" cy="451" r="1.8"/><circle cx="500.5" cy="459" r="1.8"/><circle cx="500.5" cy="468" r="1.8"/><circle cx="500.5" cy="476" r="1.8"/></g>
+    </g>
+  </g>
+  <g clip-path="url(#cProx)"><use href="#mand" id="usePX"/></g>
+  <g class="plate" id="plBS"><rect x="388" y="434" width="44" height="7" rx="3"/><circle cx="393" cy="437.5" r="1.8"/><circle cx="403" cy="437.5" r="1.8"/><circle cx="417" cy="437.5" r="1.8"/><circle cx="427" cy="437.5" r="1.8"/></g>
+  <rect id="wisL" class="tooth" x="388" y="398" width="17" height="15" rx="4"/>
+  <g id="lefort">
+    <g clip-path="url(#cLefort)"><use href="#skull" id="useLF"/></g>
+    <g fill="#fbf8ef" stroke="#9c937d" stroke-width="1.2">
+      <rect x="414" y="366" width="18" height="28" rx="4"/>
+      <rect x="433" y="368" width="19" height="28" rx="4"/>
+      <rect x="454" y="369" width="13" height="27" rx="4"/>
+      <rect x="468" y="370" width="13" height="27" rx="4"/>
+      <rect x="484" y="371" width="12" height="31" rx="5"/>
+      <rect x="496" y="372" width="10" height="27" rx="4" transform="rotate(-8 501 385)"/>
+      <rect x="506" y="372" width="12" height="30" rx="5" transform="rotate(-12 512 387)"/>
+    </g>
+    <rect id="wisU" class="tooth" x="396" y="362" width="16" height="28" rx="4"/>
+    <g class="brk" id="brkU">
+      <rect x="420.5" y="380" width="5" height="5"/><rect x="440" y="380" width="5" height="5"/><rect x="458" y="381" width="5" height="5"/><rect x="472" y="381" width="5" height="5"/><rect x="487.5" y="382" width="5" height="5"/><rect x="498.5" y="382" width="5" height="5"/><rect x="509" y="382" width="5" height="5"/>
+      <polyline points="423,382.5 442.5,382.5 460.5,383.5 474.5,383.5 490,384.5 501,384.5 511.5,384.5"/>
+    </g>
+    <g class="plate" id="plLF"><rect x="496" y="318" width="7" height="38" rx="3"/><circle cx="499.5" cy="323" r="1.8"/><circle cx="499.5" cy="331" r="1.8"/><circle cx="499.5" cy="343" r="1.8"/><circle cx="499.5" cy="351" r="1.8"/><rect x="437" y="322" width="7" height="38" rx="3"/><circle cx="440.5" cy="327" r="1.8"/><circle cx="440.5" cy="335" r="1.8"/><circle cx="440.5" cy="347" r="1.8"/><circle cx="440.5" cy="355" r="1.8"/></g>
+  </g>
+
+  <path id="cutLF" class="cut" pathLength="1" d="M382 342 L512 329"/>
+  <path id="cutBS" class="cut" pathLength="1" d="M346 360 C352 386 372 404 402 412 L406 488"/>
+  <path id="cutGE" class="cut" pathLength="1" d="M426 489 L432 472 C456 466 486 460 506 455"/>
+  <path id="zig" class="zig" pathLength="1" d=""/>
+
+  <g id="eyeG">
+    <ellipse id="sinusL" cx="452" cy="306" rx="40" ry="24" fill="none" stroke="#7fd1ff" stroke-width="2" stroke-dasharray="6 5"/>
+    <ellipse id="blobL" cx="456" cy="272" rx="22" ry="3" fill="#f2c48d"/>
+    <path id="floorL" d="M428 266 C448 272 470 272 490 265" fill="none" stroke="#ebe6d8" stroke-width="4" stroke-linecap="round"/>
+    <g id="ball"><circle cx="470" cy="238" r="23" fill="#f4f7f8" stroke="#9fb3bd" stroke-width="1.5"/><ellipse cx="490" cy="238" rx="4.5" ry="12" fill="#4d7d9c"/><ellipse cx="492" cy="238" rx="2" ry="6" fill="#16222a"/></g>
+  </g>
+
+  <g id="scaf"><g clip-path="url(#cScaf)" id="scafCells"></g><path d="M476 458 C494 446 518 450 524 468 C528 486 514 500 494 500 C478 498 470 476 476 458 Z" fill="none" stroke="#7fd1ff" stroke-width="2"/></g>
+
+  <rect id="scan" x="-8" y="20" width="16" height="480" fill="url(#scanG)"/>
+  <g id="ceph" fill="none">
+    <path id="lSN" pathLength="1" d="M318 238 L490 226" stroke="#5ee0a8" stroke-width="2.4"/>
+    <path id="lNA" pathLength="1" d="M490 226 L511 352" stroke="#5ee0a8" stroke-width="2.4"/>
+    <path id="lNB" pathLength="1" d="M490 226 L499 440" stroke="#7fd1ff" stroke-width="2.4"/>
+    <g id="cpts"></g>
+  </g>
+</svg>
+
+<svg id="svgF" viewBox="0 0 640 520" role="img" aria-label="Skallen framifrån" hidden>
+  <path class="fb" d="M178 262 C150 170 200 52 320 48 C440 52 490 170 462 262 Z"/>
+  <g class="ln"><path d="M200 214 C198 150 240 92 300 82"/><path d="M440 214 C442 150 400 92 340 82"/><path d="M320 52 L320 150"/></g>
+  <path class="fb" d="M172 250 C160 280 166 318 186 336 C202 350 230 350 246 338 L236 268 Z"/>
+  <path class="fb" d="M468 250 C480 280 474 318 454 336 C438 350 410 350 394 338 L404 268 Z"/>
+  <path class="fb" d="M226 288 C212 322 218 366 240 398 L400 398 C422 366 428 322 414 288 C380 298 260 298 226 288 Z"/>
+  <path class="hole" d="M214 206 C230 188 280 186 298 200 C307 214 305 244 295 258 C279 271 236 271 221 259 C207 245 204 221 214 206 Z"/>
+  <path class="hole" d="M426 206 C410 188 360 186 342 200 C333 214 335 244 345 258 C361 271 404 271 419 259 C433 245 436 221 426 206 Z"/>
+  <g class="ln"><path d="M218 206 C236 192 278 192 294 204"/><path d="M422 206 C404 192 362 192 346 204"/></g>
+  <path class="fb" d="M304 204 L336 204 L330 268 L310 268 Z"/>
+  <path class="hole" d="M320 266 C300 270 290 300 292 322 C294 342 306 352 320 352 C334 352 346 342 348 322 C350 300 340 270 320 266 Z"/>
+  <ellipse cx="303" cy="328" rx="7" ry="13" fill="#3a4a42"/><ellipse cx="337" cy="328" rx="7" ry="13" fill="#3a4a42"/>
+  <path id="sept" d="M320 272 Q338 312 320 349" fill="none" stroke="#ebe6d8" stroke-width="6" stroke-linecap="round"/>
+  <path class="fb" d="M313 352 L320 364 L327 352 Z"/>
+  <ellipse class="hole" cx="252" cy="290" rx="4" ry="3"/><ellipse class="hole" cx="388" cy="290" rx="4" ry="3"/>
+  <path class="fb" d="M200 340 C200 382 208 430 238 466 C262 490 292 500 320 500 C348 500 378 490 402 466 C432 430 440 382 440 340 L424 344 C422 380 414 412 398 436 L242 436 C226 412 218 380 216 344 Z"/>
+  <ellipse class="hole" cx="262" cy="452" rx="5" ry="4"/><ellipse class="hole" cx="378" cy="452" rx="5" ry="4"/>
+  <g id="fUT">
+    <rect class="ftooth" x="244" y="384" width="12" height="17" rx="3"/><rect class="ftooth" x="384" y="384" width="12" height="17" rx="3"/>
+    <rect class="ftooth" x="257" y="384" width="10" height="19" rx="3"/><rect class="ftooth" x="373" y="384" width="10" height="19" rx="3"/>
+    <rect class="ftooth" x="268" y="384" width="11" height="21" rx="3"/><rect class="ftooth" x="361" y="384" width="11" height="21" rx="3"/>
+    <rect class="ftooth" x="280" y="384" width="12" height="26" rx="4"/><rect class="ftooth" x="348" y="384" width="12" height="26" rx="4"/>
+    <rect class="ftooth" x="293" y="384" width="11" height="23" rx="4"/><rect class="ftooth" x="336" y="384" width="11" height="23" rx="4"/>
+    <rect class="ftooth" x="305" y="384" width="14" height="27" rx="4"/><rect class="ftooth" x="321" y="384" width="14" height="27" rx="4"/>
+  </g>
+  <g id="fLT">
+    <rect class="ftooth" x="252" y="420" width="11" height="15" rx="3"/><rect class="ftooth" x="377" y="420" width="11" height="15" rx="3"/>
+    <rect class="ftooth" x="264" y="418" width="10" height="17" rx="3"/><rect class="ftooth" x="366" y="418" width="10" height="17" rx="3"/>
+    <rect class="ftooth" x="275" y="416" width="10" height="19" rx="3"/><rect class="ftooth" x="355" y="416" width="10" height="19" rx="3"/>
+    <rect class="ftooth" x="286" y="413" width="11" height="22" rx="4"/><rect class="ftooth" x="343" y="413" width="11" height="22" rx="4"/>
+    <rect class="ftooth" x="298" y="414" width="10" height="21" rx="3"/><rect class="ftooth" x="332" y="414" width="10" height="21" rx="3"/>
+    <rect class="ftooth" x="309" y="414" width="10" height="21" rx="3"/><rect class="ftooth" x="321" y="414" width="10" height="21" rx="3"/>
+  </g>
+  <g id="fEyes">
+    <path id="skinR" d="M352 220 C372 205 402 205 418 222 C402 213 372 213 352 220 Z" fill="#ff8fa8" opacity=".85"/>
+    <path id="eyeL" d="M222 234 C240 214 274 214 292 232 C274 246 240 248 222 234 Z" fill="#f4f7f8" stroke="#c9a58d" stroke-width="2"/>
+    <circle cx="258" cy="232" r="10" fill="#4d7d9c"/><circle cx="258" cy="232" r="4.5" fill="#16222a"/>
+    <path id="eyeR" d="M348 232 C366 214 400 214 418 234 C400 248 366 246 348 232 Z" fill="#f4f7f8" stroke="#c9a58d" stroke-width="2"/>
+    <circle id="irisR" cx="382" cy="232" r="10" fill="#4d7d9c"/><circle id="pupR" cx="382" cy="232" r="4.5" fill="#16222a"/>
+    <path id="tendon" d="M418 234 L429 236" stroke="#ff4f73" stroke-width="2.4" stroke-linecap="round"/>
+    <circle id="anchor" cx="429" cy="236" r="2.6" fill="#ff4f73"/>
+  </g>
+  <g id="fat"></g>
+  <g id="impl" fill="#7fd1ff" stroke="#2b6b8f" stroke-width="1.5">
+    <path d="M220 266 C238 280 274 282 296 268 C284 290 236 292 220 266 Z"/><circle cx="240" cy="279" r="2" fill="#2b6b8f"/><circle cx="276" cy="281" r="2" fill="#2b6b8f"/>
+    <path d="M420 266 C402 280 366 282 344 268 C356 290 404 292 420 266 Z"/><circle cx="400" cy="279" r="2" fill="#2b6b8f"/><circle cx="364" cy="281" r="2" fill="#2b6b8f"/>
+  </g>
+  <g id="shade">
+    <text class="lblS" x="24" y="34">Färgskala</text>
+    <rect x="24" y="46" width="34" height="22" rx="4" fill="#d9c58c"/><rect x="62" y="46" width="34" height="22" rx="4" fill="#e3d29f"/><rect x="100" y="46" width="34" height="22" rx="4" fill="#ecdfb5"/><rect x="138" y="46" width="34" height="22" rx="4" fill="#f2ebcf"/><rect x="176" y="46" width="34" height="22" rx="4" fill="#f8f5ea"/>
+    <path id="shadeMk" d="M41 74 l-8 12 h16 Z" fill="#5ee0a8"/>
+  </g>
+</svg>
+
+<svg id="svgP" viewBox="0 0 640 520" role="img" aria-label="Gommen underifrån" hidden>
+  <text class="lblS" x="320" y="40" text-anchor="middle">Framtänderna</text>
+  <rect x="314" y="230" width="12" height="16" rx="2" fill="#c9d3da"/>
+  <g id="pL"></g>
+  <g id="pR"></g>
+  <path d="M320 120 L320 340" stroke="#5ee0a8" stroke-width="2" stroke-dasharray="5 5" id="sut"/>
+  <text class="lblS" x="320" y="378" text-anchor="middle">Mittsuturen</text>
+</svg>
+
+<svg id="svgB" viewBox="0 0 640 520" role="img" aria-label="Vikt och BMI" hidden>
+  <text id="kg" x="320" y="150" text-anchor="middle" fill="#ffffff" style="font:800 112px 'Schibsted Grotesk',system-ui,sans-serif">56 kg</text>
+  <text class="lblS" x="320" y="196" text-anchor="middle">183 cm till 184 cm</text>
+  <rect x="80" y="300" width="168" height="34" rx="4" fill="#ff8fa8"/>
+  <rect x="248" y="300" width="312" height="34" rx="4" fill="#2fbf86"/>
+  <g text-anchor="middle" style="font:700 19px 'Schibsted Grotesk',system-ui,sans-serif" fill="#0a1f17"><text x="164" y="324">Undervikt</text><text x="404" y="324">Normalvikt</text></g>
+  <g class="lblS" text-anchor="middle"><text x="80" y="366">15</text><text x="248" y="366">18,5</text><text x="320" y="366">20</text><text x="560" y="366">25</text></g>
+  <line x1="248" y1="294" x2="248" y2="340" stroke="#ffffff" stroke-width="2"/>
+  <g id="mk"><path d="M-14 0 L14 0 L0 20 Z" fill="#ffffff" transform="translate(0 274)"/><text id="mkT" class="lbl" x="0" y="262" text-anchor="middle">BMI 16,7</text></g>
+  <text class="lblS" x="320" y="430" text-anchor="middle">BMI = vikt / längd²</text>
+</svg>
+
+      </div>
+      <div class="vinfo">
+        <p class="vview" id="vView">Från sidan</p>
+        <h2 id="vTitle">Steg</h2>
+        <p id="vCap"></p>
+        <div class="scrub"><span>Före</span><input type="range" id="vT" min="0" max="1000" value="0" aria-label="Från före till efter"><span>Efter</span></div>
+        <div class="vbtns">
+          <button type="button" id="vPrev">Förra</button>
+          <button type="button" id="vPlay">Spela upp</button>
+          <button type="button" id="vNext">Nästa</button>
+        </div>
+        <a href="#s1" id="vGo">Läs allt om steget</a>
+        <ul class="legend">
+          <li><i style="background:#ff4f73"></i>Snitt</li>
+          <li><i style="background:#ffd24a"></i>Nerv</li>
+          <li><i style="background:#a7b4bd"></i>Plattor och skruvar</li>
+          <li><i style="background:#7fd1ff"></i>Implantat och bihåla</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="tid">
+  <div class="in">
+    <h2>Omkring 31 månader för käkdelen, och ögonen efter det</h2>
+    <p class="note">Ungefärlig tidslinje med medianer från studierna. Din egen kan bli kortare eller längre.</p>
+    <div class="axis" aria-hidden="true"><span style="left:0">0 mån</span><span style="left:16.666%">6</span><span style="left:33.333%">12</span><span style="left:50%">18</span><span style="left:66.666%">24</span><span style="left:83.333%">30</span><span style="left:100%">36</span></div>
+    <div id="gantt"></div>
+  </div>
+</section>
+
+<section class="sec" id="risker" style="background:var(--soft)">
+  <div class="in">
+    <h2>Störst spridning: dubbelseende efter orbital dekompression, 0–45 %</h2>
+    <p class="note">Andel patienter i studierna. Siffrorna gäller grupper, inte dig. Källan står under varje rad.</p>
+    <div id="riskList" style="margin-top:16px"></div>
+  </div>
+</section>
+
+<div class="tool">
+  <div class="prog"><span id="prog">0 av 16 klara</span><span id="booked">0 bokade</span></div>
+  <div class="meter" aria-hidden="true"><i id="bar"></i></div>
+  <div class="btns">
+    <button type="button" id="toggle">Visa alla detaljer</button>
+    <button type="button" id="copy">Kopiera alla frågor</button>
+  </div>
+</div>
+
+<nav class="phases" aria-label="Delar av planen">
+  <a href="#skelett">Skelettet</a>
+  <a href="#tid">Tidslinje</a>
+  <a href="#risker">Risker</a>
+  <a href="#grund">Utgångsläge</a>
+  <a href="#forberedelse">Förberedelse</a>
+  <a href="#tander">Tänder och käkbredd</a>
+  <a href="#kake">Käkoperationer</a>
+  <a href="#nasa">Näsa och andning</a>
+  <a href="#ogon">Ögonen</a>
+  <a href="#efterat">Uppföljande ingrepp</a>
+</nav>
+
+<main>
+
+<section class="phase" id="grund">
+  <h2>Utgångsläge</h2>
+  <p>Vikten är grunden för allt som kommer efter.</p>
+
+  <article class="step" id="s1" data-n="1">
+    <div class="top"><span class="num">1</span><div><h3>Gå upp i vikt</h3><p class="sub">Från 56 kg till 75 kg, från 183 till 184 cm</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Vårdcentral och dietist</dd></div><div><dt>När</dt><dd>Nu, fram till operationerna</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 1"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="1">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Målet är att gå upp 19 kg. Med 56 kg på 183 cm är BMI ungefär 16,7, och under 18,5 räknas som undervikt. 75 kg på 184 cm ger ett BMI på ungefär 22,2.</p>
+      <h4>Varför det kommer först</h4><p>Efter en käkoperation äter man flytande och sedan mjuk kost i flera veckor, och det är vanligt att gå ned 2–4,5 kg de första två veckorna. Därför är det bra att ha nått en stabil vikt innan.</p>
+      <h4>Fråga specialisten</h4><p class="ask">Hur når jag målet på ett hälsosamt sätt, och vilken vikt vill ni att jag har inför operationen?</p>
+      <label for="note-1">Mina anteckningar</label><textarea id="note-1" data-n="1"></textarea>
+      <p class="src">Källa: <a href="https://mydoctor.kaiserpermanente.org/ncal/Images/Corrective%20Jaw%20Surgery_tcm75-1862628.pdf" target="_blank" rel="noopener">Kaiser Permanente, käkkirurgi</a></p>
+    </div></details>
+  </article>
+</section>
+
+<section class="phase" id="forberedelse">
+  <h2>Förberedelse</h2>
+  <p>Bilderna som planen bygger på, och tänderna som ska bort först.</p>
+
+  <article class="step" id="s2" data-n="2">
+    <div class="top"><span class="num">2</span><div><h3>Ceph-röntgen och CBCT</h3><p class="sub">Bilder av skallen och käkarna, i 2D och 3D</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Ortodontist eller käkkirurg</dd></div><div><dt>När</dt><dd>I början, ibland igen före operationen</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 2"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="2">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Ceph är en röntgenbild av huvudet från sidan, där man mäter hur käkar och tänder står i förhållande till varandra. CBCT är en 3D-röntgen av käkar och tänder. Med bilderna kan operationen planeras digitalt i 3D.</p>
+      <h4>Så går det till</h4><p>Du sitter eller står still några minuter medan apparaten tar bilderna.</p>
+      <h4>Kostnad</h4><p>Från 1 januari det år man fyller 20 betalar man själv för tandvård, med statligt tandvårdsstöd.</p>
+      <h4>Fråga specialisten</h4><p class="ask">Vad visar mätningarna, och hur många millimeter behöver käkarna flyttas?</p>
+      <label for="note-2">Mina anteckningar</label><textarea id="note-2" data-n="2"></textarea>
+      <p class="src">Källa: <a href="https://www.1177.se/Regler-och-rattigheter/Tandvard-nar-man-ar-over-20-ar---statligt-tandvardsstod/" target="_blank" rel="noopener">1177, tandvård efter 19 år</a></p>
+    </div></details>
+  </article>
+
+  <article class="step" id="s3" data-n="3">
+    <div class="top"><span class="num">3</span><div><h3>Ta bort visdomständerna</h3><p class="sub">De sitter där underkäken delas vid BSSO</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Tandläkare eller käkkirurg</dd></div><div><dt>När</dt><dd>Ofta minst 6 månader före BSSO</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 3"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="3">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Varför</h4><p>Vid BSSO delas underkäken där visdomständerna sitter. Om de sitter kvar ökar risken att käken spricker på fel ställe under operationen.</p>
+      <h4>När</h4><p>Många rekommenderar att de tas bort minst 6 månader före operationen. Studier visar att de också kan tas bort i samma operation, utan fler komplikationer.</p>
+      <h4>Fråga specialisten</h4><p class="ask">Ska visdomständerna tas före, eller i samma operation?</p>
+      <label for="note-3">Mina anteckningar</label><textarea id="note-3" data-n="3"></textarea>
+      <p class="src">Källor: <a href="https://scholarlypublications.universiteitleiden.nl/access/item%3A2942420/view" target="_blank" rel="noopener">Leidens universitet</a>, <a href="https://vbn.aau.dk/da/publications/bilateral-sagittal-split-osteotomy-with-or-without-concomitant-re" target="_blank" rel="noopener">Aalborgs universitet</a></p>
+    </div></details>
+  </article>
+</section>
+
+<section class="phase" id="tander">
+  <h2>Tandvård och käkbreddning</h2>
+  <p>Tänderna ställs i ordning före och efter käkoperationen.</p>
+
+  <article class="step" id="s4" data-n="4">
+    <div class="top"><span class="num">4</span><div><h3>Tandställning</h3><p class="sub">Före och efter käkoperationen</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Ortodontist</dd></div><div><dt>När</dt><dd>12–24 mån före, ungefär 6 mån efter</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 4"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="4">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Fast tandställning som flyttar tänderna så att de passar ihop när käkarna har flyttats.</p>
+      <h4>Hur lång tid</h4><p>Räkna med 12–24 månader före operationen. I en studie var medianen 17 månader. I en finsk studie tog det i median 24 månader före och drygt 6 månader efter operationen.</p>
+      <h4>Fråga specialisten</h4><p class="ask">Hur lång tid räknar ni med för mig, före och efter operationen?</p>
+      <label for="note-4">Mina anteckningar</label><textarea id="note-4" data-n="4"></textarea>
+      <p class="src">Källor: <a href="https://pubmed.ncbi.nlm.nih.gov/14614870/" target="_blank" rel="noopener">Br J Oral Maxillofac Surg</a>, <a href="https://informahealthcare.com/doi/abs/10.1080/00016357.2017.1317830" target="_blank" rel="noopener">Acta Odontologica Scandinavica</a></p>
+    </div></details>
+  </article>
+
+  <article class="step" id="s5" data-n="5">
+    <div class="top"><span class="num">5</span><div><h3>MARPE</h3><p class="sub">Vidgar överkäken utan operation</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Ortodontist</dd></div><div><dt>När</dt><dd>Före eller tidigt under tandställningen</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 5"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="5">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>En apparat i gommen som sitter fast med små skruvar i benet. Den skruvas isär lite i taget så att överkäken vidgas.</p>
+      <h4>Så går det till</h4><p>Själva vidgningen tog i snitt ungefär en månad i en studie. Ett glapp mellan framtänderna är ett tecken på att det fungerar, och tandställningen används sedan för att stänga det.</p>
+      <h4>Chansen att det lyckas</h4><p>Åldern spelar roll. I en studie lyckades det för 82 % av dem som var 20–29 år. I en annan lyckades det oftare för kvinnor än för män, 94 % mot 61 %. En sammanställning av flera studier landade på 92,5 %.</p>
+      <div class="risk"><h4>Risker</h4><ul><li>Vidgningen lyckas inte alltid, och då kan en operation behövas i stället.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Hur stor är chansen att det fungerar för mig, och vad gör vi om det inte gör det?</p>
+      <label for="note-5">Mina anteckningar</label><textarea id="note-5" data-n="5"></textarea>
+      <p class="src">Källor: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9525423" target="_blank" rel="noopener">Clin Oral Investig 2022</a>, <a href="https://link.springer.com/article/10.1007/s00784-021-04281-0" target="_blank" rel="noopener">Clin Oral Investig 2022, ålder och kön</a>, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8028491" target="_blank" rel="noopener">Angle Orthod</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/33882127/" target="_blank" rel="noopener">Eur J Orthod, översikt</a></p>
+    </div></details>
+  </article>
+
+  <article class="step" id="s6" data-n="6">
+    <div class="top"><span class="num">6</span><div><h3>Tandblekning</h3><p class="sub">När tandställningen är borta</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Tandläkare eller tandhygienist</dd></div><div><dt>När</dt><dd>Efter tandställningen</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 6"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="6">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Ett blekmedel, oftast en gel, som läggs på tänderna.</p>
+      <h4>Så går det till</h4><p>Första gången hjälper tandläkaren eller tandhygienisten dig, sedan kan du fortsätta hemma. Fyllningar och kronor går inte att bleka. Resultatet håller oftast ett till tre år.</p>
+      <div class="risk"><h4>Att tänka på</h4><ul><li>Läkemedelsverket råder dig att gå till en tandläkare, eftersom blekmedel som används fel kan ge skador.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Vilken blekmetod passar mina tänder?</p>
+      <label for="note-6">Mina anteckningar</label><textarea id="note-6" data-n="6"></textarea>
+      <p class="src">Källor: <a href="https://www.1177.se/undersokning-behandling/tandvard/tandblekning/" target="_blank" rel="noopener">1177</a>, <a href="https://www.1177.se/behandling--hjalpmedel/tandvard/tandblekning/" target="_blank" rel="noopener">1177, fyllningar och kronor</a>, <a href="https://www.1177.se/Varmland/undersokning-behandling/tandvard/tandblekning/" target="_blank" rel="noopener">1177, hur länge det håller</a>, <a href="https://via.tt.se/pressmeddelande/3340228/manga-brister-hos-tandblekningsprodukter?publisherId=3235477" target="_blank" rel="noopener">Läkemedelsverket</a></p>
+    </div></details>
+  </article>
+</section>
+
+<section class="phase" id="kake">
+  <h2>Käkoperationer</h2>
+  <p>Båda käkarna och hakan, oftast i samma operation.</p>
+
+  <article class="step" id="s7" data-n="7">
+    <div class="top"><span class="num">7</span><div><h3>BSSO och Le Fort 1 med CCW-rotation</h3><p class="sub">Underkäken och överkäken flyttas och vrids</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Käkkirurg</dd></div><div><dt>När</dt><dd>När tandställningen är klar för operation</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 7"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="7">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Vid BSSO delas underkäken på längden på båda sidor, så att den främre delen kan flyttas. Vid Le Fort 1 sågas överkäken loss ovanför tandraden och flyttas. Med CCW-rotation vrids käkarna moturs så att hakan kommer längre fram.</p>
+      <h4>Var</h4><p>Käkkirurgi Umeå opererar käkställningsfel och tar emot patienter med remiss från tandläkare eller läkare.</p>
+      <h4>Återhämtning</h4><p>1–3 dagar på sjukhus. De flesta är tillbaka i vardagen efter 3–4 veckor. Den första läkningen tar ungefär 6 veckor, och käken fortsätter läka i flera månader. Ofta flytande kost de första två veckorna, sedan mjuk kost. Svullnaden är störst efter ungefär tre dygn, och lite svullnad och domning kan sitta kvar i månader.</p>
+      <div class="risk"><h4>Risker</h4><ul><li>Känselstörning i underläppen och hakan är vanligt direkt efter, och går oftast över.</li><li>Bestående domning efter ett år hade 7,9 % av patienterna i åldern 19–30 i en studie.</li><li>Förflyttningar över 7 mm gav högre risk för bestående domning i en annan studie.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Hur många millimeter flyttas mina käkar, och hur ofta får era patienter bestående domning?</p>
+      <label for="note-7">Mina anteckningar</label><textarea id="note-7" data-n="7"></textarea>
+      <p class="src">Källor: <a href="https://www.1177.se/hitta-vard/kontaktkort/Kakkirurgi-Umea" target="_blank" rel="noopener">1177, Käkkirurgi Umeå</a>, <a href="https://my.clevelandclinic.org/health/procedures/jaw-surgery" target="_blank" rel="noopener">Cleveland Clinic</a>, <a href="https://www.uchicagomedicine.org/conditions-services/plastic-reconstructive-surgery/jaw-orthognathic-surgery/jaw-surgery-orthognathic-surgery-faqs" target="_blank" rel="noopener">UChicago Medicine</a>, <a href="https://www.myoms.org/what-we-do/corrective-jaw-surgery/recovery-from-orthognathic-surgery" target="_blank" rel="noopener">AAOMS</a>, <a href="https://doaj.org/article/221a61265bf44ee8bc59be43923c37f5" target="_blank" rel="noopener">J Oral Biol Craniofac Res</a>, <a href="https://scholarlypublications.universiteitleiden.nl/access/item%3A2942416/view" target="_blank" rel="noopener">Leidens universitet</a>, <a href="https://ejsur.journals.ekb.eg/article_364648.html" target="_blank" rel="noopener">Egyptian Journal of Surgery</a></p>
+    </div></details>
+  </article>
+
+  <article class="step" id="s8" data-n="8">
+    <div class="top"><span class="num">8</span><div><h3>Piezokirurgi</h3><p class="sub">Benet skärs med ultraljud i stället för med såg</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Käkkirurgen väljer instrument</dd></div><div><dt>När</dt><dd>Under käkoperationen</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 8"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="8">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Ett instrument som skär ben med ultraljudsvibrationer.</p>
+      <h4>Vad studierna visar</h4><p>I en randomiserad studie gick sågningen snabbare, men känselstörningarna blev inte färre. En sammanställning fann mindre blödning när båda käkarna opereras och färre sprickor på fel ställe. En annan studie fann mildare, men inte färre, bestående nervskador.</p>
+      <div class="risk"><h4>Att veta</h4><ul><li>Piezo kan minska vissa risker, men den skyddar inte nerven helt.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Använder ni piezo, och vilken skillnad har ni sett?</p>
+      <label for="note-8">Mina anteckningar</label><textarea id="note-8" data-n="8"></textarea>
+      <p class="src">Källor: <a href="https://mediatum.ub.tum.de/1453829" target="_blank" rel="noopener">TU München, randomiserad studie</a>, <a href="https://www.pubmed.gov/30055164/" target="_blank" rel="noopener">J Oral Maxillofac Surg, översikt</a>, <a href="https://iris.unitn.it/handle/11572/411930" target="_blank" rel="noopener">J Craniofac Surg</a></p>
+    </div></details>
+  </article>
+
+  <article class="step" id="s9" data-n="9">
+    <div class="top"><span class="num">9</span><div><h3>Sliding- och vertikal genioplastik</h3><p class="sub">Hakspetsen flyttas framåt och vertikalt, skräddarsytt</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Käkkirurg</dd></div><div><dt>När</dt><dd>Kan göras i samma operation som käkarna</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 9"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="9">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Hakspetsen sågas loss, flyttas framåt och vertikalt och fästs med en platta. Skräddarsytt betyder att flytten och plattan planeras i 3D för just dig.</p>
+      <h4>Samma operation</h4><p>I en studie gjordes nästan var tredje genioplastik tillsammans med en käkoperation.</p>
+      <div class="risk"><h4>Risker</h4><ul><li>Vanligast var känselbortfall i hakan, 6,5 %, och infektion, 6,0 %, i en sammanställning.</li><li>Genioplastik tillsammans med BSSO påverkade känseln i läppen mer än var för sig.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Behövs genioplastik om käkarna redan flyttas fram och vrids?</p>
+      <label for="note-9">Mina anteckningar</label><textarea id="note-9" data-n="9"></textarea>
+      <p class="src">Källor: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8612779/" target="_blank" rel="noopener">Int J Dent 2021</a>, <a href="https://air.unimi.it/handle/2434/179967" target="_blank" rel="noopener">Milanos universitet</a></p>
+    </div></details>
+  </article>
+</section>
+
+<section class="phase" id="nasa">
+  <h2>Näsa och andning</h2>
+  <p>Nässkiljeväggen kan rättas i samma operation som överkäken.</p>
+
+  <article class="step" id="s10" data-n="10">
+    <div class="top"><span class="num">10</span><div><h3>Septoplastik</h3><p class="sub">Rättar en sned nässkiljevägg för bättre andning</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Öron-näsa-hals (ÖNH)</dd></div><div><dt>När</dt><dd>Separat, eller samtidigt med Le Fort 1</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 10"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="10">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Läkaren lossar slemhinnan och rättar till det sneda i ben och brosk. Operationen tar en till två timmar. Oftast är man sövd, men ibland används lokalbedövning. De flesta åker hem samma dag.</p>
+      <h4>Efteråt</h4><p>Det är vanligt att vara täppt i en till två veckor, eftersom slemhinnan är svullen.</p>
+      <h4>Samtidigt som Le Fort 1</h4><p>När överkäken är lossad kommer kirurgen åt nässkiljeväggen. I en studie gav septoplastik i samma operation bättre andning, och de flesta författare rekommenderar det när det behövs.</p>
+      <h4>Fråga specialisten</h4><p class="ask">Kan septoplastiken göras samtidigt som Le Fort 1?</p>
+      <label for="note-10">Mina anteckningar</label><textarea id="note-10" data-n="10"></textarea>
+      <p class="src">Källor: <a href="https://www.1177.se/Blekinge/undersokning-behandling/operationer/operationer-av-oron-nasa-och-hals/operation-av-sned-nasa/" target="_blank" rel="noopener">1177, operationen</a>, <a href="https://www.1177.se/Halland/undersokning-behandling/operationer/operationer-av-oron-nasa-och-hals/operation-av-sned-nasa/" target="_blank" rel="noopener">1177, efteråt</a>, <a href="https://www.1177.se/Norrbotten/undersokning-behandling/operationer/operationer-av-oron-nasa-och-hals/operation-av-sned-nasa/" target="_blank" rel="noopener">1177, hemgång</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/17954325" target="_blank" rel="noopener">J Oral Maxillofac Surg</a>, <a href="https://advances.umw.edu.pl/en/article/2019/28/2/203/" target="_blank" rel="noopener">Adv Clin Exp Med</a></p>
+    </div></details>
+  </article>
+</section>
+
+<section class="phase" id="ogon">
+  <h2>Ögonen</h2>
+  <p>Kosmetiska ingrepp kring ögonen, efter käkoperationerna.</p>
+
+  <article class="step" id="s11" data-n="11">
+    <div class="top"><span class="num">11</span><div><h3>Orbital dekompression</h3><p class="sub">Ögat flyttas bakåt i ögonhålan</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Ögonkirurg (okuloplastik)</dd></div><div><dt>När</dt><dd>Efter käkoperationerna</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 11"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="11">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Kirurgen tar bort delar av ögonhålans benväggar så att vävnaden får plats ut i bihålorna och ögat sjunker bakåt. Det görs främst vid utstående ögon, oftast på grund av sköldkörtelsjukdom.</p>
+      <h4>Före</h4><p>Hur mycket ögonen sticker ut mäts hos ögonläkare med ett instrument som heter Hertel-exoftalmometer.</p>
+      <div class="risk"><h4>Risker</h4><ul><li>Nytt bestående dubbelseende förekom hos 0–45 %, beroende på teknik.</li><li>Blindhet är extremt ovanligt, men är den komplikation man fruktar mest.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Vad visar Hertel-mätningen av mina ögon, och hur ofta får era patienter dubbelseende?</p>
+      <label for="note-11">Mina anteckningar</label><textarea id="note-11" data-n="11"></textarea>
+      <p class="src">Källor: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8075304" target="_blank" rel="noopener">Clin Ophthalmol</a>, <a href="https://eyewiki.org/Orbital_Decompression" target="_blank" rel="noopener">EyeWiki</a>, <a href="https://eyewiki.aao.org/Infraorbital_Rim/Tear_Trough_Implants_in_Context_of_Thyroid_Eye_Disease/Prominent_Globe" target="_blank" rel="noopener">EyeWiki, Hertel</a>, <a href="https://pure.amsterdamumc.nl/ws/files/161369583/Effects-of-orbital-decompression-on-duction-cyclotorsion-and-diplopia.pdf" target="_blank" rel="noopener">Amsterdam UMC</a>, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11630108/" target="_blank" rel="noopener">Arq Bras Oftalmol</a></p>
+    </div></details>
+  </article>
+
+  <article class="step" id="s12" data-n="12">
+    <div class="top"><span class="num">12</span><div><h3>Blefaroplastik och kantoplastik</h3><p class="sub">Ögonlocken och den yttre ögonvrån</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Ögonkirurg eller plastikkirurg</dd></div><div><dt>När</dt><dd>Efter käkoperationerna</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 12"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="12">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Blefaroplastik är en operation av ögonlocken. Vid kantoplastik lossas den yttre ögonvrån och fästs om mot benkanten för att ändra formen.</p>
+      <div class="risk"><h4>Risker</h4><ul><li>Ögonvrån kan bli deformerad eller glida tillbaka, slemhinnan kan synas och nedre ögonlocket kan vändas utåt.</li><li>Glider ögonvrån tillbaka kan ögonen se mindre ut än innan.</li><li>Svullnad i ögats bindehinna är vanligt efter kantoplastik.</li><li>Efter nedre blefaroplastik är ett utåtvänt ögonlock en vanlig komplikation, och torra ögon förekommer.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Vad gör ni om ögonvrån glider tillbaka?</p>
+      <label for="note-12">Mina anteckningar</label><textarea id="note-12" data-n="12"></textarea>
+      <p class="src">Källor: <a href="https://thieme-connect.de/products/ejournals/html/10.5999/aps.2016.43.4.316" target="_blank" rel="noopener">Arch Plast Surg</a>, <a href="https://www.qxmd.com/r/29554075" target="_blank" rel="noopener">komplikationer efter ögonplastik</a>, <a href="https://www.thieme-connect.com/products/ejournals/html/10.1055/s-0033-1333838" target="_blank" rel="noopener">Facial Plast Surg</a></p>
+    </div></details>
+  </article>
+
+  <article class="step" id="s13" data-n="13">
+    <div class="top"><span class="num">13</span><div><h3>Fettransplantation runt ögonen</h3><p class="sub">Fett till ögonbrynen och under ögonen</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Plastikkirurg eller ögonkirurg</dd></div><div><dt>När</dt><dd>Efter käkoperationerna</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 13"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="13">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Fett tas från till exempel magen och sprutas in med tunna kanyler.</p>
+      <h4>Resultat</h4><p>Varierar, eftersom det beror på hur mycket av fettet som överlever.</p>
+      <div class="risk"><h4>Risker</h4><ul><li>För lite eller för mycket volym, ojämnheter, långvariga blåmärken och svullnad, infektion och knölar.</li><li>Sällsynt men allvarligt: fett som täpper till ett blodkärl och ger synförlust eller stroke.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Hur mycket av fettet brukar stanna kvar, och kan det behövas fler omgångar?</p>
+      <label for="note-13">Mina anteckningar</label><textarea id="note-13" data-n="13"></textarea>
+      <p class="src">Källor: <a href="https://link.springer.com/10.1186/s12886-023-02989-z" target="_blank" rel="noopener">BMC Ophthalmology</a>, <a href="https://profiles.wustl.edu/en/publications/complications-associated-with-fat-grafting-to-the-lower-eyelid/" target="_blank" rel="noopener">Facial Plast Surg Clin</a></p>
+    </div></details>
+  </article>
+
+  <article class="step" id="s14" data-n="14">
+    <div class="top"><span class="num">14</span><div><h3>Implantat under ögonen</h3><p class="sub">Specialanpassat implantat på benkanten under ögat</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Plastikkirurg eller käkkirurg</dd></div><div><dt>När</dt><dd>Efter käkoperationerna</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 14"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="14">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>Ett implantat som läggs på benkanten under ögat. Det opereras in genom snitt i munnen och i nedre ögonlocket.</p>
+      <div class="risk"><h4>Risker</h4><ul><li>I en serie med 87 patienter behövde 5 % en ny operation för att implantatet låg fel eller syntes, och 3 % fick ta bort det på grund av infektion.</li><li>Andra risker är att implantatet syns eller tränger ut, nervskada och blödning.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Vad händer om implantatet behöver tas bort?</p>
+      <label for="note-14">Mina anteckningar</label><textarea id="note-14" data-n="14"></textarea>
+      <p class="src">Källor: <a href="https://thieme-connect.com/products/ejournals/pdf/10.1055/s-0029-1242037.pdf" target="_blank" rel="noopener">Facial Plast Surg</a>, <a href="https://stanfordhealthcare.org/publications/873/87352.html" target="_blank" rel="noopener">Stanford</a>, <a href="https://plasticsurgerykey.com/?p=171016" target="_blank" rel="noopener">Plastic Surgery Key</a></p>
+    </div></details>
+  </article>
+</section>
+
+<section class="phase" id="efterat">
+  <h2>Uppföljande ingrepp och nya implantatmetoder</h2>
+  <p>Det som kan komma efter, och en metod som fortfarande forskas på.</p>
+
+  <article class="step" id="s15" data-n="15">
+    <div class="top"><span class="num">15</span><div><h3>Ta bort skruvar och plattor</h3><p class="sub">En separat operation efter käkoperationerna</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Käkkirurg</dd></div><div><dt>När</dt><dd>Vid behov, ofta inom första året</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 15"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="15">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>En operation där plattorna och skruvarna från käkoperationerna tas bort.</p>
+      <h4>Behövs det?</h4><p>Inte alltid. Det finns inga gemensamma riktlinjer, så varje klinik bestämmer själv. Efter BSSO togs plattorna bort hos 18,6 % i en studie, oftast på grund av besvär, och hälften av dem under första året.</p>
+      <h4>Fråga specialisten</h4><p class="ask">Tar ni bort plattorna rutinmässigt, eller bara vid besvär?</p>
+      <label for="note-15">Mina anteckningar</label><textarea id="note-15" data-n="15"></textarea>
+      <p class="src">Källor: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11943589/" target="_blank" rel="noopener">Medicina 2025</a>, <a href="https://boris-portal.unibe.ch/entities/publication/efd9c55e-459d-46c3-b2f6-e9715e2df874" target="_blank" rel="noopener">Berns universitet</a></p>
+    </div></details>
+  </article>
+
+  <article class="step" id="s16" data-n="16">
+    <div class="top"><span class="num">16</span><div><h3>3D-printad byggställning</h3><p class="sub">Kroppens eget ben växer in i en planerad form</p></div></div>
+    <dl class="meta"><div><dt>Vem</dt><dd>Kliniker som forskar på metoden</dd></div><div><dt>När</dt><dd>Oklart, metoden är inte standard än</dd></div></dl>
+    <div class="status" role="group" aria-label="Status för steg 16"><button type="button" data-v="0">Planerat</button><button type="button" data-v="1">Bokat</button><button type="button" data-v="2">Klart</button></div>
+    <button type="button" class="sk" data-n="16">Visa på skelettet</button>
+    <details><summary>Allt om steget</summary><div class="body">
+      <h4>Vad det är</h4><p>En byggställning formas efter en 3D-röntgen, till exempel CBCT. Kroppens eget ben växer in i den medan den långsamt löses upp.</p>
+      <h4>Läget i dag</h4><p>Metoden används främst för att återskapa ben som saknas efter missbildningar, olyckor eller cancerkirurgi. Forskarna beskriver den som lovande.</p>
+      <div class="risk"><h4>Osäkert</h4><ul><li>Hur snabbt materialet bryts ned är svårt att förutsäga.</li><li>I en studie växte tätt ben vid kanterna, men inne i ställningen bildades bara små öar av ben.</li><li>Rapporterade komplikationer är att ställningen kommer fram genom huden eller slemhinnan, att såret går upp och infektion.</li></ul></div>
+      <h4>Fråga specialisten</h4><p class="ask">Gör någon detta för att forma ett friskt ansikte, och i så fall inom en studie?</p>
+      <label for="note-16">Mina anteckningar</label><textarea id="note-16" data-n="16"></textarea>
+      <p class="src">Källor: <a href="https://link.springer.com/article/10.1557/s43577-021-00261-7" target="_blank" rel="noopener">MRS Bulletin</a>, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11506235" target="_blank" rel="noopener">Braz Dent J, översikt</a>, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7759279" target="_blank" rel="noopener">Tissue Eng Part A</a>, <a href="https://repository.lsu.edu/vetmed_pubs/1204" target="_blank" rel="noopener">LSU</a>, <a href="https://www.scielo.br/j/bdj/a/cPyCj5CvxQtvnLYFb6QPz6t/?lang=en" target="_blank" rel="noopener">SciELO</a></p>
+    </div></details>
+  </article>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p>Bilderna är förenklade ritningar som visar principen, inte din egen anatomi. Siffrorna kommer från studierna som är länkade i varje steg och gäller grupper av patienter. Den som undersöker dig kan säga vad som gäller för just dig. Status och anteckningar sparas bara på den här telefonen.</p>
+</footer>
+
+<script>
+{
+  const NS = 'http://www.w3.org/2000/svg';
+  const $ = id => document.getElementById(id);
+  const cl = x => Math.max(0, Math.min(1, x));
+  const ease = x => x < 0.5 ? 2 * x * x : 1 - ((-2 * x + 2) ** 2) / 2;
+  const seg = (t, a, b) => ease(cl((t - a) / (b - a)));
+  const mix = (a, b, p) => a + (b - a) * p;
+  const hex = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const mixc = (a, b, p) => { const A = hex(a), B = hex(b); return 'rgb(' + A.map((v, i) => Math.round(mix(v, B[i], p))).join(',') + ')'; };
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let seed = 7;
+  const rnd = () => { seed = seed * 16807 % 2147483647; return (seed - 1) / 2147483646; };
+  const el = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+
+  const STEPS = [
+    {n:1, chip:'Vikt', view:'B', title:'Gå upp i vikt', cap:'Pilen visar ditt BMI. Med 56 kg på 183 cm ligger du på 16,7, och gränsen för undervikt går vid 18,5. Målet 75 kg på 184 cm ger 22,2.'},
+    {n:2, chip:'Röntgen', view:'L', title:'Ceph-röntgen och CBCT', cap:'Röntgen sveper över skallen. Sedan sätts mätpunkter ut: S (turksadeln), N (näsroten), A (överkäkens front) och B (underkäkens front). Vinklarna mellan linjerna visar hur käkarna ligger mot skallbasen.'},
+    {n:3, chip:'Visdomständer', view:'L', title:'Ta bort visdomständerna', cap:'De röda tänderna längst bak är visdomständerna. Den nedre sitter där underkäken delas vid BSSO, och därför tas de ofta bort minst 6 månader före.'},
+    {n:4, chip:'Tandställning', view:'L', title:'Tandställning', cap:'Fästen limmas på tänderna och en båge förs genom dem. Tänderna flyttas så att de passar ihop när käkarna har flyttats.'},
+    {n:5, chip:'MARPE', view:'P', title:'MARPE', cap:'Gommen sedd underifrån, framtänderna överst. Apparaten sitter fast med fyra miniskruvar. När den skruvas isär öppnas mittsuturen så att överkäken vidgas, och ett glapp uppstår mellan framtänderna.'},
+    {n:6, chip:'Blekning', view:'F', title:'Tandblekning', cap:'Gelen gör tänderna ljusare steg för steg, som pilen på färgskalan visar. Fyllningar och kronor ändrar inte färg, och resultatet håller oftast ett till tre år.'},
+    {n:7, chip:'BSSO + Le Fort 1', view:'L', title:'BSSO och Le Fort 1 med CCW-rotation', cap:'De röda linjerna är snitten. Överkäken och underkäkens främre del flyttas fram och vrids moturs, medan käklederna vid örat stannar kvar. Den gula linjen är nerven till underläppen, och plattorna håller benet på plats.'},
+    {n:8, chip:'Piezo', view:'L', title:'Piezokirurgi', cap:'Den blå sicksacklinjen är snittet med ultraljudskniven längs underkäken, nära nerven (gul). Studierna visar kortare sågtid, men inte säkert färre nervskador.'},
+    {n:9, chip:'Genioplastik', view:'L', title:'Sliding- och vertikal genioplastik', cap:'Hakspetsen sågas loss under nervens utgång, den gula pricken, och flyttas framåt och nedåt. En platta håller den på plats medan den läker.'},
+    {n:10, chip:'Septoplastik', view:'F', title:'Septoplastik', cap:'Framifrån: den sneda nässkiljeväggen i mitten av näsöppningen rätas ut, så att båda näsgångarna blir lika vida.'},
+    {n:11, chip:'Orbital dekompression', view:'L', title:'Orbital dekompression', cap:'Ögonhålans golv, den röda linjen, tas bort. Vävnaden bakom ögat får plats ned i bihålan (blå), och ögat sjunker några millimeter bakåt.'},
+    {n:12, chip:'Ögonlock och ögonvrå', view:'F', title:'Blefaroplastik och kantoplastik', cap:'Närbild på ett öga. Den yttre ögonvrån lossas och fästs om mot benkanten (röd prick), så att formen ändras. Den rosa strimman över ögonlocket är huden som tas bort vid blefaroplastik.'},
+    {n:13, chip:'Fett runt ögonen', view:'F', title:'Fettransplantation runt ögonen', cap:'Fettet sprutas in i små droppar runt ögonbrynen och under ögonen. En del av dropparna försvinner igen, eftersom bara en del av fettet överlever.'},
+    {n:14, chip:'Implantat under ögonen', view:'F', title:'Implantat under ögonen', cap:'Implantaten (blå) läggs på benkanten under ögonen och skruvas fast.'},
+    {n:15, chip:'Ta bort metall', view:'L', title:'Ta bort skruvar och plattor', cap:'Plattorna och skruvarna från käkoperationerna (grå) tas bort i en separat operation, om det behövs.'},
+    {n:16, chip:'Byggställning', view:'L', title:'3D-printad byggställning', cap:'Gallret är byggställningen på hakan. Benet växer in tätt från kanterna, men inne i ställningen bildas bara små öar, som i en av studierna.'}
+  ];
+  const VIEW = {L:'Från sidan', F:'Framifrån', P:'Gommen underifrån', B:'Diagram'};
+
+  /* zigzag along the BSSO cut */
+  {
+    const P = [[346,360],[352,386],[372,404],[402,412]];
+    const bez = (u) => { const m = 1 - u; return [0, 1].map(k => m*m*m*P[0][k] + 3*m*m*u*P[1][k] + 3*m*u*u*P[2][k] + u*u*u*P[3][k]); };
+    const pts = [];
+    for (let i = 0; i <= 24; i++) pts.push(bez(i / 24));
+    for (let i = 1; i <= 20; i++) pts.push([402 + 4 * i / 20, 412 + 76 * i / 20]);
+    const out = pts.map((p, i) => {
+      const q = pts[Math.min(i + 1, pts.length - 1)], r = pts[Math.max(i - 1, 0)];
+      const dx = q[0] - r[0], dy = q[1] - r[1], len = Math.hypot(dx, dy) || 1;
+      const o = (i % 2 ? 4 : -4);
+      return (p[0] - dy / len * o).toFixed(1) + ',' + (p[1] + dx / len * o).toFixed(1);
+    });
+    $('zig').setAttribute('d', 'M' + out.join(' L'));
+  }
+
+  /* scaffold cells */
+  const cells = [];
+  {
+    const g = $('scafCells');
+    for (let x = 466; x < 530; x += 6) for (let y = 444; y < 504; y += 6) {
+      const cx = x + 2.5, cy = y + 2.5;
+      const r = Math.hypot((cx - 499) / 25, (cy - 474) / 24);
+      const isl = rnd() < 0.22;
+      const c = el('rect', {x: x, y: y, width: 5, height: 5, fill: '#ebe6d8', stroke: '#7fd1ff', 'stroke-width': 0.8, 'fill-opacity': 0});
+      g.appendChild(c);
+      cells.push({c, edge: r > 0.72, isl, d: rnd()});
+    }
+  }
+
+  /* ceph points */
+  const CP = [['S',318,238],['N',490,226],['A',511,352],['B',499,440],['Pog',511,470],['Me',492,495],['Go',296,468]];
+  const cpEls = CP.map(([t, x, y]) => {
+    const g = el('g', {});
+    g.appendChild(el('circle', {cx: x, cy: y, r: 5.5, fill: '#5ee0a8', stroke: '#0a1f17', 'stroke-width': 2}));
+    const tx = el('text', {x: x + (t === 'Go' ? -16 : 10), y: y - 9, class: 'lbl', 'text-anchor': t === 'Go' ? 'end' : 'start'});
+    tx.textContent = t;
+    g.appendChild(tx);
+    $('cpts').appendChild(g);
+    return g;
+  });
+
+  /* fat droplets */
+  const fats = [];
+  {
+    const g = $('fat');
+    const zones = [[214,300,174,196],[340,426,174,196],[222,296,264,286],[344,418,264,286]];
+    for (const [x0, x1, y0, y1] of zones) for (let i = 0; i < 16; i++) {
+      const c = el('circle', {cx: mix(x0, x1, rnd()).toFixed(1), cy: mix(y0, y1, rnd()).toFixed(1), r: (2.4 + rnd() * 1.6).toFixed(1), fill: '#ffc36b', stroke: '#9a6a22', 'stroke-width': 0.6});
+      g.appendChild(c);
+      fats.push({c, d: rnd() * 0.45, lost: rnd() < 0.42});
+    }
+  }
+
+  /* palate halves */
+  {
+    const R = [[334,108,15,22,13],[356,121,35,18,12],[373,144,55,18,16],[385,174,70,19,17],[393,206,80,20,18],[400,246,86,28,28],[404,290,88,27,26]];
+    const half = (side) => {
+      const g = $(side > 0 ? 'pR' : 'pL');
+      const X = x => side > 0 ? x : 640 - x;
+      const arch = el('path', {d: 'M320 104 C' + X(350) + ' 106 ' + X(372) + ' 130 ' + X(384) + ' 170 C' + X(394) + ' 204 ' + X(402) + ' 250 ' + X(404) + ' 300', fill: 'none', stroke: '#ebe6d8', 'stroke-width': 46, 'stroke-linecap': 'round'});
+      g.appendChild(arch);
+      g.appendChild(el('path', {d: 'M320 132 C' + X(350) + ' 134 ' + X(366) + ' 160 ' + X(374) + ' 200 C' + X(380) + ' 236 ' + X(382) + ' 280 ' + X(380) + ' 316 L320 322 Z', fill: '#d6cdb6', stroke: '#9c937d', 'stroke-width': 1.2}));
+      for (const [x, y, a, w, h] of R) {
+        const cx = X(x), rot = side > 0 ? a : -a;
+        g.appendChild(el('rect', {x: cx - w / 2, y: y - h / 2, width: w, height: h, rx: 5, class: 'tooth', transform: 'rotate(' + rot + ' ' + cx + ' ' + y + ')'}));
+      }
+      g.appendChild(el('rect', {x: side > 0 ? 320 : 302, y: 214, width: 18, height: 46, rx: 5, fill: '#a7b4bd', stroke: '#55636c'}));
+      g.appendChild(el('path', {d: 'M' + X(334) + ' 236 L' + X(386) + ' 246', stroke: '#a7b4bd', 'stroke-width': 6, 'stroke-linecap': 'round'}));
+      g.appendChild(el('rect', {x: X(400) - 16, y: 230, width: 32, height: 32, rx: 6, fill: 'none', stroke: '#a7b4bd', 'stroke-width': 4}));
+      for (const y of [204, 270]) g.appendChild(el('circle', {cx: X(342), cy: y, r: 6, fill: '#55636c', stroke: '#d5dde2', 'stroke-width': 2}));
+    };
+    half(1); half(-1);
+  }
+
+  /* gantt */
+  {
+    const rows = [
+      ['Vikt', 'nu och fram till operationen', 0, 20, ''],
+      ['Röntgen', 'ceph och CBCT', 0, 1, ''],
+      ['Visdomständer', 'minst 6 mån före BSSO', 1, 2, ''],
+      ['MARPE', 'vidgningen tar ungefär 1 mån', 2, 3, ''],
+      ['Tandställning före', '12–24 mån, median 17', 3, 20, ''],
+      ['Käkoperationen', 'första läkningen ungefär 6 veckor', 20, 21.5, 'cut'],
+      ['Tandställning efter', 'ungefär 6 mån', 20, 26.5, ''],
+      ['Ta bort metall', 'vid behov, hälften inom första året', 20, 32, 'op'],
+      ['Tandblekning', 'när tandställningen är borta', 26.5, 27.5, ''],
+      ['Ögonen', 'efter att svullnaden har lagt sig', 27, 36, 'fade']
+    ];
+    $('gantt').innerHTML = rows.map(([a, b, s, e, k]) => '<div class="gr"><p><b>' + a + '</b><span>' + b + '</span></p><div class="track"><i class="' + k + '" style="left:' + (s / 36 * 100).toFixed(2) + '%;width:' + ((e - s) / 36 * 100).toFixed(2) + '%"></i></div></div>').join('');
+  }
+
+  /* risks */
+  {
+    const rows = [
+      ['Nytt dubbelseende efter orbital dekompression', 45, '0–45 %', true, 'Amsterdam UMC, sammanställning', 'https://pure.amsterdamumc.nl/ws/files/161369583/Effects-of-orbital-decompression-on-duction-cyclotorsion-and-diplopia.pdf'],
+      ['MARPE lyckades inte, män', 39, '39 %', false, 'Clin Oral Investig 2022', 'https://link.springer.com/article/10.1007/s00784-021-04281-0'],
+      ['Plattorna togs bort efter BSSO', 18.6, '18,6 %', false, 'Berns universitet', 'https://boris-portal.unibe.ch/entities/publication/efd9c55e-459d-46c3-b2f6-e9715e2df874'],
+      ['MARPE lyckades inte, 20–29 år', 18, '18 %', false, 'Angle Orthod', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8028491'],
+      ['Bestående domning efter BSSO, 19–30 år', 7.9, '7,9 %', false, 'Leidens universitet', 'https://scholarlypublications.universiteitleiden.nl/access/item%3A2942416/view'],
+      ['Känselbortfall i hakan efter genioplastik', 6.5, '6,5 %', false, 'Int J Dent 2021', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8612779/'],
+      ['Infektion efter genioplastik', 6, '6,0 %', false, 'Int J Dent 2021', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8612779/'],
+      ['Implantat under ögat, ny operation', 5, '5 %', false, 'Stanford', 'https://stanfordhealthcare.org/publications/873/87352.html'],
+      ['Implantat under ögat, borttaget på grund av infektion', 3, '3 %', false, 'Stanford', 'https://stanfordhealthcare.org/publications/873/87352.html']
+    ];
+    $('riskList').innerHTML = rows.map(([a, v, t, range, s, u]) => '<div class="rk"><p><b>' + a + '</b><em>' + t + '</em></p><div class="bar"><i class="' + (range ? 'range' : '') + '" style="width:' + (v / 50 * 100).toFixed(1) + '%"></i></div><small>Källa: <a href="' + u + '" target="_blank" rel="noopener">' + s + '</a></small></div>').join('');
+  }
+
+  /* viewer */
+  const svgs = {L: $('svgL'), F: $('svgF'), P: $('svgP'), B: $('svgB')};
+  const range = $('vT');
+  let cur = 7, t = 0, raf = 0;
+  const show = (id, o) => { $(id).style.opacity = o; };
+  const draw = (id, p) => { const e = $(id); e.style.strokeDasharray = '1 1'; e.style.strokeDashoffset = String(1 - p); e.style.opacity = p > 0 ? 1 : 0; };
+  const BONE = '#ebe6d8', HI = '#bfefd8';
+
+  const reset = () => {
+    const L = svgs.L;
+    L.style.setProperty('--nerve', 0);
+    for (const id of ['useUp', 'usePX', 'useMD', 'useCH', 'useLF']) { $(id).style.setProperty('--bf', BONE); $(id).style.setProperty('--sf', BONE); }
+    for (const id of ['lefort', 'mdist', 'chin', 'ball', 'impl', 'scan', 'plBS']) $(id).removeAttribute('transform');
+    for (const id of ['brkU', 'brkL', 'plLF', 'plBS', 'plGE', 'cutLF', 'cutBS', 'cutGE', 'zig', 'eyeG', 'scaf', 'scan', 'ceph', 'fEyes', 'fat', 'impl', 'shade']) show(id, 0);
+    for (const id of ['wisU', 'wisL']) { show(id, 1); $(id).style.stroke = ''; $(id).style.strokeWidth = ''; }
+    svgs.F.setAttribute('viewBox', '0 0 640 520');
+    svgs.F.style.setProperty('--tc', '#f8f6ee');
+    $('sept').setAttribute('d', 'M320 272 Q320 312 320 349');
+    $('pL').removeAttribute('transform'); $('pR').removeAttribute('transform');
+    $('eyeR').setAttribute('d', 'M348 232 C366 214 400 214 418 234 C400 248 366 246 348 232 Z');
+    $('tendon').setAttribute('d', 'M418 234 L429 236');
+    $('anchor').setAttribute('cy', '236');
+    for (const id of ['skinR', 'tendon', 'anchor']) $(id).style.opacity = '';
+  };
+
+  const apply = (n, t) => {
+    if (n === 1) {
+      const p = seg(t, 0, 1);
+      const bmi = mix(16.7219, 22.1527, p), kg = Math.round(mix(56, 75, p));
+      $('mk').setAttribute('transform', 'translate(' + (80 + (bmi - 15) * 48).toFixed(1) + ' 0)');
+      $('mkT').textContent = 'BMI ' + bmi.toFixed(1).replace('.', ',');
+      $('kg').textContent = kg + ' kg';
+    }
+    if (n === 2) {
+      const p1 = seg(t, 0, 0.45), p2 = seg(t, 0.4, 1);
+      show('scan', p1 > 0 && p1 < 1 ? 1 : 0);
+      $('scan').setAttribute('transform', 'translate(' + mix(70, 570, p1).toFixed(1) + ' 0)');
+      show('ceph', 1);
+      cpEls.forEach((g, i) => { g.style.opacity = cl(p2 * 8 - i); });
+      draw('lSN', cl(p2 * 2 - 0.6)); draw('lNA', cl(p2 * 2 - 0.9)); draw('lNB', cl(p2 * 2 - 1));
+    }
+    if (n === 3) {
+      const p = seg(t, 0.35, 1);
+      for (const id of ['wisU', 'wisL']) { $(id).style.stroke = '#ff4f73'; $(id).style.strokeWidth = '3'; show(id, 1 - p); }
+    }
+    if (n === 4) {
+      const p = seg(t, 0, 0.8);
+      show('brkU', p); show('brkL', p);
+    }
+    if (n === 7 || n === 8 || n === 9 || n === 15 || n === 16) { show('wisU', 0); show('wisL', 0); }
+    if (n === 7) {
+      svgs.L.style.setProperty('--nerve', 1);
+      show('brkU', 1); show('brkL', 1);
+      const p1 = seg(t, 0, 0.3), p2 = seg(t, 0.3, 0.9), p3 = seg(t, 0.85, 1);
+      draw('cutLF', p1); draw('cutBS', p1);
+      $('cutLF').style.opacity = p1 > 0 ? 1 - 0.65 * p2 : 0;
+      $('cutBS').style.opacity = p1 > 0 ? 1 - 0.65 * p2 : 0;
+      $('lefort').setAttribute('transform', 'translate(' + (8 * p2).toFixed(2) + ' ' + (-2 * p2).toFixed(2) + ') rotate(' + (-4 * p2).toFixed(2) + ' 400 360)');
+      const md = 'translate(' + (18 * p2).toFixed(2) + ' ' + (-1 * p2).toFixed(2) + ') rotate(' + (-5 * p2).toFixed(2) + ' 400 380)';
+      $('mdist').setAttribute('transform', md);
+      $('plBS').setAttribute('transform', md);
+      const hc = mixc(BONE, HI, cl(p1 * 1.2));
+      for (const id of ['useMD', 'useCH']) $(id).style.setProperty('--bf', hc);
+      $('useLF').style.setProperty('--sf', hc);
+      show('plLF', p3); show('plBS', p3);
+    }
+    if (n === 8) {
+      svgs.L.style.setProperty('--nerve', 1);
+      draw('zig', seg(t, 0, 0.9));
+    }
+    if (n === 9) {
+      svgs.L.style.setProperty('--nerve', 1);
+      const p1 = seg(t, 0, 0.3), p2 = seg(t, 0.3, 0.9), p3 = seg(t, 0.85, 1);
+      draw('cutGE', p1);
+      $('cutGE').style.opacity = p1 > 0 ? 1 - 0.65 * p2 : 0;
+      $('chin').setAttribute('transform', 'translate(' + (12 * p2).toFixed(2) + ' ' + (7 * p2).toFixed(2) + ')');
+      $('useCH').style.setProperty('--bf', mixc(BONE, HI, cl(p1 * 1.2)));
+      show('plGE', p3);
+    }
+    if (n === 11) {
+      show('eyeG', 1);
+      const p1 = seg(t, 0, 0.35), p2 = seg(t, 0.3, 1);
+      const f = $('floorL');
+      f.style.stroke = mixc(BONE, '#ff4f73', p1);
+      f.style.strokeDasharray = p1 > 0.5 ? '6 5' : 'none';
+      $('blobL').setAttribute('ry', (3 + 15 * p2).toFixed(1));
+      $('blobL').setAttribute('cy', (272 + 12 * p2).toFixed(1));
+      $('ball').setAttribute('transform', 'translate(' + (-8 * p2).toFixed(2) + ' 0)');
+    }
+    if (n === 15) {
+      const p = seg(t, 0.15, 0.9);
+      show('plLF', 1 - p); show('plBS', 1 - p); show('plGE', 1 - p);
+    }
+    if (n === 16) {
+      show('scaf', 1);
+      for (const k of cells) {
+        const start = k.edge ? 0.05 + k.d * 0.25 : 0.35 + k.d * 0.4;
+        const max = k.edge ? 1 : (k.isl ? 0.95 : 0.12);
+        k.c.setAttribute('fill-opacity', (max * seg(t, start, start + 0.3)).toFixed(2));
+      }
+    }
+    if (n === 5) {
+      const p = seg(t, 0, 1);
+      $('pR').setAttribute('transform', 'rotate(' + (3.5 * p).toFixed(2) + ' 320 340) translate(' + (5 * p).toFixed(2) + ' 0)');
+      $('pL').setAttribute('transform', 'rotate(' + (-3.5 * p).toFixed(2) + ' 320 340) translate(' + (-5 * p).toFixed(2) + ' 0)');
+      $('sut').style.opacity = 1 - p * 0.7;
+    }
+    if (n === 6) {
+      const p = seg(t, 0, 1);
+      svgs.F.style.setProperty('--tc', mixc('#e3cf96', '#f8f6ee', p));
+      show('shade', 1);
+      $('shadeMk').setAttribute('transform', 'translate(' + (38 * 3.6 * p).toFixed(1) + ' 0)');
+    }
+    if (n === 10) {
+      const p = seg(t, 0, 1);
+      $('sept').setAttribute('d', 'M320 272 Q' + (346 - 26 * p).toFixed(1) + ' 312 320 349');
+    }
+    if (n === 12) {
+      show('fEyes', 1);
+      const z = seg(t, 0, 0.25), p = seg(t, 0.25, 0.9);
+      const vb = [mix(0, 310, z), mix(0, 168, z), mix(640, 164, z), mix(520, 133, z)];
+      svgs.F.setAttribute('viewBox', vb.map(v => v.toFixed(1)).join(' '));
+      const lx = mix(418, 424, p), ly = mix(234, 226, p), ax = 429, ay = mix(236, 227, p);
+      $('eyeR').setAttribute('d', 'M348 232 C366 214 400 ' + mix(214, 210, p).toFixed(1) + ' ' + lx.toFixed(1) + ' ' + ly.toFixed(1) + ' C400 ' + mix(248, 244, p).toFixed(1) + ' 366 246 348 232 Z');
+      $('tendon').setAttribute('d', 'M' + lx.toFixed(1) + ' ' + ly.toFixed(1) + ' L' + ax + ' ' + ay.toFixed(1));
+      $('anchor').setAttribute('cy', ay.toFixed(1));
+      $('skinR').style.opacity = 0.85 * (1 - seg(t, 0.5, 0.95));
+    }
+    if (n === 13) {
+      show('fEyes', 1); show('fat', 1);
+      for (const id of ['skinR', 'tendon', 'anchor']) $(id).style.opacity = 0;
+      for (const f of fats) {
+        let o = seg(t, f.d, f.d + 0.15);
+        if (f.lost) o *= 1 - seg(t, 0.7, 1);
+        f.c.style.opacity = o;
+      }
+    }
+    if (n === 14) {
+      const p = seg(t, 0, 0.7);
+      show('impl', p);
+      $('impl').setAttribute('transform', 'translate(0 ' + (10 * (1 - p)).toFixed(1) + ')');
+    }
+  };
+
+  const render = () => {
+    const s = STEPS[cur - 1];
+    for (const k in svgs) { if (k === s.view) svgs[k].removeAttribute('hidden'); else svgs[k].setAttribute('hidden', ''); }
+    reset();
+    apply(cur, t);
+    range.value = Math.round(t * 1000);
+    range.style.setProperty('--p', (t * 100).toFixed(1) + '%');
+  };
+
+  const chips = $('chips');
+  chips.innerHTML = STEPS.map(s => '<button type="button" data-n="' + s.n + '" aria-pressed="false"><b>' + s.n + '</b>' + s.chip + '</button>').join('');
+
+  const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; $('vPlay').textContent = 'Spela upp'; };
+  const play = () => {
+    stop();
+    if (reduce) { t = 1; render(); $('vPlay').textContent = 'Spela igen'; return; }
+    const t0 = performance.now(), dur = 2600, from = t >= 0.999 ? 0 : t;
+    $('vPlay').textContent = 'Pausa';
+    const tick = now => {
+      t = Math.min(1, from + (now - t0) / dur);
+      render();
+      if (t < 1) raf = requestAnimationFrame(tick); else { raf = 0; $('vPlay').textContent = 'Spela igen'; }
+    };
+    raf = requestAnimationFrame(tick);
+  };
+  const select = (n, autoplay) => {
+    stop();
+    cur = n; t = 0;
+    const s = STEPS[n - 1];
+    $('vTitle').textContent = s.n + '. ' + s.title;
+    $('vCap').textContent = s.cap;
+    $('vView').textContent = VIEW[s.view];
+    $('vGo').setAttribute('href', '#s' + n);
+    for (const b of chips.querySelectorAll('button')) b.setAttribute('aria-pressed', String(Number(b.dataset.n) === n));
+    const cb = chips.querySelector('[data-n="' + n + '"]');
+    if (cb && cb.scrollIntoView) { try { cb.scrollIntoView({block: 'nearest', inline: 'center', behavior: reduce ? 'auto' : 'smooth'}); } catch (e) {} }
+    render();
+    if (autoplay) play();
+  };
+
+  chips.addEventListener('click', e => { const b = e.target.closest('button'); if (b) select(Number(b.dataset.n), true); });
+  range.addEventListener('input', () => { stop(); t = Number(range.value) / 1000; render(); $('vPlay').textContent = t >= 0.999 ? 'Spela igen' : 'Spela upp'; });
+  $('vPlay').addEventListener('click', () => { if (raf) stop(); else play(); });
+  $('vPrev').addEventListener('click', () => select(cur > 1 ? cur - 1 : 16, true));
+  $('vNext').addEventListener('click', () => select(cur < 16 ? cur + 1 : 1, true));
+  for (const b of document.querySelectorAll('.sk')) b.addEventListener('click', () => {
+    select(Number(b.dataset.n), true);
+    const v = $('skelett');
+    try { v.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'}); } catch (e) { v.scrollIntoView(); }
+  });
+  document.addEventListener('keydown', e => {
+    if (!e.target.closest || !e.target.closest('#skelett')) return;
+    if (e.key === 'ArrowRight' && e.target !== range) $('vNext').click();
+    if (e.key === 'ArrowLeft' && e.target !== range) $('vPrev').click();
+  });
+  select(7, false);
+  t = 1; render(); $('vPlay').textContent = 'Spela igen';
+
+  /* plan state */
+  const KEY = 'ansiktsplan-v1';
+  let st = {};
+  try { st = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { st = {}; }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
+  const steps = [...document.querySelectorAll('.step')];
+  const total = steps.length;
+  const update = () => {
+    let done = 0, book = 0;
+    for (const s of steps) {
+      const v = Number(st['s' + s.dataset.n] || 0);
+      s.dataset.status = v;
+      for (const b of s.querySelectorAll('.status button')) b.setAttribute('aria-pressed', String(Number(b.dataset.v) === v));
+      if (v === 2) done++;
+      if (v === 1) book++;
+    }
+    $('prog').textContent = done + ' av ' + total + ' klara';
+    $('booked').textContent = book + (book === 1 ? ' bokat' : ' bokade');
+    $('bar').style.width = (done / total * 100) + '%';
+  };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.status button');
+    if (!b) return;
+    st['s' + b.closest('.step').dataset.n] = Number(b.dataset.v);
+    save();
+    update();
+  });
+  for (const ta of document.querySelectorAll('textarea[data-n]')) {
+    ta.value = st['n' + ta.dataset.n] || '';
+    ta.addEventListener('input', () => { st['n' + ta.dataset.n] = ta.value; save(); });
+  }
+  const toggle = $('toggle');
+  toggle.addEventListener('click', () => {
+    const ds = [...document.querySelectorAll('.step details')];
+    const open = !ds.every(d => d.open);
+    for (const d of ds) d.open = open;
+    toggle.textContent = open ? 'Dölj alla detaljer' : 'Visa alla detaljer';
+  });
+  const copy = $('copy');
+  copy.addEventListener('click', async () => {
+    const text = steps.map(s => s.dataset.n + '. ' + s.querySelector('h3').textContent + ': ' + s.querySelector('.ask').textContent).join('\n');
+    try { await navigator.clipboard.writeText(text); copy.textContent = 'Kopierat'; }
+    catch (e) { copy.textContent = 'Gick inte att kopiera'; }
+    setTimeout(() => { copy.textContent = 'Kopiera alla frågor'; }, 2000);
+  });
+  update();
+
+  if ('serviceWorker' in navigator && /github\.io$/.test(location.hostname)) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+}
+</script>
+</body>
+</html>

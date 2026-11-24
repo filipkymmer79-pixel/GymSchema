@@ -564,3 +564,14 @@ Appen hjälper till att ta reda på vilken bunt i kopplingsdosan som är nollan,
 - Samma utseende som GymSchema och Idag (Bento, Manrope). Månen högst upp byter mellan ljust och mörkt.
 
 Färger, mätning och bockar sparas bara på telefonen. Svar som sparades av första versionen ersätts av det videon visade; bockarna ligger kvar. Ikonen är ritad för appen: en blå tråd ner i plinten N. Kontrollerat i Chromium på 320 och 390 px, ljust och mörkt, och utan nät. Inte provat på en riktig iPhone.
+
+## Ansiktsplanen
+
+Planen steg för steg som app: https://filipkymmer79-pixel.github.io/GymSchema/ansiktsplan/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*.
+
+- **Skelettet** visar varje steg på en ritad skalle: från sidan, framifrån eller gommen underifrån. Reglaget går från *Före* till *Efter*, och *Spela upp* visar rörelsen: snitten (röda), nerven till underläppen (gul), plattorna och hur käkarna flyttas och vrids. Alla 16 steg finns som knappar överst, och *Visa på skelettet* i varje steg hoppar dit.
+- **Tidslinjen** visar ungefär när varje steg kommer, i månader, med medianer från studierna: omkring 31 månader för tandställning och käkoperation.
+- **Risker i siffror** visar riskerna som studierna anger, med källan på varje rad.
+- **Stegen** har vad det är, vem som gör det, återhämtning, risker, en fråga till specialisten och länkar till källorna. Varje steg kan markeras som planerat, bokat eller klart och har plats för egna anteckningar. *Kopiera alla frågor* ger frågorna som en lista att ta med till ett besök.
+
+Status och anteckningar sparas bara på telefonen. Bilderna är förenklade ritningar som visar principen, inte någons egen anatomi. Kontrollerat i Chromium på 390 och 1280 px, ljust och mörkt. Inte provat på en riktig iPhone.
