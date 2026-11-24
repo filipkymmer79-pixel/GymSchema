@@ -4620,6 +4620,42 @@ textarea.eg-in{resize:none}
 /* Vanor ordnas med order (bockarna först): Mina regler direkt under bockarna, gardinen sist */
 .ny #v-vanor > #r25Rules{order:3}
 .ny #v-vanor > #hemRow{order:6}
+
+/* Versioner (natten 24–25 nov 2026): egen flik, en stor knapp tillbaka en version och listan med äldre */
+:root{
+--tab-ver:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 12a8.5 8.5 0 1 0 2.8-6.3'/%3E%3Cpath d='M3.5 3.5v4.8h4.8'/%3E%3Cpath d='M12 7.5V12l3 2'/%3E%3C/svg%3E");
+--tab-ver-f:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 12a8.5 8.5 0 1 0 2.8-6.3'/%3E%3Cpath d='M3.5 3.5v4.8h4.8'/%3E%3Cpath d='M12 7.5V12l3 2'/%3E%3C/svg%3E");
+}
+#t-versioner{--i:var(--tab-ver);--if:var(--tab-ver-f)}
+html:not(.ny) #t-versioner{display:none}
+.ny .tabs-in{grid-template-columns:repeat(7,minmax(0,1fr))}
+.ny #t-versioner{order:7}
+.ver{padding:4px 0 24px}
+.ver-h{font-family:var(--display);font-weight:800;font-size:34px;line-height:1;margin:6px 0 10px;letter-spacing:-.01em}
+.ver-lead{margin:0 0 16px;font-size:15.5px;line-height:1.45;color:var(--ink);max-width:36em}
+.ver-big{display:flex;align-items:center;gap:14px;width:100%;min-height:96px;border:0;border-radius:24px;padding:18px 20px;background:var(--ink);color:var(--bg);text-align:left;font:inherit;cursor:pointer}
+.ver-big:disabled{opacity:.7}
+.ver-bi{flex:none;display:grid;place-items:center;width:48px;height:48px;border-radius:999px;background:color-mix(in srgb,currentColor 16%,transparent);font-size:24px;font-weight:800;line-height:1}
+.ver-bt{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ver-bt b{font-size:19px;font-weight:800;line-height:1.15}
+.ver-bt small{font-size:13.5px;line-height:1.35;opacity:.78}
+.ver-sub{margin-top:22px}
+.ver-list{display:flex;flex-direction:column;gap:8px}
+.ver-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px}
+.ver-rt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ver-rt b{font-size:15px}
+.ver-rt small{font-size:13px;line-height:1.35;color:var(--muted)}
+.ver-row .btn{flex:none;margin:0}
+.ver-msg{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px;font-size:14.5px}
+.ver-msg .btn{margin:0;flex:none}
+.ver-now{display:flex;flex-direction:column;gap:3px;margin-top:22px;padding:14px}
+.ver-now b{font-size:15px}
+.ver-now small{font-size:13px;color:var(--muted);line-height:1.35}
+.ver-how{margin:12px 2px 0;color:var(--muted);line-height:1.45}
+.ver-allt{display:flex;align-items:center;gap:12px;width:100%;margin:4px 0 14px;padding:12px 14px;border:0;text-align:left;font:inherit;color:var(--ink);cursor:pointer}
+.ver-allt .ver-bi{width:40px;height:40px;font-size:20px;background:var(--ink);color:var(--bg)}
+.ver-allt .ver-bt b{font-size:16px}
+.ver-allt .ver-bt small{opacity:1;color:var(--muted)}
 </style>
 
 <div class="app">
@@ -9421,7 +9457,7 @@ function sjLoad(){
   // Första gången. Schemat sköts fram en dag lördag 21 nov 2026. Den som redan körde programmet då (appen uppdateras från en äldre
   // version) får med den dagen. En ny installation börjar på grundschemat.
   let prev = null; try { prev = localStorage.getItem("gymschema.build"); } catch(e){}
-  sjL = prev && prev !== "24 nov 21.42" ? ["2026-11-21"] : [];
+  sjL = prev && prev !== "25 nov 00.15" ? ["2026-11-21"] : [];
   sjFresh = sjL.length > 0;
   sjStore();
   return sjL;
@@ -21329,12 +21365,115 @@ function r25Import(x){
 }
 if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {r25Cap, r25Left, r25State: () => JSON.parse(JSON.stringify(r25g))});
 
+/* ---------- Versioner (natten 24–25 nov 2026, omgång lr7) ---------- */
+// Filip: "lägg till en stor knapp i en egen flik där jag kan återställa till tidigare versioner av appen" – hela appen som den var
+// det datumet, och datan följer med. De senaste byggena ligger i v/<id>.html (samma fil som index.html i den committen) och listan
+// i v/versions.json, senaste först. Ett tryck hämtar versionen och sparar den och ett märke ("pin") i cachen gs-pin. Service workern
+// visar sedan den gamla appen, med en svart rad överst och knappen Tillbaka till senaste, tills den knappen trycks.
+// gs-pin börjar inte med "gymschema-", så den finns kvar när en ny service worker städar bort de gamla cacharna.
+const VER_CACHE = "gs-pin";
+const verUrl = p => new URL(p, location.href).href;   // samma nycklar som service workern bygger från sin scope
+let verList = null, verErr = "", verBusy = "";
+
+/* ===== egen flik: sidan och knappen i raden längst ner (den nya ordningen) ===== */
+(function(){
+  const prog = $("v-program");
+  if (prog && !$("v-versioner")){ const s = document.createElement("section"); s.className = "view"; s.id = "v-versioner"; s.hidden = true; s.setAttribute("aria-label", "Versioner"); prog.parentElement.appendChild(s); }
+  const tp = $("t-program");
+  if (tp && !$("t-versioner")){
+    const b = document.createElement("button"); b.className = "tab"; b.id = "t-versioner"; b.dataset.v = "versioner";
+    b.innerHTML = '<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>Versioner';
+    tp.parentElement.appendChild(b);
+  }
+})();
+VIEWS.push("versioner");
+render = (f => function(){
+  if (view === "versioner"){ try { renderStrip(); } catch(e){} renderVer(); try { rgPaint(); } catch(e){} return; }   // rgPaint: Idag-rutan överst göms
+  return f.apply(this, arguments);
+})(render);
+
+async function verLoad(){
+  verErr = "";
+  try {
+    const r = await fetch("v/versions.json", {cache: "no-cache"});
+    if (!r.ok) throw new Error("http " + r.status);
+    const j = await r.json();
+    verList = (Array.isArray(j.versions) ? j.versions : []).filter(v => v && /^[0-9a-f]{7,12}$/.test(v.id) && v.id !== VER_SELF);
+  } catch(e){ verErr = "Kunde inte hämta versionerna just nu."; }
+  if (view === "versioner") renderVer();
+}
+// den här appens egen commit känns inte till när den byggs – men den står aldrig i listan, som bara har det som legat ute före
+const VER_SELF = "";
+function verRow(v, big){
+  const busy = verBusy === v.id, dis = verBusy ? " disabled" : "";
+  if (big) return '<button type="button" class="ver-big" data-ver="use" data-id="' + esc(v.id) + '"' + dis + '><span class="ver-bi" aria-hidden="true">↩</span>' +
+    '<span class="ver-bt"><b>' + (busy ? "Hämtar versionen…" : "Gå tillbaka en version") + '</b><small>' + esc(v.date) + ' · ' + esc(v.title) + '</small></span></button>';
+  return '<div class="card ver-row"><span class="ver-rt"><b>' + esc(v.date) + '</b><small>' + esc(v.title) + '</small></span>' +
+    '<button type="button" class="btn sm" data-ver="use" data-id="' + esc(v.id) + '"' + dis + '>' + (busy ? "Hämtar…" : "Använd") + '</button></div>';
+}
+function renderVer(){
+  const el = $("v-versioner"); if (!el) return;
+  const ok = "serviceWorker" in navigator && "caches" in window;
+  if (ok && !verList && !verErr) verLoad();
+  const L = verList || [];
+  el.innerHTML = '<div class="ver"><h2 class="ver-h">Versioner</h2>' +
+    '<p class="ver-lead">Gillar du inte en ändring kan du gå tillbaka till hur appen var innan. Dina pass, vanor och mätningar följer med.</p>' +
+    (!ok ? '<div class="card ver-msg">Det här fungerar bara i appen på hemskärmen eller i Safari.</div>'
+      : verErr ? '<div class="card ver-msg"><span>' + esc(verErr) + '</span><button type="button" class="btn sm ghost" data-ver="retry">Försök igen</button></div>'
+      : !verList ? '<div class="card ver-msg">Hämtar versionerna…</div>'
+      : !L.length ? '<div class="card ver-msg">Det finns inga tidigare versioner än.</div>'
+      : verRow(L[0], true) + (L.length > 1 ? '<div class="pr-sub ver-sub">Äldre versioner</div><div class="ver-list">' + L.slice(1).map(v => verRow(v, false)).join("") + '</div>' : '')) +
+    '<div class="card ver-now"><b>Nu har du den senaste versionen</b><small>' + esc(BUILD) + ' · ' + esc(BUILD_NOTE) + '</small></div>' +
+    '<p class="small ver-how">I den gamla versionen står en svart rad överst med knappen <b>Tillbaka till senaste</b>. Det du loggar där sparas som vanligt och syns här också.</p></div>';
+}
+async function verUse(id){
+  const v = (verList || []).find(x => x.id === id); if (!v || verBusy || readOnly) return;
+  if (!navigator.serviceWorker || !navigator.serviceWorker.controller){ toast("Stäng appen helt och öppna den igen – sedan går det"); return; }
+  verBusy = id; renderVer();
+  try {
+    const r = await fetch("v/" + id + ".html", {cache: "no-cache"});
+    if (!r.ok) throw new Error("http " + r.status);
+    const c = await caches.open(VER_CACHE), key = verUrl("v/" + id + ".html");
+    for (const k of await c.keys()) if (k.url !== key) await c.delete(k);   // en gammal version åt gången
+    await c.put(key, r);
+    await c.put(verUrl("pin"), new Response(JSON.stringify({id: v.id, ts: v.ts || 0, build: v.build || "", date: v.date || "", title: v.title || ""}), {headers: {"Content-Type": "application/json"}}));
+    location.reload();
+  } catch(e){
+    verBusy = ""; renderVer(); toast("Kunde inte hämta versionen – försök igen när du har nät");
+  }
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest("[data-ver]"); if (!b) return;
+  if (b.dataset.ver === "use") verUse(b.dataset.id);
+  else if (b.dataset.ver === "retry"){ verList = null; verErr = ""; renderVer(); }
+  else if (b.dataset.ver === "go"){ guClose(); go("versioner"); }
+});
+// Har den senaste appen öppnats fast en gammal version är vald, kunde den gamla inte visas (filen saknas eller går inte att hämta):
+// då tas valet bort, så att appen inte står och väljer en version den inte kan visa.
+(async () => {
+  try {
+    if (!("caches" in window) || !navigator.serviceWorker || !navigator.serviceWorker.controller) return;
+    const c = await caches.open(VER_CACHE), p = await c.match(verUrl("pin"));
+    if (p){ await c.delete(verUrl("pin")); toast("Den gamla versionen gick inte att öppna – du har den senaste"); }
+  } catch(e){}
+})();
+
+/* ===== Allt: en stor rad överst som tar dig till fliken (i båda ordningarna) ===== */
+guHTML = (f => function(){
+  let h = f.apply(this, arguments);
+  try {
+    const row = '<button type="button" class="card ver-allt" data-ver="go"><span class="ver-bi" aria-hidden="true">↩</span><span class="ver-bt"><b>Versioner</b><small>Gå tillbaka till hur appen var innan en ändring</small></span></button>';
+    const i = h.indexOf("</p>"); return i < 0 ? row + h : h.slice(0, i + 4) + row + h.slice(i + 4);
+  } catch(e){ return h; }
+})(guHTML);
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {verState: () => ({list: verList, err: verErr, busy: verBusy}), verLoad, verUse});
+
 
 /* ---------- Ny version: hämtas av sig själv när appen tas fram igen (15 nov 2026) ---------- */
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611242142, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611250015, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -21366,7 +21505,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "24 nov 21.42", BUILD_NOTE = "Program 4.0 med Magen, och tisdag är aktiv vila";
+const BUILD = "25 nov 00.15", BUILD_NOTE = "Versioner: en egen flik där du går tillbaka till en tidigare version";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
