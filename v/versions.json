@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "70c6db9",
+   "ts": 202611250124,
+   "build": "25 nov 01.24",
+   "date": "25 nov 01.27",
+   "title": "En sida i taget: slå på det själv i Program → Över eller Ben"
+  },
+  {
    "id": "ffa29ee",
    "ts": 202611250103,
    "build": "25 nov 01.03",
@@ -76,13 +83,6 @@
    "build": "23 nov 04.30",
    "date": "23 nov 04.31",
    "title": "Kroppens film: AI:n linjerar kroppen i progressbilderna"
-  },
-  {
-   "id": "2f8db5a",
-   "ts": 202611230317,
-   "build": "23 nov 03.17",
-   "date": "23 nov 03.46",
-   "title": "Mer i morgonen: åtta övningar som väcker kroppen, och boxningstips"
   }
  ]
 }
