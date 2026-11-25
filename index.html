@@ -2072,6 +2072,7 @@ a,summary,label,[role="button"]{touch-action:manipulation}
 .ik-t-shirt{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M246.17,57.9,198.09,29.65h0A11.9,11.9,0,0,0,192,28H160a12,12,0,0,0-12,12,20,20,0,0,1-40,0A12,12,0,0,0,96,28H64a11.9,11.9,0,0,0-6.07,1.66h0L9.83,57.9A20.18,20.18,0,0,0,2,84l17.9,36.8A19.62,19.62,0,0,0,37.67,132H52v76a20,20,0,0,0,20,20H184a20,20,0,0,0,20-20V132h14.32a19.64,19.64,0,0,0,17.75-11.17L254,84A20.18,20.18,0,0,0,246.17,57.9ZM40.37,108,25.16,76.73,52,61v47ZM180,204H76V52h9.67a44,44,0,0,0,84.68,0H180Zm35.62-96H204V61l26.83,15.76Z'/%3E%3C/svg%3E")}
 .ik-sneaker{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M255.8,162.93l0-.31A43.94,43.94,0,0,0,226,125.36l-56.62-20.2-.24-.09a20,20,0,0,1-11.92-10.78L134.06,40l-.06-.16A20.06,20.06,0,0,0,108.89,29.2L33.17,56.73A20.07,20.07,0,0,0,20,75.53V192a20,20,0,0,0,20,20H236a20,20,0,0,0,20-20V167.06C256,165.67,255.93,164.3,255.8,162.93ZM113.53,53.05l6,14L103.9,72.72a12,12,0,1,0,8.2,22.55L129,89.14l4.54,10.63-13.6,5A12,12,0,0,0,124,128a11.79,11.79,0,0,0,4.1-.73l19.57-7.11a43.86,43.86,0,0,0,13.8,7.64L218.09,148l.23.08a19.89,19.89,0,0,1,6.84,3.91H44V78.33ZM44,188V176H232v12Z'/%3E%3C/svg%3E")}
 .ik-flashlight{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M184,12H72A20,20,0,0,0,52,32V77.33a20.12,20.12,0,0,0,4,12L76,116V224a20,20,0,0,0,20,20h64a20,20,0,0,0,20-20V116l20-26.67a20.12,20.12,0,0,0,4-12V32A20,20,0,0,0,184,12Zm-4,24V52H76V36Zm-20,66.67a20.12,20.12,0,0,0-4,12V220H100V114.67a20.12,20.12,0,0,0-4-12L76,76H180ZM140,120v32a12,12,0,0,1-24,0V120a12,12,0,0,1,24,0Z'/%3E%3C/svg%3E")}
+.ik-arrows-left-right{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M216.49,184.49l-32,32a12,12,0,0,1-17-17L179,188H48a12,12,0,0,1,0-24H179l-11.52-11.51a12,12,0,0,1,17-17l32,32A12,12,0,0,1,216.49,184.49Zm-145-64a12,12,0,0,0,17-17L77,92H208a12,12,0,0,0,0-24H77L88.49,56.49a12,12,0,0,0-17-17l-32,32a12,12,0,0,0,0,17Z'/%3E%3C/svg%3E")}
 
 /* ================= Bento (16 nov 2026) =================
    Filips val bland förslagen: rutor i olika storlek, som widgetarna på telefonens hemskärm. Alltid ljust (html har data-theme="light").
@@ -4647,6 +4648,23 @@ textarea.eg-in{resize:none}
 .lp-save{width:100%;justify-content:center;min-height:52px;margin-top:14px;font-size:16px}
 .lp-save:disabled{opacity:.5}
 .lp-note{margin:10px 2px 0;color:var(--muted)}
+
+/* En sida i taget (natten mot 25 nov 2026): kortet i Program → Över och Ben, bladet, raden i passet och övningskortet */
+.es-ic{font-size:19px;font-weight:800}
+.es-grp{padding:12px 0;border-top:1px solid var(--line, rgba(0,0,0,.08))}
+.es-part{align-items:flex-start;padding-top:10px;padding-bottom:10px}
+.es-part .lp-ck{margin-top:1px}
+.es-rt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.es-rt b{font-weight:700}
+.es-rt small{font-size:12.5px;color:var(--muted);line-height:1.35}
+.es-part[aria-pressed="false"] .es-rt b{font-weight:600}
+.es-info{margin:8px 2px 0;color:var(--muted);line-height:1.45}
+.es-row{display:flex;align-items:flex-start;gap:10px;margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--surface2)}
+.es-row .es-ic{flex:none;line-height:1.2}
+.es-row small{display:block;color:var(--muted);font-size:13px;line-height:1.4;margin-top:2px}
+.alt-on.es-on{background:var(--surface2)}
+.es-links{display:flex;flex-wrap:wrap;gap:4px 14px}
+.es-links .exlink{margin:0}
 
 /* Versioner (natten 24–25 nov 2026): egen flik, en stor knapp tillbaka en version och listan med äldre */
 :root{
@@ -8754,7 +8772,7 @@ const trOn = k => trDay() && draft.trip.indexOf(k) >= 0 && !!TRIP[k] && !!draft.
 const PLATS = {hemma: {key: "home", name: k => HOME[k] && HOME[k].n}, annat: {key: "trip", name: k => TRIP[k]}};
 const plDay = () => hmDay() ? "hemma" : trDay() ? "annat" : "gym";
 // Ett byte: först hemmaövningen om hemmapasset är på, annars bytena i gymmet
-const altDef = (k, n) => { const h = HOME[k] && HOME[k].n === n ? HOME[k] : null; if (h && hmOn(k)) return h; return (BUSY[k] || []).find(x => x.n === n) || h; };
+const altDef = (k, n) => { const h = HOME[k] && HOME[k].n === n ? HOME[k] : null; if (h && hmOn(k)) return h; return (BUSY[k] || []).find(x => x.n === n) || h || esDef(k, n); };   // 25 nov: varianterna i En sida i taget (sida29.js)
 // Teckningen till en hemmaövning – med egna id:n varje gång, annars pekar pilspetsarna på en dold kopia
 let hmFigN = 0;
 function homeFigSVG(k, n){
@@ -9484,7 +9502,7 @@ function sjLoad(){
   // Första gången. Schemat sköts fram en dag lördag 21 nov 2026. Den som redan körde programmet då (appen uppdateras från en äldre
   // version) får med den dagen. En ny installation börjar på grundschemat.
   let prev = null; try { prev = localStorage.getItem("gymschema.build"); } catch(e){}
-  sjL = prev && prev !== "25 nov 01.03" ? ["2026-11-21"] : [];
+  sjL = prev && prev !== "25 nov 01.24" ? ["2026-11-21"] : [];
   sjFresh = sjL.length > 0;
   sjStore();
   return sjL;
@@ -11973,7 +11991,7 @@ document.addEventListener("input", e => { if (e.target && e.target.id === "ntUrl
 // Texterna i appen är orörda: tecknet står kvar i texten (sökning, kopiering och röstuppläsning som förut), men läggs i ett eget
 // element <gs-ik class="ik ik-namn">, och stilmallen visar en linjeikon i textens färg i stället för tecknet. Kartan byggs i ikoner.py.
 // Egna elementnamn (gs-ik, gs-w) i stället för span, så att varken stilregler eller kod som letar efter span träffar dem.
-const IK = {"→":"arrow-right","←":"arrow-left","↑":"arrow-up","↓":"arrow-down","↗":"arrow-up-right","↪":"arrow-bend-up-right","↻":"arrow-clockwise","↺":"arrow-counter-clockwise","↯":"lightning","✓":"check","✅":"check-circle","▶":"play-f","▾":"caret-down","▴":"caret-up","★":"star-f","⭐":"star-f","♥":"heart-f","♡":"heart","❚❚":"pause-f","❚":"line-vertical","▦":"barcode","⚙":"gear","🏋":"barbell","💪":"hand-fist","🥊":"boxing-glove","🏃":"person-simple-run","🤸":"person-arms-spread","🧘":"flower-lotus","🧍":"person","🦶":"footprints","🚀":"rocket-launch","🦵":"person-simple-walk","🧱":"wall","🐉":"yin-yang","🙃":"hand-palm","🏄":"waves","🔄":"arrows-clockwise","🔥":"fire","⚡":"lightning","🎯":"target","🏆":"trophy","📏":"ruler","⚖":"scales","💡":"lightbulb","🧠":"brain","🫀":"heartbeat","🪶":"feather","🎉":"confetti","🔁":"repeat","🎲":"dice-five","🤖":"robot","🏠":"house","⏱":"timer","⏰":"alarm","📅":"calendar-blank","🗓":"calendar-dots","⌚":"watch","🌙":"moon","☾":"moon","😴":"bed","🍽":"fork-knife","🥤":"pint-glass","🥛":"pint-glass","🥡":"bowl-food","🧊":"cube","👨‍🍳":"chef-hat","🛒":"shopping-cart","💊":"pill","💧":"drop","🍬":"cookie","🛡":"shield-check","❄":"snowflake","🐔":"bird","🐄":"cow","🌱":"plant","✋":"hand-palm","🤲":"hand-grabbing","✊":"hand-fist","👍":"thumbs-up","🙂":"smiley","😐":"smiley-meh","🙁":"smiley-sad","😣":"smiley-nervous","⚠":"warning","📌":"push-pin","🦷":"tooth","🩹":"bandaids","🩺":"stethoscope","🌅":"sun-horizon","📓":"notebook","⏮":"skip-back-f","⏭":"skip-forward-f","🔀":"shuffle","📵":"device-mobile-slash","🍞":"bread","📬":"envelope-open","🎤":"microphone","✎":"note-pencil","📝":"note","🧪":"flask","↘":"arrow-down-right","♪":"metronome","🔋":"battery-medium","↶":"arrow-u-up-left","🛞":"steering-wheel","⏳":"hourglass-medium","🎁":"gift","🏅":"medal","🌬":"wind","☕":"coffee","🚶":"person-simple-walk","🍳":"egg-crack","➕":"plus-circle","🏪":"storefront","📗":"file-xls","🧭":"compass","✨":"sparkle","🥁":"metronome","🖼":"image","🎶":"playlist","🔗":"link","🔠":"text-aa","🧩":"puzzle-piece","⏩":"fast-forward","🤒":"thermometer-simple","🎞":"film-strip","💓":"pulse","🔂":"repeat-once","🔉":"speaker-low","🕘":"clock-counter-clockwise","📷":"camera","🎵":"music-notes","🎥":"video-camera","🎬":"film-slate","🔊":"speaker-high","🔇":"speaker-slash","💾":"floppy-disk","📤":"export","📱":"device-mobile","🔔":"bell","🔒":"lock","🔓":"lock-open","✏":"pencil-simple","📊":"chart-bar","📈":"chart-line-up","📋":"clipboard-text","🪟":"app-window","☀":"sun","🌦":"cloud-sun","🌤":"cloud-sun","☁":"cloud","🌫":"cloud-fog","🌨":"cloud-snow","⛈":"cloud-lightning","🌧":"cloud-rain","👕":"t-shirt","👟":"sneaker","💨":"wind","🔦":"flashlight"};
+const IK = {"→":"arrow-right","←":"arrow-left","↑":"arrow-up","↓":"arrow-down","↗":"arrow-up-right","↪":"arrow-bend-up-right","↻":"arrow-clockwise","↺":"arrow-counter-clockwise","↯":"lightning","✓":"check","✅":"check-circle","▶":"play-f","▾":"caret-down","▴":"caret-up","★":"star-f","⭐":"star-f","♥":"heart-f","♡":"heart","❚❚":"pause-f","❚":"line-vertical","▦":"barcode","⚙":"gear","🏋":"barbell","💪":"hand-fist","🥊":"boxing-glove","🏃":"person-simple-run","🤸":"person-arms-spread","🧘":"flower-lotus","🧍":"person","🦶":"footprints","🚀":"rocket-launch","🦵":"person-simple-walk","🧱":"wall","🐉":"yin-yang","🙃":"hand-palm","🏄":"waves","🔄":"arrows-clockwise","🔥":"fire","⚡":"lightning","🎯":"target","🏆":"trophy","📏":"ruler","⚖":"scales","💡":"lightbulb","🧠":"brain","🫀":"heartbeat","🪶":"feather","🎉":"confetti","🔁":"repeat","🎲":"dice-five","🤖":"robot","🏠":"house","⏱":"timer","⏰":"alarm","📅":"calendar-blank","🗓":"calendar-dots","⌚":"watch","🌙":"moon","☾":"moon","😴":"bed","🍽":"fork-knife","🥤":"pint-glass","🥛":"pint-glass","🥡":"bowl-food","🧊":"cube","👨‍🍳":"chef-hat","🛒":"shopping-cart","💊":"pill","💧":"drop","🍬":"cookie","🛡":"shield-check","❄":"snowflake","🐔":"bird","🐄":"cow","🌱":"plant","✋":"hand-palm","🤲":"hand-grabbing","✊":"hand-fist","👍":"thumbs-up","🙂":"smiley","😐":"smiley-meh","🙁":"smiley-sad","😣":"smiley-nervous","⚠":"warning","📌":"push-pin","🦷":"tooth","🩹":"bandaids","🩺":"stethoscope","🌅":"sun-horizon","📓":"notebook","⏮":"skip-back-f","⏭":"skip-forward-f","🔀":"shuffle","📵":"device-mobile-slash","🍞":"bread","📬":"envelope-open","🎤":"microphone","✎":"note-pencil","📝":"note","🧪":"flask","↘":"arrow-down-right","♪":"metronome","🔋":"battery-medium","↶":"arrow-u-up-left","🛞":"steering-wheel","⏳":"hourglass-medium","🎁":"gift","🏅":"medal","🌬":"wind","☕":"coffee","🚶":"person-simple-walk","🍳":"egg-crack","➕":"plus-circle","🏪":"storefront","📗":"file-xls","🧭":"compass","✨":"sparkle","🥁":"metronome","🖼":"image","🎶":"playlist","🔗":"link","🔠":"text-aa","🧩":"puzzle-piece","⏩":"fast-forward","🤒":"thermometer-simple","🎞":"film-strip","💓":"pulse","🔂":"repeat-once","🔉":"speaker-low","🕘":"clock-counter-clockwise","📷":"camera","🎵":"music-notes","🎥":"video-camera","🎬":"film-slate","🔊":"speaker-high","🔇":"speaker-slash","💾":"floppy-disk","📤":"export","📱":"device-mobile","🔔":"bell","🔒":"lock","🔓":"lock-open","✏":"pencil-simple","📊":"chart-bar","📈":"chart-line-up","📋":"clipboard-text","🪟":"app-window","☀":"sun","🌦":"cloud-sun","🌤":"cloud-sun","☁":"cloud","🌫":"cloud-fog","🌨":"cloud-snow","⛈":"cloud-lightning","🌧":"cloud-rain","👕":"t-shirt","👟":"sneaker","💨":"wind","🔦":"flashlight","↔":"arrows-left-right","↩":"arrow-u-up-left"};
 const IK_RE = new RegExp("(" + Object.keys(IK).sort((a, b) => b.length - a.length).map(k => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")\\uFE0F?", "g");
 const IK_SKIP = "script,style,textarea,select,option,svg,noscript,title,gs-ik,.rx-e,.rx-big,.mn-e,.mn-mix,[data-noik]";   // matbilderna i recepten och menyn är innehåll, inte ikoner
 function ikText(node){
@@ -21634,6 +21652,316 @@ document.addEventListener("change", ev => {
 document.addEventListener("keydown", ev => { if (ev.key === "Escape" && $("lpOv") && !$("lpOv").hidden) lpClose(); });
 if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {lpSet: (from, d) => { lpSet(from, d); lpAfter(); }, lpState: () => JSON.parse(JSON.stringify(lpLoad())), lpText, lpLabel, lpWorkout, lpDaysTxt});
 
+/* ---------- En sida i taget (natten mot 25 nov 2026, omgång lr9) ---------- */
+// Upplägget med sjukgymnasten: om ungefär tre månader en sida i taget i övningarna (till exempel benpressen med ett ben i taget).
+// Filip slår på det själv från ett datum, under Program → Över eller Ben ("Allt som går"): varje övning som går att köra med en arm
+// eller ett ben i taget byts mot den varianten – samma rörelse, och samma maskin där det går. Varianterna loggas med egna namn
+// (som Upptagen? Byt), så de vanliga övningarnas vikter och förslag blir inte fel, och höger och vänster loggas var för sig (lr).
+// Sidolyft i kabel, bicepscurl och hammarcurl loggas redan per sida, sidoplankan och dead bug görs per sida – de är som förut,
+// liksom chins, dips och plankan, som inte går med en sida.
+// Sparas som perioder: {v: 1, p: [{from: "2027-02-24", on: true, off: ["shrugs"]}]} – off = övningar han valt bort. Dagarna före
+// ett datum ändras aldrig, och en övning han redan börjat på byts inte mitt i passet.
+// Allt som andra filer kan fråga (esDef via altDef i pass2.js, esKeyOn) är vanliga funktioner och var, utan const i "temporal dead zone".
+var esS = null, ES_V = null, esEdit = null;
+function esYt(q){ return "https://www.youtube.com/results?search_query=" + encodeURIComponent(q); }
+function esVars(){
+  if (ES_V) return ES_V;
+  const arm = "per arm", ben = "per ben";
+  ES_V = {
+    // Över
+    lutandemaskin: {n: "Lutande hantelpress med en arm", unit: "kg", lo: 8, hi: 10, step: 2, per: arm, yt: "single arm incline dumbbell press",
+      how: "Bänken på 30° och en hantel. Håll i bänken med andra handen och pressa rakt upp över bröstet utan att vrida överkroppen. Alla reps med ena armen, sen den andra. Kg per hantel."},
+    brostpress: {n: "Hantelpress med en arm", unit: "kg", lo: 8, hi: 10, step: 2, per: arm, yt: "single arm dumbbell bench press",
+      how: "Ligg på bänken med en hantel och håll i bänken med andra handen. Sänk till brösthöjd och pressa upp utan att vrida överkroppen. Alla reps med ena armen, sen den andra. Kg per hantel."},
+    axelpress: {n: "Axelpress med en hantel", unit: "kg", lo: 8, hi: 10, step: 2, per: arm, yt: "single arm seated dumbbell shoulder press",
+      how: "Sitt med ryggstödet nästan rakt och pressa hanteln från axelhöjd rakt upp. Andra handen på låret och överkroppen stilla. Kg per hantel."},
+    triceps: {n: "Tricepspress med en arm i kabel", unit: "kg", lo: 10, hi: 12, step: 2.5, per: arm, yt: "single arm cable tricep pushdown",
+      how: "Ett handtag i övre trissan. Armbågen mot sidan, pressa ner till rak arm och tillbaka långsamt."},
+    latsdrag: {n: "Latsdrag med en arm", unit: "kg", lo: 8, hi: 10, step: 2.5, per: arm, yt: "single arm lat pulldown",
+      how: "Ett handtag i latsdraget eller kabeln. Dra armbågen ner mot sidan och sänk långsamt tills armen är rak."},
+    kabelrodd: {n: "Kabelrodd med en arm", unit: "kg", lo: 8, hi: 10, step: 2.5, per: arm, yt: "single arm seated cable row",
+      how: "Ett handtag i samma maskin. Rak rygg, dra handtaget mot magen och kläm ihop skulderbladet – överkroppen vrider inte med."},
+    shrugs: {n: "Shrugs med en hantel", unit: "kg", lo: 10, hi: 12, step: 2, per: arm, yt: "single arm dumbbell shrug",
+      how: "En hantel i ena handen, stå rak utan att luta åt sidan. Dra axeln rakt upp mot örat och håll 1 sek. Kg per hantel."},
+    facepulls: {n: "Face pull med en arm", unit: "kg", lo: 15, hi: 20, step: 2.5, per: arm, yt: "single arm cable face pull",
+      how: "Ett handtag i kabeln i ansiktshöjd. Dra handen mot örat med armbågen högt och vrid ut handen i slutet."},
+    // Ben
+    benpress: {n: "Benpress med ett ben", unit: "kg", lo: 8, hi: 10, step: 5, per: ben, yt: "single leg press",
+      how: "Samma maskin, en fot mitt på plattan och den andra vid sidan. Gå ner så långt du kan utan att rumpan lyfter. Alla reps med ena benet, sen det andra."},
+    vadstaende: {n: "Stående vadpress med ett ben", unit: "kg", lo: 10, hi: 15, step: 2.5, per: ben, yt: "single leg standing calf raise machine",
+      how: "Samma maskin, bara ena framfoten på kanten och den andra foten bakom. Hälen långt ner, upp på tå och håll 1 sek."},
+    vadsittande: {n: "Sittande vadpress med ett ben", unit: "kg", lo: 12, hi: 20, step: 2.5, per: ben, yt: "single leg seated calf raise",
+      how: "Samma maskin, en framfot på kanten och den andra foten i golvet. Hälen ner, sedan högt upp och håll 1 sek."},
+    kbrdl: {n: "Enbens-RDL med kettlebell", unit: "kg", lo: 8, hi: 10, step: 4, per: ben, yt: "single leg romanian deadlift kettlebell",
+      how: "Stå på ett ben med kettlebellen i motsatt hand. Håll lätt i något om du behöver. Skjut höften bakåt och sträck bakre benet rakt bakåt tills baksida lår sträcks."},
+    // samma namn som bytena under Upptagen? – samma historik
+    adduktion: {n: "Adduktion i kabel, stående", unit: "kg", lo: 12, hi: 15, step: 2.5, per: ben, yt: "standing cable hip adduction",
+      how: "Fotrem i nedersta trissan, sidan mot maskinen. Stå rak, håll i ställningen och för benet in framför det andra."},
+    benspark: {n: "Benspark, ett ben i taget", unit: "kg", lo: 12, hi: 15, step: 2.5, per: ben, yt: "single leg extension machine",
+      how: "Samma maskin, ett ben åt gången. Sträck ut helt, håll 1 sek och sänk långsamt."}
+  };
+  return ES_V;
+}
+// Varianten med det här namnet (för altDef i pass2.js och historiken) – oavsett datum, så att gamla pass visas rätt
+function esDef(k, n){ const v = esVars()[k]; return v && v.n === n ? v : null; }
+function esNorm(v){
+  const seen = {};
+  const p = (v && Array.isArray(v.p) ? v.p : []).filter(x => x && typeof x.from === "string" && /^\d{4}-\d{2}-\d{2}$/.test(x.from))
+    .map(x => ({from: x.from, on: !!x.on, off: Array.isArray(x.off) ? x.off.filter(k => typeof k === "string" && !!esVars()[k]) : []}))
+    .sort((a, b) => a.from < b.from ? -1 : a.from > b.from ? 1 : 0)
+    .filter(x => { if (seen[x.from]) return false; seen[x.from] = 1; return true; });
+  return {v: 1, p};
+}
+function esLoad(){
+  if (esS) return esS;
+  let v = null; try { v = JSON.parse(localStorage.getItem("gymschema.ensida.v1") || "null"); } catch(e){}
+  esS = esNorm(v); return esS;
+}
+function esSave(){ try { localStorage.setItem("gymschema.ensida.v1", JSON.stringify(esS)); } catch(e){} }
+function esPeriod(ds){ let r = null; esLoad().p.forEach(x => { if (x.from <= ds) r = x; }); return r; }
+function esNext(){ const t = iso(today()); return esLoad().p.find(x => x.from > t) || null; }
+function esKeyOn(ds, k){ const p = esPeriod(ds); return !!(p && p.on && esVars()[k] && p.off.indexOf(k) < 0); }
+// Övningarna i Över och Ben (som de är just nu, med egna ändringar) som har en variant
+function esLists(){ return [["over", "Över", OVER_EX], ["under", "Ben", UNDER_EX]]; }
+function esAllKeys(){ const out = []; esLists().forEach(l => l[2].forEach(e => { if (esVars()[e.k] && out.indexOf(e.k) < 0) out.push(e.k); })); return out; }
+function esKeysOn(p){ return p && p.on ? esAllKeys().filter(k => p.off.indexOf(k) < 0) : []; }
+// En ny period från ett datum ersätter allt som var inlagt från det datumet och framåt
+function esSet(from, on, off){
+  const s = esLoad();
+  s.p = s.p.filter(x => x.from < from).concat([{from, on: !!on, off: (off || []).slice()}]);
+  esS = esNorm(s); esSave();
+}
+// Ångra en planerad start: allt som var inlagt efter i dag tas bort
+function esUndo(){ const t = iso(today()), nx = esNext(), s = esLoad(); s.p = s.p.filter(x => x.from <= t); esS = esNorm(s); esSave(); return nx; }
+
+/* ===== Passet ===== */
+// Varianterna loggar höger och vänster var för sig
+altEx = (f => function(k, name, base){
+  const r = f.apply(this, arguments);
+  try { if (esDef(k, name)) r.lr = true; } catch(e){}
+  return r;
+})(altEx);
+// Ett nytt pass får varianterna direkt (efter bytena för alltid i prog.js)
+newDraft = (f => function(type){
+  const d = f.apply(this, arguments);
+  try {
+    const V = esVars(), es = [];
+    PROGRAM[type].ex.forEach(ex => {
+      const v = V[ex.k]; if (!v || !esKeyOn(d.date, ex.k)) return;
+      if (d.alt && d.alt[ex.k] && d.alt[ex.k] !== prAltOf(type, ex.k)) return;
+      d.alt = d.alt || {}; d.alt[ex.k] = v.n;
+      const e2 = altEx(ex.k, v.n, ex), sug = suggestion(e2);
+      d.sets[ex.k] = Array.from({length: ex.sets}, () => prNewSet(e2, sug));
+      es.push(ex.k);
+    });
+    if (es.length) d.es = es;
+  } catch(e){}
+  return d;
+})(newDraft);
+// Dagens pass följer valet: övningar som inte är påbörjade byts (eller byts tillbaka). Hemma och på ett annat gym gäller platsens
+// övningar, och det Filip själv valt bort i dag (draft.esNo) eller bytt under Upptagen? rörs inte. Returnerar true om något ändrades.
+function esSyncDraft(){
+  if (!draft || readOnly || !PROGRAM[draft.type]) return false;
+  const ds = draft.date || iso(today()), V = esVars(), no = draft.esNo || [], mine = draft.es || [], es = [];
+  let ch = false;
+  draft.alt = draft.alt || {};
+  PROGRAM[draft.type].ex.forEach(ex => {
+    const k = ex.k, v = V[k]; if (!v || !draft.sets[k]) return;
+    const cur = draft.alt[k], begun = draft.sets[k].some(x => x.done), want = esKeyOn(ds, k) && no.indexOf(k) < 0, perm = prAltOf(draft.type, k);
+    if (cur === v.n){
+      if (want || (mine.indexOf(k) >= 0 && begun)) es.push(k);
+      else if (mine.indexOf(k) >= 0){ if (perm) draft.alt[k] = perm; else delete draft.alt[k]; bzReset(k); ch = true; }
+      return;
+    }
+    if (want && !begun && (!cur || cur === perm) && !hmOn(k) && !trOn(k)){ draft.alt[k] = v.n; bzReset(k); es.push(k); ch = true; }
+  });
+  if (es.join() !== mine.join()){ if (es.length) draft.es = es; else delete draft.es; ch = true; }
+  if (ch) persistDraft();
+  return ch;
+}
+function esActive(){ return draft && Array.isArray(draft.es) ? draft.es.filter(k => draft.alt && esDef(k, draft.alt[k])) : []; }   // övningarna som är bytta av valet i dagens pass
+plSet = (f => function(pl){
+  const r = f.apply(this, arguments);
+  try { if (esSyncDraft()) renderPass(); } catch(e){}
+  return r;
+})(plSet);
+// Övningskortet: vad varianten är, en video och vägen tillbaka för i dag
+exLinksHTML = (f => function(ex){
+  try {
+    const v = ex && ex.alt && esDef(ex.k, ex.alt);
+    if (v && esActive().indexOf(ex.k) >= 0){
+      const base = PROGRAM[draft.type].ex.find(e => e.k === ex.k), nm = SHORT[ex.k] || (base && base.n) || "";
+      return '<div class="alt-on es-on"><span>↔ <b>En sida i taget</b> – ' + esc(v.how) + ' Höger och vänster loggas var för sig.</span>' +
+        '<div class="es-links"><a class="exlink" href="' + esYt(v.yt) + '" target="_blank" rel="noopener">Video: så görs den →</a>' +
+        (BUSY[ex.k] && !readOnly ? '<button type="button" class="exlink bz-link" data-busy="' + ex.k + '">Upptagen? Byt →</button>' : '') + '</div>' +
+        (readOnly ? '' : '<button type="button" class="btn sm ghost" data-alt-off="' + ex.k + '">Kör ' + esc(nm) + ' som vanligt i dag</button>') + '</div>';
+    }
+  } catch(e){}
+  return f.apply(this, arguments);
+})(exLinksHTML);
+// "Kör … som vanligt i dag": tillbaka till bytet för alltid eller originalet, och synken byter inte tillbaka i dag
+document.addEventListener("click", e => {
+  if (!draft || readOnly || !e.target.closest) return;
+  const off = e.target.closest("[data-alt-off]");
+  if (off){
+    const k = off.dataset.altOff; if (esActive().indexOf(k) < 0) return;
+    e.stopPropagation();
+    const perm = prAltOf(draft.type, k);
+    if (perm) draft.alt[k] = perm; else delete draft.alt[k];
+    draft.es = (draft.es || []).filter(x => x !== k); if (!draft.es.length) delete draft.es;
+    draft.esNo = (draft.esNo || []).concat([k]);
+    bzReset(k); persistDraft(); renderPass(); bzScrollTo(k); toast((perm || SHORT[k] || k) + " som vanligt i dag");
+    return;
+  }
+  const bz = e.target.closest('[data-bz="off"], [data-bz="alt"]');
+  if (bz && bzK && esActive().indexOf(bzK) >= 0){
+    draft.es = draft.es.filter(x => x !== bzK); if (!draft.es.length) delete draft.es;
+    draft.esNo = (draft.esNo || []).concat([bzK]);
+  }
+}, true);
+// Raden i passets kort
+ssCardHTML = (f => function(){
+  const h = f.apply(this, arguments);
+  try {
+    const n = esActive().length; if (!n) return h;
+    return h.replace(/<\/div>$/, '<div class="es-row"><span class="es-ic" aria-hidden="true">↔</span><span><b>En sida i taget</b><small>' + n + (n === 1 ? ' övning' : ' övningar') +
+      ' med en arm eller ett ben i taget i dag – höger och vänster för sig.</small></span></div></div>');
+  } catch(e){ return h; }
+})(ssCardHTML);
+// Med en arm eller ett ben i taget tar varje set ungefär dubbelt så lång tid
+passMinutes = (f => function(type, ss){
+  const m = f.apply(this, arguments);
+  try {
+    const on = draft && draft.type === type ? (k => esActive().indexOf(k) >= 0) : (k => esKeyOn(iso(today()), k));
+    const extra = PROGRAM[type].ex.filter(e => !e.lr && on(e.k)).reduce((t, e) => t + e.sets * 30, 0);
+    return m + Math.round(extra / 60);
+  } catch(e){ return m; }
+})(passMinutes);
+// Benövningarna säger ben, inte arm (fälten för höger och vänster, och första gången utan historik)
+setHTML = (f => function(ex, x, i){ const h = f.apply(this, arguments); return ex && ex.lr && ex.per === "per ben" ? h.replace(/ arm set /g, " ben set ") : h; })(setHTML);
+suggestion = (f => function(ex){
+  const r = f.apply(this, arguments);
+  try { if (ex && ex.lr && ex.per === "per ben" && r && r.text) r.text = r.text.replace("för varje arm", "för varje ben"); } catch(e){}
+  return r;
+})(suggestion);
+
+/* ===== Program → Över och Ben ===== */
+// Övningskorten visar varianten (med noten "Du kör … i stället för …") när den gäller i dag
+prGuideItems = (f => function(sec){
+  const out = f.apply(this, arguments);
+  try {
+    if (!PR_LIST[sec]) return out;
+    const ds = iso(today()), V = esVars(), L = PROGRAM[prSelType(sec)].ex;
+    return out.map(it => {
+      const ex = L.find(e => KEYMAP[e.k] === it.key), v = ex && V[ex.k];
+      if (!v || !esKeyOn(ds, ex.k)) return it;
+      return Object.assign({}, it, {name: v.n, dose: prDose(altEx(ex.k, v.n, ex)), altOf: it.altOf || it.name, altHow: v.how + " Höger och vänster loggas var för sig.", esK: ex.k});
+    });
+  } catch(e){ return out; }
+})(prGuideItems);
+function esCardHTML(){
+  const t = iso(today()), cur = esPeriod(t), nx = esNext(), on = !!(cur && cur.on), plan = !!(nx && nx.on);
+  const n = p => { const c = esKeysOn(p).length; return c + (c === 1 ? " övning" : " övningar"); };
+  const nb = s => esc(s).replace(/(\d) /g, "$1&nbsp;");
+  let txt;
+  if (on) txt = "Sedan " + lpDay(cur.from) + ": " + n(cur) + " med en arm eller ett ben i taget. Höger och vänster loggas var för sig." + (nx ? (nx.on ? " Ändras " : " Pausas ") + lpDay(nx.from) + "." : "");
+  else if (plan) txt = (cur ? "Pausad sedan " + lpDay(cur.from) + ". " : "") + "Börjar " + lpDay(nx.from) + ": " + n(nx) + " med en arm eller ett ben i taget.";
+  else if (cur) txt = "Pausad sedan " + lpDay(cur.from) + ".";
+  else txt = "Planen med sjukgymnasten: om ungefär tre månader en sida i taget i övningarna. När du börjar slår du på det här, från ett datum.";
+  const btns = on ? [["open", "Ändra", ""], ["pause", "Pausa från i dag", " ghost"]] : plan ? [["open", "Ändra", ""], ["undo", "Ångra starten", " ghost"]] : null;
+  return '<div class="card lp-card es-card" id="esCard"><div class="lp-head"><span class="lp-ic es-ic" aria-hidden="true">↔</span><span class="lp-ht"><b>En sida i taget</b><small>' + nb(txt) + '</small></span></div>' +
+    (readOnly ? '' : btns ? '<div class="lp-btns">' + btns.map(b => '<button type="button" class="btn' + b[2] + '" data-es="' + b[0] + '">' + b[1] + '</button>').join("") + '</div>'
+      : '<button type="button" class="btn lp-go" data-es="open">' + (cur ? "Börja igen" : "Börja med en sida i taget") + '</button>') + '</div>';
+}
+function esProgPaint(){
+  const v = $("v-program"); if (!v || (gSection !== "over" && gSection !== "under")) return;
+  const old = $("esCard"); if (old) old.remove();
+  const at = v.querySelector(".pr-open") || v.querySelector(".ghead"); if (!at) return;
+  at.insertAdjacentHTML("afterend", esCardHTML());
+  // en video på varianten i övningskorten
+  const ds = iso(today());
+  PROGRAM[prSelType(gSection)].ex.forEach(ex => {
+    const x = esVars()[ex.k]; if (!x || !esKeyOn(ds, ex.k)) return;
+    const gl = v.querySelector("#g-" + KEYMAP[ex.k] + " .glinks");
+    if (gl && !gl.querySelector(".es-yt")) gl.insertAdjacentHTML("afterbegin", '<a class="yt es-yt" href="' + esYt(x.yt) + '" target="_blank" rel="noopener">▶ Video – ' + esc(x.n.toLowerCase()) + '</a>');
+  });
+}
+renderProgram = rgAfter(renderProgram, esProgPaint);
+function esDose(ex, v){ return ex.sets + " × " + (v.lo === v.hi ? v.lo : v.lo + "–" + v.hi) + " " + v.per; }
+function esSheetHTML(){
+  const e = esEdit, t = iso(today()), V = esVars();
+  const lname = ex => (SHORT[ex.k] || ex.n).toLowerCase();
+  const grp = l => {
+    const rows = l[2].filter(ex => V[ex.k]), done = l[2].filter(ex => !V[ex.k] && (ex.lr || ex.per === "per sida")), no = l[2].filter(ex => !V[ex.k] && !ex.lr && ex.per !== "per sida");
+    return '<div class="es-grp"><div class="lp-dn">' + l[1] + '</div><div class="lp-parts">' + rows.map(ex => {
+        const v = V[ex.k], on = e.off.indexOf(ex.k) < 0;
+        return '<button type="button" class="lp-part es-part" data-es="part" data-v="' + ex.k + '" aria-pressed="' + on + '"><span class="lp-ck" aria-hidden="true">' + (on ? "✓" : "") + '</span>' +
+          '<span class="es-rt"><b>' + esc(v.n) + '</b><small>i stället för ' + esc(SHORT[ex.k] || ex.n) + ' · ' + esc(esDose(ex, v)) + '</small></span></button>';
+      }).join("") + '</div>' +
+      (done.length ? '<p class="small es-info"><b>Redan en sida i taget:</b> ' + esc(atJoin(done.map(lname))) + '.</p>' : '') +
+      (no.length ? '<p class="small es-info"><b>Som förut:</b> ' + esc(atJoin(no.map(lname))) + ' – ' + (no.length === 1 ? 'den går' : 'de går') + ' inte att köra med en sida.</p>' : '') + '</div>';
+  };
+  const n = esAllKeys().filter(k => e.off.indexOf(k) < 0).length;
+  return '<div class="sh-top"><b>En sida i taget</b><button type="button" class="sh-x" data-es="close" aria-label="Stäng">×</button></div>' +
+    '<p class="lead">Övningarna som går att köra med en arm eller ett ben i taget byts mot den varianten – samma rörelse, i samma maskin där det går. Höger och vänster loggas var för sig, och varianterna har egna vikter.</p>' +
+    '<label class="lp-from"><span>Från och med</span><input type="date" id="esFrom" min="' + t + '" value="' + esc(e.from) + '"></label>' +
+    esLists().map(grp).join("") +
+    '<button type="button" class="btn lp-save" data-es="save"' + (n ? '' : ' disabled') + '>' + (n ? 'Spara – ' + n + (n === 1 ? ' övning' : ' övningar') + ' från ' + esc(lpDay(e.from, 1)) : 'Välj minst en övning') + '</button>' +
+    '<p class="small lp-note">Passen före ' + esc(lpDay(e.from)) + ' ändras inte, och en övning du redan börjat på byts inte mitt i passet. Du kan pausa när du vill.</p>';
+}
+function esOpen(){
+  const t = iso(today()), cur = esPeriod(t), nx = esNext(), plan = nx && nx.on;
+  esEdit = {from: plan ? nx.from : t, off: ((plan ? nx : cur) || {off: []}).off.slice()};
+  let o = $("esOv");
+  if (!o){ o = document.createElement("div"); o.id = "esOv"; o.className = "sheet"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "En sida i taget"); document.body.appendChild(o); }
+  o.innerHTML = '<div class="sh-in">' + esSheetHTML() + '</div>'; o.hidden = false; o.scrollTop = 0; document.documentElement.classList.add("noscroll");
+}
+function esPaint(){ const o = $("esOv"); if (o && !o.hidden){ const y = o.scrollTop; o.querySelector(".sh-in").innerHTML = esSheetHTML(); o.scrollTop = y; } }
+function esClose(){ const o = $("esOv"); if (o){ o.hidden = true; o.innerHTML = ""; } esEdit = null; if (!Array.from(document.querySelectorAll(".sheet,.scan,.guide")).some(x => !x.hidden)) document.documentElement.classList.remove("noscroll"); }
+function esAfter(){
+  try { esSyncDraft(); } catch(e){}
+  try { renderStrip(); } catch(e){}
+  if (view === "program") renderProgram(); else if (view === "pass") renderPass();
+}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest && ev.target.closest("[data-es]"); if (!b || readOnly) return;
+  const a = b.dataset.es, t = iso(today());
+  if (a === "open"){ esOpen(); return; }
+  if (a === "close"){ esClose(); return; }
+  if (a === "pause"){ const cur = esPeriod(t); esSet(t, false, cur ? cur.off : []); toast("En sida i taget är pausad från i dag"); esAfter(); return; }
+  if (a === "undo"){ const nx = esUndo(); toast(nx ? "Starten " + lpDay(nx.from) + " är borttagen" : "Inget att ångra"); esAfter(); return; }
+  if (!esEdit) return;
+  if (a === "part"){ const k = b.dataset.v, i = esEdit.off.indexOf(k); if (i >= 0) esEdit.off.splice(i, 1); else esEdit.off.push(k); esPaint(); return; }
+  if (a === "save"){
+    if (!esAllKeys().some(k => esEdit.off.indexOf(k) < 0)) return;
+    const from = esEdit.from < t ? t : esEdit.from;
+    esSet(from, true, esEdit.off); esClose();
+    toast("En sida i taget från " + lpDay(from)); esAfter();
+  }
+});
+document.addEventListener("change", ev => {
+  if (ev.target && ev.target.id === "esFrom" && esEdit){ const v = ev.target.value, t = iso(today()); esEdit.from = /^\d{4}-\d{2}-\d{2}$/.test(v) && v >= t ? v : t; esPaint(); }
+});
+document.addEventListener("keydown", ev => { if (ev.key === "Escape" && $("esOv") && !$("esOv").hidden) esClose(); });
+
+/* ===== Coachen ===== */
+coachText = (f => function(){
+  let t = f.apply(this, arguments);
+  try {
+    const s0 = "Om ungefär tre månader ska jag börja köra en sida i taget i övningarna.";
+    if (t.indexOf(s0) < 0) return t;
+    const cur = esPeriod(iso(today())), nx = esNext(), list = p => atJoin(esKeysOn(p).map(k => esVars()[k].n.toLowerCase()));
+    if (cur && cur.on) t = t.replace(s0, "Sedan " + lpDay(cur.from) + " kör jag en sida i taget i övningarna: " + list(cur) + " – höger och vänster loggas var för sig.");
+    else if (nx && nx.on) t = t.replace(s0, "Från " + lpDay(nx.from) + " ska jag köra en sida i taget i övningarna: " + list(nx) + ".");
+  } catch(e){}
+  return t;
+})(coachText);
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {
+  esSet: (from, on, off) => { esSet(from, on, off); esAfter(); }, esState: () => JSON.parse(JSON.stringify(esLoad())),
+  esDraft: () => draft ? JSON.parse(JSON.stringify({type: draft.type, date: draft.date, alt: draft.alt || {}, es: draft.es || [], esNo: draft.esNo || []})) : null,
+  esMin: (type, ss) => passMinutes(type, ss), esCoach: () => coachText(),
+  esText: (k, n, st) => setText(n ? altEx(k, n, EXMAP[k]) : EXMAP[k], st), esBusy: k => (BUSY[k] || []).map(x => x.n)});
+
 /* ---------- Versioner (natten 24–25 nov 2026, omgång lr7) ---------- */
 // Filip: "lägg till en stor knapp i en egen flik där jag kan återställa till tidigare versioner av appen" – hela appen som den var
 // det datumet, och datan följer med. De senaste byggena ligger i v/<id>.html (samma fil som index.html i den committen) och listan
@@ -21743,7 +22071,7 @@ if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window._
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611250103, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611250124, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -21775,7 +22103,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "25 nov 01.03", BUILD_NOTE = "Löpningen slår du på själv i Atlet → Veckan";
+const BUILD = "25 nov 01.24", BUILD_NOTE = "En sida i taget slår du på själv i Program → Över eller Ben";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
