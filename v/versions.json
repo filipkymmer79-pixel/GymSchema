@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "5007345",
+   "ts": 202611251354,
+   "build": "25 nov 13.54",
+   "date": "25 nov 14.16",
+   "title": "Sjukgymnastens uppdaterade upplägg: 2–3 set × 8–12, hopp och mage, bål och hållning"
+  },
+  {
    "id": "70c6db9",
    "ts": 202611250124,
    "build": "25 nov 01.24",
@@ -76,13 +83,6 @@
    "build": "23 nov 06.17",
    "date": "23 nov 06.53",
    "title": "Grodgungning, rödbetsdrink före intervallerna och magalternativ"
-  },
-  {
-   "id": "12d049e",
-   "ts": 202611230430,
-   "build": "23 nov 04.30",
-   "date": "23 nov 04.31",
-   "title": "Kroppens film: AI:n linjerar kroppen i progressbilderna"
   }
  ]
 }
