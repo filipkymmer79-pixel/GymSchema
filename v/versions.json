@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "18fa9ef",
+   "ts": 202611261641,
+   "build": "26 nov 16.41",
+   "date": "26 nov 16.45",
+   "title": "Video och bild på varje steg"
+  },
+  {
    "id": "05557ae",
    "ts": 202611261335,
    "build": "26 nov 13.35",
@@ -76,13 +83,6 @@
    "build": "23 nov 15.20",
    "date": "23 nov 15.33",
    "title": "Sug-knappen, onyttigt i skannern, ord under vilan, tomma gymmet och du om ett år"
-  },
-  {
-   "id": "f996865",
-   "ts": 202611231429,
-   "build": "23 nov 14.29",
-   "date": "23 nov 14.58",
-   "title": "Ny ordning: fem flikar och underflikar, och knappen Som förut"
   }
  ]
 }
