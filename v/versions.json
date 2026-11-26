@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "05557ae",
+   "ts": 202611261335,
+   "build": "26 nov 13.35",
+   "date": "26 nov 13.49",
+   "title": "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag"
+  },
+  {
    "id": "5007345",
    "ts": 202611251354,
    "build": "25 nov 13.54",
@@ -76,13 +83,6 @@
    "build": "23 nov 14.29",
    "date": "23 nov 14.58",
    "title": "Ny ordning: fem flikar och underflikar, och knappen Som förut"
-  },
-  {
-   "id": "7616fc5",
-   "ts": 202611230617,
-   "build": "23 nov 06.17",
-   "date": "23 nov 06.53",
-   "title": "Grodgungning, rödbetsdrink före intervallerna och magalternativ"
   }
  ]
 }
