@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Filips önskelista</title>
+<meta name="description" content="Filips önskelista till jul, med pris, länk och ett rim till varje paket.">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Önskelista">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#17376A">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="preload" href="fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Fraunces";src:url("fonts/fraunces.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Schibsted Grotesk";src:url("fonts/schibsted-grotesk.woff2") format("woff2");font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Caveat";src:url("fonts/caveat.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+:root{
+  /* Plan: ett inslaget paket på ett mörkblått vinterbord. Det röda snöret är det enda som får skrika.
+     Vänsterställt, en spalt på mobil, två från 860 px. */
+  --natt:#102544;       /* bordet, och bläcket på ljusa ytor */
+  --papper:#17376A;     /* omslagspapperet högst upp */
+  --sno:#F2F6FA;        /* text och ljusa ytor */
+  --is:#A9C7E3;         /* sekundär text, kalla toner */
+  --band:#E8443F;       /* presentsnöret */
+  --band-djup:#BF2A2A;  /* skuggan i snöret, röda knappar */
+  --ljus:#F5B942;       /* stearinljus, priser, rea */
+  --ljus-djup:#D69A22;
+  --rb:var(--band); --rb2:var(--band-djup);
+  --rubrik:"Fraunces","Cooper Black",Georgia,"Times New Roman",serif;
+  --text:"Schibsted Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --hand:"Caveat","Bradley Hand","Segoe Print",cursive;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--natt);color:var(--sno);font:400 16px/1.5 var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.har-val{padding-bottom:92px}
+[hidden]{display:none!important}
+button,select,input,textarea{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ljus);outline-offset:3px;border-radius:6px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.sprite{position:absolute}
+
+/* ---------- Toppen: paketet ---------- */
+.paket{--fs:clamp(56px,19.5vw,128px);--topp:calc(28px + env(safe-area-inset-top,0px));position:relative;isolation:isolate;padding:var(--topp) 20px 70px}
+.paket::before{content:"";position:absolute;inset:0;z-index:-2;
+  background:radial-gradient(circle,rgba(242,246,250,.2) 0 1.6px,transparent 2.2px) 0 0/26px 26px,
+             radial-gradient(circle,rgba(242,246,250,.13) 0 1.2px,transparent 1.8px) 13px 13px/26px 26px,
+             var(--papper);
+  -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/18px 100%;
+          mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/18px 100%}
+.paket-in{max-width:1000px;margin:0 auto;position:relative}
+.paket h1{margin:0;font:900 var(--fs)/.92 var(--rubrik);font-variation-settings:"SOFT" 100,"WONK" 0;letter-spacing:-.025em;position:relative;z-index:2}
+.rad{display:block;white-space:nowrap}
+.b{display:inline-block;position:relative}
+.snore{position:absolute;display:block;
+  background:linear-gradient(var(--riktn,180deg),rgba(255,255,255,.3) 0 14%,transparent 14% 78%,rgba(0,0,0,.2) 78%),var(--rb)}
+.b.ov::after{content:"";position:absolute;left:-.02em;right:-.02em;top:.56em;height:.2em;
+  background:linear-gradient(180deg,rgba(255,255,255,.3) 0 14%,transparent 14% 78%,rgba(0,0,0,.2) 78%),var(--band);
+  box-shadow:0 1.5px 0 rgba(120,20,20,.55);
+  animation:tona .25s .45s backwards}
+.paket .snore-h{left:0;right:0;top:calc(var(--topp) + var(--fs)*1.48);height:calc(var(--fs)*.2);z-index:1;transform-origin:left;animation:dra-h .7s cubic-bezier(.6,0,.2,1) backwards}
+.paket .snore-v{--riktn:90deg;top:0;bottom:8px;right:14%;width:calc(var(--fs)*.2);z-index:0;transform-origin:top;animation:dra-v .6s .15s cubic-bezier(.6,0,.2,1) backwards}
+.knut{position:absolute;z-index:3;right:calc(14% + var(--fs)*.1);top:calc(var(--topp) + var(--fs)*1.58);width:0;height:0}
+.knut .rosett{position:absolute;left:0;top:0;width:calc(var(--fs)*1.25);aspect-ratio:120/96;transform:translate(-50%,-46%);animation:knyt .5s .6s cubic-bezier(.3,1.7,.5,1) backwards}
+.adresslapp{position:absolute;left:0;top:calc(var(--fs)*.42);width:max-content;max-width:132px;transform:translateX(-70%) rotate(4deg);transform-origin:70% -24px;
+  background:var(--sno);color:var(--natt);font:700 22px/1 var(--hand);padding:24px 14px 11px;
+  clip-path:polygon(16px 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%,0 16px);
+  animation:gunga 1.7s .85s ease-out backwards}
+.adresslapp::before{content:"";position:absolute;left:70%;top:9px;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;background:var(--papper)}
+.adresslapp small{display:block;font-size:19px;font-weight:600;margin-top:4px}
+@keyframes dra-h{from{transform:scaleX(0)}}
+@keyframes dra-v{from{transform:scaleY(0)}}
+@keyframes tona{from{opacity:0}}
+@keyframes knyt{from{transform:translate(-50%,-46%) scale(0)}}
+@keyframes gunga{0%{transform:translateX(-70%) rotate(34deg);opacity:0}12%{opacity:1}35%{transform:translateX(-70%) rotate(-8deg)}60%{transform:translateX(-70%) rotate(9deg)}82%{transform:translateX(-70%) rotate(2deg)}100%{transform:translateX(-70%) rotate(4deg)}}
+
+/* ---------- Hälsningen ---------- */
+.hej{max-width:1040px;margin:0 auto;padding:24px 20px 4px;display:grid;gap:22px}
+.hej p{margin:0;max-width:33em}
+.ingress{font-size:18px;line-height:1.5}
+.ingress strong{font-weight:700}
+.fin{color:var(--is);font-size:15px}
+.advent{display:flex;align-items:flex-end;gap:18px}
+.advent svg{width:116px;flex:none;overflow:visible}
+.dagar{font:700 25px/1.1 var(--rubrik);font-variation-settings:"SOFT" 100;text-wrap:balance}
+.advent .fin{margin-top:4px}
+.laga{transform-box:fill-box;transform-origin:50% 100%;animation:fladdra 1.7s ease-in-out infinite alternate}
+@keyframes fladdra{0%{transform:scale(1,1) skewX(0)}40%{transform:scale(.92,1.08) skewX(-4deg)}70%{transform:scale(1.05,.95) skewX(3deg)}100%{transform:scale(.96,1.05) skewX(-2deg)}}
+.vem{border:0;padding:0;margin:0;min-width:0}
+.vem legend{padding:0;margin:0 0 10px;font-weight:700}
+.vem div{display:flex;flex-wrap:wrap;gap:8px}
+.vem label{position:relative;display:inline-flex}
+.vem input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.vem span{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:2px solid var(--is);font-weight:700}
+.vem input:checked+span{background:var(--sno);border-color:var(--sno);color:var(--natt)}
+.vem input:focus-visible+span{outline:3px solid var(--ljus);outline-offset:3px}
+
+/* ---------- Rubrik, filter ---------- */
+.rubrikrad{max-width:1040px;margin:0 auto;padding:34px 20px 0}
+.rubrikrad h2{margin:0 0 14px;font:800 34px/1.05 var(--rubrik);font-variation-settings:"SOFT" 100;letter-spacing:-.01em}
+.filter{display:flex;gap:8px;overflow-x:auto;margin:0 -20px;padding:3px 20px 10px;scrollbar-width:none}
+.filter::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:42px;padding:0 16px;border-radius:999px;border:2px solid rgba(169,199,227,.55);background:transparent;color:var(--sno);font-weight:600;white-space:nowrap;cursor:pointer}
+.chip small{font-size:13px;font-weight:600;opacity:.75;margin-left:6px;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--ljus);border-color:var(--ljus);color:var(--natt)}
+.ordning{display:flex;align-items:center;gap:10px;margin-top:6px;font-size:15px;color:var(--is)}
+.ordning select{appearance:none;-webkit-appearance:none;border:0;border-bottom:2px solid var(--is);border-radius:0;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23F2F6FA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 4px center/12px 8px no-repeat;color:var(--sno);font-weight:600;padding:8px 26px 8px 2px;cursor:pointer}
+.ordning select option{color:#102544;background:#F2F6FA}
+
+/* ---------- Sakerna ---------- */
+.lista{max-width:1040px;margin:0 auto;padding:26px 0 44px;display:grid;gap:56px;grid-template-columns:minmax(0,1fr)}
+.sak{padding:0 20px;display:grid;gap:16px;min-width:0;align-content:start;scroll-margin-top:16px}
+.scen{position:relative;isolation:isolate;overflow:hidden;border-radius:16px;aspect-ratio:16/10;background:var(--tint,#F2F6FA)}
+.spela{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer}
+.spela:focus-visible{outline-offset:-5px;border-radius:16px}
+.bild{display:block;width:100%;height:100%}
+.nr{position:absolute;z-index:4;left:12px;top:12px;width:34px;height:34px;border-radius:50%;background:var(--natt);color:var(--sno);display:grid;place-items:center;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;pointer-events:none}
+.tips{position:absolute;z-index:3;right:12px;bottom:12px;display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:var(--natt);color:var(--sno);font-size:13px;font-weight:700;pointer-events:none}
+.tips::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ljus);animation:puls 1.4s ease-in-out infinite}
+@keyframes puls{50%{transform:scale(1.7);opacity:.45}}
+.sak.vald .tips{display:none}
+.om{display:grid;gap:0;min-width:0}
+.sak h3{margin:0;font:700 26px/1.12 var(--rubrik);font-variation-settings:"SOFT" 100;letter-spacing:-.005em;text-wrap:balance}
+.hos{margin:5px 0 0;color:var(--is);font-size:15px}
+.pris{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font-variant-numeric:tabular-nums}
+.pris b{font:800 31px/1 var(--rubrik);font-variation-settings:"SOFT" 100;color:var(--ljus)}
+.pris b small{font:600 16px/1 var(--text);margin-right:6px}
+.pris s{color:var(--is);font-size:16px}
+.rea{display:inline-block;padding:3px 10px;border-radius:999px;background:var(--ljus);color:var(--natt);font-size:13px;font-weight:800;transform:rotate(-3deg) translateY(-3px)}
+.fakta{margin:12px 0 0;max-width:34em}
+.lapp{margin:12px 0 0;max-width:22em;font:600 23px/1.12 var(--hand);color:var(--ljus);transform:rotate(-.8deg);transform-origin:left}
+.knappar{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.knapp{flex:1 1 0;display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:52px;padding:8px 16px;border-radius:999px;border:2px solid transparent;font-weight:700;font-size:15.5px;line-height:1.2;text-decoration:none;cursor:pointer}
+.knapp.kop{flex:0 0 auto;padding:8px 22px;background:var(--band-djup);color:#fff}
+.knapp.kop:active{transform:scale(.97)}
+.knapp.butik{flex-direction:column;gap:1px;border-color:var(--is);color:var(--sno);background:transparent;line-height:1.15}
+.knapp.butik small{font-size:12.5px;font-weight:600;color:var(--is)}
+.knapp.ljus{background:var(--natt);color:var(--sno)}
+.knapp.tunn{border-color:rgba(16,37,68,.35);color:var(--natt);background:transparent}
+.lank{border:0;background:none;padding:10px 2px;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.vald-rad{display:none;flex:1 1 100%;margin:0;align-items:center;gap:10px;font-weight:700}
+.vald-rad .bock{flex:none;width:26px;height:26px;border-radius:50%;background:var(--band);display:grid;place-items:center}
+.vald-rad .bock::before{content:"";width:11px;height:6px;border-left:3px solid #fff;border-bottom:3px solid #fff;transform:translateY(-1px) rotate(-45deg)}
+.vald-rad .lank{margin-left:auto;color:var(--is)}
+.sak.vald .vald-rad{display:flex}
+.sak.vald .kop{display:none}
+
+/* Rimmet */
+.rim{display:none;margin-top:18px;padding:16px 18px 10px;background:var(--sno);color:var(--natt);border-radius:4px 18px 18px 18px}
+.sak.vald .rim{display:block;animation:fram .45s .55s cubic-bezier(.3,1.3,.5,1) backwards}
+@keyframes fram{from{opacity:0;transform:translateY(14px) rotate(-1.5deg)}}
+.rim .etik{margin:0;font-size:14px;font-weight:700}
+.rim .vers{margin:6px 0 2px;font:600 clamp(22px,6.7vw,26px)/1.14 var(--hand);white-space:pre-line}
+.rim .lank{color:var(--natt)}
+.kvitto{margin-left:10px;font-size:14px;font-weight:600}
+
+/* Inslagningen */
+.inslag{position:absolute;inset:0;z-index:2;pointer-events:none}
+.pp{position:absolute;inset:0;clip-path:inset(0 100% 0 0);transition:clip-path .4s .32s cubic-bezier(.6,0,.2,1)}
+.inslag .sv{--riktn:90deg;top:0;bottom:0;left:24%;width:24px;transform:scaleY(0);transform-origin:top;transition:transform .22s .2s ease-in}
+.inslag .sh{left:0;right:0;top:54%;height:24px;transform:scaleX(0);transform-origin:left;transition:transform .22s .1s ease-in}
+.inslag .ros{position:absolute;left:calc(24% + 12px);top:calc(54% + 12px);width:118px;aspect-ratio:120/96;transform:translate(-50%,-46%) scale(0);transition:transform .2s ease-in}
+.inslag .tag{position:absolute;right:14px;bottom:14px;max-width:62%;background:var(--sno);color:var(--natt);font:700 23px/1 var(--hand);padding:22px 14px 10px;
+  clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%,0 14px);
+  transform:rotate(-38deg) scale(.5);transform-origin:20% 0;opacity:0;transition:transform .2s ease-in,opacity .15s}
+.inslag .tag::before{content:"";position:absolute;left:50%;top:8px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--natt)}
+.inslag .tag span{display:block}
+.inslag .tag .fran{font-size:20px;font-weight:600;margin-top:3px}
+.sak.vald .pp{clip-path:inset(0);transition-delay:0s}
+.sak.vald .sv{transform:scaleY(1);transition:transform .3s .36s cubic-bezier(.6,0,.2,1)}
+.sak.vald .sh{transform:scaleX(1);transition:transform .3s .52s cubic-bezier(.6,0,.2,1)}
+.sak.vald .ros{transform:translate(-50%,-46%) scale(1);transition:transform .4s .8s cubic-bezier(.3,1.7,.5,1)}
+.sak.vald .tag{transform:rotate(-5deg) scale(1);opacity:1;transition:transform .55s .95s cubic-bezier(.3,1.5,.5,1),opacity .2s .95s}
+.m1{--rb:var(--ljus);--rb2:var(--ljus-djup)}
+.m1 .pp{background:repeating-linear-gradient(135deg,var(--band) 0 16px,var(--sno) 16px 32px)}
+.m2 .pp{background:radial-gradient(circle,var(--ljus) 0 5px,transparent 5.6px) 0 0/30px 30px,radial-gradient(circle,var(--ljus) 0 5px,transparent 5.6px) 15px 15px/30px 30px,var(--papper)}
+.m3 .pp{background:linear-gradient(90deg,rgba(23,55,106,.5) 50%,transparent 50%) 0 0/32px 32px,linear-gradient(rgba(23,55,106,.5) 50%,transparent 50%) 0 0/32px 32px,var(--sno)}
+.m4{--rb:#fff;--rb2:var(--is)}
+.m4 .pp{background:repeating-linear-gradient(90deg,var(--ljus) 0 5px,transparent 5px 26px),var(--band-djup)}
+.m5{--rb:var(--papper);--rb2:var(--natt)}
+.m5 .pp{background:radial-gradient(circle,var(--sno) 0 3px,transparent 3.6px) 0 0/22px 22px,radial-gradient(circle,var(--sno) 0 3px,transparent 3.6px) 11px 11px/22px 22px,var(--band)}
+.m6 .pp{background:repeating-linear-gradient(0deg,var(--is) 0 10px,var(--sno) 10px 20px)}
+.scen.skaka{animation:skaka .55s}
+@keyframes skaka{0%,100%{transform:rotate(0)}15%{transform:rotate(-2.4deg) translateX(-4px)}35%{transform:rotate(2.2deg) translateX(4px)}55%{transform:rotate(-1.6deg) translateX(-3px)}75%{transform:rotate(1deg) translateX(2px)}}
+
+/* ---------- Bilderna ---------- */
+.bild .l{fill:none;stroke:var(--natt);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.bild .t{stroke-width:2.5}
+.bild .o{stroke:var(--natt);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.bild .fn{fill:var(--natt)}.bild .fs{fill:#fff}.bild .fr{fill:var(--band)}.bild .fy{fill:var(--ljus)}.bild .fi{fill:var(--is)}.bild .fp{fill:var(--papper)}
+.bild text{font-family:var(--text);font-weight:700;fill:var(--natt)}
+.m-plan rect{transform-origin:40px 143px;transition:transform .7s cubic-bezier(.5,0,.2,1)}
+.m-rulle,.m-r2{transition:transform .7s cubic-bezier(.5,0,.2,1)}
+.m-mark{opacity:0;transition:opacity .3s}
+.pa .m-plan rect{transform:scaleX(1.6)}
+.pa .m-rulle{transform:translate(82px,17px)}
+.pa .m-r2{transform:scale(.38) rotate(300deg)}
+.pa .m-mark{opacity:1;transition:opacity .4s .45s}
+.s-v{transform-origin:128px 60px}.s-h{transform-origin:192px 60px}
+.s-fart{opacity:0}
+@keyframes ben{0%,100%{transform:rotate(0)}25%{transform:rotate(9deg)}75%{transform:rotate(-9deg)}}
+@keyframes fart{0%,100%{opacity:0;transform:translateX(10px)}50%{opacity:1;transform:translateX(-6px)}}
+.spring .s-v{animation:ben .45s linear 4}
+.spring .s-h{animation:ben .45s linear 4 reverse}
+.spring .s-fart{animation:fart .45s linear 4}
+.a-brus{transform-origin:160px 96px;transition:opacity .5s,transform .5s}
+.pa .a-brus{opacity:.1;transform:scaleX(.86)}
+@keyframes steg{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+.ga .t-v{animation:steg .5s ease-in-out 2}
+.ga .t-h{animation:steg .5s .25s ease-in-out 2}
+.z-v{transform:scaleY(0);transform-origin:160px 28px;transition:transform .5s cubic-bezier(.5,0,.2,1)}
+.z-drag{transition:transform .5s cubic-bezier(.5,0,.2,1)}
+.pa .z-v{transform:scaleY(1)}
+.pa .z-drag{transform:translateY(60px)}
+.p-agg{transform-origin:160px 110px}
+@keyframes flip{0%{transform:translateY(0) rotate(0)}45%{transform:translateY(-74px) rotate(200deg)}100%{transform:translateY(0) rotate(360deg)}}
+.vand .p-agg{animation:flip .9s cubic-bezier(.35,0,.3,1)}
+.sp{transform-origin:60px 100px}
+@keyframes spad{0%,100%{transform:rotate(0)}30%{transform:rotate(-16deg)}62%{transform:rotate(9deg)}}
+.vand .sp{animation:spad .7s ease-in-out}
+.h-p{fill:var(--natt);stroke:var(--natt);stroke-width:4;stroke-linejoin:round;transition:fill .2s,opacity .2s}
+.h-p.av{fill:transparent;stroke-dasharray:4 5;opacity:.4}
+.h-tal{transform-origin:160px 30px}.i-bubbla{transform-origin:150px 104px}
+@keyframes pop{50%{transform:scale(1.13)}}
+.pop .h-tal,.pop .i-bubbla{animation:pop .3s ease-out}
+.v-skiva{transform-origin:196px 100px;animation:snurr 1.8s linear infinite paused}
+@keyframes snurr{to{transform:rotate(360deg)}}
+.v-arm{transform-origin:286px 40px;transform:rotate(-24deg);transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.pa .v-skiva{animation-play-state:running}
+.pa .v-arm{transform:rotate(0deg)}
+@keyframes glans{from{stroke-dashoffset:40}to{stroke-dashoffset:-310}}
+.glans .k-glans{animation:glans .9s ease-in-out}
+.k-st{transform-box:fill-box;transform-origin:center}
+@keyframes blink{50%{transform:scale(1.5) rotate(25deg)}}
+.glans .k-st{animation:blink .45s ease-in-out 2}
+@keyframes stamp{0%,100%{transform:translateY(0)}35%{transform:translateY(-16px)}70%{transform:translateY(3px)}}
+.stamp .sko{animation:stamp .5s ease-in}
+.i-spr{opacity:0;transition:opacity .2s .32s}
+.pa .i-spr{opacity:.85}
+
+/* ---------- Fot, list, ark ---------- */
+.fot{max-width:1040px;margin:0 auto;padding:8px 20px calc(44px + env(safe-area-inset-bottom,0px));color:var(--is);font-size:15px}
+.fot p{margin:0 0 6px;max-width:36em}
+.bar{position:fixed;z-index:20;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px)) 20px;background:var(--sno);color:var(--natt);box-shadow:0 -10px 30px rgba(6,16,34,.5)}
+.bar div{display:grid;min-width:0}
+.bar strong{font-weight:800;font-size:16px;line-height:1.25}
+.bar span{font-size:15px;font-variant-numeric:tabular-nums}
+.bar .knapp{flex:none;min-height:48px}
+dialog{position:fixed;inset:auto 0 0 0;margin:0 auto;width:min(100%,600px);max-width:100%;max-height:88%;padding:0;border:0;border-radius:24px 24px 0 0;background:var(--sno);color:var(--natt);overflow:auto;color-scheme:light}
+dialog::backdrop{background:rgba(6,16,34,.62)}
+dialog[open]{animation:upp .32s cubic-bezier(.3,1.1,.4,1)}
+@keyframes upp{from{transform:translateY(60px);opacity:0}}
+.ark-in{padding:22px 20px calc(26px + env(safe-area-inset-bottom,0px))}
+.ark-topp{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+.ark-topp h2{margin:0;font:800 28px/1.05 var(--rubrik);font-variation-settings:"SOFT" 100}
+#arkLista{list-style:none;margin:0;padding:0}
+#arkLista li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;padding:16px 0;border-bottom:1.5px dashed rgba(16,37,68,.25)}
+.nr2{width:34px;height:34px;border-radius:50%;background:var(--natt);color:var(--sno);display:grid;place-items:center;font-weight:700;font-size:15px}
+#arkLista strong{display:block;font-size:17px;line-height:1.25}
+#arkLista .rad2{display:block;font-size:15px}
+#arkLista .rad2 b{font-weight:700}
+#arkLista em{display:block;margin-top:8px;font:600 clamp(19px,5.6vw,22px)/1.14 var(--hand);white-space:pre-line}
+.radknappar{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:4px}
+.radknappar a{padding:10px 2px;font-weight:700;text-underline-offset:3px}
+.summa{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:18px 0 4px;font-weight:700}
+.summa b{font:800 30px/1 var(--rubrik);font-variation-settings:"SOFT" 100;font-variant-numeric:tabular-nums}
+.ark-in .knappar{margin-top:14px}
+#kopiaStatus{margin:12px 0 0;font-weight:600;min-height:1.5em}
+#kopiaText{display:block;width:100%;min-height:120px;margin-top:8px;padding:10px;border:2px solid var(--natt);border-radius:10px;background:#fff;color:var(--natt);font-size:15px}
+.ark-in .fin{color:rgba(16,37,68,.75);margin:10px 0 0;max-width:34em}
+
+@supports (padding:max(0px)){
+  .paket,.hej,.rubrikrad,.sak,.fot{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+}
+.ark-in .knappar .knapp{flex:1 1 140px}
+@media (min-width:860px){
+  .lista{grid-template-columns:repeat(2,minmax(0,1fr));gap:64px 12px}
+  .hej{grid-template-columns:1.3fr 1fr;align-items:start;column-gap:48px}
+  .hej .halsning{grid-row:span 2}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  .v-skiva{animation:none!important}
+}
+</style>
+</head>
+<body>
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false"><defs>
+<symbol id="rosett" viewBox="0 0 120 96">
+<path d="M55 48L36 92l13-7 8 11 6-46Z" style="fill:var(--rb2)"/>
+<path d="M65 48l19 44-13-7-8 11-6-46Z" style="fill:var(--rb2)"/>
+<path d="M60 46C46 14 6 4 8 34c2 28 36 26 52 12Z" style="fill:var(--rb)"/>
+<path d="M60 46c14-32 54-42 52-12-2 28-36 26-52 12Z" style="fill:var(--rb)"/>
+<path d="M20 30c4-10 16-12 26-2M100 30c-4-10-16-12-26-2" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="3" stroke-linecap="round"/>
+<rect x="49" y="33" width="22" height="24" rx="8" style="fill:var(--rb2)"/>
+</symbol>
+</defs></svg>
+
+<header class="topp">
+  <div class="paket">
+    <i class="snore snore-v" aria-hidden="true"></i>
+    <i class="snore snore-h" aria-hidden="true"></i>
+    <div class="paket-in">
+      <h1 aria-label="Filips önskelista"><span class="rad" aria-hidden="true">Filips</span><span class="rad" aria-hidden="true"><span class="b">ö</span><span class="b ov">n</span><span class="b">s</span><span class="b ov">k</span><span class="b">e</span><span class="b">-</span></span><span class="rad" aria-hidden="true">lista</span></h1>
+    </div>
+    <div class="knut">
+      <svg class="rosett" viewBox="0 0 120 96" aria-hidden="true" focusable="false"><use href="#rosett"/></svg>
+      <p class="adresslapp"><span id="lappTill">Till mamma och pappa</span><small>från Filip</small></p>
+    </div>
+  </div>
+  <div class="hej">
+    <div class="halsning">
+      <p class="ingress"><strong id="hej">Hej!</strong> Här är <span id="antalOrd">tolv</span> saker jag önskar mig i jul. Tryck på en bild så rör den sig. När du har bestämt dig trycker du på <strong>Jag köper den</strong>. Då slås paketet in, och du får ett rim till etiketten.</p>
+      <p class="fin" style="margin-top:12px">Det du väljer sparas bara på din egen mobil. Jag ser ingenting.</p>
+    </div>
+    <div class="advent" id="advent" hidden>
+      <span id="stake"></span>
+      <div><p class="dagar" id="dagar"></p><p class="fin" id="ljusrad"></p></div>
+    </div>
+    <fieldset class="vem">
+      <legend>Vem är du?</legend>
+      <div>
+        <label><input type="radio" name="vem" id="vemMamma" value="mamma"><span>Mamma</span></label>
+        <label><input type="radio" name="vem" id="vemPappa" value="pappa"><span>Pappa</span></label>
+        <label><input type="radio" name="vem" id="vemAnnan" value="annan"><span>Någon annan</span></label>
+      </div>
+    </fieldset>
+  </div>
+</header>
+
+<div class="rubrikrad">
+  <h2 id="listrubrik">Tolv önskningar</h2>
+  <div class="filter" role="group" aria-label="Visa efter pris">
+    <button class="chip" type="button" data-filter="alla" aria-pressed="true">Alla<small></small></button>
+    <button class="chip" type="button" data-filter="lag" aria-pressed="false">Under 500 kr<small></small></button>
+    <button class="chip" type="button" data-filter="mellan" aria-pressed="false">500–1 500 kr<small></small></button>
+    <button class="chip" type="button" data-filter="hog" aria-pressed="false">Över 1 500 kr<small></small></button>
+  </div>
+  <div class="ordning">
+    <label for="sortera">Ordning</label>
+    <select id="sortera">
+      <option value="min">Min ordning</option>
+      <option value="billig">Billigast först</option>
+      <option value="dyr">Dyrast först</option>
+    </select>
+  </div>
+</div>
+
+<main class="lista" id="lista"></main>
+
+<footer class="fot">
+  <p>Priserna kollades den 26 november 2026. De kan ha ändrats sedan dess, och lagret kan ta slut.</p>
+  <p>Dina val finns bara i den här webbläsaren.</p>
+</footer>
+
+<div class="bar" id="bar" hidden>
+  <div><strong id="barAntal"></strong><span id="barSumma"></span></div>
+  <button class="knapp ljus" type="button" id="visa">Visa listan</button>
+</div>
+
+<dialog id="ark" aria-labelledby="arkRubrik">
+  <div class="ark-in">
+    <div class="ark-topp"><h2 id="arkRubrik">Det här köper du</h2><button class="lank" type="button" id="stang">Stäng</button></div>
+    <ol id="arkLista"></ol>
+    <p class="summa"><span>Summa</span><b id="arkSumma"></b></p>
+    <div class="knappar">
+      <button class="knapp ljus" type="button" id="delaLista" hidden>Skicka listan</button>
+      <button class="knapp ljus" type="button" id="kopieraLista">Kopiera listan</button>
+      <button class="knapp tunn" type="button" id="tom">Töm listan</button>
+    </div>
+    <p id="kopiaStatus" role="status"></p>
+    <textarea id="kopiaText" readonly hidden aria-label="Listan som text"></textarea>
+    <p class="fin">Listan finns bara på den här mobilen. Skicka den till den som behöver veta, så köper ni inte samma sak.</p>
+  </div>
+</dialog>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- Sakerna ---------- */
+var SAKER=[
+ {id:'matta',nr:1,t:0,namn:'Manduka PRO yogamatta, 215 cm',hos:'Manduka, hos Yogobe',butik:'Yogobe',pris:1504,var:1769,
+  url:'https://store.yogobe.com/sv/articles/2.90.3298/yogamatta-pro-yoga-mat-6-mm-215-cm-manduka',
+  fakta:'6 mm tät dämpning, 66 cm bred och 215 cm lång. Högst betyg i OutdoorGearLabs test 2026, och livstidsgaranti från Manduka.',
+  lapp:'Ta den långa på 215 cm, inte den vanliga på 180.',
+  rim:'Den rullas ut, den rullas in,\noch gör dig mjuk i kropp och sinn.'},
+ {id:'shorts',nr:2,t:1,namn:'Nike Miler löparshorts, 2-i-1',hos:'Nike, hos nike.com',butik:'Nike',pris:447,var:549,
+  url:'https://www.nike.com/se/t/loparshorts-nike-miler-dri-fit-2-i-1-18-cm-for-man-YfA6pO8m',
+  fakta:'Dri-FIT som leder bort svett, inbyggda innershorts och fickor. 18 cm innerbenslängd. Finns i sex färger och XS–XXL.',
+  lapp:'Fråga mig om storlek och färg.',
+  rim:'För den som springer mil efter mil –\nett lätt litet plagg i snabbaste stil.'},
+ {id:'airpods',nr:3,t:2,namn:'AirPods Pro 3',hos:'Apple, hos NetOnNet',butik:'NetOnNet',pris:2389,var:2590,
+  url:'https://www.netonnet.se/art/ljud/horlurar/in-ear/apple-/1059118.9292/',
+  fakta:'Aktiv brusreducering, upp till 8 timmars lyssning och tål svett och vatten (IP57).',
+  lapp:'Black Week-pris till och med 14 december, eller så länge lagret räcker.',
+  rim:'Två små vita, laddade och klara,\nsom låter dig i musiken bara vara.'},
+ {id:'tofflor',nr:4,t:3,namn:'SKIMS sherpatofflor, Dark Roast',hos:'SKIMS, hos skims.com',butik:'SKIMS',pris:651,var:930,
+  url:'https://skims.com/en-se/products/sherpa-mens-slipper-dark-roast',
+  fakta:'Herrmodell i fuskfäll med mjuk skumsula inuti. Storlekarna är amerikanska: S (7–8), M (9–10), L (11–12) och XL (13).',
+  lapp:'Fråga mig om storlek.',
+  rim:'När golvet är kallt och morgonen grå\när det gott att ha något lurvigt på.'},
+ {id:'satoro',nr:5,t:1,namn:'Arc’teryx Satoro, merinotröja med dragkedja',hos:'Arc’teryx, hos arcteryx.com',butik:'Arc’teryx',pris:1599,
+  url:'https://arcteryx.com/se/en/shop/mens/satoro-merino-wool-zip-neck-0862?colour=1836',
+  fakta:'Underställströja i merinoull, 240 g/m². Reglerar värmen och tar inte åt sig lukt.',
+  lapp:'Fråga mig om storlek och färg.',
+  rim:'Från fårets rygg till din, min vän –\nden värmer gott och luktar inte sen.'},
+ {id:'panna',nr:6,t:2,namn:'Demeyere Proline stekpanna',hos:'Demeyere, hos Kitchenlab',butik:'Kitchenlab',pris:2299,fran:true,
+  url:'https://www.kitchenlab.se/p/proline-stekpanna/',
+  fakta:'Sju lager rostfritt stål och aluminium, 4,8 mm tjock ända upp i kanten. Funkar på gas, el och induktion. Finns i 20, 24, 28 och 32 cm, och priset beror på storleken.',
+  lapp:'Fråga mig vilken storlek.',
+  rim:'I den här fräser det, det är sant:\nsju lager stål från kant till kant.'},
+ {id:'stekspade',nr:7,t:3,namn:'Cristel perforerad stekspade',hos:'Cristel, hos Kitchenlab',butik:'Kitchenlab',pris:329,
+  url:'https://www.kitchenlab.se/p/perforerad-stekspade-cristel/',
+  fakta:'Rostfritt stål, 35 cm lång. Tillverkad i Frankrike, med livstidsgaranti.',
+  rim:'Den vänder, lyfter, har små hål –\noch är förstås av rostfritt stål.'},
+ {id:'hantel',nr:8,t:0,namn:'Ställbar hantel, 1,5–12,5 kg',hos:'Hos Gymbutiken',butik:'Gymbutiken',pris:1044,var:1395,
+  url:'https://www.gymbutiken.se/stallbar-hantel-12-5kg',
+  fakta:'Tio viktsteg som ställs in med ett vred, från 1,5 till 12,5 kg. Tar lika lite plats som en enda hantel.',
+  lapp:'Säljs styckvis. Priset gäller en hantel.',
+  rim:'Vrid ett snäpp, så blir den tung –\nperfekt för den som är stark och ung.'},
+ {id:'italki',nr:9,t:1,namn:'Presentkort på italki',hos:'Språklektioner på video, hos italki',butik:'italki',pris:null,
+  url:'https://www.italki.com/giftcards',
+  fakta:'Lektioner på tu man hand med en lärare, i det språk man vill. Presentkortet skickas med mejl och gäller i ett år.',
+  rim:'Ord för ord och ton för ton –\nhär väntar läraren på din lektion.'},
+ {id:'vinyl',nr:10,t:2,namn:'TV Girl – Death of a Party Girl',hos:'Vinyl-LP, hos Vinylpladen',butik:'Vinylpladen',pris:419,
+  url:'https://vinylpladen.se/vinyl/tv-girl/death-of-a-party-girl-LP',
+  fakta:'Nypressad 12-tums-LP. Albumet kom 2018.',
+  lapp:'Slut hos Vinylpladen just nu. På sidan kan man bevaka den med mejl.',
+  rim:'Svart och rund och full av spår.\nDen låter bäst när nålen går.'},
+ {id:'tungskrapa',nr:11,t:3,namn:'Tungskrapa i koppar',hos:'Cosmic Dealer, hos Rawfoodshop',butik:'Rawfoodshop',pris:243,var:304,
+  url:'https://www.rawfoodshop.se/tungskrapa-koppar',
+  fakta:'För morgonrutinen. Leverans på 1–3 vardagar.',
+  rim:'En båge av koppar, liten och fin,\nför den som vill ha en morgonrutin.'},
+ {id:'icebug',nr:12,t:0,namn:'Icebug NewRun BUGrip GTX',hos:'Icebug, hos Team Sportia Umeå',butik:'Team Sportia',pris:1599,var:2499,
+  url:'https://umea.teamsportia.se/outlet-1/icebug-newrun-m-bugrip-gtx.html',
+  fakta:'Löparskor med dubbar i hårdmetall och vattentätt GORE-TEX-membran.',
+  lapp:'Ligger i outleten och finns i storlek 42,5.',
+  rim:'När Umeå-isen ligger hal\när dubbar under foten ett klokt val.'}
+];
+var TINTER=['#F2F6FA','#FBEED2','#FADCD9','#D9E8F5'];
+var ORD=['noll','en','två','tre','fyra','fem','sex','sju','åtta','nio','tio','elva','tolv','tretton','fjorton','femton','sexton','sjutton','arton','nitton','tjugo'];
+
+/* ---------- Bilderna ---------- */
+function toffel(dx,dy,cls){return '<g class="'+cls+'"><g transform="translate('+dx+' '+dy+')"><rect class="fi o" x="4" y="64" width="174" height="16" rx="8"/><path class="fn o" d="M10 66V50a10 10 0 0 1 16-8a10 10 0 0 1 18 2a12 12 0 0 1 20-12a13 13 0 0 1 24-6a14 14 0 0 1 26 2a14 14 0 0 1 24 8a13 13 0 0 1 20 10a12 12 0 0 1 14 20Z"/><ellipse class="fs o" cx="34" cy="43" rx="17" ry="6"/><path d="M60 52q5-5 10 0M88 44q5-5 10 0M116 48q5-5 10 0M76 60q5-5 10 0M106 60q5-5 10 0M136 56q5-5 10 0M152 62q4-4 8 0" fill="none" stroke="#A9C7E3" stroke-width="2.5" stroke-linecap="round"/></g></g>';}
+function skivor(){var s='';for(var k=0;k<5;k++){s+='<rect class="h-p" data-k="'+k+'" x="'+(104-k*15)+'" y="58" width="12" height="84" rx="4"/><rect class="h-p" data-k="'+k+'" x="'+(204+k*15)+'" y="58" width="12" height="84" rx="4"/>';}return s;}
+var KONST={
+ matta:'<path class="l t" d="M20 152H300" opacity=".3"/><g class="m-mark"><path class="l t" d="M40 178v-12M280 178v-12M40 172H280"/><text x="160" y="194" text-anchor="middle" font-size="14">den långa, 215 cm</text><path class="l t" d="M40 78v12M241 78v12M40 84H241"/><text x="140" y="70" text-anchor="middle" font-size="14">den vanliga, 180 cm</text></g><g class="m-plan"><rect class="fr o" x="40" y="136" width="150" height="14" rx="4"/></g><g class="m-rulle"><g transform="translate(204 122)"><g class="m-r2"><circle class="fr o" r="28"/><path class="l t" d="M0 0A3 3 0 0 1-6 0A7 7 0 0 1 8 0A10 10 0 0 1-12 0A14 14 0 0 1 16 0A18 18 0 0 1-20 0A22 22 0 0 1 24 0"/></g></g></g>',
+ shorts:'<g class="s-fart"><path class="l t" d="M30 84h32M22 104h36M34 124h28"/></g><g class="s-v"><rect class="fn o" x="90" y="128" width="58" height="30" rx="6"/><path class="fi o" d="M96 60H162V100L152 142H82Z"/><path class="l t" d="M104 76q6 16 3 36"/></g><g class="s-h"><rect class="fn o" x="172" y="128" width="58" height="30" rx="6"/><path class="fi o" d="M158 60H224L238 142H168L158 100Z"/><path class="l t" d="M216 76q-6 16-3 36"/><rect class="fy" x="200" y="126" width="24" height="7" rx="3.5"/></g><rect class="fi o" x="94" y="46" width="132" height="16" rx="6"/><path class="l t" d="M154 62q-5 12-3 24M166 62q5 12 3 24"/>',
+ airpods:'<g class="a-brus"><path class="l t" d="M62 62q-16 34 0 68M46 50q-24 46 0 92M30 40q-30 56 0 112"/><path class="l t" d="M258 62q16 34 0 68M274 50q24 46 0 92M290 40q30 56 0 112"/></g><rect class="fs o" x="112" y="92" width="18" height="74" rx="9"/><ellipse class="fi o" cx="98" cy="92" rx="13" ry="16" transform="rotate(-20 98 92)"/><ellipse class="fs o" cx="120" cy="82" rx="26" ry="30"/><ellipse class="fn" cx="127" cy="72" rx="5" ry="8" transform="rotate(20 127 72)"/><rect class="fs o" x="190" y="92" width="18" height="74" rx="9"/><ellipse class="fi o" cx="222" cy="92" rx="13" ry="16" transform="rotate(20 222 92)"/><ellipse class="fs o" cx="200" cy="82" rx="26" ry="30"/><ellipse class="fn" cx="193" cy="72" rx="5" ry="8" transform="rotate(-20 193 72)"/><text class="a-txt" x="160" y="191" text-anchor="middle" font-size="14">Brusreducering: av</text>',
+ tofflor:toffel(36,30,'t-v')+toffel(104,84,'t-h'),
+ satoro:'<path class="fi o" d="M140 42L118 54L60 148L84 162L114 104L116 174H204L206 104L236 162L260 148L202 54L180 42Z"/><path class="l t" d="M68 136l24 14M252 136l-24 14M118 164h84"/><path class="fi o" d="M138 44q22-12 44 0v-16q-22-10-44 0Z"/><g class="z-v"><path class="fs o" d="M151 28H169L160 100Z"/></g><path class="l t" d="M160 26V102" stroke-dasharray="3 5"/><g class="z-drag"><rect class="fr o" x="155" y="26" width="10" height="17" rx="4"/></g>',
+ panna:'<defs><clipPath id="lupp"><circle cx="66" cy="56" r="30"/></clipPath></defs><g clip-path="url(#lupp)"><rect class="fs" x="30" y="20" width="80" height="80"/><rect class="fi" x="30" y="35" width="80" height="6"/><rect class="fs" x="30" y="41" width="80" height="6"/><rect class="fi" x="30" y="47" width="80" height="6"/><rect class="fy" x="30" y="53" width="80" height="6"/><rect class="fi" x="30" y="59" width="80" height="6"/><rect class="fs" x="30" y="65" width="80" height="6"/><rect class="fi" x="30" y="71" width="80" height="6"/><path d="M30 35h80M30 41h80M30 47h80M30 53h80M30 59h80M30 65h80M30 71h80M30 77h80" stroke="#102544" stroke-width="1.5"/></g><circle class="l" cx="66" cy="56" r="30"/><path class="l t" d="M88 77Q102 96 104 124" stroke-dasharray="1 7"/><text x="66" y="108" text-anchor="middle" font-size="14">7 lager</text><path class="l t" d="M138 90q-6-8 0-16t0-16M184 90q-6-8 0-16t0-16" opacity=".3"/><path class="fs o" d="M224 122L292 96q8-2 9 5t-6 9L226 134Z"/><path class="fs o" d="M96 118H226q-3 30-26 30H122q-23 0-26-30Z"/><path class="l t" d="M108 128H214" opacity=".3"/><g class="p-agg"><ellipse class="fs o" cx="160" cy="113" rx="34" ry="8"/><ellipse class="fy o" cx="160" cy="107" rx="12" ry="8"/></g>',
+ stekspade:'<path class="fy k-st" d="M250 40l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path class="fy k-st" d="M62 150l3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/><g transform="rotate(-22 160 100)"><g class="sp"><rect class="fs o" x="34" y="92" width="120" height="16" rx="8"/><circle class="fn" cx="48" cy="100" r="3"/><path class="l" d="M154 100H182"/><path class="fs o" d="M180 100L198 70H274q10 0 10 10V120q0 10-10 10H198Z"/><g class="fn"><rect x="208" y="80" width="12" height="15" rx="4"/><rect x="230" y="80" width="12" height="15" rx="4"/><rect x="252" y="80" width="12" height="15" rx="4"/><rect x="208" y="105" width="12" height="15" rx="4"/><rect x="230" y="105" width="12" height="15" rx="4"/><rect x="252" y="105" width="12" height="15" rx="4"/></g></g></g>',
+ hantel:'<path class="l t" d="M30 152H290" opacity=".3"/><rect class="fs o" x="116" y="92" width="88" height="16" rx="4"/><path class="l t" d="M140 95v10M150 95v10M160 95v10M170 95v10M180 95v10" opacity=".45"/>'+skivor()+'<g class="h-tal"><rect class="fy o" x="112" y="14" width="96" height="32" rx="16"/><text class="h-txt" x="160" y="36" text-anchor="middle" font-size="17">12,5 kg</text></g>',
+ italki:'<rect class="fp o" x="70" y="36" width="180" height="116" rx="10"/><rect class="fi" x="204" y="110" width="36" height="32" rx="6"/><circle class="fn" cx="222" cy="122" r="5"/><path class="fn" d="M212 142q10-14 20 0Z"/><path class="fr o" d="M88 150q30-46 60 0Z"/><circle class="fy o" cx="118" cy="96" r="17"/><g class="i-bubbla"><path class="fs o" d="M158 50H228Q238 50 238 60V82Q238 92 228 92H170L154 104V92Q148 92 148 82V60Q148 50 158 50Z"/><text class="i-txt" x="193" y="77" text-anchor="middle" font-size="15">Bonjour !</text></g><path class="fs o" d="M48 152H272L262 168H58Z"/>',
+ vinyl:'<rect class="fy o" x="34" y="34" width="132" height="132" rx="4"/><path class="l t" d="M48 150h60M48 138h36" opacity=".4"/><g class="v-skiva"><circle class="fn o" cx="196" cy="100" r="64"/><circle cx="196" cy="100" r="52" fill="none" stroke="#A9C7E3" stroke-width="1.5" opacity=".45"/><circle cx="196" cy="100" r="43" fill="none" stroke="#A9C7E3" stroke-width="1.5" opacity=".45"/><circle cx="196" cy="100" r="34" fill="none" stroke="#A9C7E3" stroke-width="1.5" opacity=".45"/><path d="M196 44a56 56 0 0 1 40 17" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".5"/><circle class="fr" cx="196" cy="100" r="23"/><path d="M183 91h16M183 99h25" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".85"/><circle class="fs" cx="196" cy="100" r="3.5"/></g><g class="v-arm"><path class="l" d="M286 40L246 92"/><rect class="fs o" x="232" y="87" width="22" height="12" rx="3" transform="rotate(-52 243 93)"/><circle class="fs o" cx="286" cy="40" r="9"/></g>',
+ tungskrapa:'<path class="fy k-st" d="M258 96l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path class="fy k-st" d="M56 124l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><path d="M96 56V104a64 64 0 0 0 128 0V56" fill="none" stroke="#102544" stroke-width="18" stroke-linecap="round"/><path d="M96 56V104a64 64 0 0 0 128 0V56" fill="none" stroke="#F5B942" stroke-width="10" stroke-linecap="round"/><path class="k-glans" d="M96 56V104a64 64 0 0 0 128 0V56" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-dasharray="26 600" stroke-dashoffset="40" opacity=".9"/><circle class="fy o" cx="96" cy="46" r="13"/><circle class="fy o" cx="224" cy="46" r="13"/>',
+ icebug:'<path class="l t" d="M58 30v16M51 34l14 8M51 42l14-8M252 44v16M245 48l14 8M245 56l14-8M196 22v12M191 25l10 6M191 31l10-6" opacity=".55"/><path class="l t" d="M24 166H296" opacity=".35"/><g class="i-spr"><path class="l t" d="M112 168l-8 14M142 168l5 16M204 168l-6 12M232 168l10 13"/></g><g class="sko"><path class="fn" d="M84 156l4 9 4-9ZM108 156l4 9 4-9ZM132 156l4 9 4-9ZM196 156l4 9 4-9ZM220 156l4 9 4-9ZM244 156l4 9 4-9Z"/><path class="fn o" d="M58 136V100q0-20 20-20h18q10 0 16 8l30 30q40 6 74 6q22 0 40 12Z"/><path d="M76 126l14-36M92 128l14-32" fill="none" stroke="#E8443F" stroke-width="6" stroke-linecap="round"/><path d="M116 106l12-10M126 116l12-10M136 124l12-9" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path class="fs o" d="M56 134H250q22 2 26 14q2 8-10 8H72q-18 0-16-22Z"/></g>'
+};
+
+/* ---------- Hjälp ---------- */
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function kr(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' kr';}
+function stor(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+var minne={};
+function las(k,d){try{var v=localStorage.getItem('filips-onskelista-'+k);if(v!=null)return JSON.parse(v);}catch(e){}return k in minne?minne[k]:d;}
+function spara(k,v){minne[k]=v;try{localStorage.setItem('filips-onskelista-'+k,JSON.stringify(v));}catch(e){}}
+function kor(el,cls,ms){el.classList.remove(cls);void el.getBoundingClientRect();el.classList.add(cls);clearTimeout(el['_'+cls]);el['_'+cls]=setTimeout(function(){el.classList.remove(cls);},ms);}
+function sak(id){for(var i=0;i<SAKER.length;i++)if(SAKER[i].id===id)return SAKER[i];return null;}
+
+/* ---------- Tillstånd ---------- */
+var kanda={};SAKER.forEach(function(s){kanda[s.id]=1;});
+var val=las('val',[]);if(!Array.isArray(val))val=[];val=val.filter(function(id){return kanda[id];});
+var vem=las('vem','');if(['mamma','pappa','annan'].indexOf(vem)<0)vem='';
+var filter='alla',ordning='min';
+
+/* ---------- Bygg listan ---------- */
+function prisHtml(s){
+  if(s.pris==null)return '<b>Valfritt belopp</b>';
+  var h='<b>'+(s.fran?'<small>från</small>':'')+kr(s.pris)+'</b>';
+  if(s.var){h+='<span class="vh">Tidigare </span><s>'+kr(s.var)+'</s><span class="rea">−'+Math.round((1-s.pris/s.var)*100)+' %</span>';}
+  return h;
+}
+function sakHtml(s,i){
+  return '<article class="sak" id="sak-'+s.id+'" data-id="'+s.id+'" style="--tint:'+TINTER[s.t]+'">'+
+   '<div class="scen"><span class="nr" aria-hidden="true">'+s.nr+'</span>'+
+   '<button class="spela" type="button" data-spela="'+s.id+'"><svg class="bild" viewBox="0 0 320 200" aria-hidden="true" focusable="false">'+KONST[s.id]+'</svg></button>'+
+   (i===0?'<span class="tips" id="tips">Tryck på bilden</span>':'')+
+   '<div class="inslag m'+((i%6)+1)+'" aria-hidden="true"><i class="pp"></i><i class="snore sv"></i><i class="snore sh"></i><svg class="ros" viewBox="0 0 120 96" focusable="false"><use href="#rosett"/></svg><div class="tag"><span>Till Filip</span><span class="fran"></span></div></div></div>'+
+   '<div class="om"><h3><span class="vh">Nummer '+s.nr+': </span>'+esc(s.namn)+'</h3>'+
+   '<p class="hos">'+esc(s.hos)+'</p>'+
+   '<p class="pris">'+prisHtml(s)+'</p>'+
+   '<p class="fakta">'+esc(s.fakta)+'</p>'+
+   (s.lapp?'<p class="lapp">'+esc(s.lapp)+'</p>':'')+
+   '<div class="knappar"><button class="knapp kop" type="button" data-kop="'+s.id+'">Jag köper den</button>'+
+   '<p class="vald-rad"><span class="bock" aria-hidden="true"></span><span>Du köper den här.</span><button class="lank" type="button" data-angra="'+s.id+'">Ångra</button></p>'+
+   '<a class="knapp butik" target="_blank" rel="noopener" href="'+esc(s.url)+'"><small>Öppna hos</small> <span>'+esc(s.butik)+'</span></a></div>'+
+   '<div class="rim"><p class="etik">Rim till paketet</p><p class="vers">'+esc(s.rim)+'</p><button class="lank" type="button" data-rim="'+s.id+'">Kopiera rimmet</button><span class="kvitto" role="status"></span></div>'+
+   '</div></article>';
+}
+var lista=$('#lista');
+lista.innerHTML=SAKER.map(sakHtml).join('');
+var noder={};SAKER.forEach(function(s){noder[s.id]=document.getElementById('sak-'+s.id);});
+$('#antalOrd').textContent=ORD[SAKER.length]||String(SAKER.length);
+$('#listrubrik').textContent=(ORD[SAKER.length]?stor(ORD[SAKER.length]):SAKER.length)+' önskningar';
+
+/* ---------- Filter och ordning ---------- */
+function passar(s,f){
+  if(f==='alla'||s.pris==null)return true;
+  if(f==='lag')return s.pris<500;
+  if(f==='mellan')return s.pris>=500&&s.pris<=1500;
+  return s.pris>1500;
+}
+function ordna(){
+  var arr=SAKER.slice();
+  if(ordning!=='min'){
+    arr.sort(function(a,b){
+      if(a.pris==null&&b.pris==null)return a.nr-b.nr;
+      if(a.pris==null)return 1;if(b.pris==null)return -1;
+      return ordning==='billig'?a.pris-b.pris:b.pris-a.pris;
+    });
+  }
+  arr.forEach(function(s){var n=noder[s.id];n.hidden=!passar(s,filter);lista.appendChild(n);});
+  $$('.chip').forEach(function(c){
+    var f=c.getAttribute('data-filter');
+    c.setAttribute('aria-pressed',f===filter?'true':'false');
+    $('small',c).textContent=SAKER.filter(function(s){return passar(s,f);}).length;
+  });
+}
+$$('.chip').forEach(function(c){c.addEventListener('click',function(){filter=c.getAttribute('data-filter');ordna();});});
+$('#sortera').addEventListener('change',function(e){ordning=e.target.value;ordna();});
+
+/* ---------- Bilderna rör sig ---------- */
+var STEG=[1.5,2.5,3.5,4.5,5.5,6.5,7.5,9,10.5,12.5],SKIVOR=[0,1,1,2,2,3,3,4,4,5];
+var HALS=['Bonjour !','こんにちは','¡Hola!','Hallo!'];
+var SPEL={
+  matta:function(el){el.classList.toggle('pa');},
+  shorts:function(el){kor(el,'spring',1850);},
+  airpods:function(el){var pa=el.classList.toggle('pa');$('.a-txt',el).textContent='Brusreducering: '+(pa?'på':'av');},
+  tofflor:function(el){kor(el,'ga',1300);},
+  satoro:function(el){el.classList.toggle('pa');},
+  panna:function(el){kor(el,'vand',920);},
+  stekspade:function(el){kor(el,'vand',720);kor(el,'glans',920);},
+  hantel:function(el){
+    var i=el.hasAttribute('data-steg')?+el.getAttribute('data-steg'):9;i=(i+1)%10;el.setAttribute('data-steg',i);
+    $$('.h-p',el).forEach(function(p){p.classList.toggle('av',+p.getAttribute('data-k')>=SKIVOR[i]);});
+    $('.h-txt',el).textContent=String(STEG[i]).replace('.',',')+' kg';kor(el,'pop',320);
+  },
+  italki:function(el){var i=((+el.getAttribute('data-h')||0)+1)%HALS.length;el.setAttribute('data-h',i);$('.i-txt',el).textContent=HALS[i];kor(el,'pop',320);},
+  vinyl:function(el){el.classList.toggle('pa');},
+  tungskrapa:function(el){kor(el,'glans',920);},
+  icebug:function(el){kor(el,'stamp',520);el.classList.add('pa');}
+};
+
+/* ---------- Val ---------- */
+function vemNamn(){return vem==='mamma'?'mamma':vem==='pappa'?'pappa':vem==='annan'?'en hemlig tomte':'någon snäll';}
+function valda(){return SAKER.filter(function(s){return val.indexOf(s.id)>=0;});}
+function summaText(v){
+  var tal=v.filter(function(s){return s.pris!=null;});
+  if(!tal.length)return 'Valfritt belopp';
+  var sum=tal.reduce(function(a,s){return a+s.pris;},0);
+  var osaker=v.some(function(s){return s.pris==null||s.fran;});
+  return (osaker?'minst ':'')+kr(sum);
+}
+function prisText(s){return s.pris==null?'valfritt belopp':(s.fran?'från ':'')+kr(s.pris);}
+function uppdatera(){
+  SAKER.forEach(function(s){
+    var n=noder[s.id],v=val.indexOf(s.id)>=0;
+    n.classList.toggle('vald',v);
+    $('.spela',n).setAttribute('aria-label',v?'Paket nummer '+s.nr+' är inslaget. Tryck för att skaka på det.':'Spela upp bilden av '+s.namn);
+    $('.fran',n).textContent='från '+vemNamn();
+  });
+  var v=valda();
+  document.body.classList.toggle('har-val',v.length>0);
+  $('#bar').hidden=!v.length;
+  $('#barAntal').textContent='Du köper '+(v.length===1?'1 sak':v.length+' saker');
+  $('#barSumma').textContent=summaText(v);
+  $('#arkSumma').textContent=v.length?summaText(v):'0 kr';
+  $('#arkLista').innerHTML=v.map(function(s){
+    return '<li><span class="nr2" aria-hidden="true">'+s.nr+'</span><div><strong>'+esc(s.namn)+'</strong><span class="rad2"><b>'+esc(stor(prisText(s)))+'</b> hos '+esc(s.butik)+'</span><em>'+esc(s.rim)+'</em><span class="radknappar"><a target="_blank" rel="noopener" href="'+esc(s.url)+'">Öppna hos '+esc(s.butik)+'</a><button class="lank" type="button" data-angra="'+s.id+'">Ta bort</button></span></div></li>';
+  }).join('');
+  $('#kopiaStatus').textContent='';$('#kopiaText').hidden=true;
+  if(!v.length&&$('#ark').open)$('#ark').close();
+  $('#hej').textContent=vem==='mamma'?'Hej mamma!':vem==='pappa'?'Hej pappa!':'Hej!';
+  $('#lappTill').textContent=vem==='mamma'?'Till mamma':vem==='pappa'?'Till pappa':vem==='annan'?'Till dig':'Till mamma och pappa';
+}
+function valj(id,pa){
+  var i=val.indexOf(id);
+  if(pa&&i<0)val.push(id);
+  if(!pa&&i>=0)val.splice(i,1);
+  spara('val',val);uppdatera();
+  if(pa){try{if(navigator.vibrate)navigator.vibrate([12,60,18]);}catch(e){}}
+}
+function kopiera(text,klar,fel){
+  try{navigator.clipboard.writeText(text).then(klar,fel);}catch(e){fel();}
+}
+function listText(){
+  var v=valda(),namn=vem==='mamma'?'Mamma':vem==='pappa'?'Pappa':'Jag';
+  return namn+' köper från Filips önskelista:\n'+v.map(function(s){return s.nr+'. '+s.namn+', '+prisText(s)+' ('+s.butik+')';}).join('\n')+'\nSumma: '+summaText(v);
+}
+function stangTips(){var t=document.getElementById('tips');if(t)t.remove();spara('tips',1);}
+if(las('tips',0))stangTips();
+
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-spela],[data-kop],[data-angra],[data-rim]');
+  if(!t)return;
+  var id;
+  if((id=t.getAttribute('data-spela'))){
+    var n=noder[id];
+    if(n.classList.contains('vald')){kor($('.scen',n),'skaka',560);return;}
+    SPEL[id]($('.bild',n));stangTips();return;
+  }
+  if((id=t.getAttribute('data-kop'))){valj(id,true);var b=$('.vald-rad .lank',noder[id]);if(b)b.focus({preventScroll:true});return;}
+  if((id=t.getAttribute('data-angra'))){valj(id,false);return;}
+  if((id=t.getAttribute('data-rim'))){
+    var k=$('.kvitto',noder[id]),vers=$('.vers',noder[id]);
+    kopiera(sak(id).rim,function(){k.textContent='Rimmet är kopierat.';},function(){
+      try{var r=document.createRange();r.selectNodeContents(vers);var s=getSelection();s.removeAllRanges();s.addRange(r);}catch(x){}
+      k.textContent='Rimmet är markerat. Kopiera det själv.';
+    });
+  }
+});
+$$('input[name="vem"]').forEach(function(r){
+  r.checked=r.value===vem;
+  r.addEventListener('change',function(){vem=r.value;spara('vem',vem);uppdatera();});
+});
+
+/* ---------- Arket ---------- */
+var ark=$('#ark');
+$('#visa').addEventListener('click',function(){if(ark.showModal)ark.showModal();else ark.setAttribute('open','');});
+$('#stang').addEventListener('click',function(){ark.close();});
+ark.addEventListener('click',function(e){if(e.target===ark)ark.close();});
+$('#tom').addEventListener('click',function(){val=[];spara('val',val);uppdatera();});
+$('#kopieraLista').addEventListener('click',function(){
+  var text=listText(),st=$('#kopiaStatus'),ta=$('#kopiaText');
+  kopiera(text,function(){st.textContent='Listan är kopierad. Klistra in den i ett sms.';},function(){
+    ta.value=text;ta.hidden=false;ta.focus();ta.select();st.textContent='Markera texten och kopiera den själv.';
+  });
+});
+
+if(navigator.share){
+  var dela=$('#delaLista');dela.hidden=false;$('#kopieraLista').className='knapp tunn';
+  dela.addEventListener('click',function(){
+    var st=$('#kopiaStatus');
+    try{navigator.share({text:listText()}).then(function(){st.textContent='';},function(){});}catch(e){st.textContent='Det gick inte att öppna delningen. Kopiera listan i stället.';}
+  });
+}
+
+/* ---------- Advent ---------- */
+function stake(n){
+  var s='<svg viewBox="0 0 150 100" role="img" aria-label="Adventsljusstake, '+n+' av 4 ljus är tända"><rect x="6" y="88" width="138" height="10" rx="5" fill="#A9C7E3"/>';
+  for(var i=0;i<4;i++){
+    var x=24+i*34,lit=i<n,h=lit?50-(n-i)*7:50,top=88-h;
+    s+='<rect x="'+(x-11)+'" y="82" width="22" height="8" rx="4" fill="#A9C7E3"/><rect x="'+(x-7)+'" y="'+top+'" width="14" height="'+(h-4)+'" rx="3" fill="#F2F6FA"/><path d="M'+x+' '+top+'v-6" stroke="#A9C7E3" stroke-width="2" stroke-linecap="round"/>';
+    if(lit)s+='<circle cx="'+x+'" cy="'+(top-13)+'" r="15" fill="#F5B942" opacity=".18"/><path class="laga" style="animation-delay:-'+(i*0.45)+'s" d="M'+x+' '+(top-3)+'q-7-9 0-20q7 11 0 20Z" fill="#F5B942"/>';
+  }
+  return s+'</svg>';
+}
+(function(){
+  var nu=new Date(),y=nu.getFullYear(),idag=new Date(y,nu.getMonth(),nu.getDate());
+  var jul=new Date(y,11,24),fjarde=new Date(y,11,24-jul.getDay()),forsta=new Date(y,11,fjarde.getDate()-21);
+  var dagar=Math.round((jul-idag)/864e5),n=0;
+  for(var i=0;i<4;i++){if(idag>=new Date(forsta.getFullYear(),forsta.getMonth(),forsta.getDate()+7*i))n++;}
+  if(dagar>60||dagar<-7)return;
+  var MAN=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+  if(dagar<0)n=4;
+  $('#stake').innerHTML=stake(n);
+  $('#dagar').textContent=dagar>1?dagar+' dagar kvar till julafton':dagar===1?'I morgon är det julafton':dagar===0?'I dag är det julafton. God jul!':'God fortsättning!';
+  $('#ljusrad').textContent=n===0?'Första ljuset tänds söndag '+forsta.getDate()+' '+MAN[forsta.getMonth()]+'.':n===1?'Ett ljus är tänt.':n===2?'Två ljus är tända.':n===3?'Tre ljus är tända.':'Alla fyra ljusen är tända.';
+  $('#advent').hidden=false;
+})();
+
+ordna();uppdatera();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){/* fungerar utan */});}
+})();
+</script>
+</body>
+</html>

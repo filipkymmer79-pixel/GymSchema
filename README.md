@@ -593,3 +593,21 @@ Planen steg för steg som app: https://filipkymmer79-pixel.github.io/GymSchema/a
 - **Stegen** har vad det är, vem som gör det, återhämtning, risker, en fråga till specialisten och länkar till källorna. Varje steg kan markeras som planerat, bokat eller klart och har plats för egna anteckningar. *Kopiera alla frågor* ger frågorna som en lista att ta med till ett besök.
 
 Status och anteckningar sparas bara på telefonen. Skallen kommer från exempel-CT:n *FullHead* från VTK, hämtad ur PyVistas arkiv [vtk-data](https://github.com/pyvista/vtk-data) (Apache 2.0), alltså en annan persons huvud, så bilderna visar principen och inte någons egen anatomi. Skallens topp var avskuren i undersökningen och är förlängd, och visdomständerna i underkäken är inritade. Kontrollerat i Chromium på 390 och 1280 px, ljust och mörkt. Inte provat på en riktig iPhone.
+
+## Önskelistan
+
+Filips önskelista till jul som app: https://filipkymmer79-pixel.github.io/GymSchema/onskelista/ – länken skickas till den som ska köpa. Den öppnas som en vanlig sida, och går också att lägga på hemskärmen (*Dela → Lägg till på hemskärmen*).
+
+- **Tolv saker** i den ordning Filip gav dem, med pris, butik och knappen *Öppna hos …* som öppnar butikens sida i en ny flik. Det som är nedsatt visar det gamla priset och hur många procent.
+- **Bilderna** är ritade för appen och rör sig när man trycker på dem: mattan rullas ut bredvid måtten 180 och 215 cm, hanteln går igenom sina tio viktsteg, skivan snurrar i 33⅓ varv per minut, dragkedjan öppnas, ägget vänds och så vidare.
+- **Jag köper den** slår in paketet i papper med snöre, rosett och etikett, och visar ett julklappsrim till saken som går att kopiera. Ett tryck på ett inslaget paket skakar det. *Ångra* tar upp det igen.
+- **Vem är du?** (Mamma, Pappa eller Någon annan) styr hälsningen och vad som står på etiketterna.
+- **Visa listan** längst ner samlar det man har valt, med rim och summa. *Skicka listan* öppnar telefonens delningsmeny där den finns, och *Kopiera listan* ger samma text.
+- **Filtret** visar sakerna efter pris (under 500 kr, 500–1 500 kr, över 1 500 kr), och ordningen kan bytas till billigast eller dyrast först.
+- Överst räknas dagarna till julafton ner, och ljusstaken tänder ett ljus för varje advent som har varit.
+
+Det man väljer sparas bara på den egna telefonen (`filips-onskelista-val`, `-vem` och `-tips`). Mamma och pappa ser alltså inte varandras val, och Filip ser ingenting – därför finns *Skicka listan*. Repot är öppet för alla, så sidan är märkt `noindex` och innehåller inget privat utöver förnamnet och själva önskningarna.
+
+Sakerna står i `SAKER` överst i skriptet i `onskelista/index.html`, och bilderna i `KONST`. Priserna kollades 26 november 2026. Kläderna saknar storlek och stekpannan diameter tills Filip har sagt vilka (det står *Fråga mig* på sidan). Sju av länkarna han skickade var Google-annonslänkar som inte gick att öppna, så de sakerna är inte med. italki-länken gick till sidan för blivande lärare och är utbytt mot presentkortet. Samma sida finns som Filips privata Claude-artifact *Filips önskelista*, där typsnitten hämtas från Google.
+
+Typsnitten är Fraunces, Schibsted Grotesk och Caveat (`onskelista/fonts/`, alla OFL). Ikonen är ritad för appen: paketet uppifrån med snöre och rosett. Kontrollerat i Chromium på 320, 390 och 1200 px, och utan nät. Inte provat på en riktig iPhone.
