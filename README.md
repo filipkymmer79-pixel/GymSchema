@@ -615,3 +615,17 @@ Det man väljer sparas bara på den egna telefonen (`filips-onskelista-val`, `-v
 Sakerna står i `SAKER` överst i skriptet i `onskelista/index.html`, och bilderna i `KONST`. Priserna kollades 26 november 2026. Kläderna saknar storlek och stekpannan diameter tills Filip har sagt vilka (det står *Fråga mig* på sidan). Sju av länkarna han skickade var Google-annonslänkar som inte gick att öppna, så de sakerna är inte med. italki-länken gick till sidan för blivande lärare och är utbytt mot presentkortet. Samma sida finns som Filips privata Claude-artifact *Filips önskelista*, där typsnitten hämtas från Google.
 
 Typsnitten är Fraunces, Schibsted Grotesk och Caveat (`onskelista/fonts/`, alla OFL). Ikonen är ritad för appen: paketet uppifrån med snöre och rosett. Kontrollerat i Chromium på 320, 390 och 1200 px, och utan nät. Inte provat på en riktig iPhone.
+
+## Frågor till syrrans gymapp
+
+Ett frågeformulär till Filips syster, så att hennes gymapp kan byggas efter vad hon själv vill ha: https://filipkymmer79-pixel.github.io/GymSchema/fragor/ – länken skickas till henne. Den öppnas som en vanlig sida, och går också att lägga på hemskärmen (*Dela → Lägg till på hemskärmen*).
+
+- **Drygt 20 frågor** i sex delar – Du, Nuläget, Upplägget, Övningarna, Appen och Sist – en fråga per skärm, mest att trycka på. Allt går att hoppa över. Två frågor kommer bara när de behövs: *Vilket är viktigast?* om hon har valt fler än ett mål, och *Vad har du hemma?* om hon vill träna hemma.
+- **Mobilen** i den färgade rutan (och knappen högst upp till höger) visar hennes app medan hon svarar: hälsningen med namnet, dagens pass efter det som ska få mest fokus, veckans dagar, en rad i den ton hon väljer, rutor och flikar efter funktionerna, färgen, ljust eller mörkt och appens namn. Ett tryck visar den stor.
+- **Teckningarna** är ritade för sidan, följer svaren och rör sig när man trycker på dem: måltavlan får en pil för varje mål, bollen står på det trappsteg som gymvanan säger, staplarna visar veckans dagar, tidtagaruret fylls efter passets längd, figuren blir svart där fokus ligger, hjärtat slår fortare ju mer kondition hon vill ha, och ikonen får appens första bokstav och färg.
+- **Stången** högst upp får en skiva i delens färg för varje del som är klar. På sista sidan är den fullastad och går att lyfta – första lyftet och vart femte ger konfetti.
+- **Sista sidan** visar appen, alla svar (ett tryck på en rad ändrar svaret) och *Skicka svaren*, som öppnar telefonens delningsmeny där den finns. *Kopiera* ger samma text. Filip klistrar in texten till Claude, som bygger appen efter den.
+
+Svaren sparas bara på hennes egen telefon (`gymfragor.syrra.v1`) tills hon skickar dem – Filip ser ingenting innan dess, och inget skickas någon annanstans. Repot är öppet för alla, så sidan är märkt `noindex` och innehåller inget privat.
+
+Frågorna står i `STEPS` i skriptet i `fragor/index.html`, teckningarna i `ART` och mobilen i `phone()`. Utseendet är Bento, som GymSchema. Typsnittet är Manrope (`fragor/fonts/`, OFL) – samma fil som är inbäddad i GymSchema. Ikonen är ritad för sidan: ett frågetecken över en lastad skivstång. Sidan sparas så att den öppnas utan nät (`fragor/sw.js`). Samma sida finns som Filips privata Claude-artifact *Frågor till syrrans gymapp*, där typsnittet hämtas från Google. Kontrollerat i Chromium på 320, 390 och 1200 px, utan nät och med rörelser avstängda. Delningsmenyn är provad med en låtsad `navigator.share`, eftersom Chromium på Linux saknar den. Inte provat på en riktig iPhone.
