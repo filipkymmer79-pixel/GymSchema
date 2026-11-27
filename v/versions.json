@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "e286be2",
+   "ts": 202611271506,
+   "build": "27 nov 15.06",
+   "date": "27 nov 15.12",
+   "title": "Teckningarna rör sig: från startläget till slutläget"
+  },
+  {
    "id": "abacd33",
    "ts": 202611271432,
    "build": "27 nov 14.32",
@@ -76,13 +83,6 @@
    "build": "24 nov 15.06",
    "date": "24 nov 15.33",
    "title": "Magen fyra dagar i veckan: Dirty thirty, Mage och västen efter varje pass"
-  },
-  {
-   "id": "24ad0e7",
-   "ts": 202611241333,
-   "build": "24 nov 13.33",
-   "date": "24 nov 13.58",
-   "title": "Program 4.0: Över och Ben fyra dagar i veckan"
   }
  ]
 }
