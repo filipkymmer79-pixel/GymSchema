@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "806637b",
+   "ts": 202611271911,
+   "build": "27 nov 19.11",
+   "date": "27 nov 19.42",
+   "title": "GymSchema: stretchen och hoppen som egna block under Dagen"
+  },
+  {
    "id": "c7fbc36",
    "ts": 202611271819,
    "build": "27 nov 18.19",
@@ -76,13 +83,6 @@
    "build": "26 nov 16.41",
    "date": "26 nov 16.45",
    "title": "Video och bild på varje steg"
-  },
-  {
-   "id": "05557ae",
-   "ts": 202611261335,
-   "build": "26 nov 13.35",
-   "date": "26 nov 13.49",
-   "title": "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag"
   }
  ]
 }
