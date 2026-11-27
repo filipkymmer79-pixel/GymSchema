@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "d96c2e8",
+   "ts": 202611272230,
+   "build": "27 nov 22.30",
+   "date": "27 nov 22.35",
+   "title": "GymSchema: ny look – Gymaffisch på dagen, Kvällspass på kvällen"
+  },
+  {
    "id": "806637b",
    "ts": 202611271911,
    "build": "27 nov 19.11",
@@ -76,13 +83,6 @@
    "build": "26 nov 22.46",
    "date": "26 nov 23.09",
    "title": "Teknikbladet, bild och video på alla byten, Ångra för uppvärmningen"
-  },
-  {
-   "id": "18fa9ef",
-   "ts": 202611261641,
-   "build": "26 nov 16.41",
-   "date": "26 nov 16.45",
-   "title": "Video och bild på varje steg"
   }
  ]
 }

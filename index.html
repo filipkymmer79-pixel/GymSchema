@@ -5177,6 +5177,156 @@ details.gcard[open].b33-has > summary,.q18-bild details.gcard.b33-has > summary{
 }
 /* Mörkt: raden under rubriken håller sig till vänster om skivan */
 :root[data-theme="dark"] .bt-hero:not(.nob) .bt-ft .lk-s:first-child{max-width:calc(100% - 56px)}
+
+/* ---------- AI-coachen (lr24): chatten, korten med ändringar och raden "Fråga coachen" – i båda stilarna (A ljust, B mörkt) ---------- */
+.ai-ov{position:fixed;left:0;right:0;top:0;height:100%;z-index:92;background:var(--bg);color:var(--ink);display:flex;flex-direction:column}
+.ai-ov[hidden]{display:none}
+html.ai-open .tabs,html.ai-open .timer{visibility:hidden}
+.ai-in{position:relative;display:flex;flex-direction:column;width:100%;max-width:640px;height:100%;margin:0 auto;min-height:0}
+.ai-top{display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 10px 16px;flex:0 0 auto}
+.ai-logo{flex:0 0 40px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--day,var(--yellow))}
+.ai-tt{flex:1;min-width:0;display:flex;flex-direction:column}
+.ai-tt b{font-size:21px;line-height:1.05;font-weight:900;letter-spacing:-.01em}
+.ai-tt small{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.ai-ic{flex:0 0 44px;width:44px;height:44px;border-radius:50%;border:0;display:grid;place-items:center;font-size:26px;line-height:1;background:var(--card,#fff);color:var(--ink);cursor:pointer}
+.ai-list{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:6px 16px 18px;display:flex;flex-direction:column;gap:12px}
+.ai-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ai-m{display:flex;flex-direction:column;gap:8px;max-width:92%;min-width:0}
+.ai-m.u{align-self:flex-end;align-items:flex-end;max-width:84%}
+.ai-m.a{align-self:flex-start;width:92%}
+.ai-b{padding:11px 15px;border-radius:20px;font-size:16px;line-height:1.45;overflow-wrap:anywhere;min-width:0}
+.ai-m.u .ai-b{border-bottom-right-radius:6px}
+.ai-m.a .ai-b{border-bottom-left-radius:6px}
+.ai-b p{margin:0 0 8px}.ai-b p:last-child{margin:0}
+.ai-b ul,.ai-b ol{margin:4px 0 8px;padding-left:20px}.ai-b li{margin:2px 0}.ai-b ul:last-child,.ai-b ol:last-child{margin-bottom:0}
+.ai-img{display:block;max-width:220px;max-height:220px;border-radius:16px;object-fit:cover}
+.ai-imgx{font-size:13px;color:var(--muted)}
+.ai-dots{display:inline-flex;gap:5px;align-items:center;height:20px}
+.ai-dots i{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.35;animation:ai-dot 1.1s infinite}
+.ai-dots i:nth-child(2){animation-delay:.18s}.ai-dots i:nth-child(3){animation-delay:.36s}
+@keyframes ai-dot{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.ai-dots i{animation:none;opacity:.6}}
+/* bilden på en övning i chatten */
+.ai-ex{border-radius:20px;padding:10px 10px 12px;display:flex;flex-direction:column;gap:10px}
+.ai-exf{border-radius:14px;overflow:hidden;margin:0}
+.ai-exf svg{display:block;width:100%;height:auto}
+.ai-ext{display:flex;flex-direction:column;gap:3px;padding:0 4px}
+.ai-ext b{font-size:17px;line-height:1.2}.ai-ext small{font-size:13.5px;color:var(--muted)}
+.ai-ext p{margin:4px 0 0;font-size:15px;line-height:1.4}
+.ai-ex .btn{align-self:flex-start;margin-left:4px}
+:root[data-theme="light"] .ai-ex{background:#fff;box-shadow:0 0 0 2.5px #111214,4px 4px 0 2.5px #111214}
+:root[data-theme="dark"] .ai-ex{background:#1B1E24;box-shadow:inset 0 0 0 1px #2C313A}
+/* kortet med ändringar */
+.ai-card{border-radius:20px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px}
+.ai-ch{font-weight:800;font-size:14px;letter-spacing:.01em}
+.ai-card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ai-card li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start;font-size:15.5px;line-height:1.35;font-weight:600}
+.ai-card li small{display:block;font-weight:700;font-size:13px;margin-top:3px}
+.ai-card li.done small{color:var(--green)}.ai-card li.err small{color:var(--red)}.ai-card li.no small,.ai-card li.undone small{color:var(--muted)}
+.ai-ci{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-size:16px}
+.ai-cb{display:flex;gap:8px;flex-wrap:wrap}
+.ai-cb .btn{flex:1 1 auto;min-height:46px}
+.ai-cb.col{flex-direction:column}
+.ai-gos{display:flex;gap:8px;flex-wrap:wrap}
+.ai-err{align-self:stretch;border-radius:16px;padding:12px 14px;font-size:15px;line-height:1.4;font-weight:600;background:var(--bad-bg,#FDE7E7);color:var(--bad,#B3261E);display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+/* tomt läge och förslagen */
+.ai-empty,.ai-setup{margin:auto 0;padding:12px 2px 8px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.ai-big{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--day,var(--yellow))}
+.ai-big svg{width:30px;height:30px}
+.ai-empty h2,.ai-setup h2{margin:6px 0 0;font-size:30px;line-height:1;font-weight:900;letter-spacing:-.02em}
+.ai-empty p,.ai-setup p{margin:0;font-size:15.5px;line-height:1.45;color:var(--muted);max-width:34em}
+.ai-sugs{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.ai-sug{border:0;border-radius:999px;padding:11px 15px;font:inherit;font-size:14.5px;font-weight:700;text-align:left;line-height:1.25;cursor:pointer;min-height:44px;background:var(--card,#fff);color:var(--ink)}
+.ai-steps{list-style:none;counter-reset:ai;margin:4px 0;padding:0;display:flex;flex-direction:column;gap:10px;align-self:stretch}
+.ai-steps li{counter-increment:ai;position:relative;border-radius:20px;padding:14px 14px 14px 56px;display:flex;flex-direction:column;gap:6px;align-items:flex-start;background:var(--card,#fff)}
+.ai-steps li::before{content:counter(ai);position:absolute;left:14px;top:13px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;background:var(--ink);color:var(--bg)}
+.ai-steps b{font-size:16px}.ai-steps span{font-size:14.5px;color:var(--muted);line-height:1.4}
+.ai-steps input{width:100%;font:inherit;font-size:16px;padding:12px 14px;border-radius:14px;border:2px solid var(--line,#D5D8DE);background:var(--bg);color:var(--ink)}
+.ai-km{font-size:13.5px;font-weight:700;color:var(--muted)}
+p.ai-fine{font-size:13.5px}
+/* skrivraden */
+.ai-bar{flex:0 0 auto;padding:8px 12px calc(env(safe-area-inset-bottom,0px) + 10px);display:flex;flex-direction:column;gap:8px}
+.ai-bar[hidden]{display:none}
+.ai-row{display:flex;align-items:flex-end;gap:8px}
+.ai-bar textarea{flex:1;min-width:0;min-height:46px;max-height:140px;resize:none;font:inherit;font-size:16px;line-height:1.35;padding:12px 16px;border-radius:23px;border:0;background:var(--card,#fff);color:var(--ink)}
+.ai-cam,.ai-send{flex:0 0 46px;width:46px;height:46px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;background:var(--card,#fff);color:var(--ink)}
+.ai-send{background:var(--ink);color:var(--bg)}
+.ai-pv:empty{display:none}
+.ai-chip{display:inline-flex;align-items:center;gap:8px;padding:4px 6px 4px 4px;border-radius:14px;background:var(--card,#fff);font-size:13.5px;font-weight:700}
+.ai-chip img{width:40px;height:40px;border-radius:10px;object-fit:cover}
+.ai-chip button{width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:var(--ink);font-size:20px;cursor:pointer}
+/* menyn: modell och kostnad */
+.ai-menu{position:absolute;inset:0;z-index:2;background:var(--bg);overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 10px) 16px calc(env(safe-area-inset-bottom,0px) + 20px)}
+.ai-menu[hidden]{display:none}
+.ai-menu-in{display:flex;flex-direction:column;gap:12px;max-width:640px;margin:0 auto}
+.ai-mh{display:flex;align-items:center;justify-content:space-between}
+.ai-mh b{font-size:24px;font-weight:900}
+.ai-sub{font-weight:800;font-size:14px;margin-top:6px}
+.ai-models{display:flex;flex-direction:column;gap:8px}
+.ai-model{border:0;border-radius:18px;padding:13px 15px;text-align:left;font:inherit;cursor:pointer;display:flex;flex-direction:column;gap:2px;background:var(--card,#fff);color:var(--ink)}
+.ai-model b{font-size:16px}.ai-model small{font-size:13.5px;color:var(--muted)}
+.ai-cost{margin:0;font-size:16px;font-weight:700;display:flex;flex-direction:column;gap:4px}
+.ai-cost small{font-size:13px;font-weight:500;color:var(--muted)}
+/* knappen högst upp, före Brick och Allt: en svart rund knapp med gnistan i dagens färg */
+.brand .ai-hb{flex:0 0 44px;width:44px;height:44px;margin-left:auto;border:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;padding:0;background:#111214;color:var(--day,var(--yellow))}
+.brand .ai-hb svg{width:21px;height:21px}
+.brand .ai-hb + .bt-brick{margin-left:0}
+.brand .ai-hb:active{transform:scale(.94)}
+.brand .ai-hb:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.brand .ai-hb:active{transform:none}}
+/* plats för knappen: Brick visar bara ikonen under 420 px, Allt också under 361 px (namnet finns kvar för skärmläsaren) */
+@media (max-width:419px){.brand .bt-brick{width:44px;padding:0;justify-content:center}.brand .bt-brick span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+@media (max-width:360px){:root[data-theme="light"] .rg-date b{font-size:15px;font-stretch:96%}:root[data-theme="light"] .rg-date{font-stretch:96%}:root[data-theme="dark"] .rg-date b{font-size:19px}}
+@media (max-width:389px){.top .brand{gap:8px}}
+@media (max-width:360px){.brand .gu-btn.al-btn{width:44px;padding:0;justify-content:center;gap:0}.brand .gu-btn.al-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+:root[data-theme="light"] .brand .ai-hb{box-shadow:0 0 0 2px #111214,2px 2px 0 2px var(--day,var(--yellow))}
+:root[data-theme="dark"] .brand .ai-hb{background:#1B1E24;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--day,#FFC93E) 60%,transparent),0 0 16px color-mix(in srgb,var(--day,#FFC93E) 30%,transparent)}
+/* Teknikbladet: Fråga coachen om övningen */
+.t32-ai{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:6px}
+.t32-ai svg{flex:0 0 auto}
+/* Kör passet: knappen i raden överst */
+.fk-top{grid-template-columns:40px minmax(0,1fr) auto auto}
+.ck-ai{width:44px;height:44px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;background:#111214;color:var(--day,var(--yellow))}
+:root[data-theme="light"] .ck-ai{box-shadow:0 0 0 2px #111214,2px 2px 0 2px var(--day,var(--yellow))}
+:root[data-theme="dark"] .ck-ai{background:#1B1E24;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--day,#FFC93E) 55%,transparent)}
+
+/* ===== A – Gymaffisch (ljust): svarta konturer och hårda skuggor ===== */
+:root[data-theme="light"] .ai-ov{background-color:var(--ground,#E3E5E9)}
+:root[data-theme="light"] .ai-tt b,:root[data-theme="light"] .ai-empty h2,:root[data-theme="light"] .ai-setup h2,:root[data-theme="light"] .ai-mh b{font-family:var(--lk-a);font-stretch:118%;font-weight:900}
+:root[data-theme="light"] .ai-ic,:root[data-theme="light"] .ai-cam{background:#fff;box-shadow:0 0 0 2px #111214,2px 2px 0 2px #111214}
+:root[data-theme="light"] .ai-m.a .ai-b{background:#fff;box-shadow:0 0 0 2px #111214,3px 3px 0 2px #111214}
+:root[data-theme="light"] .ai-m.u .ai-b{background:var(--day,var(--yellow));color:#111214;font-weight:600;box-shadow:0 0 0 2px #111214,3px 3px 0 2px #111214}
+:root[data-theme="light"] .ai-card{background:#fff;box-shadow:0 0 0 2.5px #111214,4px 4px 0 2.5px #111214}
+:root[data-theme="light"] .ai-card.ask{background:#FFF6D9}
+:root[data-theme="light"] .ai-ci{background:#F1F2F5;box-shadow:0 0 0 1.5px #111214}
+:root[data-theme="light"] .ai-yes{background:#111214;color:#fff}
+:root[data-theme="light"] .ai-sug,:root[data-theme="light"] .ai-model,:root[data-theme="light"] .ai-steps li,:root[data-theme="light"] .ai-chip{background:#fff;box-shadow:0 0 0 2px #111214,2px 2px 0 2px #111214}
+:root[data-theme="light"] .ai-model.on{background:var(--day,var(--yellow))}
+:root[data-theme="light"] .ai-bar textarea{background:#fff;box-shadow:0 0 0 2px #111214,2px 2px 0 2px #111214}
+:root[data-theme="light"] .ai-send{background:#111214;color:#fff;box-shadow:0 0 0 2px #111214,2px 2px 0 2px var(--day,var(--yellow))}
+:root[data-theme="light"] .ai-send.stop{background:var(--red)}
+/* ===== B – Kvällspass (mörkt): mörka plattor, dagens färg som glöd ===== */
+:root[data-theme="dark"] .ai-ov{background-color:#121419;color:#F3F4F6}
+:root[data-theme="dark"] .ai-tt b,:root[data-theme="dark"] .ai-empty h2,:root[data-theme="dark"] .ai-setup h2,:root[data-theme="dark"] .ai-mh b{font-family:var(--lk-b);font-weight:900;letter-spacing:.01em}
+:root[data-theme="dark"] .ai-tt b{font-size:26px}
+:root[data-theme="dark"] .ai-empty h2,:root[data-theme="dark"] .ai-setup h2{font-size:40px}
+:root[data-theme="dark"] .ai-logo,:root[data-theme="dark"] .ai-big{background:#1B1E24;color:var(--day,var(--yellow));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--day,#FFC93E) 55%,transparent),0 0 18px color-mix(in srgb,var(--day,#FFC93E) 30%,transparent)}
+:root[data-theme="dark"] .ai-ic,:root[data-theme="dark"] .ai-cam,:root[data-theme="dark"] .ai-sug,:root[data-theme="dark"] .ai-model,:root[data-theme="dark"] .ai-steps li,:root[data-theme="dark"] .ai-chip{background:#1B1E24;color:#F3F4F6;box-shadow:inset 0 0 0 1px #2C313A}
+:root[data-theme="dark"] .ai-chip button{color:#F3F4F6}
+:root[data-theme="dark"] .ai-model.on{box-shadow:inset 0 0 0 2px var(--day,var(--yellow))}
+:root[data-theme="dark"] .ai-m.a .ai-b{background:#1B1E24;box-shadow:inset 0 0 0 1px #2C313A}
+:root[data-theme="dark"] .ai-m.u .ai-b{background:var(--day,var(--yellow));color:#0B0C0F;font-weight:600;box-shadow:0 0 18px color-mix(in srgb,var(--day,#FFC93E) 30%,transparent)}
+:root[data-theme="dark"] .ai-card{background:#1B1E24;box-shadow:inset 0 0 0 1px #2C313A}
+:root[data-theme="dark"] .ai-card.ask{box-shadow:inset 0 0 0 1.5px var(--day,var(--yellow)),0 0 22px color-mix(in srgb,var(--day,#FFC93E) 22%,transparent)}
+:root[data-theme="dark"] .ai-ci{background:#23272F}
+:root[data-theme="dark"] .ai-yes{background:var(--day,var(--yellow));color:#0B0C0F}
+:root[data-theme="dark"] .ai-steps li::before{background:var(--day,var(--yellow));color:#0B0C0F}
+:root[data-theme="dark"] .ai-steps input{background:#121419;border-color:#2C313A;color:#F3F4F6}
+:root[data-theme="dark"] .ai-bar textarea{background:#1B1E24;color:#F3F4F6;box-shadow:inset 0 0 0 1px #2C313A}
+:root[data-theme="dark"] .ai-send{background:var(--day,var(--yellow));color:#0B0C0F}
+:root[data-theme="dark"] .ai-send.stop{background:#FF5348;color:#fff}
+:root[data-theme="dark"] .ai-menu{background:#121419}
+:root[data-theme="dark"] .ai-err{background:#3A1D1F;color:#FFB4AE}
 </style>
 
 <div class="app">
@@ -6705,7 +6855,7 @@ const HABITS = [
   {k: "somn", n: "Sömn 10 timmar", h: "Helt mörkt och svalt rum, skärmen av en halvtimme innan. Går du upp 07.30 – släck 21.15, du behöver ca 15 min att somna."},
   {k: "alk", n: "Ingen alkohol", h: "Noll. Ett enda tillfälle sänker sömnkvaliteten och återhämtningen i flera dygn."},
   {k: "socker", n: "Inget socker", h: "Godis, läsk, energidryck, bakverk. Frukt, bär, mjölk och havregryn räknas inte – de ska du äta."},
-  {k: "porr", n: "Ingen porr", h: "Din regel. Bocka av ärligt på kvällen."},
+  {k: "porr", n: "Ingen porr", ai: 0, h: "Din regel. Bocka av ärligt på kvällen."},
   {k: "pass", n: "Dagens träning", auto: true},
   {k: "hall", n: "Hållning + fascia · 22 min", h: "Hållningspasset och 2 min fascia-håll per sida. Kör det från rutan Hållningen på Pass – då bockas det här av sig självt."},
   {k: "shake", n: "Shaken", h: "Dagssatsen i Shake-appen – drick alla glas, även vilodagar. Långpass över 10 km: nästa storlek."},
@@ -10000,7 +10150,7 @@ function sjLoad(){
   // Första gången. Schemat sköts fram en dag lördag 21 nov 2026. Den som redan körde programmet då (appen uppdateras från en äldre
   // version) får med den dagen. En ny installation börjar på grundschemat.
   let prev = null; try { prev = localStorage.getItem("gymschema.build"); } catch(e){}
-  sjL = prev && prev !== "27 nov 22.30" ? ["2026-11-21"] : [];
+  sjL = prev && prev !== "27 nov 23.38" ? ["2026-11-21"] : [];
   sjFresh = sjL.length > 0;
   sjStore();
   return sjL;
@@ -11170,6 +11320,7 @@ document.addEventListener("input", e => { const f = e.target && e.target.dataset
 // go = fliken (adressen), sel = det som lyses upp, alt = reserv, open = öppna kortet först, miss = när det inte syns just nu
 const GU = [
   ["Pass", [
+    ["✦", "AI-coachen", "Fråga om passet, tekniken, maten eller sömnen – och be den byta en övning, fylla i set, ändra set och reps eller flytta ett pass. Varje ändring visas först, och du trycker Gör det. Kräver en Claude API-nyckel, som bara sparas på telefonen.", "pass", "#aiCmd", "", "Tryck Fråga coachen i appen under Framsteg → Coachen."],
     ["🎯", "Rutorna högst upp", "Den stora rutan är dagens pass i passets färg, och den runda knappen startar Kör passet. Under den: hur mycket som är klart, nästa set, Atlet i dag och hur länge passet tar. Varje flik har sina egna rutor.", "pass", "#rgHero"],
     ["🧭", "Kapitelraden", "De långa flikarna – Pass, Vanor och Framsteg – har en rad med kapitel under rutorna. Den följer med överst när du rullar och visar var du är. Ett tryck hoppar dit. Trycker du på fliken du redan står i åker du högst upp.", "pass", "#kapBar"],
     ["✎", "Anteckna", "Tryck på datumet högst upp, i vilken flik som helst, och skriv en rad till dig själv. Den sparas med tid och flik, följer med i backupen och i texten till Coachen.", "pass", "#rgDate"],
@@ -11256,7 +11407,7 @@ const GU = [
     ["📊", "Veckokoll", "Hur veckan gick och det viktigaste att göra nästa vecka.", "framsteg", "#vkCard"],
     ["🔭", "Du om ett år", "Var du är om ett år i samma takt som de senaste åtta veckorna: antal pass, kroppsvikt, chins och de tre övningar du loggar oftast. Styrkan räknas försiktigt, med halva takten.", "framsteg", "#f24Year"],
     ["📬", "Veckobrevet", "Veckan på en sida: passen, rekorden, sömnen, maten, vanorna och det som gick bäst. Knappen ligger i Veckokoll, och söndagens påminnelse öppnar brevet.", "framsteg", '#vkCard [data-s7="brev"]', "#vkCard"],
-    ["🤖", "Coachen", "Kopierar dina senaste fyra veckor och öppnar Claude med en färdig fråga.", "framsteg", "#coachCard"],
+    ["🤖", "Coachen", "Fråga coachen i appen, eller kopiera dina senaste fyra veckor och öppna Claude med en färdig fråga.", "framsteg", "#coachCard"],
     ["📈", "Belastning", "En siffra per vecka för gym, löpning och spänst. Appen säger till när något ökar mer än en tredjedel mot snittet av de tre veckorna före.", "framsteg", "#s7Load"],
     ["🏋", "Tomma gymmet", "Efter passet trycker du hur fullt gymmet var: tomt, lagom, fullt eller kö. Efter sex pass visar Framsteg vilka dagar och tider det brukar vara tommast.", "framsteg", "#f24Gym", "", "Kommer när du har tryckt hur fullt det var efter ett pass."],
     ["🏃", "Löprundan på kartan", "Tryck på en runda under Löpning, så ritas rutten från klockan på en karta med tempot för varje kilometer.", "framsteg", "#v-framsteg .k7-run", "", "Rundorna syns när klockan är kopplad och har en löprunda."],
@@ -19552,6 +19703,7 @@ atCoachLines = (f => function(){
 /* ===== 87: Nytt i appen ===== */
 // [datum, rubrik, [sakernas namn i Allt …]] – nyast först. Namnen ska finnas i guiden; ett som saknas visas utan knapp.
 const Q17_NYTT = [
+  ["27 nov", "AI-coachen: fråga om passet, tekniken eller maten – och be den byta en övning, fylla i set eller flytta ett pass. Du godkänner varje ändring", ["AI-coachen"]],
   ["27 nov", "Sittande lårcurl i stället för rumänska marklyften i benpasset. Marklyften står som pausad under Ändra programmet", ["Ändra programmet"]],
   ["27 nov", "Ny look: Gymaffisch på dagen och Kvällspass på kvällen – en viktskiva överst på varje flik", ["Mörkt läge"]],
   ["27 nov", "Stretchen och hoppen i benpasset är egna block under Dagen, så att de inte glöms", ["Atlet idag"]],
@@ -23587,6 +23739,745 @@ const lk43Sys = () => !!(LK43_MQ && LK43_MQ.matches);
 try { temaAuto = (f => function(){ return lk43Sys() || !!f.apply(this, arguments); })(temaAuto); } catch(e){}
 try { if (LK43_MQ){ const on = () => { try { temaApply(); } catch(e){} }; if (LK43_MQ.addEventListener) LK43_MQ.addEventListener("change", on); else if (LK43_MQ.addListener) LK43_MQ.addListener(on); } temaApply(); } catch(e){}
 
+/* ---------- AI-coachen (lr24, 27–28 nov 2026): chatta med Claude i appen – frågor, och ändringar som Filip själv godkänner ---------- */
+// Filip 27 nov: "borde man kunna skriva med en smart AI direkt i appen … få hjälp med vad som helst gällande gymmet, plus be den
+// ändra saker och fylla i saker och byta ut grejer direkt i appen".
+// - Claude API anropas direkt från telefonen (anthropic-dangerous-direct-browser-access). Nyckeln klistras in en gång och sparas BARA på
+//   telefonen (localStorage gymschema.ai.key) – aldrig i repot, aldrig i backupen, aldrig i texten till Coachen.
+// - Claude ändrar bara genom verktygen nedan, och varje ändring visas först som ett kort: Gör det / Inte nu. Appen ändrar aldrig något
+//   själv, siffror fylls bara i när Filip sagt dem, och Ångra finns direkt efteråt.
+// - Det som skickas när han skriver: texten (och bilden han väljer), programmet, dagens pass, veckan och de senaste fyra veckorna.
+const AI_KEY = "gymschema.ai.key", AI_ST = "gymschema.ai.v1", AI_URL = "https://api.anthropic.com/v1/messages";
+// Priser i dollar per miljon tokens (platform.claude.com, 27 nov 2026): in, ut, läsa ur cachen, skriva till cachen (5 min = 1,25 × in)
+const AI_MODELS = {
+  "claude-sonnet-5-5": {n: "Sonnet 5.5", d: "Smart – bra till det mesta", p: [2, 10, 0.1, 2.5]},
+  "claude-haiku-5-5": {n: "Haiku 5.5", d: "Snabbast och billigast", p: [0.1, 0.5, 0.01, 0.125]},
+  "claude-opus-5-5": {n: "Opus 5.5", d: "Smartast – kostar dubbelt så mycket", p: [4, 20, 0.2, 5]}
+};
+const AI_MAX_MSG = 24, AI_MAX_LOOP = 6;
+let aiS = (() => { const v = store(AI_ST), o = v && typeof v === "object" && !Array.isArray(v) ? v : {};
+  if (!Array.isArray(o.msgs)) o.msgs = []; if (!o.acts || typeof o.acts !== "object") o.acts = {}; if (!AI_MODELS[o.model]) o.model = "claude-sonnet-5-5";
+  o.usd = +o.usd || 0; o.chatUsd = +o.chatUsd || 0; if (typeof o.win !== "number") o.win = 0; return o; })();
+const aiKey = () => { try { return localStorage.getItem(AI_KEY) || ""; } catch(e){ return ""; } };
+function aiSave(){
+  try {
+    // bilder sparas inte (bara att det var en bild), och bara de senaste 40 meddelandena
+    const msgs = aiS.msgs.slice(-40).map(m => ({role: m.role, content: m.content.map(b => b.type === "image" ? {type: "image", gone: 1} : b)}));
+    const ids = {}; msgs.forEach(m => m.content.forEach(b => { if (b.type === "tool_use") ids[b.id] = 1; }));
+    const acts = {}; Object.keys(aiS.acts).forEach(id => { if (ids[id]) acts[id] = aiS.acts[id]; });
+    const cut = aiS.msgs.length - msgs.length;
+    store(AI_ST, {model: aiS.model, msgs, acts, usd: aiS.usd, chatUsd: aiS.chatUsd, note: aiS.note || null, win: Math.max(0, (aiS.win || 0) - cut), ctx: aiS.ctx || null});
+  } catch(e){}
+}
+let aiBusy = false, aiAbort = null, aiUndo = null, aiImg = null, aiStream = null, aiErrMsg = "", aiView = "chat", aiKeyMsg = "";
+
+/* ===== Vad Claude får veta: regler (fasta) och appens läge (ritas om vid varje fråga) ===== */
+const AI_SYS = [
+  "Du är tränaren i Filips träningsapp GymSchema och pratar med honom i appens chatt. Svara på svenska, kort och rakt – oftast 1–4 meningar, en kort punktlista bara när det hjälper. Varm och kunnig, inga utfyllnadsfraser och inga rubriker.",
+  "Du ser hans program, dagens pass, veckan, Atlet i dag, vanorna och de senaste fyra veckornas pass under APPENS LÄGE. Använd det. Hämta mer med verktygen när du behöver: historiken för en övning eller tekniken för en övning. Filip förstår bilder bättre än text – när du förklarar en övning eller föreslår ett byte, visa den med show_exercise.",
+  "Ändringar i appen gör du bara med verktygen. Varje ändring visas för Filip som ett kort som han själv godkänner (Gör det) – säg därför aldrig att något är gjort förrän verktyget svarat att det är klart. Gör bara det han ber om; vill du föreslå en ändring, fråga först. Kortet visar själv vad som ändras, så upprepa inte detaljerna i texten.",
+  "Fyll bara i siffror som Filip själv har sagt – hitta aldrig på vikter, reps eller tider. Är något oklart (vilken övning, hur många set, vilken vikt) – fråga kort i stället för att gissa. Använd övningarnas nycklar (t.ex. benpress, larcurl) i verktygen. Undantag: mat – säger han inte kcal och protein får du uppskatta dem med log_food (kortet visar att det är ungefärligt).",
+  "Programmet är hans sjukgymnasts (Tobias) upplägg. Byten, pauser och små justeringar går bra. Vill han göra om programmet: säg att han ska stämma av med Tobias.",
+  "Gör något ont: sluta med övningen eller byt till en som inte gör ont, och ta det med Tobias. Ställ inga diagnoser.",
+  "Gymmet: ingen sidolyftsmaskin (sidolyft görs i kabel), axelpress i maskin, inga tricepsövningar över huvudet, all biceps på Över-dagarna. Ge inga råd om att dra in hakan.",
+  "Mat: inget socker utom honung, inget onyttigt, ingen rapsolja, avokado, jordnötter eller jordnötssmör, pumpafrön eller alkohol. Shaken står i appen Shake.",
+  "Frågor utanför träning, mat, sömn och hälsa: svara kort och vänligt."
+].join("\n\n");
+const aiHM = d => String(d.getHours()).padStart(2, "0") + "." + String(d.getMinutes()).padStart(2, "0");
+const aiExName = ex => ex ? (ex.alt ? ex.n + " (i stället för " + (SHORT[ex.k] || ex.k) + ")" : ex.n) : "";
+function aiContext(){
+  const t = today(), td = iso(t), now = new Date(), L = [];
+  L.push("NU: " + atCap(DAYL[t.getDay()]) + " " + t.getDate() + " " + MON[t.getMonth()] + " " + t.getFullYear() + ", kl " + aiHM(now) + ".");
+  // dagens gympass
+  try {
+    const tk = t < START ? null : gymOn(t);
+    if (justSaved && !draft) L.push("DAGENS PASS ÄR SPARAT: " + (PROGRAM[justSaved.type] ? PROGRAM[justSaved.type].name : justSaved.type) + ", " + justSaved.sets + " set.");
+    else if (draft && PROGRAM[draft.type]){
+      const P = PROGRAM[draft.type], dn = P.ex.reduce((a, e) => a + (draft.sets[e.k] || []).filter(x => x.done).length, 0), tot = P.ex.reduce((a, e) => a + e.sets, 0);
+      L.push("DAGENS GYMPASS (det som ligger i Pass-fliken): " + P.name + " (typ " + draft.type + ")" + (draft.late ? ", loggas i efterhand för " + draft.date : "") + (tk && tk !== draft.type ? " – schemat säger " + PROGRAM[tk].name + " i dag" : !tk && !draft.late ? " – inget gympass i schemat i dag, det här är nästa" : "") + ". " + dn + " av " + tot + " set klara." + (draft.home ? " Hemmapass." : draft.trip ? " Annat gym." : ""));
+      L.push("Övningar (nyckel: namn – dos – i dag – appens förslag – byten):");
+      P.ex.forEach(ex => {
+        const e2 = exA(ex), st = draft.sets[ex.k] || [], d2 = st.filter(x => x.done);
+        let sug = ""; try { sug = suggestion(e2).text; } catch(e){}
+        const alts = (BUSY[ex.k] || []).map(d => d.n);
+        L.push("- " + ex.k + ": " + aiExName(e2) + " – " + prDose(e2) + " – " + (d2.length ? "klart " + d2.map(x => setText(e2, x)).join(", ") + " (" + d2.length + " av " + st.length + " set)" : st.length + " set, inget klart") + (sug ? " – " + sug : "") + (alts.length ? " – byten: " + alts.join("; ") : ""));
+      });
+      if (draft.note) L.push("Anteckning i passet: " + String(draft.note).slice(0, 300));
+    } else if (tk) L.push("DAGENS GYMPASS: " + PROGRAM[tk].name + " (typ " + tk + "), inte påbörjat.");
+    else L.push("I DAG: inget gympass.");
+  } catch(e){}
+  // programmet
+  try {
+    L.push("", "PROGRAMMET (alla övningar, nyckel = namn dos):");
+    ["over", "under"].forEach(kind => {
+      const keys = PR_LIST[kind].map(e => e.k);
+      L.push(PR_NAME[kind] + " (" + PR_DAYS[kind] + "; pass 1 = " + PROGRAM[PR_TYPES[kind].A].name + ", pass 2 = " + PROGRAM[PR_TYPES[kind].B].name + "): " + PR_LIST[kind].map(ex => ex.k + " = " + (prAlt(kind, ex.k) ? prAlt(kind, ex.k) + " (bytt för alltid från " + (SHORT[ex.k] || ex.n) + ")" : ex.n) + " " + prDose(ex) + (ex.only ? " (bara pass " + (ex.only === "A" ? 1 : 2) + ")" : "") + (prExtra(kind, ex.k) ? " (tillagd)" : "")).join("; ") + ".");
+      const paused = PROG_BASE[kind].filter(e => keys.indexOf(e.k) < 0), xtra = PROG_EXTRA[kind].filter(e => keys.indexOf(e.k) < 0);
+      if (paused.length) L.push("  Pausade i " + PR_NAME[kind] + " (kan tas tillbaka): " + paused.map(e => e.k + " = " + e.n).join("; ") + ".");
+      if (xtra.length) L.push("  Kan läggas till i " + PR_NAME[kind] + ": " + xtra.map(e => e.k + " = " + e.n).join("; ") + ".");
+    });
+  } catch(e){}
+  // veckan
+  try {
+    const ws = weekStart(t), wk = flWk(t), done = flDone(wk), days = [];
+    for (let i = 0; i < 7; i++){ const d = addDays(ws, i), ds = iso(d), g = d < START ? null : gymOn(d), day = atDay(d), dn = sessions.filter(s => s.date === ds);
+      days.push(DOW[d.getDay()] + " " + d.getDate() + "/" + (d.getMonth() + 1) + ": " + (g ? PROGRAM[g].name + " (" + g + ")" : day.label) + (dn.length ? " – sparat: " + dn.map(s => PROGRAM[s.type] ? PROGRAM[s.type].ab : s.type).join(", ") : "") + (ds === td ? " ← i dag" : "")); }
+    L.push("", "VECKAN (gympass kan flyttas inom veckan med move_pass): " + days.join("; ") + ".");
+    const skipped = ORDER.filter(k => flPlan(wk)[k] === "skip" && !done[k]);
+    if (skipped.length) L.push("Hoppas över den här veckan: " + skipped.map(k => PROGRAM[k].name).join(", ") + ".");
+  } catch(e){}
+  // Atlet i dag och vanorna
+  try {
+    const day = atDay(t);
+    if (day && day.blocks.length) L.push("", "ATLET I DAG (" + day.label + "; block-id: namn – minuter – klart): " + day.blocks.map(b => { const c = atBlkCount(b, td); return b.id + ": " + b.name + " – " + (b.min || 0) + " min – " + (c[1] && c[0] >= c[1] ? "klart" : c[0] ? c[0] + " av " + c[1] : "inte gjort"); }).join("; ") + ".");
+  } catch(e){}
+  try {
+    L.push("VANOR I DAG (nyckel: namn – klar): " + HABITS.filter(hb => hb.ai !== 0 && habitOn(td, hb)).map(hb => hb.k + ": " + (hb.auto ? "Dagens träning" : hb.n) + " – " + (habitDone(td, hb) ? "ja" : "nej")).join("; ") + ".");
+  } catch(e){}
+  // maten i dag
+  try { const ft = foodTotals(td), it = foodLog[td] || []; L.push("MAT I DAG: " + ft.kcal + " kcal och " + ft.p + " g protein (mål " + PROT_GOAL + " g), shake " + ft.glasses + " av " + foodSet.glasses + " glas (" + foodSet.size + "-shaken)" + (it.length ? "; ätit: " + it.map(x => x.n + (x.g ? " " + gStr(x) : "") + " " + x.kcal + " kcal/" + fmt(x.p, 0) + " g prot").join(", ") : "") + "."); } catch(e){}
+  // kroppen: vikt och smärtloggen
+  try { const ws = weights.slice(-6); if (ws.length) L.push("KROPPSVIKT (kg): " + ws.map(w => w.date + " " + fmt(w.kg)).join(", ") + "."); } catch(e){}
+  try {
+    const from = iso(addDays(t, -28)), ont = (typeof k5 !== "undefined" && Array.isArray(k5.ont) ? k5.ont : []).filter(x => x && x.d >= from);
+    if (ont.length) L.push("SMÄRTLOGGEN (4 veckor): " + ont.map(x => x.d + " " + (x.n || x.k || "") + ": " + [x.w, x.sd].filter(Boolean).join(" ") + (K5_LVL[x.l] ? ", " + K5_LVL[x.l].toLowerCase() : "") + (x.t ? " – " + String(x.t).slice(0, 120) : "")).join("; ") + ".");
+  } catch(e){}
+  // samma text som Coachen kopierar: programmet med hans egna ord, passen, Garmin, boxning, Atlet …
+  try {
+    const ct = coachText().split("\n").filter(l => !/^Svara på svenska, kort och rakt/.test(l) && !/^VANOR /.test(l));
+    if (ct.length) ct[0] = "OM PROGRAMMET (Filips egen beskrivning): " + ct[0].replace(/^Du är min tränare\. Här är min träningsdata från min app GymSchema\. /, "");
+    L.push("", ct.join("\n"));
+  } catch(e){}
+  return L.join("\n");
+}
+
+/* ===== Verktygen ===== */
+// Övning från nyckel eller namn – bland de tillåtna nycklarna (dagens pass eller programmet)
+function aiExKey(x, keys){
+  const s = String(x == null ? "" : x).trim(); if (!s) return null;
+  if (keys.indexOf(s) >= 0) return s;
+  const low = s.toLowerCase(), nm = k => { const e = EXMAP[k] || PR_LIST.over.concat(PR_LIST.under).find(y => y.k === k) || {}; return [k, e.n, SHORT[k]].filter(Boolean).map(v => String(v).toLowerCase()); };
+  return keys.find(k => nm(k).indexOf(low) >= 0) || keys.find(k => nm(k).some(v => v.indexOf(low) >= 0 || low.indexOf(v) >= 0)) || null;
+}
+const aiAllKeys = () => { const o = {}; ["over", "under"].forEach(kind => { PR_LIST[kind].concat(PROG_BASE[kind], PROG_EXTRA[kind]).forEach(e => { o[e.k] = 1; }); }); return Object.keys(o); };
+function aiKind(k, want){
+  const has = kind => PR_LIST[kind].some(e => e.k === k) || PROG_BASE[kind].some(e => e.k === k) || PROG_EXTRA[kind].some(e => e.k === k);
+  if (want === "over" || want === "under") return has(want) ? want : null;
+  if (draft && PROGRAM[draft.type] && has(ssKind(draft.type))) return ssKind(draft.type);
+  return has("over") ? "over" : has("under") ? "under" : null;
+}
+// Ändringar i programmet går genom prog.js (samma kontroller som bladet Ändra programmet) – utan att bladet öppnas, och med meddelandena
+function aiQuiet(fn){
+  const ps = prSheet, tt = toast, said = [];
+  prSheet = () => {}; toast = m => { said.push(String(m)); };
+  try { fn(); } finally { prSheet = ps; toast = tt; }
+  return said;
+}
+function aiDraft(){
+  if (draft && PROGRAM[draft.type]) return draft;
+  if (justSaved) return null;
+  const tk = today() < START ? null : gymOn(today()); if (!tk) return null;
+  selType = tk; draft = newDraft(tk); persistDraft(); return draft;
+}
+const aiOk = text => ({text}), aiErr = err => ({err});
+const aiNum = (v, lo, hi) => { const n = typeof v === "number" ? v : num(v); return n == null || !isFinite(n) || n < lo || n > hi ? null : n; };
+const aiDateOk = (d, back) => { const s = String(d || ""), t = iso(today()); if (!s) return t; if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return null; return s <= t && s >= iso(addDays(today(), -(back || 13))) ? s : null; };
+const aiDayTxt = ds => ds === iso(today()) ? "i dag" : ds === iso(addDays(today(), -1)) ? "i går" : dLong(ds);
+const AI_PAGES = {pass: ["pass", "Idag"], program: ["program", "Program"], vanor: ["vanor", "Vanor"], mat: ["vikt/mat", "Mat"], framsteg: ["framsteg", "Framsteg"], kropp: ["vikt", "Kropp"], historik: ["historik", "Historik"], boxning: ["boxning", "Boxning"]};
+// Övningen (och ett byte) som Teknikbladet visar den: teckningen, namnet, dosen och nyckeln
+function aiExInfo(a){
+  try {
+    const k = aiExKey((a || {}).exercise, Object.keys(KEYMAP).concat(aiAllKeys())); if (!k) return null;
+    const alts = (BUSY[k] || []).map(d => d.n).concat(HOME[k] ? [HOME[k].n] : []), q = String(a.alternative || "").toLowerCase().trim(), lo = n => n.toLowerCase();
+    const nm = q ? alts.find(n => lo(n) === q) || alts.find(n => q.indexOf(lo(n)) === 0 || lo(n).indexOf(q) === 0) || null : null;
+    const g = nm ? null : fkGuide(k), gk = g ? g.key : undefined;   // utan byte: övningen själv, även om den är bytt i dag
+    const info = t32Info(k, nm || undefined, gk); return info && info.fig ? {k, nm, gk, info} : null;
+  } catch(e){ return null; }
+}
+function aiExCardHTML(a){
+  const x = aiExInfo(a); if (!x) return "";
+  const i = x.info, cue = i.g ? i.g.cue : i.how, more = i.g ? (i.v ? "Steg, vanliga fel och video →" : "Steg och vanliga fel →") : i.v ? "Videon →" : "";
+  return '<div class="ai-ex" style="--c:' + i.c + '"><div class="gfig ai-exf">' + i.fig + '</div><div class="ai-ext"><b>' + esc(i.name) + '</b>' + (i.dose ? '<small>' + esc(i.dose) + '</small>' : '') + (cue ? '<p>' + esc(cue) + '</p>' : '') + '</div>' +
+    (more ? '<button type="button" class="btn sm ghost" data-ai="tek" data-k="' + esc(x.k) + '"' + (x.nm ? ' data-n="' + esc(x.nm) + '"' : '') + (x.gk ? ' data-g="' + esc(x.gk) + '"' : '') + '>' + more + '</button>' : '') + '</div>';
+}
+// Varje verktyg: def (till Claude), read (körs direkt) eller check (kontroll + texten på kortet) och run (gör ändringen)
+const AI_TOOLS = {
+  get_history: {read: true, def: {description: "Get Filip's logged gym sets. With exercise: every logged session of that exercise in the period. Without: all gym sessions in the period.", input_schema: {type: "object", properties: {exercise: {type: "string", description: "Exercise key, e.g. benpress"}, days: {type: "integer", description: "How many days back (default 56 with exercise, 14 without)"}}}},
+    run(a){
+      const k = a.exercise ? aiExKey(a.exercise, Object.keys(EXMAP)) : null; if (a.exercise && !k) return aiErr("Hittar ingen övning som heter " + a.exercise + ".");
+      const n = Math.max(1, Math.min(365, Math.round(+a.days || (k ? 56 : 14)))), from = iso(addDays(today(), -n));
+      const ss = sessions.filter(s => s.date >= from).slice().reverse(), out = [];
+      ss.forEach(s => { const exs = (s.exercises || []).filter(e => !k || e.k === k); if (!exs.length) return;
+        out.push(s.date + " " + (PROGRAM[s.type] ? sessNames(s)[0] : s.type) + ": " + exs.map(e => { const b = EXMAP[e.k], ex = e.alt ? altEx(e.k, e.alt, b) : b; return ex ? (e.alt || SHORT[e.k] || ex.n) + " " + (e.sets || []).map(x => setText(ex, x)).join(", ") : e.k; }).join("; ")); });
+      return aiOk(out.length ? out.join("\n") : "Inga loggade pass" + (k ? " med " + (SHORT[k] || k) : "") + " de senaste " + n + " dagarna.");
+    }},
+  get_exercise_guide: {read: true, def: {description: "Get the app's technique guide for an exercise: steps, cue, common mistakes, progression and swaps.", input_schema: {type: "object", properties: {exercise: {type: "string", description: "Exercise key or name"}}, required: ["exercise"]}},
+    run(a){
+      const k = aiExKey(a.exercise, Object.keys(KEYMAP).concat(aiAllKeys())), g = k && KEYMAP[k] ? GUIDE.find(x => x.key === KEYMAP[k]) : GUIDE.find(x => String(x.name).toLowerCase().indexOf(String(a.exercise || "").toLowerCase()) >= 0);
+      if (!g) return aiErr("Ingen guide för " + a.exercise + ".");
+      return aiOk([g.name + " – " + g.dose, "Nyckeln: " + g.cue, "Steg: " + (g.steps || []).join(" "), (g.mistakes || []).length ? "Vanliga fel: " + g.mistakes.map(m => m[0] + " → " + m[1]).join("; ") : "", g.progress ? "Öka: " + g.progress : "", (g.swap || []).length ? "Byten: " + g.swap.join("; ") : "", k && BUSY[k] ? "Byten i appen: " + BUSY[k].map(d => d.n + " (" + d.how + ")").join("; ") : ""].filter(Boolean).join("\n"));
+    }},
+  show_exercise: {read: true, def: {description: "Show Filip the app's drawing of an exercise with its key cue, right in the chat, with a button to the full technique sheet (steps, common mistakes, video). He understands pictures much better than text – use it whenever you explain technique or suggest an exercise or a swap.", input_schema: {type: "object", properties: {exercise: {type: "string", description: "Exercise key, e.g. larcurl"}, alternative: {type: "string", description: "Optional: exact name of one of the exercise's swaps, to show that one instead"}}, required: ["exercise"]}},
+    run(a){ const x = aiExInfo(a); return !x ? aiErr("Ingen bild för " + a.exercise + ".") : aiOk((a.alternative && !x.nm ? "Hittar inget byte som heter " + a.alternative + " – visar " : "Bilden på ") + x.info.name + " visas i chatten, med knappen till tekniken."); }},
+  open_page: {read: true, def: {description: "Show Filip a button that opens a page in the app (it does not open by itself).", input_schema: {type: "object", properties: {page: {type: "string", enum: Object.keys(AI_PAGES)}}, required: ["page"]}},
+    run(a){ return AI_PAGES[a.page] ? aiOk("Knappen till " + AI_PAGES[a.page][1] + " visas i chatten.") : aiErr("Okänd sida."); }},
+  log_sets: {def: {description: "Log sets in today's gym pass (the one in the Pass tab) and tick them as done. Only use numbers Filip said. Fills the first sets that are not done.", input_schema: {type: "object", properties: {exercise: {type: "string", description: "Exercise key in today's pass"}, sets: {type: "array", items: {type: "object", properties: {kg: {type: "number", description: "Weight in kg (machine assistance kg for assisted exercises)"}, reps: {type: "integer"}, seconds: {type: "integer", description: "For timed exercises"}, kg_right: {type: "number", description: "Right side, for exercises logged per side"}, reps_right: {type: "integer"}}}}}, required: ["exercise", "sets"]}},
+    check(a){
+      const d = draft && PROGRAM[draft.type] ? draft : null, tk = today() < START ? null : gymOn(today()), type = d ? d.type : tk;
+      if (!type) return aiErr(justSaved ? "Dagens pass är redan sparat." : "Det finns inget gympass att logga i i dag.");
+      const keys = PROGRAM[type].ex.map(e => e.k), k = aiExKey(a.exercise, keys); if (!k) return aiErr("Övningen finns inte i " + PROGRAM[type].name + ". Nycklar: " + keys.join(", ") + ".");
+      const base = PROGRAM[type].ex.find(e => e.k === k), al = d && d.alt && d.alt[k], ex = al ? altEx(k, al, base) : base;
+      const sets = Array.isArray(a.sets) ? a.sets.slice(0, 10) : []; if (!sets.length) return aiErr("Inga set.");
+      const v = [];
+      for (const s of sets){
+        const x = {w: null, r: null, s: null};
+        if (ex.unit === "sek"){ x.s = aiNum(s.seconds, 1, 3600); if (x.s == null) return aiErr(ex.n + " loggas i sekunder – ange seconds."); }
+        else { x.r = aiNum(s.reps, 0, 200); if (x.r == null) return aiErr("Ange reps för varje set."); x.r = Math.round(x.r);
+          if (ex.unit === "kg" || ex.unit === "hjalp"){ x.w = aiNum(s.kg, 0, 600); if (x.w == null) return aiErr("Ange kg för varje set" + (ex.unit === "hjalp" ? " (hjälpen i maskinen, 0 = ingen)" : "") + "."); }
+          if (ex.lr){ x.wR = s.kg_right != null ? aiNum(s.kg_right, 0, 600) : x.w; x.rR = s.reps_right != null ? Math.round(aiNum(s.reps_right, 0, 200) || 0) : x.r; } }
+        v.push(x);
+      }
+      return {k, ex, v, sum: "Logga " + (al || SHORT[k] || ex.n) + ": " + v.map(x => setText(ex, x)).join(", ") + " – " + v.length + (v.length === 1 ? " set" : " set") + " bockas av"};
+    },
+    run(a){
+      const c = AI_TOOLS.log_sets.check(a); if (c.err) return c;
+      const d = aiDraft(); if (!d) return aiErr("Det finns inget pass att logga i.");
+      const arr = d.sets[c.k] || (d.sets[c.k] = []);
+      c.v.forEach(x => { let i = arr.findIndex(y => !y.done); if (i < 0){ arr.push({w: null, s: null, r: null, done: false}); i = arr.length - 1; }
+        const y = arr[i]; y.w = x.w; y.r = x.r; y.s = x.s; if (c.ex.lr){ y.wR = x.wR; y.rR = x.rR; } y.done = true; y.edited = true; });
+      d.started = true; persistDraft();
+      return aiOk("Loggat och bockat: " + c.sum.replace(/^Logga /, "").replace(/ – .*$/, "") + ". " + arr.filter(x => x.done).length + " av " + arr.length + " set klara i övningen.");
+    }},
+  swap_exercise: {def: {description: "Swap an exercise to one of its listed alternatives. scope today = only today's pass (like 'Upptagen? Byt'), always = from now on in the program. An empty to goes back to the original.", input_schema: {type: "object", properties: {exercise: {type: "string"}, to: {type: "string", description: "Exact name of one of the exercise's alternatives, or an empty string to go back to the original"}, scope: {type: "string", enum: ["today", "always"]}}, required: ["exercise", "to", "scope"]}},
+    check(a){
+      const today_ = a.scope !== "always";
+      if (today_ && !(draft && PROGRAM[draft.type])) return aiErr("Det finns inget pass i dag att byta i.");
+      const keys = today_ ? PROGRAM[draft.type].ex.map(e => e.k) : aiAllKeys(), k = aiExKey(a.exercise, keys); if (!k) return aiErr("Hittar inte övningen" + (today_ ? " i dagens pass" : "") + ".");
+      const alts = (BUSY[k] || []).map(d => d.n), to = a.to == null || a.to === "" ? null : (alts.find(n => n.toLowerCase() === String(a.to).toLowerCase()) || null);
+      if (a.to && !to) return aiErr("Inget byte som heter så. Byten för " + (SHORT[k] || k) + ": " + (alts.join("; ") || "inga") + ".");
+      const kind = aiKind(k), nm = SHORT[k] || (EXMAP[k] || {}).n || k;
+      if (today_){ const cur = draft.alt && draft.alt[k]; if ((cur || null) === to) return aiErr("Det är redan så i dag."); return {k, to, sum: (to ? "Byt " + nm + " → " + to : "Tillbaka till " + nm) + " – bara i dag"}; }
+      if (!kind) return aiErr("Övningen finns inte i programmet.");
+      if ((prAlt(kind, k) || null) === to) return aiErr("Det är redan så i programmet.");
+      return {k, to, kind, sum: (to ? "Byt " + nm + " → " + to : "Tillbaka till " + nm) + " – för alltid, i " + PR_NAME[kind] + "-passen"};
+    },
+    run(a){
+      const c = AI_TOOLS.swap_exercise.check(a); if (c.err) return c;
+      if (a.scope !== "always"){ draft.alt = draft.alt || {}; if (c.to) draft.alt[c.k] = c.to; else delete draft.alt[c.k]; bzReset(c.k); persistDraft(); return aiOk(c.sum + ": klart."); }
+      const said = aiQuiet(() => prDo("alt", c.kind, c.k, {dataset: {n: c.to || ""}}));
+      return (prAlt(c.kind, c.k) || null) === c.to ? aiOk(said.join(" ") || c.sum + ": klart.") : aiErr(said.join(" ") || "Gick inte att byta.");
+    }},
+  change_exercise: {def: {description: "Change sets, rep range, rest or which pass an exercise is in (program change, from now on).", input_schema: {type: "object", properties: {exercise: {type: "string"}, group: {type: "string", enum: ["over", "under"], description: "Över or Ben passes (optional)"}, sets: {type: "integer"}, reps_min: {type: "integer"}, reps_max: {type: "integer"}, rest_seconds: {type: "integer"}, in_pass: {type: "string", enum: ["both", "pass1", "pass2"]}}, required: ["exercise"]}},
+    check(a){
+      const k = aiExKey(a.exercise, aiAllKeys()), kind = k ? aiKind(k, a.group) : null; if (!k || !kind) return aiErr("Hittar inte övningen i programmet.");
+      const ex = PR_LIST[kind].find(e => e.k === k); if (!ex) return aiErr((SHORT[k] || k) + " är pausad – ta tillbaka den först (restore_exercise).");
+      const ch = [], nm = prAlt(kind, k) || SHORT[k] || ex.n, o = {};
+      if (a.sets != null){ o.sets = aiNum(a.sets, 1, 6); if (o.sets == null) return aiErr("Set: 1–6."); if (o.sets !== prSets(ex)) ch.push(prSets(ex) + " → " + o.sets + " set"); }
+      if (a.reps_min != null || a.reps_max != null){ o.lo = aiNum(a.reps_min != null ? a.reps_min : ex.lo, 1, 300); o.hi = aiNum(a.reps_max != null ? a.reps_max : ex.hi, 1, 300);
+        if (o.lo == null || o.hi == null || o.lo > o.hi) return aiErr("Reps: reps_min ≤ reps_max."); if (prAlt(kind, k)) return aiErr("Repsen för ett byte ändras i bladet Ändra programmet.");
+        if (o.lo !== ex.lo || o.hi !== ex.hi) ch.push("reps " + prRange(ex.lo, ex.hi) + " → " + prRange(o.lo, o.hi) + (ex.unit === "sek" ? " s" : "")); }
+      if (a.rest_seconds != null){ o.rest = aiNum(a.rest_seconds, 15, 600); if (o.rest == null) return aiErr("Vila: 15–600 sekunder."); o.rest = Math.round(o.rest); if (o.rest !== ex.rest) ch.push("vila " + prRest(ex.rest) + " → " + prRest(o.rest)); }
+      if (a.in_pass){ o.on = {both: "AB", pass1: "A", pass2: "B"}[a.in_pass]; if ((ex.only || "AB") !== o.on) ch.push(o.on === "AB" ? "i båda passen" : "bara i " + PR_PASS[o.on]); }
+      if (!ch.length) return aiErr("Inget att ändra – det är redan så.");
+      return {k, kind, o, sum: nm + ": " + ch.join(", ") + " (" + PR_NAME[kind] + ")"};
+    },
+    run(a){
+      const c = AI_TOOLS.change_exercise.check(a); if (c.err) return c;
+      const before = JSON.stringify(prog), o = c.o, said = aiQuiet(() => {
+        if (o.on){ prDo("on", c.kind, c.k, {dataset: {v: o.on}}); }
+        if (o.sets != null) prSetNum(c.kind, c.k, "sets", o.sets);
+        if (o.lo != null){ prSetNum(c.kind, c.k, "lo", o.lo); prSetNum(c.kind, c.k, "hi", o.hi); prMirror(c.kind, c.k); }
+        if (o.rest != null) prSetNum(c.kind, c.k, "rest", o.rest);
+        if (o.sets != null || o.lo != null || o.rest != null) prCommit(c.kind);
+      });
+      return JSON.stringify(prog) !== before ? aiOk(c.sum + ": klart." + (said.length ? " " + said.join(" ") : "")) : aiErr(said.join(" ") || "Ingen ändring.");
+    }},
+  pause_exercise: {def: {description: "Pause (or remove, if it was added) an exercise in the program from now on.", input_schema: {type: "object", properties: {exercise: {type: "string"}, group: {type: "string", enum: ["over", "under"]}}, required: ["exercise"]}},
+    check(a){ const k = aiExKey(a.exercise, aiAllKeys()), kind = k ? aiKind(k, a.group) : null; if (!k || !kind || !PR_LIST[kind].some(e => e.k === k)) return aiErr("Övningen är inte med i programmet just nu.");
+      return {k, kind, sum: (prInBase(kind, k) ? "Pausa " : "Ta bort ") + (prAlt(kind, k) || SHORT[k] || k) + " i " + PR_NAME[kind] + "-passen"}; },
+    run(a){ const c = AI_TOOLS.pause_exercise.check(a); if (c.err) return c; const said = aiQuiet(() => prDo("pause", c.kind, c.k, {dataset: {}}));
+      return PR_LIST[c.kind].some(e => e.k === c.k) ? aiErr(said.join(" ") || "Gick inte.") : aiOk(said.join(" ") || c.sum + ": klart."); }},
+  restore_exercise: {def: {description: "Take back a paused exercise, or add one that can be added (listed under PROGRAMMET).", input_schema: {type: "object", properties: {exercise: {type: "string"}, group: {type: "string", enum: ["over", "under"]}}, required: ["exercise"]}},
+    check(a){ const k = aiExKey(a.exercise, aiAllKeys()), kind = k ? aiKind(k, a.group) : null; if (!k || !kind) return aiErr("Hittar inte övningen.");
+      if (PR_LIST[kind].some(e => e.k === k)) return aiErr("Den är redan med.");
+      return {k, kind, sum: (prInBase(kind, k) ? "Ta tillbaka " : "Lägg till ") + (SHORT[k] || (prBase(kind, k) || {}).n || k) + " i " + PR_NAME[kind] + "-passen"}; },
+    run(a){ const c = AI_TOOLS.restore_exercise.check(a); if (c.err) return c; const said = aiQuiet(() => prDo("add", c.kind, c.k, {dataset: {}}));
+      return PR_LIST[c.kind].some(e => e.k === c.k) ? aiOk(said.join(" ") || c.sum + ": klart.") : aiErr(said.join(" ") || "Gick inte."); }},
+  move_pass: {def: {description: "Move a gym pass to another day this week (or skip it this week). Pass types: oA = Över pass 1, uA = Ben pass 1, oB = Över pass 2, uB = Ben pass 2.", input_schema: {type: "object", properties: {pass: {type: "string", enum: ["oA", "uA", "oB", "uB"]}, to: {type: "string", description: "Date YYYY-MM-DD this week, today or later, or 'skip'"}}, required: ["pass", "to"]}},
+    check(a){
+      const k = a.pass; if (!PROGRAM[k]) return aiErr("Okänt pass.");
+      const wk = flWk(today()), done = flDone(wk), ws = parseIso(wk), we = iso(addDays(ws, 6)), td = iso(today());
+      if (done[k]) return aiErr(PROGRAM[k].name + " är redan kört den här veckan.");
+      const to = a.to === "skip" ? "skip" : /^\d{4}-\d{2}-\d{2}$/.test(String(a.to)) ? String(a.to) : null;
+      if (!to) return aiErr("Ange ett datum (ÅÅÅÅ-MM-DD) eller skip.");
+      if (to !== "skip" && (to < td || to > we)) return aiErr("Bara i dag eller senare den här veckan (till " + we + ").");
+      const cur = flPlan(wk), plan = to === "skip" ? Object.assign({}, cur, {[k]: "skip"}) : flMove(wk, k, to);
+      if (cur[k] === plan[k]) return aiErr("Passet ligger redan där.");
+      const side = ORDER.filter(t => t !== k && cur[t] !== plan[t]).map(t => PROGRAM[t].ab + (plan[t] === "skip" ? " hoppas över" : " flyttas till " + flDay(plan[t])));
+      return {plan, sum: to === "skip" ? "Hoppa över " + PROGRAM[k].name + " den här veckan" : "Flytta " + PROGRAM[k].name + " till " + flDay(to) + " " + parseIso(to).getDate() + " " + MON[parseIso(to).getMonth()] + (side.length ? " (" + side.join(", ") + ")" : "")};
+    },
+    run(a){ const c = AI_TOOLS.move_pass.check(a); if (c.err) return c; flApply(c.plan); return aiOk(c.sum + ": klart."); }},
+  mark_habit: {def: {description: "Tick (or untick) a habit for a day. Keys are listed under VANOR I DAG.", input_schema: {type: "object", properties: {habit: {type: "string"}, done: {type: "boolean"}, date: {type: "string", description: "YYYY-MM-DD, default today (at most 13 days back)"}}, required: ["habit", "done"]}},
+    check(a){
+      const hb = HABITS.find(h => h.k === a.habit && h.ai !== 0 && !h.auto) || HABITS.find(h => h.ai !== 0 && !h.auto && String(h.n).toLowerCase().indexOf(String(a.habit || "").toLowerCase()) >= 0);
+      if (!hb) return aiErr("Okänd vana. Nycklar: " + HABITS.filter(h => h.ai !== 0 && !h.auto).map(h => h.k).join(", ") + ".");
+      const ds = aiDateOk(a.date); if (!ds) return aiErr("Datum: i dag eller högst 13 dagar bakåt.");
+      const on = a.done !== false, cur = !!(habits[ds] && habits[ds][hb.k]); if (cur === on) return aiErr("Det är redan så.");
+      return {hb, ds, on, sum: (on ? "Bocka av " : "Ta bort bocken för ") + hb.n + " " + aiDayTxt(ds)};
+    },
+    run(a){ const c = AI_TOOLS.mark_habit.check(a); if (c.err) return c; const d = habits[c.ds] || (habits[c.ds] = {}); if (c.on) d[c.hb.k] = true; else delete d[c.hb.k];
+      store("lyftloggen.habits.v1", habits); return aiOk(c.sum + ": klart."); }},
+  mark_block: {def: {description: "Mark a block under Atlet i dag as done (or not done). Block ids are listed under ATLET I DAG.", input_schema: {type: "object", properties: {block: {type: "string"}, done: {type: "boolean"}, date: {type: "string", description: "YYYY-MM-DD, default today"}}, required: ["block", "done"]}},
+    check(a){
+      const ds = aiDateOk(a.date, 6); if (!ds) return aiErr("Datum: i dag eller högst 6 dagar bakåt.");
+      const day = atDay(ds), b = day.blocks.find(x => x.id === a.block) || day.blocks.find(x => String(x.name).toLowerCase() === String(a.block || "").toLowerCase());
+      if (!b) return aiErr("Blocket finns inte " + aiDayTxt(ds) + ". Block: " + day.blocks.map(x => x.id).join(", ") + ".");
+      if (AT_GYMB.indexOf(b.id) >= 0) return aiErr("Gympasset bockas av när passet sparas i Pass-fliken.");
+      const c0 = atBlkCount(b, ds), on = a.done !== false; if ((c0[1] && c0[0] >= c0[1]) === on) return aiErr("Det är redan så.");
+      return {b, ds, on, sum: (on ? "Markera " : "Ta bort bocken för ") + b.name + (on ? " som klart " : " ") + aiDayTxt(ds)};
+    },
+    run(a){
+      const c = AI_TOOLS.mark_block.check(a); if (c.err) return c;
+      if (c.b.id === "hallning"){ const d = habits[c.ds] || (habits[c.ds] = {}); if (c.on) d.hall = true; else delete d.hall; store("lyftloggen.habits.v1", habits); }
+      else if (c.b.ex && atExIds(c.b).length) atExIds(c.b).forEach(id => atSet(c.ds, id, c.on));
+      else atSet(c.ds, "blk:" + c.b.id, c.on);
+      try { atRefresh(); } catch(e){}
+      return aiOk(c.sum + ": klart.");
+    }},
+  log_body_weight: {def: {description: "Log Filip's body weight in kg (only a number he said).", input_schema: {type: "object", properties: {kg: {type: "number"}, date: {type: "string", description: "YYYY-MM-DD, default today"}}, required: ["kg"]}},
+    check(a){ const kg = aiNum(a.kg, 30, 250), ds = aiDateOk(a.date, 30); if (kg == null) return aiErr("Vikt: 30–250 kg."); if (!ds) return aiErr("Datum: i dag eller högst 30 dagar bakåt.");
+      return {kg: Math.round(kg * 10) / 10, ds, sum: "Kroppsvikt " + fmt(Math.round(kg * 10) / 10) + " kg " + aiDayTxt(ds)}; },
+    run(a){ const c = AI_TOOLS.log_body_weight.check(a); if (c.err) return c; if (!db || readOnly) return aiErr("Loggen går inte att spara just nu.");
+      db.doc("weights/" + c.ds).set({date: c.ds, kg: c.kg}); return aiOk(c.sum + ": sparad."); }},
+  log_food: {def: {description: "Log something Filip ate in the Mat log. If he did not say kcal and protein, estimate them (the card shows them as approximate).", input_schema: {type: "object", properties: {name: {type: "string", description: "Short name, e.g. 'Kycklingwok med ris'"}, kcal: {type: "number"}, protein_g: {type: "number"}, grams: {type: "number"}, estimated: {type: "boolean", description: "true if you estimated kcal/protein"}, date: {type: "string", description: "YYYY-MM-DD, default today"}}, required: ["name", "kcal", "protein_g"]}},
+    check(a){ const n = String(a.name || "").trim().slice(0, 60), k = aiNum(a.kcal, 0, 5000), pr = aiNum(a.protein_g, 0, 400), g = a.grams != null ? aiNum(a.grams, 1, 5000) : null, ds = aiDateOk(a.date);
+      if (!n) return aiErr("Ange vad han åt."); if (k == null || pr == null) return aiErr("kcal 0–5000 och protein 0–400 g."); if (!ds) return aiErr("Datum: i dag eller högst 13 dagar bakåt.");
+      return {n, k: Math.round(k), pr: Math.round(pr * 10) / 10, g, ds, sum: "Mat " + aiDayTxt(ds) + ": " + n + (g ? " " + Math.round(g) + " g" : "") + " – " + (a.estimated ? "ca " : "") + Math.round(k) + " kcal, " + (a.estimated ? "ca " : "") + fmt(Math.round(pr)) + " g protein"}; },
+    run(a){ const c = AI_TOOLS.log_food.check(a); if (c.err) return c;
+      (foodLog[c.ds] || (foodLog[c.ds] = [])).push({id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), n: c.n, g: c.g ? Math.round(c.g) : null, kcal: c.k, p: c.pr});
+      foodSave(); const t = foodTotals(c.ds); return aiOk("Sparat. " + aiDayTxt(c.ds) + " totalt " + t.kcal + " kcal och " + t.p + " g protein."); }},
+  log_shake: {def: {description: "Set how many glasses of the shake Filip has drunk on a day (total for the day).", input_schema: {type: "object", properties: {glasses: {type: "integer", description: "Total glasses that day, 0–8"}, date: {type: "string", description: "YYYY-MM-DD, default today"}}, required: ["glasses"]}},
+    check(a){ const g = aiNum(a.glasses, 0, 8), ds = aiDateOk(a.date); if (g == null) return aiErr("Glas: 0–8."); if (!ds) return aiErr("Datum: i dag eller högst 13 dagar bakåt.");
+      const cur = shakeGl[ds] || 0; if (cur === Math.round(g)) return aiErr("Det står redan " + cur + " glas.");
+      return {g: Math.round(g), ds, sum: "Shake " + aiDayTxt(ds) + ": " + cur + " → " + Math.round(g) + " av " + foodSet.glasses + " glas"}; },
+    run(a){ const c = AI_TOOLS.log_shake.check(a); if (c.err) return c; if (c.g) shakeGl[c.ds] = c.g; else delete shakeGl[c.ds]; foodSave(); return aiOk(c.sum + ": sparat."); }},
+  add_note: {def: {description: "Add a short note to today's gym pass (saved with the pass).", input_schema: {type: "object", properties: {text: {type: "string"}}, required: ["text"]}},
+    check(a){ const t = String(a.text || "").trim().slice(0, 300); if (!t) return aiErr("Tom anteckning."); if (!(draft && PROGRAM[draft.type]) && !(today() >= START && gymOn(today()))) return aiErr("Det finns inget pass i dag att anteckna i.");
+      return {t, sum: "Anteckning i passet: ”" + t + "”"}; },
+    run(a){ const c = AI_TOOLS.add_note.check(a); if (c.err) return c; const d = aiDraft(); if (!d) return aiErr("Inget pass att anteckna i.");
+      d.note = ((d.note ? d.note.trim() + "\n" : "") + c.t).slice(0, 1000); persistDraft(); return aiOk("Anteckningen är sparad i passet."); }}
+};
+const AI_TOOL_DEFS = Object.keys(AI_TOOLS).map(n => Object.assign({name: n}, AI_TOOLS[n].def));
+const AI_ICON = {log_food: "🍽", log_shake: "🥤", log_sets: "✅", swap_exercise: "🔁", change_exercise: "✏️", pause_exercise: "⏸", restore_exercise: "↩", move_pass: "📅", mark_habit: "☑", mark_block: "☑", log_body_weight: "⚖", add_note: "✎"};
+
+/* ===== Ångra: allt som verktygen kan ändra, före och efter ===== */
+function aiSnap(){
+  return {prog: JSON.stringify(prog), draft: JSON.stringify(draft), sel: selType, habits: JSON.stringify(habits), atl: JSON.stringify(atl), flytt: JSON.stringify(flytt), w: JSON.stringify((db && db.weights) || {}), food: JSON.stringify([foodLog, shakeGl])};
+}
+function aiRestore(b, a){
+  // en del som ändrats efteråt (till exempel ett set som Filip loggat själv) lämnas som den är
+  const cur = aiSnap(), skip = [];
+  const same = f => cur[f] === a[f];
+  if (b.prog !== a.prog){ if (same("prog")){ prog = JSON.parse(b.prog) || {}; prSave(); prApply("over", true); prApply("under", true); } else skip.push("programmet"); }
+  if (b.draft !== a.draft){ if (same("draft") || b.prog !== a.prog){ draft = JSON.parse(b.draft); selType = b.sel; store("lyftloggen.draft.v1", draft); } else skip.push("passet"); }
+  if (b.habits !== a.habits){ if (same("habits")){ habits = JSON.parse(b.habits) || {}; store("lyftloggen.habits.v1", habits); } else skip.push("vanorna"); }
+  if (b.atl !== a.atl){ if (same("atl")){ atl = JSON.parse(b.atl); atSave(); } else skip.push("Atlet"); }
+  if (b.flytt !== a.flytt){ if (same("flytt")){ flytt = JSON.parse(b.flytt) || {}; flyttSave(); } else skip.push("veckan"); }
+  if (b.food !== a.food){ if (same("food")){ const f = JSON.parse(b.food); foodLog = f[0] || {}; shakeGl = f[1] || {}; foodSave(); } else skip.push("maten"); }
+  if (b.w !== a.w && db && db.weights){ if (same("w")){ db.weights = JSON.parse(b.w) || {}; db._save("weights"); } else skip.push("vikten"); }
+  try { renderStrip(); render(); } catch(e){}
+  return skip;
+}
+
+/* ===== Anropet: strömmande svar ===== */
+const aiCost = u => { const p = AI_MODELS[aiS.model].p; return ((u.input_tokens || 0) * p[0] + (u.output_tokens || 0) * p[1] + (u.cache_read_input_tokens || 0) * p[2] + (u.cache_creation_input_tokens || 0) * p[3]) / 1e6; };
+// Sonnet 5.5 m.fl. tänker innan de svarar (adaptive thinking). Tankeblocken i den pågående frågan skickas tillbaka oförändrade,
+// och allt före dem (fönstret, appens läge) hålls likadant under hela frågan – annars kan API:t svara 400. Äldre frågors tankeblock
+// skickas inte med (det behövs inte).
+// en ny fråga: Filips text eller bild utan svar på förslag i samma meddelande (svar + ny text hör till frågan som pågår)
+const aiHasAsk = m => m && m.role === "user" && m.content.some(b => b.type === "text" || b.type === "image") && !m.content.some(b => b.type === "tool_result");
+function aiTurnStart(){ for (let i = aiS.msgs.length - 1; i >= 0; i--) if (aiHasAsk(aiS.msgs[i])) return i; return 0; }
+function aiNewTurn(){
+  // fönstret: högst AI_MAX_MSG meddelanden, och det börjar med en fråga
+  const n = aiS.msgs.length; let w = Math.max(0, n - AI_MAX_MSG);
+  while (w < n - 1 && !aiHasAsk(aiS.msgs[w])) w++;
+  aiS.win = w; aiS.ctx = aiContext();
+}
+function aiApiMsgs(){
+  const w = Math.min(aiS.win || 0, Math.max(0, aiS.msgs.length - 1)), turn = aiTurnStart();
+  let ms = aiS.msgs.slice(w);
+  if (w > 0 && ms.length) ms[0] = {role: "user", content: ms[0].content.filter(b => b.type !== "tool_result")};
+  const out = ms.map((m, j) => ({role: m.role, content: m.content.map(b => {
+    if (b.type === "thinking") return w + j > turn ? {type: "thinking", thinking: b.thinking || "", signature: b.signature || ""} : null;
+    if (b.raw) return w + j > turn ? b.raw : null;
+    if (b.type === "text") return b.text && b.text.trim() ? {type: "text", text: b.text} : null;
+    if (b.type === "image") return b.data ? {type: "image", source: {type: "base64", media_type: b.mt || "image/jpeg", data: b.data}} : {type: "text", text: "[en bild som Filip skickade tidigare]"};
+    if (b.type === "tool_use") return {type: "tool_use", id: b.id, name: b.name, input: b.input || {}};
+    if (b.type === "tool_result") return {type: "tool_result", tool_use_id: b.tool_use_id, content: String(b.content || ""), is_error: !!b.is_error};
+    return null; }).filter(Boolean)})).filter(m => m.content.length);
+  const last = out[out.length - 1]; if (last){ const lb = last.content[last.content.length - 1]; last.content[last.content.length - 1] = Object.assign({}, lb, {cache_control: {type: "ephemeral"}}); }
+  return out;
+}
+function aiHttpErr(status, body){
+  let t = "", m = ""; try { const j = JSON.parse(body); t = (j.error && j.error.type) || ""; m = (j.error && j.error.message) || ""; } catch(e){}
+  if (status === 401 || t === "authentication_error") return "Nyckeln fungerar inte. Kontrollera den under ⋯ → Nyckeln.";
+  if (status === 403 || t === "permission_error") return "Nyckeln får inte använda Claude API. Kontrollera den på platform.claude.com.";
+  if (/credit balance/i.test(m)) return "Slut på krediter på API-kontot. Fyll på under Billing på platform.claude.com – eller länka Max-planens API-krediter.";
+  if (status === 404 || t === "not_found_error") return "Modellen finns inte för ditt konto. Välj en annan under ⋯.";
+  if (status === 429 || t === "rate_limit_error") return "För många frågor på kort tid. Vänta en minut och försök igen.";
+  if (status === 529 || status >= 500 || t === "overloaded_error" || t === "api_error") return "Claude är överbelastad just nu. Försök igen om en stund.";
+  return "Något gick fel (" + status + (m ? ": " + m.slice(0, 120) : "") + ").";
+}
+async function aiCall(){
+  const key = aiKey(); if (!key){ aiView = "setup"; aiPaint(); return null; }
+  if (!aiS.ctx) aiS.ctx = aiContext();
+  const body = {model: aiS.model, max_tokens: 4096, stream: true, output_config: {effort: "medium"}, tools: AI_TOOL_DEFS,
+    system: [{type: "text", text: AI_SYS, cache_control: {type: "ephemeral"}}, {type: "text", text: "APPENS LÄGE NÄR FILIP SKREV\n" + aiS.ctx, cache_control: {type: "ephemeral"}}],
+    messages: aiApiMsgs()};
+  const ctl = new AbortController(); aiAbort = ctl;
+  let r;
+  try { r = await fetch(AI_URL, {method: "POST", signal: ctl.signal, headers: {"content-type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true"}, body: JSON.stringify(body)}); }
+  catch(e){ aiAbort = null; if (e && e.name === "AbortError") return null; aiErrMsg = navigator.onLine === false ? "Ingen uppkoppling. Försök igen när du har nät." : "Kom inte fram till Claude. Försök igen."; return null; }
+  if (!r.ok){ const txt = await r.text().catch(() => ""); aiAbort = null; aiErrMsg = aiHttpErr(r.status, txt); return null; }
+  const msg = {role: "assistant", content: []}, usage = {}, parts = {};
+  aiStream = msg; let stop = null;
+  const handle = (ev, d) => {
+    if (ev === "message_start"){ Object.assign(usage, (d.message && d.message.usage) || {}); }
+    else if (ev === "content_block_start"){ const cb = d.content_block || {}; if (cb.type === "text") msg.content[d.index] = {type: "text", text: cb.text || ""}; else if (cb.type === "tool_use"){ msg.content[d.index] = {type: "tool_use", id: cb.id, name: cb.name, input: {}}; parts[d.index] = ""; } else if (cb.type === "thinking") msg.content[d.index] = {type: "thinking", thinking: cb.thinking || "", signature: cb.signature || ""}; else if (cb.type) msg.content[d.index] = {type: "raw", raw: cb}; }
+    else if (ev === "content_block_delta"){ const b = msg.content[d.index], dl = d.delta || {}; if (!b) return; if (dl.type === "text_delta" && b.type === "text"){ b.text += dl.text || ""; aiLive(); } else if (dl.type === "input_json_delta") parts[d.index] = (parts[d.index] || "") + (dl.partial_json || ""); else if (dl.type === "thinking_delta" && b.type === "thinking") b.thinking += dl.thinking || ""; else if (dl.type === "signature_delta" && b.type === "thinking") b.signature += dl.signature || ""; }
+    else if (ev === "content_block_stop"){ const b = msg.content[d.index]; if (b && b.type === "tool_use"){ try { b.input = parts[d.index] ? JSON.parse(parts[d.index]) : {}; } catch(e){ b.input = {}; } } }
+    else if (ev === "message_delta"){ if (d.delta && d.delta.stop_reason) stop = d.delta.stop_reason; if (d.usage) Object.assign(usage, d.usage); }
+    else if (ev === "error"){ aiErrMsg = aiHttpErr(0, JSON.stringify(d)); }
+  };
+  try {
+    const rd = r.body.getReader(), dec = new TextDecoder(); let buf = "";
+    for (;;){
+      const {value, done} = await rd.read(); if (done) break;
+      buf += dec.decode(value, {stream: true});
+      let i; while ((i = buf.indexOf("\n\n")) >= 0){
+        const blk = buf.slice(0, i); buf = buf.slice(i + 2); let ev = "", data = "";
+        blk.split("\n").forEach(l => { if (l.indexOf("event:") === 0) ev = l.slice(6).trim(); else if (l.indexOf("data:") === 0) data += l.slice(5).trim(); });
+        if (data){ try { const d = JSON.parse(data); handle(ev || d.type, d); } catch(e){} }
+      }
+    }
+  } catch(e){ if (!(e && e.name === "AbortError")) aiErrMsg = "Svaret bröts. Försök igen."; }
+  aiAbort = null; aiStream = null;
+  msg.content = msg.content.filter(b => b && ((b.type === "tool_use" && stop === "tool_use") || (b.type === "text" && b.text.trim()) || b.type === "thinking" || b.type === "raw"));
+  const c = aiCost(usage); aiS.usd += c; aiS.chatUsd += c;
+  if (!msg.content.some(b => b.type === "text" || b.type === "tool_use")){ if (!aiErrMsg && stop === "max_tokens") aiErrMsg = "Claude tänkte för länge och hann inte svara. Försök igen."; aiSave(); return aiErrMsg ? null : {stop: "end_turn", msg}; }
+  aiS.msgs.push(msg); aiSave();
+  return {stop: stop || "end_turn", msg};
+}
+// Ett varv: Claude svarar; vill Claude läsa något körs det direkt, vill Claude ändra något väntar appen på Filip (kortet)
+async function aiRun(){
+  if (aiBusy) return; aiBusy = true; aiErrMsg = ""; aiPaint();
+  try {
+    for (let n = 0; n < AI_MAX_LOOP; n++){
+      const res = await aiCall(); if (!res || res.stop !== "tool_use") break;
+      const uses = res.msg.content.filter(b => b.type === "tool_use");
+      if (!uses.length) break;
+      const writes = uses.filter(u => !(AI_TOOLS[u.name] && AI_TOOLS[u.name].read));
+      if (writes.length){
+        // ogiltiga förslag går tillbaka till Claude direkt (utan kort), så att det kan rättas
+        const bad = writes.map(u => { const T = AI_TOOLS[u.name]; return T ? T.check(u.input || {}) : aiErr("Okänt verktyg."); });
+        if (bad.some(c => c.err)){
+          aiS.msgs.push({role: "user", content: uses.map(u => { const i = writes.indexOf(u), c = i >= 0 ? bad[i] : null, T = AI_TOOLS[u.name];
+            const r = c ? (c.err ? {err: c.err} : {err: "Inte utfört – ett annat förslag i samma svar gick inte. Föreslå igen."}) : T.run(u.input || {});
+            aiS.acts[u.id] = {st: "skip"}; return {type: "tool_result", tool_use_id: u.id, content: r.err ? "Gick inte: " + r.err : r.text, is_error: !!r.err}; })});
+          aiSave(); aiPaint(); continue;
+        }
+        writes.forEach((u, i) => { aiS.acts[u.id] = {st: "ask", sum: bad[i].sum}; });
+        aiSave(); break;   // väntar på Gör det / Inte nu
+      }
+      aiS.msgs.push({role: "user", content: uses.map(u => { const r = AI_TOOLS[u.name].run(u.input || {}); aiS.acts[u.id] = {st: "read"}; return {type: "tool_result", tool_use_id: u.id, content: r.err ? "Gick inte: " + r.err : r.text, is_error: !!r.err}; })});
+      aiSave(); aiPaint();
+    }
+  } finally { aiBusy = false; aiPaint(); }
+}
+// Förslagen i det senaste svaret som väntar på Filip
+function aiPending(){
+  const m = aiS.msgs[aiS.msgs.length - 1];
+  if (!m || m.role !== "assistant") return null;
+  const uses = m.content.filter(b => b.type === "tool_use");
+  return uses.length && uses.some(u => aiS.acts[u.id] && aiS.acts[u.id].st === "ask") ? {m, uses} : null;
+}
+async function aiAnswer(yes){
+  const p = aiPending(); if (!p || aiBusy) return;
+  const before = aiSnap(), res = p.uses.map(u => {
+    const T = AI_TOOLS[u.name]; let r;
+    if (!T) r = aiErr("Okänt verktyg.");
+    else if (T.read) r = T.run(u.input || {});
+    else if (!yes){ r = aiOk("Filip valde att inte göra det här."); aiS.acts[u.id] = Object.assign({}, aiS.acts[u.id], {st: "no"}); }
+    else { try { r = T.run(u.input || {}); } catch(e){ r = aiErr("Något gick fel i appen."); } aiS.acts[u.id] = Object.assign({}, aiS.acts[u.id], {st: r.err ? "err" : "done", t: r.err || ""}); }
+    return {type: "tool_result", tool_use_id: u.id, content: r.err ? "Gick inte: " + r.err : r.text, is_error: !!r.err};
+  });
+  aiS.msgs.push({role: "user", content: res});
+  if (yes){ aiUndo = {ids: p.uses.map(u => u.id), before, after: aiSnap(), ts: Date.now()}; try { renderStrip(); render(); } catch(e){} }
+  aiSave(); aiPaint();
+  if (yes) await aiRun();   // Claude bekräftar med en mening (eller fortsätter)
+}
+function aiDoUndo(){
+  if (!aiUndo || Date.now() - aiUndo.ts > 15 * 60e3) return;
+  const skip = aiRestore(aiUndo.before, aiUndo.after);
+  aiUndo.ids.forEach(id => { if (aiS.acts[id] && aiS.acts[id].st === "done") aiS.acts[id].st = "undone"; });
+  aiS.note = "(Jag ångrade ändringen du gjorde nyss" + (skip.length ? ", utom " + skip.join(" och ") + " som ändrats efteråt" : "") + ".)";
+  aiUndo = null; aiSave(); aiPaint();
+  toast(skip.length ? "Ångrat – utom " + skip.join(" och ") + ", som ändrats efteråt" : "Ångrat");
+}
+async function aiSend(text){
+  text = String(text || "").trim(); if ((!text && !aiImg) || aiBusy) return;
+  if (!aiKey()){ aiView = "setup"; aiPaint(); return; }
+  // ett obesvarat förslag räknas som nej när Filip skriver något nytt
+  const p = aiPending();
+  if (p){ aiS.msgs.push({role: "user", content: p.uses.map(u => { const T = AI_TOOLS[u.name]; const r = T && T.read ? T.run(u.input || {}) : aiOk("Filip svarade inte på förslaget utan skrev något nytt."); if (aiS.acts[u.id] && aiS.acts[u.id].st === "ask") aiS.acts[u.id].st = "no"; return {type: "tool_result", tool_use_id: u.id, content: r.err ? "Gick inte: " + r.err : r.text, is_error: !!r.err}; })}); }
+  const content = [];
+  if (aiImg) content.push({type: "image", mt: "image/jpeg", data: aiImg.data, url: aiImg.url});
+  content.push({type: "text", text: (aiS.note ? aiS.note + "\n" : "") + (text || "Vad ser du på bilden?")});
+  aiS.note = null; aiImg = null;
+  // två användarmeddelanden i rad (svaren på förslaget + den nya frågan) slås ihop
+  const last = aiS.msgs[aiS.msgs.length - 1];
+  if (last && last.role === "user") last.content = last.content.concat(content);   // efter svar på ett förslag: samma fråga fortsätter
+  else { aiS.msgs.push({role: "user", content}); aiNewTurn(); }
+  const ta = $("aiIn"); if (ta){ ta.value = ""; aiGrow(ta); }
+  aiSave(); aiPaint(); await aiRun();
+}
+
+/* ===== Bilder: minskas i telefonen till högst 1280 px innan de skickas ===== */
+function aiPickImage(file){
+  if (!file || !/^image\//.test(file.type || "image/")) return;
+  const url = URL.createObjectURL(file), im = new Image();
+  im.onload = () => {
+    try {
+      const s = Math.min(1, 1280 / Math.max(im.naturalWidth, im.naturalHeight)), c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(im.naturalWidth * s)); c.height = Math.max(1, Math.round(im.naturalHeight * s));
+      c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+      const du = c.toDataURL("image/jpeg", 0.82); aiImg = {data: du.split(",")[1], url: du}; aiPaint(); const ta = $("aiIn"); if (ta) ta.focus();
+    } catch(e){ toast("Bilden gick inte att läsa"); }
+    URL.revokeObjectURL(url);
+  };
+  im.onerror = () => { URL.revokeObjectURL(url); toast("Bilden gick inte att läsa"); };
+  im.src = url;
+}
+
+/* ===== Utseendet ===== */
+const AI_SPARK = '<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9z" fill="currentColor"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" fill="currentColor"/></svg>';
+const AI_SEND = '<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5"/></svg>';
+const AI_STOP = '<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg>';
+const AI_CAM = '<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5h3l1.6-2.5h6.8L17 8.5h3v10H4z"/><circle cx="12" cy="13.2" r="3.4"/></svg>';
+const aiUsd = v => "$" + (v < 0.01 && v > 0 ? "<0,01" : fmt(v, 2));
+// Svaren: stycken, punktlistor och fetstil – allt annat som vanlig text
+function aiMd(t){
+  const inl = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/(^|[\s(])\*(?!\s)([^*]+?)\*(?=[\s).,!?:;]|$)/g, "$1<i>$2</i>");
+  return String(t || "").trim().split(/\n{2,}/).map(p => {
+    const ls = p.split("\n");
+    if (ls.every(l => /^\s*([-•*]|\d+[.)])\s+/.test(l))){ const ol = /^\s*\d/.test(ls[0]); return "<" + (ol ? "ol" : "ul") + ">" + ls.map(l => "<li>" + inl(l.replace(/^\s*([-•*]|\d+[.)])\s+/, "")) + "</li>").join("") + "</" + (ol ? "ol" : "ul") + ">"; }
+    return "<p>" + ls.map(l => inl(l.replace(/^#{1,4}\s+/, ""))).join("<br>") + "</p>";
+  }).join("");
+}
+function aiCardHTML(m){
+  const uses = m.content.filter(b => b.type === "tool_use" && AI_TOOLS[b.name] && !AI_TOOLS[b.name].read && aiS.acts[b.id] && aiS.acts[b.id].st !== "skip");
+  if (!uses.length) return "";
+  const st = uses.map(u => aiS.acts[u.id].st), ask = st.indexOf("ask") >= 0, undoOk = aiUndo && uses.some(u => aiUndo.ids.indexOf(u.id) >= 0) && Date.now() - aiUndo.ts < 15 * 60e3;
+  const all = s => st.every(x => x === s);
+  return '<div class="ai-card' + (ask ? " ask" : "") + '"><div class="ai-ch">' + (ask ? (uses.length > 1 ? uses.length + " ändringar i appen" : "Ändring i appen") : all("done") ? "Gjort" : all("no") ? "Inte gjort" : all("undone") ? "Ångrat" : "Ändringar") + '</div><ul>' +
+    uses.map(u => { const a = aiS.acts[u.id]; return '<li class="' + a.st + '"><span class="ai-ci" aria-hidden="true">' + (AI_ICON[u.name] || "•") + '</span><span>' + esc(a.sum || u.name) + (a.st === "err" ? '<small>Gick inte: ' + esc(a.t || "") + '</small>' : a.st === "done" ? '<small>Klart ✓</small>' : a.st === "undone" ? '<small>Ångrat</small>' : a.st === "no" ? '<small>Inte gjort</small>' : '') + '</span></li>'; }).join("") + '</ul>' +
+    (ask ? '<div class="ai-cb"><button type="button" class="btn ai-yes" data-ai="yes">' + (uses.length > 1 ? "Gör alla" : "Gör det") + '</button><button type="button" class="btn ghost" data-ai="no">Inte nu</button></div>' : undoOk ? '<div class="ai-cb"><button type="button" class="btn ghost sm" data-ai="undo">↶ Ångra</button></div>' : '') + '</div>';
+}
+function aiMsgsHTML(){
+  const out = [];
+  aiS.msgs.forEach((m, mi) => {
+    if (m.role === "user"){
+      const txt = m.content.filter(b => b.type === "text").map(b => b.text.replace(/^\(Jag ångrade[^)]*\)\n?/, "")).join("\n").trim(), im = m.content.find(b => b.type === "image");
+      if (!txt && !im) return;
+      out.push('<div class="ai-m u">' + (im ? (im.url ? '<img class="ai-img" src="' + im.url + '" alt="Bilden du skickade">' : '<span class="ai-imgx">📷 Bild</span>') : '') + (txt ? '<div class="ai-b">' + esc(txt).replace(/\n/g, "<br>") + '</div>' : '') + '</div>');
+    } else {
+      const txt = m.content.filter(b => b.type === "text").map(b => b.text).join("\n\n");
+      const pages = m.content.filter(b => b.type === "tool_use" && b.name === "open_page" && AI_PAGES[(b.input || {}).page]).map(b => '<button type="button" class="btn sm ghost ai-go" data-ai="go" data-go="' + AI_PAGES[b.input.page][0] + '">Öppna ' + AI_PAGES[b.input.page][1] + ' →</button>').join("");
+      const card = aiCardHTML(m), exs = m.content.filter(b => b.type === "tool_use" && b.name === "show_exercise").map(b => aiExCardHTML(b.input || {})).join("");
+      if (!txt && !card && !pages && !exs) return;
+      out.push('<div class="ai-m a">' + (txt ? '<div class="ai-b">' + aiMd(txt) + '</div>' : '') + exs + card + (pages ? '<div class="ai-gos">' + pages + '</div>' : '') + '</div>');
+    }
+  });
+  return out.join("");
+}
+function aiSugs(){
+  const S = [];
+  try {
+    const nx = draft && PROGRAM[draft.type] ? PROGRAM[draft.type].ex.find(e => (draft.sets[e.k] || []).some(x => !x.done)) : null;
+    if (draft && PROGRAM[draft.type]) S.push(["Vad ska jag tänka på i dagens pass?", 1]);
+    if (nx && BUSY[nx.k]) S.push([(SHORT[nx.k] || nx.n) + " är upptagen – vad kör jag i stället?", 1]);
+    if (nx) S.push(["Logga " + (SHORT[nx.k] || nx.n).toLowerCase() + ": ", 0]);
+    if (nx) S.push(["Visa hur jag gör " + (SHORT[nx.k] || nx.n).toLowerCase(), 1]);
+  } catch(e){}
+  S.push(["Hur går det med styrkan?", 1], ["Jag har bara 30 minuter i dag", 1], ["Vad ska jag äta efter passet?", 1]);
+  return S.slice(0, 6);
+}
+function aiEmptyHTML(){
+  return '<div class="ai-empty"><span class="ai-big" aria-hidden="true">' + AI_SPARK + '</span><h2>Fråga coachen</h2><p>Om passet, tekniken, maten eller sömnen – eller be den ändra något: byta en övning, fylla i set, flytta ett pass. Du godkänner varje ändring.</p>' +
+    '<div class="ai-sugs">' + aiSugs().map(s => '<button type="button" class="ai-sug" data-ai="sug" data-send="' + s[1] + '">' + esc(s[0]) + '</button>').join("") + '</div></div>';
+}
+function aiSetupHTML(){
+  const has = !!aiKey();
+  return '<div class="ai-setup"><span class="ai-big" aria-hidden="true">' + AI_SPARK + '</span><h2>' + (has ? "Nyckeln" : "Koppla Claude") + '</h2>' +
+    '<p>Coachen är Claude. Appen pratar med Claude med en egen API-nyckel som bara sparas på den här telefonen.</p>' +
+    '<ol class="ai-steps"><li><b>Logga in på platform.claude.com</b><span>Samma konto som Claude går bra.</span><a class="btn sm ghost" href="https://platform.claude.com/settings/keys" target="_blank" rel="noopener">Öppna API keys ↗</a></li>' +
+    '<li><b>Skapa en nyckel</b><span>Create Key – kopiera den. Den börjar med sk-ant-.</span></li>' +
+    '<li><b>Klistra in den här</b><input id="aiKeyIn" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-ant-…" aria-label="API-nyckel"><button type="button" class="btn" data-ai="savekey">Spara och testa</button>' + (aiKeyMsg ? '<small class="ai-km">' + esc(aiKeyMsg) + '</small>' : '') + '</li></ol>' +
+    '<p class="ai-fine">API:et betalas separat från Claude-abonnemanget: har du Max ingår API-krediter varje månad (claude.ai → Inställningar → Billing → API credits), annars köper du krediter under Billing på platform.claude.com. Ett meddelande kostar ungefär en krona med Sonnet 5.5 i värsta fall, oftast några tiotals öre – appen visar vad det kostat.</p>' +
+    '<p class="ai-fine">När du skriver skickas det du skriver, bilden du väljer, ditt program och dina senaste pass till Claude (Anthropic).</p>' +
+    (has ? '<div class="ai-cb"><button type="button" class="btn ghost" data-ai="chat">Tillbaka till chatten</button><button type="button" class="btn ghost" data-ai="delkey">Ta bort nyckeln</button></div>' : '') + '</div>';
+}
+function aiMenuHTML(){
+  return '<div class="ai-menu-in"><div class="ai-mh"><b>Coachen</b><button type="button" class="ai-ic" data-ai="chat" aria-label="Tillbaka">×</button></div>' +
+    '<div class="ai-sub">Modell</div><div class="ai-models">' + Object.keys(AI_MODELS).map(id => { const m = AI_MODELS[id], on = aiS.model === id;
+      return '<button type="button" class="ai-model' + (on ? " on" : "") + '" data-ai="model" data-m="' + id + '" aria-pressed="' + on + '"><b>' + m.n + (on ? " ✓" : "") + '</b><small>' + m.d + '</small></button>'; }).join("") + '</div>' +
+    '<div class="ai-sub">Kostnad</div><p class="ai-cost">Den här chatten ' + aiUsd(aiS.chatUsd) + ' · totalt ' + aiUsd(aiS.usd) + '<small>Räknat på Anthropics priser per modell. Exakt belopp står under Billing på platform.claude.com.</small></p>' +
+    '<div class="ai-cb col"><button type="button" class="btn" data-ai="new">Ny chatt</button><button type="button" class="btn ghost" data-ai="key">Nyckeln</button></div></div>';
+}
+function aiTopSub(){ return AI_MODELS[aiS.model].n + (aiS.chatUsd ? " · " + aiUsd(aiS.chatUsd) : "") + " · ser ditt program och dina pass"; }
+function aiOpen(text){
+  let o = $("aiOv");
+  if (!o){
+    o = document.createElement("div"); o.id = "aiOv"; o.className = "ai-ov"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "Coachen – AI");
+    o.innerHTML = '<div class="ai-in"><div class="ai-top"><span class="ai-logo" aria-hidden="true">' + AI_SPARK + '</span><div class="ai-tt"><b>Coachen</b><small id="aiSub"></small></div>' +
+      '<button type="button" class="ai-ic" data-ai="menu" aria-label="Modell, kostnad och ny chatt"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22"><circle cx="5.5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="18.5" cy="12" r="2" fill="currentColor"/></svg></button>' +
+      '<button type="button" class="ai-ic" data-ai="close" aria-label="Stäng coachen">×</button></div>' +
+      '<div class="ai-list" id="aiList"></div><div class="ai-live" id="aiLiveTxt" aria-live="polite"></div>' +
+      '<form class="ai-bar" id="aiBar"><div class="ai-pv" id="aiPv"></div><div class="ai-row"><button type="button" class="ai-cam" data-ai="cam" aria-label="Lägg till en bild">' + AI_CAM + '</button>' +
+      '<textarea id="aiIn" rows="1" maxlength="4000" enterkeyhint="send" placeholder="Skriv till coachen …" aria-label="Meddelande till coachen"></textarea>' +
+      '<button type="submit" class="ai-send" id="aiSendB" aria-label="Skicka">' + AI_SEND + '</button></div><input type="file" id="aiFile" accept="image/*" hidden></form>' +
+      '<div class="ai-menu" id="aiMenu" hidden></div></div>';
+    document.body.appendChild(o);
+  }
+  o.hidden = false; document.documentElement.classList.add("noscroll", "ai-open");
+  aiView = aiKey() ? "chat" : "setup"; aiPaint(true); aiVV();
+  const ta = $("aiIn"); if (ta && text != null){ ta.value = text; aiGrow(ta); }
+  if (aiView === "chat" && ta) setTimeout(() => { try { ta.focus({preventScroll: true}); } catch(e){} }, 60);
+}
+function aiClose(){
+  const o = $("aiOv"); if (o) o.hidden = true;
+  document.documentElement.classList.remove("ai-open"); if (!document.querySelector(".sheet:not([hidden])")) document.documentElement.classList.remove("noscroll");
+  try { renderStrip(); render(); } catch(e){}
+  try { if ($("fkOv") && !$("fkOv").hidden && draft) fkRender(); } catch(e){}   // Kör passet under: visa det som ändrats
+}
+function aiLive(){ if (aiLiveT) return; aiLiveT = requestAnimationFrame(() => { aiLiveT = 0; const el = $("aiStreamB"); if (el && aiStream){ const txt = aiStream.content.filter(b => b && b.type === "text").map(b => b.text).join("\n\n"); el.innerHTML = aiMd(txt) || '<span class="ai-dots"><i></i><i></i><i></i></span>'; aiStick(); } }); }
+let aiLiveT = 0, aiAtEnd = true;
+function aiStick(){ const l = $("aiList"); if (l && aiAtEnd) l.scrollTop = l.scrollHeight; }
+function aiPaint(first){
+  const o = $("aiOv"); if (!o || o.hidden) return;
+  const l = $("aiList"), menu = $("aiMenu"), bar = $("aiBar"), sub = $("aiSub");
+  if (sub) sub.textContent = aiTopSub();
+  menu.hidden = aiView !== "menu"; if (aiView === "menu") menu.innerHTML = aiMenuHTML();
+  bar.hidden = aiView === "setup";
+  if (aiView === "setup"){ l.innerHTML = aiSetupHTML(); return; }
+  const had = l.scrollHeight - l.scrollTop - l.clientHeight < 60;
+  l.innerHTML = (aiS.msgs.length ? aiMsgsHTML() : aiEmptyHTML()) +
+    (aiBusy ? '<div class="ai-m a"><div class="ai-b" id="aiStreamB">' + (aiStream && aiStream.content.some(b => b && b.type === "text" && b.text) ? aiMd(aiStream.content.filter(b => b && b.type === "text").map(b => b.text).join("\n\n")) : '<span class="ai-dots" aria-label="Coachen skriver"><i></i><i></i><i></i></span>') + '</div></div>' : '') +
+    (aiErrMsg && !aiBusy ? '<div class="ai-err" role="alert">' + esc(aiErrMsg) + ' <button type="button" class="btn sm ghost" data-ai="retry">Försök igen</button></div>' : '');
+  if (first || had || aiBusy) l.scrollTop = l.scrollHeight;
+  const pv = $("aiPv"); pv.innerHTML = aiImg ? '<span class="ai-chip"><img src="' + aiImg.url + '" alt=""><span>Bild</span><button type="button" data-ai="noimg" aria-label="Ta bort bilden">×</button></span>' : '';
+  const sb = $("aiSendB"); if (sb){ sb.innerHTML = aiBusy ? AI_STOP : AI_SEND; sb.setAttribute("aria-label", aiBusy ? "Stoppa svaret" : "Skicka"); sb.classList.toggle("stop", aiBusy); }
+  const live = $("aiLiveTxt"); if (live && !aiBusy){ const lm = aiS.msgs[aiS.msgs.length - 1]; live.textContent = lm && lm.role === "assistant" ? lm.content.filter(b => b.type === "text").map(b => b.text).join(" ").slice(0, 400) : ""; }
+}
+function aiGrow(ta){ ta.style.height = "auto"; ta.style.height = Math.min(140, ta.scrollHeight) + "px"; }
+// iPhone: tangentbordet krymper den synliga ytan – chatten följer den, så att skrivraden alltid syns
+function aiVV(){
+  const vv = window.visualViewport, o = $("aiOv"); if (!o) return;
+  if (!vv){ o.style.height = ""; return; }
+  o.style.height = Math.round(vv.height) + "px"; o.style.transform = vv.offsetTop ? "translateY(" + Math.round(vv.offsetTop) + "px)" : "";
+}
+try { if (window.visualViewport){ window.visualViewport.addEventListener("resize", () => { if ($("aiOv") && !$("aiOv").hidden){ aiVV(); aiStick(); } }); window.visualViewport.addEventListener("scroll", () => { if ($("aiOv") && !$("aiOv").hidden) aiVV(); }); } } catch(e){}
+async function aiTestKey(k){
+  try {
+    const r = await fetch(AI_URL, {method: "POST", headers: {"content-type": "application/json", "x-api-key": k, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true"},
+      body: JSON.stringify({model: "claude-haiku-5-5", max_tokens: 16, messages: [{role: "user", content: "Hej"}]})});
+    if (r.ok) return null;
+    return aiHttpErr(r.status, await r.text().catch(() => ""));
+  } catch(e){ return navigator.onLine === false ? "Ingen uppkoppling – nyckeln är sparad, testa igen när du har nät." : "Kom inte fram till Claude – nyckeln är sparad, testa igen senare."; }
+}
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-ai]"); if (!b) return;
+  const a = b.dataset.ai;
+  if (a === "open"){ e.preventDefault(); aiOpen(b.dataset.aiText != null ? b.dataset.aiText : null); return; }
+  if (!b.closest("#aiOv")) return;
+  if (a === "close"){ aiClose(); return; }
+  if (a === "menu"){ aiView = aiView === "menu" ? "chat" : "menu"; aiPaint(); return; }
+  if (a === "chat"){ aiView = aiKey() ? "chat" : "setup"; aiKeyMsg = ""; aiPaint(true); return; }
+  if (a === "key"){ aiView = "setup"; aiKeyMsg = ""; aiPaint(); return; }
+  if (a === "model"){ if (AI_MODELS[b.dataset.m]){ aiS.model = b.dataset.m; aiSave(); aiPaint(); } return; }
+  if (a === "new"){ if (aiBusy && aiAbort) aiAbort.abort(); aiS.msgs = []; aiS.acts = {}; aiS.chatUsd = 0; aiS.note = null; aiS.win = 0; aiS.ctx = null; aiUndo = null; aiErrMsg = ""; aiView = "chat"; aiSave(); aiPaint(true); return; }
+  if (a === "savekey"){
+    const i = $("aiKeyIn"), k = i ? i.value.trim() : ""; if (!/^sk-ant-\S{10,}$/.test(k)){ aiKeyMsg = "Det ser inte ut som en nyckel – den börjar med sk-ant-."; aiPaint(); return; }
+    try { localStorage.setItem(AI_KEY, k); } catch(e2){ aiKeyMsg = "Kunde inte spara på telefonen."; aiPaint(); return; }
+    aiKeyMsg = "Testar …"; aiPaint();
+    const err = await aiTestKey(k);
+    if (err && /fungerar inte|får inte/.test(err)){ try { localStorage.removeItem(AI_KEY); } catch(e2){} aiKeyMsg = err; aiPaint(); return; }
+    aiKeyMsg = ""; aiView = "chat"; aiPaint(true); toast(err ? "Nyckeln är sparad" : "Klart – coachen är kopplad"); return;
+  }
+  if (a === "delkey"){ try { localStorage.removeItem(AI_KEY); } catch(e2){} aiKeyMsg = "Nyckeln är borttagen från telefonen."; aiPaint(); return; }
+  if (a === "sug"){ if (b.dataset.send === "1") aiSend(b.textContent); else { const ta = $("aiIn"); ta.value = b.textContent; aiGrow(ta); ta.focus(); } return; }
+  if (a === "yes"){ aiAnswer(true); return; }
+  if (a === "no"){ aiAnswer(false); return; }
+  if (a === "undo"){ aiDoUndo(); return; }
+  if (a === "retry"){ aiErrMsg = ""; const lm = aiS.msgs[aiS.msgs.length - 1]; if (lm && lm.role === "assistant" && !lm.content.some(x => x.type === "tool_use")) aiS.msgs.pop(); aiRun(); return; }   // ett avbrutet svar tas bort och frågan ställs igen
+  if (a === "cam"){ const f = $("aiFile"); if (f){ f.value = ""; f.click(); } return; }
+  if (a === "noimg"){ aiImg = null; aiPaint(); return; }
+  if (a === "go"){ const g = b.dataset.go; aiClose(); go(g); return; }
+  if (a === "tek"){ const k = b.dataset.k, n = b.dataset.n || undefined, g = b.dataset.g || undefined; aiClose(); try { t32Sheet(k, n, g); } catch(e2){} return; }
+});
+document.addEventListener("submit", e => {
+  if (!e.target || e.target.id !== "aiBar") return;
+  e.preventDefault();
+  if (aiBusy){ if (aiAbort) aiAbort.abort(); return; }
+  aiSend($("aiIn").value);
+});
+document.addEventListener("keydown", e => {
+  if (e.target && e.target.id === "aiIn" && e.key === "Enter" && !e.shiftKey && !e.isComposing){ e.preventDefault(); if (!aiBusy) aiSend(e.target.value); return; }
+  if (e.key === "Escape" && $("aiOv") && !$("aiOv").hidden){ if (aiView === "menu"){ aiView = "chat"; aiPaint(); } else aiClose(); }
+});
+document.addEventListener("input", e => { if (e.target && e.target.id === "aiIn") aiGrow(e.target); });
+document.addEventListener("change", e => { if (e.target && e.target.id === "aiFile" && e.target.files && e.target.files[0]) aiPickImage(e.target.files[0]); });
+document.addEventListener("scroll", e => { if (e.target && e.target.id === "aiList"){ const l = e.target; aiAtEnd = l.scrollHeight - l.scrollTop - l.clientHeight < 60; } }, true);
+
+/* ===== Ingångarna: knappen högst upp (bredvid Brick och Allt), Kör passet, Teknikbladet, Coachen i Framsteg och Allt ===== */
+// Knappen ligger i raden med datumet, så att rutorna, veckan och gardinen står kvar på första skärmen som förut.
+function aiCmd(){
+  const br = document.querySelector(".top .brand"); if (!br) return;
+  let c = $("aiCmd");
+  if (!c){ c = document.createElement("button"); c.type = "button"; c.id = "aiCmd"; c.className = "ai-hb"; c.setAttribute("data-ai", "open"); c.setAttribute("aria-label", "Fråga coachen – AI"); c.innerHTML = AI_SPARK; }
+  const ref = br.querySelector(".bt-brick") || br.querySelector(".gu-btn");
+  if (c.parentNode !== br || c.nextElementSibling !== ref) br.insertBefore(c, ref || null);
+}
+try { aiCmd(); const br = document.querySelector(".top .brand"); if (br) new MutationObserver(() => { const c = $("aiCmd"), ref = br.querySelector(".bt-brick") || br.querySelector(".gu-btn"); if (!c || c.parentNode !== br || c.nextElementSibling !== ref) aiCmd(); }).observe(br, {childList: true}); } catch(e){}
+// Kör passet: en knapp i raden överst (mitt i passet – "vilken vikt nu?", "maskinen är upptagen")
+try {
+  fkHTML = (f => function(){
+    const h = f.apply(this, arguments);
+    return h.replace('</small></div>', '</small></div><button type="button" class="ck-ai" data-ai="open" aria-label="Fråga coachen">' + AI_SPARK + '</button>');
+  })(fkHTML);
+} catch(e){}
+// Teknikbladet: fråga coachen om övningen (frågan börjar med övningens namn)
+try {
+  t32HTML = (f => function(k, name, gk){
+    const h = f.apply(this, arguments); if (!h) return h;
+    const m = h.match(/<h2 class="h2" id="t32Name">([^<]*)<\/h2>/), nm = m ? m[1] : "";
+    if (!nm || !/<\/div>$/.test(h)) return h;
+    return h.slice(0, -6) + '<button type="button" class="btn ghost t32-ai" data-ai="open" data-ai-text="' + nm + ': ">' + AI_SPARK + '<span>Fråga coachen om ' + nm + '</span></button></div>';
+  })(t32HTML);
+} catch(e){}
+// Coachen i Framsteg: chatten i appen först, att kopiera till Claude finns kvar
+try {
+  coachHTML = (f => function(){
+    const h = f.apply(this, arguments);
+    return h.replace('<div class="bk"><a class="btn" href="https://claude.ai/new"', '<div class="bk"><button type="button" class="btn" data-ai="open">Fråga coachen i appen</button><a class="btn ghost" href="https://claude.ai/new"').replace(">Fråga coachen ↗</a>", ">Kopiera till Claude ↗</a>");
+  })(coachHTML);
+} catch(e){}
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {
+  aiCtx: () => aiContext(), aiSys: () => AI_SYS, aiTools: () => AI_TOOL_DEFS.map(t => t.name), aiState: () => JSON.parse(JSON.stringify(aiS)),
+  aiCheck: (n, a) => { const r = AI_TOOLS[n].check ? AI_TOOLS[n].check(a) : AI_TOOLS[n].run(a); return r.err ? {err: r.err} : {sum: r.sum || r.text}; },
+  aiRun: (n, a) => AI_TOOLS[n].run(a), aiOpen: t => aiOpen(t), aiMd: t => aiMd(t)
+});
+
 /* ---------- Versioner (natten 24–25 nov 2026, omgång lr7) ---------- */
 // Filip: "lägg till en stor knapp i en egen flik där jag kan återställa till tidigare versioner av appen" – hela appen som den var
 // det datumet, och datan följer med. De senaste byggena ligger i v/<id>.html (samma fil som index.html i den committen) och listan
@@ -23696,7 +24587,7 @@ if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window._
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611272230, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611272338, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -23728,7 +24619,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "27 nov 22.30", BUILD_NOTE = "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag";
+const BUILD = "27 nov 23.38", BUILD_NOTE = "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
