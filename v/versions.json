@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "f06bcab",
+   "ts": 202611271321,
+   "build": "27 nov 13.21",
+   "date": "27 nov 13.48",
+   "title": "Bild på varje övning och varje block, och Passet i bilder"
+  },
+  {
    "id": "d3ad3fc",
    "ts": 202611262246,
    "build": "26 nov 22.46",
@@ -76,13 +83,6 @@
    "build": "23 nov 21.01",
    "date": "23 nov 21.38",
    "title": "Mage och rygg med viktväst på måndagar"
-  },
-  {
-   "id": "a3def9a",
-   "ts": 202611231712,
-   "build": "23 nov 17.12",
-   "date": "23 nov 17.26",
-   "title": "Mina regler till nyår, fliken Mat med shaken, och en mindre shake"
   }
  ]
 }
