@@ -613,6 +613,8 @@ fieldset.falt{border:0;padding:0;margin-left:0;margin-right:0;min-width:0}
   .finger .ring{animation:none!important;opacity:.9}
   .finger .r2{display:none}
 }
+.lageknapp{display:inline;margin-left:4px;color:var(--ljus)}
+.c-last{font-style:italic;opacity:.75}
 </style>
 </head>
 <body>
@@ -642,7 +644,7 @@ fieldset.falt{border:0;padding:0;margin-left:0;margin-right:0;min-width:0}
   <div class="hej">
     <div class="halsning">
       <p class="ingress" id="ingress"><strong id="hej">Hej!</strong> Här är <span id="antalOrd">fjorton</span> saker jag önskar mig i jul. Tryck på en bild så rör den sig. När du har bestämt dig trycker du på <strong>Jag köper den</strong>. Då slås paketet in, och du får ett rim till etiketten.</p>
-      <p class="fin lage" id="lage" style="margin-top:12px"><i aria-hidden="true"></i><span id="lageText">Det du väljer sparas bara på din egen mobil. Jag ser ingenting.</span></p>
+      <p class="fin lage" id="lage" style="margin-top:12px"><i aria-hidden="true"></i><span><span id="lageText">Det du väljer sparas bara på din egen mobil. Jag ser ingenting.</span> <button class="lank lageknapp" type="button" id="lageKnapp" hidden></button></span></p>
     </div>
     <fieldset class="vem" id="vemRuta">
       <legend>Vem är du?</legend>
@@ -738,6 +740,10 @@ fieldset.falt{border:0;padding:0;margin-left:0;margin-right:0;min-width:0}
     <p>Säg vem du är först, så vet de andra vem som skriver.</p>
     <button class="knapp" type="button" id="chattValjVem" style="background:var(--sno);color:var(--natt)">Välj vem du är</button>
   </div>
+  <div class="c-vemval" id="chattLas" hidden>
+    <p>Skriv lösenordet, så kan du läsa och skriva.</p>
+    <button class="knapp" type="button" id="chattLasUpp" style="background:var(--sno);color:var(--natt)">Skriv lösenordet</button>
+  </div>
   <form class="c-skriv" id="chattForm">
     <div class="c-fraser" id="chattFraser"></div>
     <div class="c-bilaga" id="chattOm" hidden><b></b><button class="lank" type="button" id="chattOmBort">Ta bort</button></div>
@@ -764,6 +770,21 @@ fieldset.falt{border:0;padding:0;margin-left:0;margin-right:0;min-width:0}
       <div class="knappar"><button class="knapp ljus" type="submit">Klar</button></div>
     </form>
     <p class="fin"><button class="lank" type="button" id="arFilip">Jag är Filip</button></p>
+  </div>
+</dialog>
+
+<dialog id="lasDialog" aria-labelledby="lasRubrik">
+  <div class="ark-in">
+    <div class="ark-topp"><h2 id="lasRubrik">Skriv lösenordet</h2><button class="lank" type="button" data-stang>Stäng</button></div>
+    <p class="ingress2" id="lasIngress"></p>
+    <form id="lasForm" novalidate>
+      <input class="vh" type="text" name="username" autocomplete="username" value="Filips önskelista" tabindex="-1" aria-hidden="true" readonly>
+      <div class="falt"><label for="lasLosen" id="lasEtikett">Lösenord</label><input id="lasLosen" name="password" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="100"><small id="lasTips" hidden></small></div>
+      <div class="falt" id="lasIgenRad" hidden><label for="lasIgen">Skriv det en gång till</label><input id="lasIgen" name="password2" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="100"></div>
+      <p class="felrad" id="lasFel" role="alert"></p>
+      <div class="knappar"><button class="knapp ljus" type="submit" id="lasKnapp">Lås upp</button></div>
+    </form>
+    <p class="fin" id="lasFot" hidden></p>
   </div>
 </dialog>
 
@@ -1060,15 +1081,36 @@ function nuS(){return Date.now()+skev;}
 function slot(k){return moln.slots[k]||{};}
 function listan(){var l=slot('filip').lista||{};return {egna:Array.isArray(l.egna)?l.egna:[],lappar:l.lappar||{},dolda:l.dolda||{}};}
 function nollaMoln(){moln={slots:{},rev:{}};sett={};spara('moln',moln);raknaOm();}
-// Köpen ligger i tre nycklar. Har två markerat samma sak vinner den som var först.
+// Köpen ligger i tre nycklar, under dolda id som bara går att läsa med lösenordet (se låset).
+// Har två markerat samma sak vinner den som var först.
 function raknaOm(){
-  K={};C=[];
+  K={};C=[];LASAR={};GAMLA={};ALLAID={};
+  var karta=doltKarta();
   VEM.forEach(function(k){
     var m=slot(k).kopt||{};
-    Object.keys(m).forEach(function(id){var x=m[id];if(!x)return;if(!K[id]||(x.t||0)<K[id].t)K[id]={v:k,n:x.n||'',p:x.p||'',t:x.t||0};});
+    Object.keys(m).forEach(function(rid){
+      var x=m[rid],id;if(!x)return;
+      if(LAS_RE.test(rid)){if(!LASAR[rid]||(x.t||0)<LASAR[rid].t)LASAR[rid]={v:k,n:x.n||'',p:x.p||'',t:x.t||0};return;}
+      if(DOLT_RE.test(rid)){id=karta[rid];if(!id)return;}
+      else{(GAMLA[k]||(GAMLA[k]={}))[rid]=x;return;}                      // från innan låset fanns: flyttas av den som äger det
+      if(!K[id]||(x.t||0)<K[id].t)K[id]={v:k,n:x.n||'',p:x.p||'',t:x.t||0};
+    });
   });
   SLOTS.forEach(function(k){
-    (slot(k).m||[]).forEach(function(x){if(x&&x.id)C.push({id:x.id,t:x.t||0,v:k,n:x.n||'',p:x.p||'',x:String(x.x||''),f:x.f?1:0,s:x.s||''});});
+    (slot(k).m||[]).forEach(function(x){
+      if(!x||!x.id)return;
+      ALLAID[x.id]=1;
+      var text=String(x.x||''),s=x.s||'',lst=0,d;
+      if(!x.f&&text.charAt(0)==='~'){                                       // låst meddelande
+        d=DEK[x.id];
+        if(d&&!d.fel){text=d.x;s=d.s;}
+        else{
+          if(!d&&hmacK){vantaDek(x.id,text);return;}                          // låses upp nu och kommer med strax
+          text='';s='';lst=d?2:1;                                            // 2: låst med ett annat lösenord, 1: inget lösenord här
+        }
+      }
+      C.push({id:x.id,t:x.t||0,v:k,n:x.n||'',p:x.p||'',x:text,f:x.f?1:0,s:s,las:lst});
+    });
   });
   C.sort(function(a,b){return a.t-b.t||(a.id<b.id?-1:1);});
 }
@@ -1125,10 +1167,239 @@ function valda(){
 function koptAv(id){
   if(agare)return null;
   if(val[id])return {min:true};
-  if(!molnOk()||!vem)return null;
+  if(!molnOk()||!vem||!upplast())return null;
   var m=K[id];
   return m&&!arMin(m)?m:null;
 }
+
+/* ---------- Låset ----------
+   Det mamma, pappa och andra köper och skriver till varandra är låst med ett lösenord som bara de vet.
+   Lösenordet blir en nyckel på deras egna mobiler (PBKDF2). Köpen sparas hos mellanhanden under id som bara
+   går att räkna fram med nyckeln (HMAC), och chatten mellan dem är krypterad (AES-GCM). Utan lösenordet går
+   det alltså inte att se vad som är köpt, varken i appen eller i Cloudflare. Frågor till Filip och hans svar
+   är vanlig text, eftersom han ska kunna läsa dem.
+   Det första lösenordet blir listans: den som väljer det sparar ett lås-id bland sina köp. Den som kommer
+   sedan måste skriva ett lösenord som ger samma lås-id. Mellanhanden behöver inte ändras för något av det. */
+var LAS_SALT='filips-onskelista/las/1',LAS_VARV=300000,LAS_RE=/^l[0-9a-f]{30}$/,DOLT_RE=/^k[0-9a-f]{30}$/,DEL_MAX=300;
+var hmacK=null,aesK=null,aesKlar=Promise.resolve(),lasT=+las('lasT',0)||0,nyckelGen=0;
+var DOLT={},DEK={},DEKV={},LASAR={},GAMLA={},ALLAID={};
+var SHA_K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+  0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+  0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+  0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+// SHA-256 och HMAC utan väntan, så att listan kan räkna fram de dolda id:na direkt när den ritas
+function sha256(m){
+  var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  var l=m.length,n=((l+9+63)>>6)<<6,b=new Uint8Array(n),w=new Int32Array(64),i,j,a,c,d,e,f,g,h,bb,t1,x,y;
+  b.set(m);b[l]=0x80;x=l*8;b[n-4]=x>>>24;b[n-3]=x>>>16&255;b[n-2]=x>>>8&255;b[n-1]=x&255;
+  for(i=0;i<n;i+=64){
+    for(j=0;j<16;j++)w[j]=b[i+4*j]<<24|b[i+4*j+1]<<16|b[i+4*j+2]<<8|b[i+4*j+3];
+    for(j=16;j<64;j++){x=w[j-15];y=w[j-2];w[j]=w[j-16]+((x>>>7|x<<25)^(x>>>18|x<<14)^(x>>>3))+w[j-7]+((y>>>17|y<<15)^(y>>>19|y<<13)^(y>>>10))|0;}
+    a=H[0];bb=H[1];c=H[2];d=H[3];e=H[4];f=H[5];g=H[6];h=H[7];
+    for(j=0;j<64;j++){
+      t1=h+((e>>>6|e<<26)^(e>>>11|e<<21)^(e>>>25|e<<7))+((e&f)^(~e&g))+SHA_K[j]+w[j]|0;
+      x=((a>>>2|a<<30)^(a>>>13|a<<19)^(a>>>22|a<<10))+((a&bb)^(a&c)^(bb&c))|0;
+      h=g;g=f;f=e;e=d+t1|0;d=c;c=bb;bb=a;a=t1+x|0;
+    }
+    H[0]=H[0]+a|0;H[1]=H[1]+bb|0;H[2]=H[2]+c|0;H[3]=H[3]+d|0;H[4]=H[4]+e|0;H[5]=H[5]+f|0;H[6]=H[6]+g|0;H[7]=H[7]+h|0;
+  }
+  var o=new Uint8Array(32);
+  for(i=0;i<8;i++){o[4*i]=H[i]>>>24;o[4*i+1]=H[i]>>>16&255;o[4*i+2]=H[i]>>>8&255;o[4*i+3]=H[i]&255;}
+  return o;
+}
+function hmac256(k,m){
+  var ip=new Uint8Array(64+m.length),op=new Uint8Array(96),i,kb;
+  for(i=0;i<64;i++){kb=i<k.length?k[i]:0;ip[i]=kb^0x36;op[i]=kb^0x5c;}
+  ip.set(m,64);op.set(sha256(ip),64);
+  return sha256(op);
+}
+function hex(u){var s='';for(var i=0;i<u.length;i++)s+=(u[i]<16?'0':'')+u[i].toString(16);return s;}
+function u8TillB64u(u){var s='';for(var i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function utf8(s){return new TextEncoder().encode(s);}
+
+/* Nyckeln */
+function upplast(){return !!hmacK;}
+function dolt(id){if(!hmacK)return '';return DOLT[id]||(DOLT[id]='k'+hex(hmac256(hmacK,utf8('kop:'+id))).slice(0,30));}
+function lasIdAv(hk){return 'l'+hex(hmac256(hk,utf8('las:1'))).slice(0,30);}
+function mittLas(){return hmacK?lasIdAv(hmacK):'';}
+function doltKarta(){                    // dolt id → sakens id, för allt som finns att köpa
+  var k={};if(!hmacK)return k;
+  SAKER.forEach(function(s){k[dolt(s.id)]=s.id;});FORSLAG.forEach(function(s){k[dolt(s.id)]=s.id;});
+  listan().egna.forEach(function(e){if(e&&e.id)k[dolt(e.id)]=e.id;});
+  return k;
+}
+function anvandNyckel(raw){
+  hmacK=raw.slice(32,64);aesK=null;DOLT={};DEK={};DEKV={};nyckelGen++;
+  aesKlar=crypto.subtle.importKey('raw',raw.slice(0,32),{name:'AES-GCM'},false,['encrypt','decrypt']).then(function(k){aesK=k;},function(){});
+  return aesKlar;
+}
+// Nyckeln sparas på mobilen, och i en cache som service workern kan läsa när det kommer en notis
+function sparaNyckel(raw){
+  var s=u8TillB64u(raw);spara('las',s);lasT=Date.now();spara('lasT',lasT);
+  try{caches.open('ol-las').then(function(c){return c.put('las-nyckel',new Response(s));}).catch(function(){});}catch(e){}
+}
+function rensaLosen(s){return String(s||'').normalize('NFC').replace(/\s+/g,' ').trim();}
+function harleda(losen){
+  return crypto.subtle.importKey('raw',utf8(losen),'PBKDF2',false,['deriveBits']).then(function(k){
+    return crypto.subtle.deriveBits({name:'PBKDF2',salt:utf8(LAS_SALT),iterations:LAS_VARV,hash:'SHA-256'},k,512);
+  }).then(function(b){return new Uint8Array(b);});
+}
+(function(){
+  var s=las('las','');
+  if(agare||typeof s!=='string'||s.length<80)return;
+  try{var u=b64uTillU8(s);if(u.length===64)anvandNyckel(u);}catch(e){}
+})();
+
+/* Chatten: krypteras med AES-GCM. Innehåll: 1, längden på sakens id, sakens id, texten. */
+function kryptera(text,sak){
+  return aesKlar.then(function(){
+    if(!aesK)throw new Error('las');
+    var s=utf8(sak||''),t=utf8(text),p=new Uint8Array(2+s.length+t.length),iv=new Uint8Array(12);
+    p[0]=1;p[1]=s.length;p.set(s,2);p.set(t,2+s.length);crypto.getRandomValues(iv);
+    return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},aesK,p).then(function(c){
+      var u=new Uint8Array(12+c.byteLength);u.set(iv);u.set(new Uint8Array(c),12);return '~'+u8TillB64u(u);
+    });
+  });
+}
+function dekryptera(x){
+  return aesKlar.then(function(){
+    if(!aesK)throw new Error('las');
+    var u=b64uTillU8(x.slice(1));if(u.length<30)throw new Error('kort');
+    return crypto.subtle.decrypt({name:'AES-GCM',iv:u.slice(0,12)},aesK,u.slice(12));
+  }).then(function(b){
+    var p=new Uint8Array(b);if(p[0]!==1||p.length<2+p[1])throw new Error('form');
+    var d=new TextDecoder();return {s:d.decode(p.slice(2,2+p[1])),x:d.decode(p.slice(2+p[1]))};
+  });
+}
+// Mellanhanden tar högst 500 tecken per meddelande, så långa meddelanden delas (helst vid ett mellanslag)
+function delaText(text){
+  var delar=[],buf='',n=0;
+  Array.from(text).forEach(function(ch){
+    var b=utf8(ch).length,i;
+    if(n+b>DEL_MAX){
+      i=buf.lastIndexOf(' ');
+      if(i>DEL_MAX/3){delar.push(buf.slice(0,i));buf=buf.slice(i+1);}else{delar.push(buf);buf='';}
+      n=utf8(buf).length;
+    }
+    buf+=ch;n+=b;
+  });
+  if(buf)delar.push(buf);
+  return delar.map(function(x){return x.trim();}).filter(Boolean);
+}
+// Meddelanden som ska låsas upp: när alla som väntar är klara räknas chatten om
+function vantaDek(id,x){
+  if(DEKV[id])return;
+  DEKV[id]=1;
+  var g=nyckelGen;
+  dekryptera(x).then(function(d){if(g===nyckelGen)DEK[id]=d;},function(){if(g===nyckelGen)DEK[id]={fel:1};}).then(function(){
+    if(g!==nyckelGen)return;                // nyckeln byttes under tiden
+    delete DEKV[id];
+    if(Object.keys(DEKV).length)return;
+    var fore=chattNyckel();raknaOm();
+    if(chattNyckel()!==fore)chattAndrad();else if(chattOppen)ritaChatt(false);
+    stamChatt();
+  });
+}
+
+/* Läget: 'skapa' (inget lösenord än), 'oppna' (det finns ett, men inte här), 'ok', eller 'annat' (de andra har ett annat) */
+function lasLage(){
+  var ids=Object.keys(LASAR),m;
+  if(!hmacK)return ids.length?'oppna':'skapa';
+  m=mittLas();
+  if(ids.some(function(x){return x!==m;})&&Date.now()-lasT>120000)return 'annat';
+  return 'ok';
+}
+var lasMode='',efterLas=null,lasJobbar=false;
+function lasNamn(x){return x.v==='mamma'?'mamma':x.v==='pappa'?'pappa':(x.n||'någon annan');}
+function lasSkapare(){                    // den som valde lösenordet (det som inte är mitt, om det finns flera)
+  var m=mittLas(),ut=null;
+  Object.keys(LASAR).forEach(function(id){var x=LASAR[id];if(id!==m&&(!ut||x.t<ut.t))ut=x;});
+  return ut;
+}
+function oppnaLas(){
+  if(agare||!molnOk())return;
+  if(!vem){oppnaVem();return;}
+  var l=lasLage();
+  if(l==='ok'){if(efterLas){var f=efterLas;efterLas=null;f();}return;}
+  lasMode=l==='annat'?'byt':l;
+  $('#lasLosen').value='';$('#lasIgen').value='';$('#lasFel').textContent='';
+  ritaLas();oppna($('#lasDialog'));
+  setTimeout(function(){try{$('#lasLosen').focus();}catch(e){}},60);
+}
+function ritaLas(){
+  var sk=lasSkapare(),du=!!sk&&sk.v===vem&&vem!=='annan',namnet=sk?lasNamn(sk):'',andra=vem==='mamma'?'pappa':vem==='pappa'?'mamma':'mamma och pappa',ingress,fot='';
+  if(lasMode==='skapa'){
+    ingress='Det du köper och skriver till de andra låses med ett lösenord, så att Filip aldrig kan se det. Inte ens om han öppnar den här länken. '+
+      stor(andra)+(vem==='annan'?' behöver samma lösenord, så berätta det för dem.':' behöver samma lösenord, så berätta det för '+(vem==='mamma'?'honom':'henne')+', till exempel i ett sms.');
+  }else if(lasMode==='oppna'){
+    ingress=du?'Du har redan valt ett lösenord på en annan mobil eller i en annan webbläsare. Skriv samma här.':
+      stor(namnet)+' har valt ett lösenord, så att Filip aldrig kan se vad ni köper. Skriv samma lösenord här.';
+    fot=du?'':'Har du inte fått det? Fråga '+namnet+'.';
+  }else{
+    ingress=stor(namnet||'någon')+' har ett annat lösenord än du, så ni ser inte varandras köp och meddelanden. Skriv det lösenord som '+(namnet||'de andra')+' har. Det du har valt flyttas med.';
+  }
+  $('#lasRubrik').textContent=lasMode==='skapa'?'Välj ett lösenord':lasMode==='oppna'?'Skriv lösenordet':'Byt till samma lösenord';
+  $('#lasIngress').textContent=ingress;
+  $('#lasFot').textContent=fot;$('#lasFot').hidden=!fot;
+  $('#lasEtikett').textContent=lasMode==='skapa'?'Nytt lösenord':'Lösenord';
+  $('#lasLosen').setAttribute('autocomplete',lasMode==='skapa'?'new-password':'current-password');
+  $('#lasTips').textContent=lasMode==='skapa'?'Minst 8 tecken. Gärna några ord, till exempel pepparkaka snö tomte.':'';
+  $('#lasTips').hidden=lasMode!=='skapa';
+  $('#lasIgenRad').hidden=lasMode!=='skapa';
+  $('#lasKnapp').textContent=lasMode==='skapa'?'Spara lösenordet':lasMode==='oppna'?'Lås upp':'Byt lösenord';
+}
+function skapaLas(id){
+  return iKo(function(){return api('POST','/onskelista/kop',{id:id,d:enhet.d,vem:vem,namn:namn||undefined});}).then(function(j){
+    var u=lasSvar(j);return u==='ok'||u==='tagen'?'ok':u==='tak'?'tak':'natfel';
+  });
+}
+function lasUpp(raw,byt){
+  sparaNyckel(raw);anvandNyckel(raw);
+  var karta=doltKarta(),nytt=mittLas(),kopt=slot(vem).kopt||{};
+  if(byt)Object.keys(kopt).forEach(function(rid){         // det jag valde med det gamla lösenordet tas bort, och skickas igen med det nya
+    var x=kopt[rid];
+    if((DOLT_RE.test(rid)||LAS_RE.test(rid))&&!karta[rid]&&rid!==nytt&&arMin({v:vem,n:x.n||'',p:x.p||''})){
+      iKo(function(){return api('POST','/onskelista/kop',{id:rid,d:enhet.d,vem:vem,namn:namn||undefined,av:true});}).then(lasSvar,function(){});
+    }
+  });
+  if(byt)Object.keys(val).forEach(function(id){vantar[id]={pa:true,t:0,n:0};});
+  stang($('#lasDialog'));
+  raknaOm();stam();uppdatera();visaLage();ritaSkriv();if(chattOppen)ritaChatt(true);
+  toast(byt?'Klart. Nu har ni samma lösenord.':'Klart. Nu ser du vad de andra köper och skriver.');
+  if(efterLas){var f=efterLas;efterLas=null;f();}
+}
+$('#lasForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  if(lasJobbar)return;
+  var fel=$('#lasFel'),knapp=$('#lasKnapp'),losen=rensaLosen($('#lasLosen').value),mode=lasMode,raw;
+  if(mode==='skapa'){
+    if(losen.length<8){fel.textContent='Lösenordet behöver minst 8 tecken.';return;}
+    if(losen!==rensaLosen($('#lasIgen').value)){fel.textContent='Lösenorden är inte likadana. Skriv samma i båda rutorna.';return;}
+  }else if(!losen){fel.textContent='Skriv lösenordet först.';return;}
+  lasJobbar=true;knapp.disabled=true;fel.textContent='Kollar …';
+  harleda(losen).then(function(r){
+    raw=r;
+    return api('GET','/onskelista?r='+revStr()).then(lasSvar);         // det senaste: har någon hunnit välja ett lösenord?
+  }).then(function(u){
+    if(u!=='ok')return 'natfel';
+    var id=lasIdAv(raw.slice(32,64));
+    if(mode==='byt'&&id===mittLas())return 'samma';                  // det man redan har duger inte när man ska byta
+    if(LASAR[id])return 'ok';
+    if(mode==='skapa'&&!Object.keys(LASAR).length)return skapaLas(id);
+    if(mode==='skapa')return 'hann';
+    return 'fel';
+  }).then(function(u){
+    lasJobbar=false;knapp.disabled=false;fel.textContent='';
+    var sk=lasSkapare(),du=!!sk&&sk.v===vem&&vem!=='annan',namnet=du?'du':sk?lasNamn(sk):'de andra';
+    if(u==='ok')lasUpp(raw,mode==='byt');
+    else if(u==='hann'){lasMode='oppna';ritaLas();$('#lasLosen').value='';fel.textContent=stor(namnet)+' hann välja ett lösenord nyss. Skriv det i stället.';}
+    else if(u==='samma')fel.textContent='Det är lösenordet du redan har. Skriv det som '+namnet+' har.';
+    else if(u==='fel')fel.textContent=mode==='byt'?'Det är inte '+(namnet==='de andra'?'deras':namnet+'s')+' lösenord. Försök igen.':'Fel lösenord. Det ska vara samma som '+namnet+' valde.';
+    else if(u==='tak')fel.textContent='Det har sparats väldigt mycket i dag. Försök igen i morgon.';
+    else fel.textContent='Ingen kontakt just nu. Försök igen om en stund.';
+  },function(){lasJobbar=false;knapp.disabled=false;fel.textContent='Det gick inte att kolla lösenordet. Försök igen.';});
+});
+$('#lasDialog').addEventListener('close',function(){if(!upplast())efterLas=null;});
 
 /* ---------- Bygg listan ---------- */
 var INGRESS='<strong id="hej">Hej!</strong> Här är <span id="antalOrd">fjorton</span> saker jag önskar mig i jul. Tryck på en bild så rör den sig. När du har bestämt dig trycker du på <strong>Jag köper den</strong>. Då slås paketet in, och du får ett rim till etiketten.';
@@ -1313,16 +1584,19 @@ function ritaHalsning(){
   $('#namnrad').hidden=vem!=='annan';$('#namn').value=namn;
 }
 function visaLage(){
-  var b=document.body,ok=molnOk(),t;
+  var b=document.body,ok=molnOk(),t,knapp='';
   b.classList.toggle('moln',ok);b.classList.toggle('agare',!!agare);
   if(agare)t=ok?'Delningen är igång. Vad som köps syns aldrig på den här mobilen.':'Delningen är inte igång än. Se rutan här nedanför.';
   else if(!ok)t='Det du väljer sparas bara på din egen mobil. Jag ser ingenting.';
   else if(!kontakt)t='Ingen kontakt just nu. Det du väljer sparas på mobilen och skickas när nätet är tillbaka.';
   else if(!vem)t='Säg vem du är här nedanför, så ser du vad de andra redan har köpt. Jag ser ingenting.';
-  else t='Det du väljer syns för de andra som har länken, så att ingen köper samma sak. Jag ser ingenting.';
+  else if(!upplast()){t='Skriv lösenordet, så ser du vad de andra har köpt. Jag ser ingenting.';knapp='Skriv lösenordet';}
+  else if(lasLage()==='annat'){t='Någon har ett annat lösenord än du, så ni ser inte varandras köp.';knapp='Byt lösenord';}
+  else t='Det du väljer syns för de andra som har lösenordet, så att ingen köper samma sak. Jag ser ingenting.';
   $('#lageText').textContent=t;$('#lage').classList.toggle('ok',ok&&kontakt);
-  $('#fotLage').textContent=agare?'Du är inne i ditt eget läge på den här mobilen.':ok?'Dina val delas med de andra som har länken, så att ingen köper samma sak.':'Dina val finns bara i den här webbläsaren.';
-  $('#arkInfo').textContent=ok?'De andra som har länken ser vad du har valt, så att ni inte köper samma sak. Filip ser det inte.':'Listan finns bara på den här mobilen. Skicka den till den som behöver veta, så köper ni inte samma sak.';
+  $('#lageKnapp').hidden=!knapp;$('#lageKnapp').textContent=knapp;
+  $('#fotLage').textContent=agare?'Du är inne i ditt eget läge på den här mobilen.':ok?'Dina val delas med de andra som har lösenordet, så att ingen köper samma sak.':'Dina val finns bara i den här webbläsaren.';
+  $('#arkInfo').textContent=ok?'De andra som har lösenordet ser vad du har valt, så att ni inte köper samma sak. Filip ser det inte.':'Listan finns bara på den här mobilen. Skicka den till den som behöver veta, så köper ni inte samma sak.';
   $('#chattKnapp').hidden=!ok;
   ritaAgare();ritaOlasta();
 }
@@ -1387,18 +1661,32 @@ function iKo(fn){
 
 /* ---------- Köpen: se till att mellanhanden och mobilen är överens ---------- */
 function skickaKop(id,pa){
+  var rid=dolt(id);if(!rid)return;                  // utan lösenordet skickas inget: köpen sparas bara under dolda id
   var v=vantar[id];if(!v||v.pa!==pa)v=vantar[id]={pa:pa,t:0,n:0};
   v.t=Date.now();v.n++;spara('vantar',vantar);
-  var s=SAK[id],somVem=vem,somNamn=namn;
-  iKo(function(){return api('POST','/onskelista/kop',{id:id,d:enhet.d,vem:somVem,namn:somNamn||undefined,av:pa?undefined:true,sak:pa&&s?s.namn:undefined});}).then(function(j){
+  var somVem=vem,somNamn=namn;
+  // sakens namn skickas inte med: då kan notisen inte avslöja vad det är
+  iKo(function(){return api('POST','/onskelista/kop',{id:rid,d:enhet.d,vem:somVem,namn:somNamn||undefined,av:pa?undefined:true});}).then(function(j){
     var u=lasSvar(j);visaLage();
     if(u==='tak')toast('Det har sparats väldigt mycket i dag. Ditt val ligger kvar på mobilen och skickas i morgon.');
     else if(u!=='ok'&&u!=='tagen')setTimeout(stam,9000);
   },function(){kontakt=false;visaLage();setTimeout(stam,9000);});
 }
+var gamlaSkickat={},lasSkickat=0;
 function stam(){
-  if(agare||!molnOk()||!vem)return;
-  var nu=Date.now(),borta=slot(vem).borta||{},andrat=false;
+  if(agare||!molnOk()||!vem||!upplast())return;
+  var nu=Date.now(),karta=doltKarta(),bortaRa=slot(vem).borta||{},borta={},andrat=false,gamla=GAMLA[vem]||{};
+  Object.keys(bortaRa).forEach(function(r){var id=karta[r];if(id)borta[id]=bortaRa[r];});
+  // köp från innan låset fanns: blir mina val och flyttas till dolda id
+  Object.keys(gamla).forEach(function(rid){
+    var x=gamla[rid];if(!arMin({v:vem,n:x.n||'',p:x.p||''}))return;
+    if(SAK[rid]&&!val[rid]&&!(bort[rid]&&bort[rid]>(x.t||0))){val[rid]=x.t||nuS();andrat=true;}
+    if(nu-(gamlaSkickat[rid]||0)<9000)return;
+    gamlaSkickat[rid]=nu;
+    iKo(function(){return api('POST','/onskelista/kop',{id:rid,d:enhet.d,vem:vem,namn:namn||undefined,av:true});}).then(lasSvar,function(){});
+  });
+  // listans lås ska finnas: har det försvunnit (någon har rensat i Cloudflare) sätts mitt lås tillbaka
+  if(!Object.keys(LASAR).length&&nu-lasT>120000&&nu-lasSkickat>600000){lasSkickat=nu;skapaLas(mittLas()).then(function(){},function(){});}
   Object.keys(val).forEach(function(id){
     var m=K[id],v=vantar[id];
     if(!SAK[id]){delete val[id];delete vantar[id];andrat=true;return;}                 // Filip har tagit bort saken
@@ -1501,6 +1789,7 @@ var efterVem=null;                       // det som väntar på att man säger v
 function valj(id,pa){
   if(agare||!SAK[id])return;
   if(pa&&molnOk()&&!vem){efterVem=function(){valj(id,true);};oppnaVem();return;}
+  if(pa&&molnOk()&&!upplast()){efterLas=function(){valj(id,true);};oppnaLas();return;}   // först lösenordet, annars kan ingen annan se valet
   if(pa){val[id]=nuS();delete bort[id];}else{delete val[id];bort[id]=nuS();}
   spara('val',val);spara('bort',bort);
   byggOmDolda();uppdatera();
@@ -1514,10 +1803,11 @@ function sattVem(v,n){
   var gVem=vem,gNamn=namn;
   n=String(n||'').replace(/\s+/g,' ').trim().slice(0,16);
   if(v==='annan'&&!n&&gVem==='annan')n=gNamn;
-  if(molnOk()&&gVem&&(gVem!==v||(v==='annan'&&gNamn!==n))){            // byter man vem man är flyttas köpen med
+  if(molnOk()&&upplast()&&gVem&&(gVem!==v||(v==='annan'&&gNamn!==n))){            // byter man vem man är flyttas köpen med
     var gk=slot(gVem).kopt||{};
     Object.keys(val).forEach(function(id){
-      if(gk[id])iKo(function(){return api('POST','/onskelista/kop',{id:id,d:enhet.d,vem:gVem,namn:gNamn||undefined,av:true});}).then(lasSvar,function(){});
+      var rid=dolt(id);
+      if(gk[rid])iKo(function(){return api('POST','/onskelista/kop',{id:rid,d:enhet.d,vem:gVem,namn:gNamn||undefined,av:true});}).then(lasSvar,function(){});
     });
     Object.keys(val).forEach(function(id){vantar[id]={pa:true,t:0,n:0};});spara('vantar',vantar);
   }
@@ -1526,6 +1816,8 @@ function sattVem(v,n){
   ritaHalsning();visaLage();uppdatera();ritaSkriv();
   if(molnOk()){stam();uppdatera();notisOm();}
   if(efterVem){var f=efterVem;efterVem=null;f();}
+  else if(molnOk()&&!agare&&!upplast()&&!document.querySelector('dialog[open]')&&
+    ((gVem!==v&&(v!=='annan'||n))||(v==='annan'&&!gNamn&&n)))oppnaLas();                       // sedan lösenordet
 }
 function oppnaVem(){
   $('#namnForm').hidden=true;$('#vemKnappar').hidden=false;
@@ -1590,6 +1882,7 @@ $('#namn').addEventListener('change',function(){if(vem==='annan')sattVem('annan'
 $('#namnForm').addEventListener('submit',function(e){e.preventDefault();stang($('#vemDialog'));sattVem('annan',$('#namn2').value);});
 $('#vemDialog').addEventListener('close',function(){if(!vem)efterVem=null;});
 $('#arFilip').addEventListener('click',function(){stang($('#vemDialog'));oppnaNyckel();});
+$('#lageKnapp').addEventListener('click',function(){oppnaLas();});
 
 /* ---------- Arket med det man har valt ---------- */
 var ark=$('#ark');
@@ -1633,8 +1926,14 @@ function tomChatt(){
   return '<div class="c-tom"><svg viewBox="0 0 132 92" aria-hidden="true" focusable="false"><rect x="16" y="18" width="100" height="64" rx="8" fill="#F2F6FA"/><path d="M18 22l48 34 48-34" fill="none" stroke="#102544" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="66" cy="58" r="13" fill="#E8443F"/><path d="M60 58l4.5 4.5 8-8.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
     (agare?'<b>Inga frågor än</b>När mamma eller pappa frågar dig något dyker det upp här, och du kan svara.':'<b>Här är det tyst än</b>Skriv till varandra om julklapparna. Vem köper vad, och ska ni dela på något? Filip ser det inte.')+'</div>';
 }
+function lastChatt(){return !agare&&!upplast();}
+function lastHtml(){
+  return '<div class="c-tom"><svg viewBox="0 0 132 92" aria-hidden="true" focusable="false"><path d="M50 40V30a16 16 0 0 1 32 0v10" fill="none" stroke="#F2F6FA" stroke-width="7" stroke-linecap="round"/><rect x="38" y="38" width="56" height="44" rx="9" fill="#F2F6FA"/><circle cx="66" cy="57" r="6" fill="#E8443F"/><path d="M66 60v10" stroke="#E8443F" stroke-width="5" stroke-linecap="round"/></svg>'+
+    '<b>Chatten är låst</b>Det mamma, pappa och andra skriver till varandra är låst med ett lösenord som bara de vet. Filip kan aldrig läsa det.</div>';
+}
 function ritaChatt(tvinga){
   var l=$('#chattLista'),alla=chattAlla(),vidBotten=l.scrollHeight-l.scrollTop-l.clientHeight<70,h='',dag=0,forra=null;
+  if(lastChatt()){l.innerHTML=lastHtml();return;}
   if(!alla.length)h=tomChatt();
   alla.forEach(function(m){
     var dn=dagNyckel(m.t);
@@ -1642,7 +1941,8 @@ function ritaChatt(tvinga){
     var min=minMsg(m),ihop=forra&&forra.v===m.v&&forra.n===m.n&&minMsg(forra)===min&&m.t-forra.t<5*60000;
     h+='<div class="c-m v-'+m.v+(min?' min':'')+(m.fel?' fel':'')+(!forstaRit&&!ritade[m.id]?' ny':'')+'">'+
       (ihop?'':'<span class="c-vem">'+(min?'Du':esc(vemText(m)))+'</span>')+
-      '<div class="c-b">'+(m.s&&SAK[m.s]?'<button class="c-om" type="button" data-tillsak="'+m.s+'">Om '+esc(SAK[m.s].namn)+'</button>':'')+esc(m.x)+'</div>'+
+      '<div class="c-b">'+(m.s&&SAK[m.s]?'<button class="c-om" type="button" data-tillsak="'+m.s+'">Om '+esc(SAK[m.s].namn)+'</button>':'')+
+        (m.las?'<i class="c-last">Låst med ett annat lösenord än ditt.</i>':esc(m.x))+'</div>'+
       (m.f&&!agare&&m.v!=='filip'?'<span class="c-f">Filip ser den här</span>':'')+
       '<span class="c-tid">'+(m.fel?'Gick inte att skicka.<button class="c-ta" type="button" data-igen="'+m.id+'">Försök igen</button>':
         m.vantar?'Skickar …':klocka(m.t)+(min&&nuS()-m.t<600000?'<button class="c-ta'+(sakerM===m.id?' sakert':'')+'" type="button" data-tabortm="'+m.id+'">'+(sakerM===m.id?'Säkert? Ta bort':'Ta bort')+'</button>':''))+'</span></div>';
@@ -1653,8 +1953,8 @@ function ritaChatt(tvinga){
   if(tvinga||vidBotten)l.scrollTop=l.scrollHeight;
 }
 function ritaSkriv(){
-  var behoverVem=!agare&&!vem;
-  $('#chattVem').hidden=!behoverVem;$('#chattForm').hidden=behoverVem;
+  var behoverVem=!agare&&!vem,behoverLas=!agare&&!!vem&&!upplast();
+  $('#chattVem').hidden=!behoverVem;$('#chattLas').hidden=!behoverLas;$('#chattForm').hidden=behoverVem||behoverLas;
   $('#chattFraser').innerHTML=agare?'':'<button class="c-fras till" type="button" id="tillFilip" aria-pressed="'+(tillFilip?'true':'false')+'">Fråga Filip</button>'+FRASER.map(function(f){return '<button class="c-fras" type="button" data-fras="'+esc(f)+'">'+esc(f)+'</button>';}).join('');
   $('#chattFraser').hidden=!!agare;
   var om=$('#chattOm'),s=omSak&&SAK[omSak];
@@ -1676,13 +1976,13 @@ function chattAndrad(){
   ritaOlasta();
   if(sista&&!forstaSvar&&sista.id!==senastToast){
     senastToast=sista.id;kor($('#chattKnapp'),'ny',820);
-    toast(vemText(sista)+': '+(sista.x.length>70?sista.x.slice(0,68)+'…':sista.x),'Öppna',function(){oppnaChatt('',false);});
+    if(sista.las)toast(vemText(sista)+' har skrivit i chatten. Skriv lösenordet för att läsa det.','Öppna',function(){oppnaChatt('',false);});
+    else toast(vemText(sista)+': '+(sista.x.length>70?sista.x.slice(0,68)+'…':sista.x),'Öppna',function(){oppnaChatt('',false);});
   }
 }
 // Mina meddelanden: de som är framme stryks, de som saknas skickas igen
 function stamChatt(){
-  var ids={},nu=Date.now(),fore=skickar.length,felFore=skickar.filter(function(m){return m.fel;}).length,igen=false;
-  C.forEach(function(m){ids[m.id]=1;});
+  var ids=ALLAID,nu=Date.now(),fore=skickar.length,felFore=skickar.filter(function(m){return m.fel;}).length,igen=false;
   skickar=skickar.filter(function(m){return ids[m.id]?nu-m.t<60000:nuS()-m.t0<864e5;});      // framme: bevakas en minut till, ifall KV tappar det
   skickar.forEach(function(m){
     if(ids[m.id]||m.fel||nu-m.t<8000)return;
@@ -1697,12 +1997,18 @@ function planeraChatt(){
   chattIKo=true;
   iKo(function(){
     chattIKo=false;
-    var nu=Date.now(),ids={},pa;
-    C.forEach(function(m){ids[m.id]=1;});
-    pa=skickar.filter(function(m){return !ids[m.id]&&!m.fel&&nu-m.t>=8000;}).slice(0,8);
+    var nu=Date.now(),ids=ALLAID,pa;
+    // det som inte är till Filip skickas låst, så det kräver lösenordet
+    pa=skickar.filter(function(m){return !ids[m.id]&&!m.fel&&nu-m.t>=8000&&(agare||m.f||upplast());}).slice(0,8);
     if(!pa.length||(!agare&&!vem))return Promise.resolve(null);
     pa.forEach(function(m){m.t=nu;m.n++;});spara('skickar',skickar);
-    return api('POST','/onskelista/chatt',{d:enhet.d,vem:vem||undefined,namn:namn||undefined,flera:pa.map(function(m){return {id:m.id,text:m.x,f:m.f?1:undefined,sak:m.s||undefined};})});
+    return Promise.all(pa.map(function(m){
+      if(agare||m.f)return {id:m.id,text:m.x,f:m.f?1:undefined,sak:m.s||undefined};
+      return (m.k?Promise.resolve(m.k):kryptera(m.x,m.s).then(function(k){m.k=k;return k;})).then(function(k){return {id:m.id,text:k};});
+    })).then(function(flera){
+      spara('skickar',skickar);
+      return api('POST','/onskelista/chatt',{d:enhet.d,vem:vem||undefined,namn:namn||undefined,flera:flera});
+    });
   }).then(function(j){
     if(!j)return;
     var u=lasSvar(j);visaLage();
@@ -1715,7 +2021,13 @@ function skickaChatt(){
   var ta=$('#chattText'),x=ta.value.replace(/\s+/g,' ').trim().slice(0,500);
   if(!x)return;
   if(!agare&&!vem){oppnaVem();return;}
-  skickar.push({id:'c'+Date.now().toString(36)+slump(5),x:x,f:(agare||tillFilip)?1:0,s:omSak||'',t0:nuS(),t:0,n:0,fel:0});
+  if(!agare&&!upplast()){oppnaLas();return;}
+  var f=(agare||tillFilip)?1:0,t0=nuS(),nu=Date.now();
+  (f?[x]:delaText(x)).forEach(function(d,i){                 // låsta meddelanden får vara kortare: långa delas i flera
+    var id='c'+(nu+i).toString(36)+slump(5),s=i?'':(omSak||'');
+    skickar.push({id:id,x:d,f:f,s:s,t0:t0+i,t:0,n:0,fel:0});
+    if(!f)DEK[id]={x:d,s:s};                                  // mina egna behöver inte låsas upp igen
+  });
   spara('skickar',skickar);
   ta.value='';vaxText();omSak='';tillFilip=false;sakerM='';
   ritaSkriv();ritaChatt(true);rort();planeraChatt();
@@ -1760,6 +2072,7 @@ $('#chattFraser').addEventListener('click',function(e){
 });
 $('#chattOmBort').addEventListener('click',function(){omSak='';ritaSkriv();});
 $('#chattValjVem').addEventListener('click',function(){oppnaVem();});
+$('#chattLasUpp').addEventListener('click',function(){oppnaLas();});
 if(window.visualViewport){visualViewport.addEventListener('resize',passaTangent);visualViewport.addEventListener('scroll',passaTangent);}
 
 /* ---------- Notiser ----------
@@ -1846,7 +2159,7 @@ function ga(mal){
   mal=String(mal||'').replace(/^#/,'');
   if(mal==='chatt'){if(molnOk())oppnaChatt('',false);}
   else if(mal==='guide')oppnaGuide();
-  else if(mal.indexOf('sak-')===0)visaSak(mal.slice(4));
+  else if(mal.indexOf('sak-')===0){var id=mal.slice(4);if(DOLT_RE.test(id))id=doltKarta()[id]||'';if(id)visaSak(id);}   // köpnotiser pekar på det dolda id:t
 }
 if('serviceWorker' in navigator){
   navigator.serviceWorker.addEventListener('message',function(e){if(e.data&&typeof e.data.nav==='string'){hamta().then(function(){ga(e.data.nav);},function(){ga(e.data.nav);});}});
@@ -1871,6 +2184,7 @@ function ritaAgare(){
   h='<p class="hand">Bara du ser den här rutan</p>';
   if(lage==='ok'){
     h+='<p>Det du lägger till eller ändrar syns direkt för mamma, pappa och andra som har länken. Under varje sak kan du skriva en lapp, till exempel storlek och färg.</p>'+
+       '<p>Det de köper och skriver till varandra låser de med ett eget lösenord. Utan det går det inte att se, varken här eller i Cloudflare.</p>'+
        '<div class="knappar"><button class="knapp" type="button" data-nysak="0">Lägg till en sak</button><button class="knapp rand" type="button" id="delaLank">Kopiera länken till listan</button></div>'+
        '<p class="fin" id="delaStatus" role="status"></p>';
   }else if(lage==='kv'){
@@ -2181,6 +2495,10 @@ hamta().then(function(){
   else if(molnOk()&&!agare&&!vem&&!las('fragat',0)){
     spara('fragat',1);
     setTimeout(function(){if(!vem&&!document.querySelector('dialog[open]'))oppnaVem();},900);
+  }
+  // har man sagt vem man är men inte skrivit lösenordet här: fråga efter det
+  else if(molnOk()&&!agare&&vem&&!upplast()){
+    setTimeout(function(){if(!upplast()&&!document.querySelector('dialog[open]'))oppnaLas();},900);
   }
 },schema);
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){/* fungerar utan */});}
