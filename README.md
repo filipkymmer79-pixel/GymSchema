@@ -674,3 +674,32 @@ Sidan är gjord som en gymaffisch som lever: hela skärmen har delens färg, rub
 Svaren sparas bara på hennes egen telefon (`gymfragor.syrra.v1`) tills hon skickar dem – Filip ser ingenting innan dess, och inget skickas någon annanstans. Repot är öppet för alla, så sidan är märkt `noindex` och innehåller inget privat.
 
 Frågorna står i `STEPS` i skriptet i `fragor/index.html`, teckningarna i `ART`, mobilen i `phone()` och skivan i `spelaSkiva()`. Färgerna är GymSchemas sex. Rubrikerna är satta i Big Shoulders Display och resten i Manrope (`fragor/fonts/`, båda OFL). Ikonen är ritad för sidan: ett frågetecken över en lastad skivstång. Sidan sparas så att den öppnas utan nät (`fragor/sw.js`). Med *Minska rörelser* påslaget i telefonen byts skärmarna utan animationer. Samma sida finns som Filips privata Claude-artifact *Frågor till syrrans gymapp*, där typsnitten hämtas från Google. Kontrollerat i Chromium på 320, 390 och 1200 px, utan nät och med rörelser avstängda. Delningsmenyn är provad med en låtsad `navigator.share`, eftersom Chromium på Linux saknar den. Inte provat på en riktig iPhone.
+
+## Mål
+
+Filips lista med mål, bucketlist och självutveckling som app: https://filipkymmer79-pixel.github.io/GymSchema/mal/ – den öppnas med länken från Claude, som slutar på en nyckel efter `#`. Öppna länken i Safari och välj *Dela → Lägg till på hemskärmen*, så följer nyckeln med appen.
+
+- **Mål** är natthimlen över Umeå, med norrsken och granskog längst ner. Varje stjärna är ett mål och varje stjärnbild en del av listan. När ett mål bockas av tänds stjärnan i guld, och linjer dras mellan de tända stjärnorna i stjärnbilden. När allt i en stjärnbild är klart blir namnet guld. Ett tryck på en stjärnbild öppnar den som ett blad med alla mål, och där går det att lägga till och ta bort egna mål. Under himlen finns sökning (även utan å, ä och ö), de senast klara målen och alla stjärnbilder med hur mycket som är klart.
+- **Idag** är det som ska göras varje dag. Månen fylls på allt eftersom: nymåne när inget är gjort och fullmåne när allt är klart. Sju små månar visar hur det har gått den senaste veckan. Bockarna nollställs vid midnatt.
+- **Ordning** är stegen i den ordning Filip har skrivit dem, med en knapp till rätt stjärnbild, och Claudes raka svar med källor.
+- **Nyckeln** uppe till höger kopierar länken eller hela listan som text, i samma format som Dagsschema.
+- När appen öppnas tänds himlen: stjärnorna tonar fram, figurerna ritas och de klara stjärnorna tänds en efter en. Med *minska rörelse* påslaget i telefonen står allt still.
+- Två typsnitt: EB Garamond (kursiv) för himlen och rubrikerna, som på gamla stjärnkartor, och Albert Sans för målen. Båda under SIL Open Font License (`mal/fonts/`). Ikonen är ritad för appen.
+
+Bockar, dagens lista och egna mål sparas bara på telefonen (`mal.…` i webbläsarens minne).
+
+### Listan ligger förseglad
+
+Som i Idag: repot är öppet för alla, så själva listan står inte i klartext här. Den ligger krypterad i `mal/index.html`, i strängen `SEALED`: AES-128-GCM, där de första 12 byten är IV och de sista 16 är taggen, allt i base64. Nyckeln är 16 slumpade byte i base64url (22 tecken) och står inte i repot. Den finns i länken – det som står efter `#` skickas aldrig till servern – och i Filips privata Claude-dokument med listan, så att en ny version kan förseglas med samma nyckel. Appen sparar nyckeln på telefonen och lägger tillbaka den i adressen, så att den följer med till hemskärmen. Därför har appen ingen `manifest.webmanifest`. Utan nyckel visar appen bara en ruta där länken klistras in.
+
+Klartexten är JSON:
+
+- `title`, `updated` (datum) och `intro`.
+- `daily` – `title`, `lead` och `items` (`id`, `t`).
+- `sky` – en stjärnbild per del: `id`, `short` (namnet på himlen), `title`, `lead` och `blocks`. Ett block är `{h}` (rubrik), `{c}` (mål med `id` och `t`, som bockas och blir stjärnor), `{p}` (rader utan bock) eller `{n}` (anteckning; `a` är en länk, och en länk som börjar med `#` är en knapp i appen, till exempel `#kopiera`).
+- `order` – `title`, `lead`, `steps` (`t`, och `go` med stjärnbilden som knappen öppnar) och `note`.
+- `honest` – `title`, `lead` och `points` (`b`, `t` och `a` med källan).
+
+Stjärnornas platser räknas ut i appen från stjärnbildens `id` och antalet mål, så himlen ser likadan ut varje gång. Ett mål med samma `id` behåller sin bock när listan förseglas på nytt.
+
+Kontrollerat i Chromium på 320 och 390 px: alla flikar, bladen, att lägga till och ta bort egna mål, sökningen, nyckeln, med och utan nyckel och med minska rörelse. Inte provat på en riktig iPhone.

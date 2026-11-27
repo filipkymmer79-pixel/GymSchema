@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mål</title>
+<meta name="description" content="Mål, bucketlist och självutveckling.">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mål">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0A0E30">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="preload" href="fonts/albert-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/eb-garamond-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Mål: Filip's whole list as the night sky over Umeå. Every star is one goal and every constellation one part
+   of the list; a star is lit when the goal is done. Today's habits are the moon, which fills up during the day.
+   Two typefaces: EB Garamond italic for everything that belongs to the sky (names, titles, numbers in the order),
+   as on old star atlases, and Albert Sans, a Scandinavian grotesque, for the goals themselves.
+   Gold always means done. The ground below the trees is where the lists live: hairlines, no cards. */
+@font-face{font-family:"Albert Sans";font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/albert-sans-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Albert Sans";font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/albert-sans-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"EB Garamond";font-style:italic;font-weight:400 800;font-display:swap;src:url(fonts/eb-garamond-italic-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"EB Garamond";font-style:italic;font-weight:400 800;font-display:swap;src:url(fonts/eb-garamond-italic-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"EB Garamond";font-style:normal;font-weight:400 800;font-display:swap;src:url(fonts/eb-garamond-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  --natt:#0A0E30;      /* the sky at the top */
+  --horisont:#1C1A57;  /* the sky just above the trees */
+  --mark:#080B25;      /* ground and trees: the page itself */
+  --yta:#10154A;       /* sheets */
+  --ljus:#F1EFFF;      /* text */
+  --dimma:#A3A9D6;     /* quieter text */
+  --svag:#6A71A6;      /* outlines, placeholders */
+  --linje:rgba(190,198,255,.13);
+  --guld:#FFCC6E;      /* done */
+  --guld-ljus:#FFE5AE;
+  --manljus:#F2E6C2;   /* the moon and today's ticks */
+  --norrsken:#57E0BB;  /* only in the aurora */
+  --serif:"EB Garamond","Iowan Old Style",Palatino,Georgia,serif;
+  --sans:"Albert Sans",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --top:env(safe-area-inset-top,0px); --bot:env(safe-area-inset-bottom,0px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;background:var(--mark)}
+body{margin:0;min-height:100vh;overflow-x:hidden;background:var(--mark);color:var(--ljus);font-family:var(--sans);font-size:17px;line-height:1.45;font-weight:420;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body.las{overflow:hidden}
+button,input{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent;cursor:pointer;border:0;background:none;padding:0;margin:0;text-align:inherit}
+a{color:var(--guld);text-underline-offset:3px;text-decoration-thickness:1px}
+:focus-visible{outline:2px solid var(--guld);outline-offset:3px;border-radius:8px}
+.serif{font-family:var(--serif);font-style:italic;font-weight:500}
+.inner{max-width:560px;margin:0 auto;padding:0 20px}
+.vy{padding-bottom:calc(118px + var(--bot))}
+
+/* ---------- The sky: a band of night at the top of each view, under the clock ---------- */
+.himmel{background:linear-gradient(180deg,var(--natt) 0%,#0E1243 46%,var(--horisont) 100%);padding-top:calc(var(--top) + 12px);overflow:hidden}
+.himmel.kort{background:linear-gradient(180deg,var(--natt) 0%,#0D1140 58%,var(--mark) 100%)}
+.toprow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.titel{margin:4px 0 0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:68px;line-height:.86;letter-spacing:-.012em}
+.titel.mellan{font-size:44px;line-height:.98}
+.rad{margin:12px 0 0;color:var(--dimma);font-size:15.5px;font-variant-numeric:tabular-nums}
+.rund{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--dimma);margin:-4px -10px 0 0}
+.rund:active{background:rgba(255,255,255,.06)}
+.rund svg{width:24px;height:24px}
+
+.sky{display:block;width:calc(100% + 40px);max-width:none;height:auto;overflow:visible;margin:2px -20px 0;-webkit-user-select:none;user-select:none}
+.sky .dust{fill:#D8DBFF}
+.sky .s{fill:#C9CDF6;opacity:.46;transform-box:fill-box;transform-origin:center}
+.sky .s.k{opacity:.92}
+.sky .s.on{fill:var(--guld-ljus);opacity:1}
+.sky .h{transform-box:fill-box;transform-origin:center}
+.sky .sk{stroke:#B4BAF2;stroke-width:.7;opacity:.3;fill:none;stroke-dasharray:1;stroke-linecap:round}
+.sky .ll{stroke:var(--guld);stroke-width:.95;opacity:.72;fill:none;stroke-dasharray:1;stroke-linecap:round}
+.sky .lb{font-family:var(--serif);font-style:italic;font-weight:500;font-size:15px;fill:var(--dimma)}
+.sky .kb.full .lb{fill:var(--guld)}
+.sky .kb{cursor:pointer;outline:none}
+.sky .hit{fill:transparent;stroke:transparent}
+.sky .kb:focus-visible .hit{stroke:var(--guld);stroke-width:1;stroke-dasharray:3 4}
+.sky .kb:active .hit{fill:rgba(255,204,110,.05)}
+.sky .trees{fill:var(--mark)}
+@media (prefers-reduced-motion:no-preference){
+  .sky.intro .s,.sky.intro .lb{animation:fram .9s ease-out both;animation-delay:var(--d,0s)}
+  .sky.intro .h,.sky .ny{animation:tand 1.2s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d,0s)}
+  .sky.intro .sk,.sky.intro .ll,.sky .ll.ny{animation:rita 1.3s ease-out both;animation-delay:var(--d,0s)}
+}
+@keyframes fram{from{opacity:0}}
+@keyframes tand{0%{opacity:0;transform:scale(.15)}45%{opacity:1;transform:scale(1.45)}100%{transform:scale(1)}}
+@keyframes rita{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+
+/* ---------- Lists on the ground ---------- */
+.lead{margin:16px 0 0;color:var(--dimma);font-size:15.5px;max-width:36em}
+.rubrik{margin:34px 0 4px;font-family:var(--serif);font-style:italic;font-weight:500;font-size:27px;line-height:1.1}
+.sok{position:relative;margin:22px 0 0}
+.sok input{width:100%;height:50px;border-radius:16px;border:1px solid var(--linje);background:rgba(255,255,255,.045);padding:0 16px 0 46px;font-size:16px;color:var(--ljus);-webkit-appearance:none;appearance:none}
+.sok input::placeholder{color:var(--svag)}
+.sok input:focus{outline:none;border-color:rgba(255,204,110,.6)}
+.sok svg{position:absolute;left:15px;top:15px;width:20px;height:20px;color:var(--svag);pointer-events:none}
+.tom{color:var(--dimma);margin:18px 0 0}
+ul.lista{list-style:none;margin:0;padding:0}
+
+.krow{display:grid;grid-template-columns:48px 1fr auto;align-items:center;column-gap:14px;width:100%;padding:12px 0;border-bottom:1px solid var(--linje);text-align:left}
+.krow:active{background:rgba(255,255,255,.03)}
+.krow .gl{width:48px;height:48px;display:block}
+.krow .nm{display:block;font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;line-height:1.15}
+.krow .bar{display:block;height:2px;margin-top:9px;background:var(--linje);border-radius:1px;overflow:hidden}
+.krow .bar i{display:block;height:100%;background:var(--guld);border-radius:1px}
+.krow .ct{font-size:14px;color:var(--dimma);font-variant-numeric:tabular-nums;white-space:nowrap}
+.krow.full .nm,.krow.full .ct{color:var(--guld)}
+
+/* A goal: a star that is lit when the goal is done */
+.goal{position:relative;display:flex;align-items:flex-start;gap:14px;width:100%;padding:13px 0;text-align:left}
+li+li>.goal,li+li>.prow{border-top:1px solid var(--linje)}
+.goal .st{position:relative;flex:none;width:26px;height:26px;margin-top:-1px}
+.goal .st svg{width:26px;height:26px;display:block;overflow:visible}
+.goal .st path{fill:none;stroke:var(--svag);stroke-width:1.5;stroke-linejoin:round;transition:fill .25s,stroke .25s}
+.goal .tx{flex:1;min-width:0;font-size:17px;line-height:1.42;overflow-wrap:anywhere;transition:color .25s}
+.goal .var{display:block;font-size:13px;color:var(--svag);margin-top:2px}
+.goal .nar{display:block;font-size:13px;color:var(--guld);margin-top:3px}
+.goal[aria-checked="true"] .st path{fill:var(--guld);stroke:var(--guld)}
+.goal[aria-checked="true"] .st svg{filter:drop-shadow(0 0 6px rgba(255,204,110,.55))}
+.goal[aria-checked="true"] .tx{color:var(--guld-ljus)}
+.goal:active .st{transform:scale(.9)}
+@media (prefers-reduced-motion:no-preference){
+  .goal .st{transition:transform .15s}
+  .goal.pop .st svg{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+}
+@keyframes pop{0%{transform:scale(.6)}100%{transform:scale(1)}}
+.burst{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
+.burst i{position:absolute;left:-1px;top:-5px;width:2px;height:10px;border-radius:1px;background:var(--guld);opacity:0;transform-origin:1px 5px}
+@media (prefers-reduced-motion:no-preference){
+  .burst i{animation:straal .7s ease-out forwards}
+}
+@keyframes straal{0%{opacity:1;transform:rotate(var(--r)) translateY(-6px) scaleY(.4)}100%{opacity:0;transform:rotate(var(--r)) translateY(-26px) scaleY(1)}}
+
+.prow{display:flex;gap:14px;padding:13px 0;color:var(--dimma)}
+.prow .dot{flex:none;width:26px;display:grid;place-items:center;padding-top:10px}
+.prow .dot i{width:4px;height:4px;border-radius:50%;background:var(--svag)}
+.note{margin:14px 0 6px;padding-left:14px;border-left:1px solid rgba(255,204,110,.4);color:var(--dimma);font-size:15.5px;max-width:36em}
+.note .act{display:inline;color:var(--guld);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;font-weight:600}
+
+/* ---------- Idag: the moon ---------- */
+.dag{margin:4px 0 0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:34px;line-height:1.05}
+.manen{display:grid;justify-items:center;padding:12px 0 6px}
+.manen svg.stor{width:min(64vw,248px);height:auto;overflow:visible}
+.fas{margin:10px 0 0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;text-align:center}
+.idagrad{margin:4px 0 0;color:var(--dimma);font-size:15.5px;text-align:center;font-variant-numeric:tabular-nums}
+.veckan{display:flex;justify-content:space-between;width:100%;max-width:330px;margin:22px auto 0;padding:0;list-style:none}
+.veckan li{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;color:var(--svag);font-variant-numeric:tabular-nums}
+.veckan li.nu{color:var(--ljus);font-weight:700}
+.veckan svg{width:30px;height:30px;display:block}
+.moon-lit{fill:url(#mg)}
+.dg{display:flex;align-items:flex-start;gap:14px;width:100%;padding:13px 0;text-align:left}
+li+li>.dg{border-top:1px solid var(--linje)}
+.dg .rg{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--svag);display:grid;place-items:center;margin-top:-1px;transition:background .2s,border-color .2s}
+.dg .rg svg{width:15px;height:15px;opacity:0;transition:opacity .2s}
+.dg .tx{flex:1;min-width:0;font-size:17px;line-height:1.42;transition:color .2s}
+.dg[aria-checked="true"] .rg{background:var(--manljus);border-color:var(--manljus)}
+.dg[aria-checked="true"] .rg svg{opacity:1}
+.dg[aria-checked="true"] .tx{color:var(--dimma)}
+.fot{margin:20px 0 0;color:var(--svag);font-size:14px}
+
+/* ---------- Ordning: a path with ten stops ---------- */
+.steg{list-style:none;margin:22px 0 0;padding:0}
+.steg li{position:relative;display:grid;grid-template-columns:42px 1fr;column-gap:14px;padding:0 0 22px}
+.steg li::before{content:"";position:absolute;left:20.5px;top:44px;bottom:4px;border-left:1px dashed rgba(190,198,255,.32)}
+.steg li:last-child::before{display:none}
+.nr{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,204,110,.5);display:grid;place-items:center;font-family:var(--serif);font-style:normal;font-weight:500;font-size:22px;line-height:1;color:var(--guld-ljus);font-variant-numeric:oldstyle-nums proportional-nums;padding-bottom:2px}
+.steg .tx{padding-top:9px;font-size:17px;line-height:1.42}
+.ga{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:5px 12px 5px 8px;border-radius:999px;border:1px solid var(--linje);color:var(--dimma);font-size:14px;font-weight:600}
+.ga svg{width:24px;height:24px}
+.ga:active{background:rgba(255,255,255,.05)}
+.punkter{list-style:none;margin:10px 0 0;padding:0}
+.punkter li{padding:16px 0;border-bottom:1px solid var(--linje)}
+.punkter b{display:block;font-weight:700;font-size:17px;line-height:1.35}
+.punkter p{margin:6px 0 0;color:var(--dimma);font-size:16px}
+.punkter a{display:inline-block;margin-top:8px;font-size:15px}
+
+/* ---------- Tabs ---------- */
+.flikar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + var(--bot));z-index:30;width:min(calc(100% - 32px),420px);height:66px;display:grid;grid-template-columns:repeat(3,1fr);background:rgba(16,20,62,.72);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);border:1px solid rgba(190,198,255,.12);border-radius:24px;box-shadow:0 12px 34px rgba(0,0,0,.4)}
+.flik{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--dimma);font-size:12.5px;font-weight:600;border-radius:22px}
+.flik svg{width:25px;height:25px}
+.flik[aria-current="page"]{color:var(--guld)}
+
+/* ---------- Sheets ---------- */
+.skymd{position:fixed;inset:0;z-index:40;background:rgba(3,5,20,.58);opacity:0;transition:opacity .3s}
+.skymd.vis{opacity:1}
+.ark{position:fixed;left:0;right:0;bottom:0;z-index:50;margin:0 auto;max-width:640px;display:flex;flex-direction:column;background:linear-gradient(180deg,#151B52 0%,#0E1239 34%,#0B0F31 100%);border-radius:28px 28px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.5);transform:translateY(104%);transition:transform .34s cubic-bezier(.2,.8,.2,1)}
+.ark.vis{transform:translateY(0)}
+.ark.stor{top:calc(var(--top) + 10px)}
+.ark.drar{transition:none}
+.grepp{position:relative;flex:none;height:46px;touch-action:none;cursor:grab}
+.grepp::before{content:"";position:absolute;left:50%;top:9px;width:40px;height:5px;margin-left:-20px;border-radius:3px;background:rgba(190,198,255,.3)}
+.grepp .rund{position:absolute;right:16px;top:6px;margin:0}
+.ark .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 20px calc(36px + var(--bot))}
+.ark.liten .scroll{padding-bottom:calc(28px + var(--bot))}
+.arksky{display:block;width:100%;height:176px;margin:-6px 0 6px}
+.arktitel{margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:40px;line-height:1}
+.arklead{margin:10px 0 0;color:var(--dimma);font-size:16px}
+.arkrad{display:flex;align-items:center;gap:12px;margin:14px 0 6px;font-size:15px;color:var(--dimma);font-variant-numeric:tabular-nums}
+.arkrad .bar{flex:1;height:3px;border-radius:2px;background:var(--linje);overflow:hidden}
+.arkrad .bar i{display:block;height:100%;background:var(--guld);border-radius:2px;transition:width .35s}
+.sub{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:26px 0 2px;font-family:var(--serif);font-style:italic;font-weight:500;font-size:23px;line-height:1.15}
+.sub span:last-child{font-family:var(--sans);font-style:normal;font-size:13.5px;font-weight:500;color:var(--svag);font-variant-numeric:tabular-nums;white-space:nowrap}
+.egen{display:flex;gap:10px;margin:14px 0 0}
+.egen input{flex:1;min-width:0;height:48px;border-radius:14px;border:1px solid var(--linje);background:rgba(255,255,255,.05);padding:0 14px;font-size:16px;-webkit-appearance:none;appearance:none}
+.egen input::placeholder{color:var(--svag)}
+.egen input:focus{outline:none;border-color:rgba(255,204,110,.6)}
+.knapp{flex:none;height:48px;padding:0 18px;border-radius:14px;background:var(--guld);color:#1A1530;font-weight:700;font-size:16px}
+.knapp:active{transform:scale(.98)}
+.knapp.ghost{background:transparent;color:var(--ljus);border:1px solid var(--linje)}
+.ta{flex:none;width:36px;height:36px;margin:8px -6px 0 0;border-radius:50%;display:grid;place-items:center;color:var(--svag)}
+.ta svg{width:18px;height:18px}
+.ta.fraga{width:auto;padding:0 12px;border-radius:18px;background:rgba(255,120,120,.14);color:#FFB4A8;font-size:13.5px;font-weight:700}
+.rowwrap{display:flex;align-items:flex-start}
+.rowwrap .goal{flex:1}
+.knappar{display:grid;gap:10px;margin:20px 0 0}
+.knappar .knapp{width:100%}
+.liten p{color:var(--dimma);margin:10px 0 0;font-size:16px}
+
+/* ---------- Locked ---------- */
+.lock{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--top) + 40px) 24px calc(var(--bot) + 40px);background:linear-gradient(180deg,var(--natt) 0%,#10154A 60%,var(--mark) 100%)}
+.lock>*{width:100%;max-width:480px;margin-left:auto;margin-right:auto}
+.lock p{color:var(--dimma);margin-top:16px;margin-bottom:0}
+.lock form{display:grid;gap:12px;margin-top:24px;margin-bottom:0}
+.lock input{height:52px;border-radius:16px;border:1px solid var(--linje);background:rgba(255,255,255,.05);padding:0 16px;font-size:16px;-webkit-appearance:none;appearance:none}
+.lock input:focus{outline:none;border-color:rgba(255,204,110,.6)}
+.lock .knapp{height:52px}
+.fel{color:#FFB4A8;min-height:1.4em}
+
+.toast{position:fixed;left:50%;top:calc(var(--top) + 12px);z-index:70;transform:translate(-50%,-16px);opacity:0;pointer-events:none;background:var(--ljus);color:#0A0E30;font-weight:650;font-size:15px;padding:12px 18px;border-radius:16px;max-width:calc(100% - 40px);transition:opacity .25s,transform .25s;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.toast.vis{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){
+  .ark,.skymd,.toast,.arkrad .bar i,.goal .tx,.goal .st path{transition:none}
+}
+</style>
+</head>
+<body>
+<main class="lock" id="lock" hidden>
+  <h1 class="titel">Mål</h1>
+  <p>Listan är låst. Klistra in din länk från Claude för att öppna den.</p>
+  <form id="lockForm" autocomplete="off">
+    <input id="lockText" type="url" inputmode="url" placeholder="Klistra in länken" aria-label="Din länk">
+    <button class="knapp" type="submit">Öppna listan</button>
+    <div class="fel" id="lockMsg" role="alert"></div>
+  </form>
+</main>
+
+<div id="app" hidden>
+  <main class="vy" id="v-idag" hidden>
+    <div class="himmel kort"><div class="inner">
+      <div class="toprow">
+        <h1 class="dag" id="idagDatum"></h1>
+        <button class="rund" type="button" data-nyckel aria-label="Din länk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg></button>
+      </div>
+      <div class="manen" id="manen"></div>
+    </div></div>
+    <div class="inner">
+      <ul class="veckan" id="veckan" aria-label="De senaste sju dagarna"></ul>
+      <p class="lead" id="idagLead"></p>
+      <ul class="lista" id="idagLista"></ul>
+      <p class="fot">Bockarna nollställs vid midnatt.</p>
+    </div>
+  </main>
+
+  <main class="vy" id="v-mal">
+    <div class="himmel"><div class="inner">
+      <div class="toprow">
+        <div>
+          <h1 class="titel" id="malTitel">Mål</h1>
+          <p class="rad" id="malRad"></p>
+        </div>
+        <button class="rund" type="button" data-nyckel aria-label="Din länk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg></button>
+      </div>
+      <svg class="sky" id="sky" viewBox="0 0 390 500" role="group" aria-label="Himlen med dina mål"></svg>
+    </div></div>
+    <div class="inner">
+      <p class="lead">Varje stjärna är ett av dina mål. Tryck på en stjärnbild för att öppna den.</p>
+      <div class="sok">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 20 20"/></svg>
+        <input id="sok" type="search" placeholder="Sök bland dina mål" aria-label="Sök bland dina mål" enterkeyhint="search" autocomplete="off">
+      </div>
+      <div id="traffar" hidden></div>
+      <div id="senast"></div>
+      <h2 class="rubrik" id="kbRubrik">Stjärnbilderna</h2>
+      <ul class="lista" id="kbLista"></ul>
+    </div>
+  </main>
+
+  <main class="vy" id="v-ordning" hidden>
+    <div class="himmel kort"><div class="inner">
+      <div class="toprow">
+        <h1 class="titel mellan" id="ordTitel"></h1>
+        <button class="rund" type="button" data-nyckel aria-label="Din länk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg></button>
+      </div>
+      <p class="lead" id="ordLead"></p>
+    </div></div>
+    <div class="inner">
+      <ol class="steg" id="steg"></ol>
+      <p class="note" id="ordNote"></p>
+      <h2 class="rubrik" id="arlTitel"></h2>
+      <p class="lead" id="arlLead"></p>
+      <ul class="punkter" id="punkter"></ul>
+    </div>
+  </main>
+
+  <nav class="flikar" aria-label="Flikar">
+    <button class="flik" type="button" data-flik="idag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M19.5 14.6A8 8 0 1 1 9.4 4.5a6.4 6.4 0 0 0 10.1 10.1z"/></svg>Idag</button>
+    <button class="flik" type="button" data-flik="mal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 2.8c.7 5.2 3.3 7.8 8.5 8.6-5.2.8-7.8 3.4-8.5 8.6-.7-5.2-3.3-7.8-8.5-8.6 5.2-.8 7.8-3.4 8.5-8.6z"/></svg>Mål</button>
+    <button class="flik" type="button" data-flik="ordning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v3.5A3.5 3.5 0 0 0 9.5 14h5a3.5 3.5 0 0 1 3.5 3.5"/></svg>Ordning</button>
+  </nav>
+</div>
+
+<div class="skymd" id="skymd" hidden></div>
+<section class="ark stor" id="ark" role="dialog" aria-modal="true" aria-labelledby="arkTitel" hidden>
+  <div class="grepp" id="arkGrepp"><button class="rund" type="button" data-stang aria-label="Stäng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="scroll" id="arkScroll"></div>
+</section>
+<section class="ark liten" id="nyckel" role="dialog" aria-modal="true" aria-labelledby="nyckelTitel" hidden>
+  <div class="grepp"><button class="rund" type="button" data-stang aria-label="Stäng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="scroll">
+    <h2 class="arktitel" id="nyckelTitel">Din länk</h2>
+    <p>Länken öppnar din lista. Spara den, till exempel i Anteckningar, så kan du öppna listan på en ny telefon. Den som har länken kan läsa allt, så dela den inte.</p>
+    <div class="knappar">
+      <button class="knapp" type="button" id="kopieraLank">Kopiera länken</button>
+      <button class="knapp ghost" type="button" id="kopieraText">Kopiera listan som text</button>
+    </div>
+    <p id="omListan"></p>
+    <p>Bockarna och dina egna mål sparas bara på den här telefonen.</p>
+  </div>
+</section>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+"use strict";
+var SEALED = "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";
+var K_KEY = "mal.k", K_DONE = "mal.klara.v1", K_DAYS = "mal.dagar.v1", K_OWN = "mal.egna.v1", K_TAB = "mal.flik.v1";
+var reduce = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+var $ = function (id) { return document.getElementById(id); };
+var D = null, KEY = null;
+var S = { done: {}, days: {}, own: {} };
+var SECS = [], BYID = {}, ITEMS = {}, GEO = null;
+
+/* ---------- Small helpers ---------- */
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function read(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+function write(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* the list still works, it just isn't remembered */ } }
+function h32(s) { var h = 2166136261 >>> 0; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function rng(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function fold(s) { s = String(s).toLowerCase(); return s.normalize ? s.normalize("NFD").replace(/[̀-ͯ]/g, "") : s; }
+function pad(n) { return (n < 10 ? "0" : "") + n; }
+function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+var MAN = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
+var VDAG = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
+var VD3 = ["sön", "mån", "tis", "ons", "tor", "fre", "lör"];
+function datum(ts) { var d = new Date(ts), s = d.getDate() + " " + MAN[d.getMonth()]; if (d.getFullYear() !== new Date().getFullYear()) s += " " + d.getFullYear(); return s; }
+function f1(n) { return Math.round(n * 10) / 10; }
+var STAR = "M12 2.6c.7 5.3 3.3 7.9 8.6 8.6-5.3.8-7.9 3.4-8.6 8.7-.8-5.3-3.4-7.9-8.6-8.7 5.2-.7 7.8-3.3 8.6-8.6z";
+var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#0A0E30" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+var X18 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+
+var toastT = 0;
+function toast(t) { var el = $("toast"); el.textContent = t; el.classList.add("vis"); clearTimeout(toastT); toastT = setTimeout(function () { el.classList.remove("vis"); }, 2200); }
+function copy(text, ok) {
+  function fallback() {
+    var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select(); var done = false; try { done = document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta); toast(done ? ok : "Det gick inte att kopiera. Håll fingret på texten och kopiera den själv.");
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { toast(ok); }, fallback); else fallback();
+}
+function myLink() { return location.origin + location.pathname + "#" + KEY; }
+
+/* ---------- The data ---------- */
+function index() {
+  SECS = D.sky; BYID = {}; ITEMS = {};
+  SECS.forEach(function (s) {
+    BYID[s.id] = s; s.base = [];
+    s.blocks.forEach(function (b) { if (b.c) b.c.forEach(function (it) { it.sec = s.id; ITEMS[it.id] = it; s.base.push(it); }); });
+  });
+  ownIndex();
+}
+function ownIndex() {
+  SECS.forEach(function (s) {
+    s.own = (S.own[s.id] || []).filter(function (it) { return it && it.id && it.t; });
+    s.own.forEach(function (it) { it.sec = s.id; it.own = true; ITEMS[it.id] = it; });
+    s.all = s.base.concat(s.own);
+  });
+}
+function isLit(id) { return !!S.done[id]; }
+function litIn(s) { var n = 0; s.all.forEach(function (it) { if (S.done[it.id]) n++; }); return n; }
+function totals() { var a = 0, b = 0; SECS.forEach(function (s) { a += litIn(s); b += s.all.length; }); return [a, b]; }
+
+/* ---------- The sky: one constellation per part of the list ---------- */
+var SW = 390, SH = 500;
+function bridson(R, dn, cap) {
+  var pts = [], act = [], lim = 0.92;
+  var first = [(R() - 0.5) * 0.4, (R() - 0.5) * 0.4]; pts.push(first); act.push(first);
+  while (act.length && pts.length < cap) {
+    var ai = Math.floor(R() * act.length), base = act[ai], found = false;
+    for (var j = 0; j < 26 && !found; j++) {
+      var a = R() * 6.2832, rr = dn * (1 + R()), q = [base[0] + Math.cos(a) * rr, base[1] + Math.sin(a) * rr];
+      if (q[0] * q[0] + q[1] * q[1] > lim * lim) continue;
+      var ok = true;
+      for (var i = 0; i < pts.length; i++) { var dx = pts[i][0] - q[0], dy = pts[i][1] - q[1]; if (dx * dx + dy * dy < dn * dn) { ok = false; break; } }
+      if (ok) { pts.push(q); act.push(q); found = true; }
+    }
+    if (!found) act.splice(ai, 1);
+  }
+  return pts;
+}
+/* farthest-point order, measured from the stars already placed: the first field stars fill the biggest gaps */
+function spreadFrom(placed, pts) {
+  var n = pts.length, used = [], dmin = [], out = [], i, j;
+  for (i = 0; i < n; i++) {
+    used.push(false); var m = Infinity;
+    for (j = 0; j < placed.length; j++) { var dx = pts[i][0] - placed[j][0], dy = pts[i][1] - placed[j][1]; m = Math.min(m, dx * dx + dy * dy); }
+    dmin.push(m);
+  }
+  for (var c = 0; c < n; c++) {
+    var best = -1, bd = -1;
+    for (i = 0; i < n; i++) if (!used[i] && dmin[i] > bd) { bd = dmin[i]; best = i; }
+    if (best < 0) break;
+    used[best] = true; out.push(pts[best]);
+    for (i = 0; i < n; i++) { if (used[i]) continue; var ex = pts[i][0] - pts[best][0], ey = pts[i][1] - pts[best][1], d = ex * ex + ey * ey; if (d < dmin[i]) dmin[i] = d; }
+  }
+  return out;
+}
+/* the figure: a seeded walk through the sky, with one branch, like the stick figures on star maps */
+function figure(R, K) {
+  var walk = [[(R() - 0.5) * 0.5, (R() - 0.5) * 0.5]], par = [-1], head = [R() * 6.2832], from = 0, guard = 0;
+  var branchAt = K >= 6 ? Math.floor(K * 0.55 + R() * 1.5) : -1;
+  while (walk.length < K && guard++ < 500) {
+    if (walk.length === branchAt) { from = 1 + Math.floor(R() * Math.max(1, walk.length - 2)); branchAt = -1; }
+    var base = walk[from], ok = false;
+    for (var tr = 0; tr < 40 && !ok; tr++) {
+      var a = head[from] + (R() - 0.5) * (tr < 20 ? 1.9 : 5), step = 0.36 + R() * 0.26;
+      var q = [base[0] + Math.cos(a) * step, base[1] + Math.sin(a) * step];
+      if (q[0] * q[0] + q[1] * q[1] > 0.74) continue;
+      var near = false;
+      for (var w = 0; w < walk.length; w++) { var dx = walk[w][0] - q[0], dy = walk[w][1] - q[1]; if (dx * dx + dy * dy < 0.075) { near = true; break; } }
+      if (near) continue;
+      walk.push(q); par.push(from); head.push(a); from = walk.length - 1; ok = true;
+    }
+    if (!ok) from = Math.floor(R() * walk.length);
+  }
+  while (walk.length < K) { var b = R() * 6.2832, qq = Math.sqrt(R()) * 0.8; walk.push([Math.cos(b) * qq, Math.sin(b) * qq]); par.push(walk.length - 2); }
+  var edges = [];
+  for (var i = 1; i < walk.length; i++) edges.push([par[i], i]);
+  if (K >= 7 && R() < 0.55) {   /* sometimes a closed shape, like the bowl of the Big Dipper */
+    var x = K - 1, y = K - 4, ddx = walk[x][0] - walk[y][0], ddy = walk[x][1] - walk[y][1];
+    if (par[x] !== y && ddx * ddx + ddy * ddy < 0.36) edges.push([y, x]);
+  }
+  return { pts: walk, edges: edges };
+}
+function tree(P, ids) {
+  var n = ids.length, inT = [], best = [], par = [], edges = [], i;
+  if (n < 2) return edges;
+  for (i = 0; i < n; i++) { inT.push(false); best.push(Infinity); par.push(-1); }
+  best[0] = 0;
+  for (var c = 0; c < n; c++) {
+    var u = -1;
+    for (i = 0; i < n; i++) if (!inT[i] && (u < 0 || best[i] < best[u])) u = i;
+    inT[u] = true; if (par[u] >= 0) edges.push([ids[par[u]], ids[u]]);
+    for (var v = 0; v < n; v++) {
+      if (inT[v]) continue;
+      var dx = P[ids[u]][0] - P[ids[v]][0], dy = P[ids[u]][1] - P[ids[v]][1], d = dx * dx + dy * dy;
+      if (d < best[v]) { best[v] = d; par[v] = u; }
+    }
+  }
+  return edges;
+}
+function constellation(s) {
+  var R = rng(h32("mål:" + s.id)), n = s.base.length, cap = n + 16;
+  var r = 13 + 3.65 * Math.sqrt(Math.max(n, 4));
+  var K = Math.min(n, n <= 8 ? n : (n < 20 ? 7 : 9)), fig = figure(R, K);
+  var dn = 1.45 / Math.sqrt(cap), field = [];
+  for (var t = 0; t < 7; t++) { field = bridson(R, dn, cap * 2); if (field.length >= cap) break; dn *= 0.88; }
+  field = field.filter(function (p) { for (var w = 0; w < fig.pts.length; w++) { var dx = fig.pts[w][0] - p[0], dy = fig.pts[w][1] - p[1]; if (dx * dx + dy * dy < dn * dn * 0.6) return false; } return true; });
+  field = spreadFrom(fig.pts, field).slice(0, cap - K);
+  while (field.length < cap - K) { var a = R() * 6.2832, q = Math.sqrt(R()) * 0.9; field.push([Math.cos(a) * q, Math.sin(a) * q]); }
+  var pts = fig.pts.concat(field);
+  var asp = 0.86 + R() * 0.3, rot = R() * Math.PI;
+  var P = pts.map(function (p) { var x = p[0] * r * asp, y = p[1] * r / asp; return [x * Math.cos(rot) - y * Math.sin(rot), x * Math.sin(rot) + y * Math.cos(rot)]; });
+  var mag = P.map(function () { return R(); });
+  var box = [0, 0, 0, 0], i;
+  for (i = 0; i < n; i++) { box[0] = Math.min(box[0], P[i][0]); box[1] = Math.max(box[1], P[i][0]); box[2] = Math.min(box[2], P[i][1]); box[3] = Math.max(box[3], P[i][1]); }
+  var lw = s.short.length * 7.6 + 6;
+  return { s: s, n: n, r: r, P: P, mag: mag, K: K, skel: fig.edges, box: box, lw: lw,
+    L: Math.min(box[0], -lw / 2), Rr: Math.max(box[1], lw / 2), T: box[2], B: box[3] + 24, x: 0, y: 0 };
+}
+/* a star for every goal; own goals take the free places, and after that a few more around the edge */
+function point(c, i) {
+  if (i < c.P.length) return c.P[i];
+  var R = rng(h32(c.s.id + ":" + i)), a = R() * 6.2832, q = 0.35 + R() * 0.7;
+  return [Math.cos(a) * c.r * q, Math.sin(a) * c.r * q];
+}
+function place(cs) {
+  var rows = [3, 2, 3, 2, 3], k = 0, y0 = 60, dy = (SH - 160) / 4, J = rng(2711);
+  rows.forEach(function (cnt, ri) {
+    for (var j = 0; j < cnt && k < cs.length; j++, k++) {
+      var c = cs[k]; c.x = (j + 0.5) * SW / cnt + (J() - 0.5) * 34; c.y = y0 + ri * dy + (J() - 0.5) * 26;
+    }
+  });
+  var GAP = 9;
+  for (var it = 0; it < 700; it++) {
+    for (var i = 0; i < cs.length; i++) for (var j = i + 1; j < cs.length; j++) {
+      var a = cs[i], b = cs[j];
+      var ox = Math.min(a.x + a.Rr, b.x + b.Rr) - Math.max(a.x + a.L, b.x + b.L) + GAP;
+      var oy = Math.min(a.y + a.B, b.y + b.B) - Math.max(a.y + a.T, b.y + b.T) + GAP;
+      if (ox > 0 && oy > 0) {
+        if (ox < oy) { var sx = (a.x + (a.L + a.Rr) / 2) < (b.x + (b.L + b.Rr) / 2) ? 1 : -1; a.x -= sx * ox * 0.3; b.x += sx * ox * 0.3; }
+        else { var sy = (a.y + (a.T + a.B) / 2) < (b.y + (b.T + b.B) / 2) ? 1 : -1; a.y -= sy * oy * 0.3; b.y += sy * oy * 0.3; }
+      }
+    }
+    cs.forEach(function (c) {
+      c.x = Math.min(SW - 6 - c.Rr, Math.max(6 - c.L, c.x));
+      c.y = Math.min(SH - 64 - c.B, Math.max(6 - c.T, c.y));
+    });
+  }
+}
+function geometry() { var cs = SECS.map(constellation); place(cs); GEO = {}; cs.forEach(function (c) { GEO[c.s.id] = c; }); return cs; }
+
+function defs(p) {
+  return '<defs>' +
+    '<radialGradient id="' + p + 'h"><stop offset="0" stop-color="#FFE5AE" stop-opacity=".9"/><stop offset=".3" stop-color="#FFCC6E" stop-opacity=".38"/><stop offset="1" stop-color="#FFCC6E" stop-opacity="0"/></radialGradient>' +
+    '<linearGradient id="' + p + 'a1" x1="0" x2="1"><stop offset="0" stop-color="#57E0BB" stop-opacity="0"/><stop offset=".3" stop-color="#57E0BB" stop-opacity=".5"/><stop offset=".62" stop-color="#6FCFEA" stop-opacity=".34"/><stop offset="1" stop-color="#9C86F2" stop-opacity="0"/></linearGradient>' +
+    '<linearGradient id="' + p + 'a2" x1="0" x2="1"><stop offset="0" stop-color="#9C86F2" stop-opacity="0"/><stop offset=".4" stop-color="#9C86F2" stop-opacity=".42"/><stop offset=".8" stop-color="#57E0BB" stop-opacity=".22"/><stop offset="1" stop-color="#57E0BB" stop-opacity="0"/></linearGradient>' +
+    '<filter id="' + p + 'b" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="15"/></filter>' +
+    '</defs>';
+}
+function aurora(p, k) {
+  return '<g filter="url(#' + p + 'b)" opacity="' + (k || 1) + '">' +
+    '<path d="M-60 118C40 70 120 150 212 104S362 52 452 92L452 152C362 118 262 184 170 160S12 148-60 190Z" fill="url(#' + p + 'a1)"/>' +
+    '<path d="M-60 238C60 202 150 250 250 220S382 188 452 214L452 246C372 228 262 276 160 256S20 250-60 278Z" fill="url(#' + p + 'a2)"/>' +
+    '</g>';
+}
+function dust() {
+  var R = rng(2611), o = '<g class="dust">';
+  for (var i = 0; i < 70; i++) o += '<circle cx="' + f1(R() * SW) + '" cy="' + f1(R() * (SH - 60)) + '" r="' + f1(0.3 + R() * 0.45) + '" opacity="' + f1(0.12 + R() * 0.24) + '"/>';
+  return o + '</g>';
+}
+function spruce(x, g, h, w) {
+  var tiers = 5, L = [], Rt = [], t;
+  L.push([x, g - h]);
+  for (t = 1; t <= tiers; t++) {
+    var yy = g - h + h * (t / tiers) * 0.94, hw = (w / 2) * (t / tiers);
+    L.push([x - hw, yy]); if (t < tiers) L.push([x - hw * 0.4, yy - h * 0.03]);
+  }
+  L.push([x - w * 0.05, g]);
+  for (t = L.length - 1; t >= 0; t--) Rt.push([2 * x - L[t][0], L[t][1]]);
+  var pts = L.concat(Rt.slice(1));
+  return "M" + pts.map(function (q) { return f1(q[0]) + " " + f1(q[1]); }).join("L") + "Z";
+}
+function ground(x) { return SH - 13 + 3.2 * Math.sin(x / 47 + 0.8) + 1.5 * Math.sin(x / 19 + 2.1); }
+function trees() {
+  var R = rng(1977), d = "M-420 " + f1(ground(-420)), x;
+  for (x = -410; x <= SW + 420; x += 10) d += "L" + x + " " + f1(ground(x));
+  d += "V" + (SH + 2) + "H-420Z";
+  x = -410;
+  while (x < SW + 410) {
+    var edge = (x < 70 && x > -40) || (x > SW - 80 && x < SW + 40), h = 11 + R() * 22 + (edge ? 12 + R() * 11 : 0);
+    d += spruce(x, ground(x) + 1.5, h, h * 0.42);
+    x += 5 + R() * (edge ? 8 : 14);
+  }
+  return '<path class="trees" d="' + d + '"/>';
+}
+/* sizes of a star: the first nine of a constellation are its bright ones */
+function radii(c, i, on) { var m = i < c.mag.length ? c.mag[i] : 0.5, k = i < c.K; return on ? { core: (k ? 2.3 : 1.85) + m * 0.55, halo: (k ? 9.5 : 7.5) + m * 2 } : { core: k ? 1.5 + m * 0.7 : 0.75 + m * 0.65 }; }
+
+var skyDrawn = false, skyLit = null;
+function drawSky(intro) {
+  var cs = SECS.map(function (s) { return GEO[s.id]; }), o = [], ci, k = 0, nowLit = {};
+  o.push(defs("s-"), aurora("s-"), dust());
+  cs.forEach(function (c, ci) {
+    var s = c.s, all = s.all, lit = litIn(s), full = all.length > 0 && lit === all.length, cd = 0.12 + ci * 0.07;
+    o.push('<g class="kb' + (full ? ' full' : '') + '" data-sec="' + s.id + '" tabindex="0" role="button" aria-label="' + esc(s.title + ", " + lit + " av " + all.length + " klara") + '" transform="translate(' + f1(c.x) + ' ' + f1(c.y) + ')">');
+    o.push('<rect class="hit" x="' + f1(c.L - 6) + '" y="' + f1(c.T - 8) + '" width="' + f1(c.Rr - c.L + 12) + '" height="' + f1(c.B - c.T + 12) + '" rx="16"/>');
+    c.skel.forEach(function (e, ei) {
+      var a = c.P[e[0]], b = c.P[e[1]];
+      o.push('<path class="sk" pathLength="1" style="--d:' + f1(cd + 0.35 + ei * 0.04) + 's" d="M' + f1(a[0]) + ' ' + f1(a[1]) + 'L' + f1(b[0]) + ' ' + f1(b[1]) + '"/>');
+    });
+    var litIds = [], i;
+    for (i = 0; i < all.length; i++) if (isLit(all[i].id)) litIds.push(i);
+    var PP = all.map(function (it, i) { return point(c, i); });
+    tree(PP, litIds).forEach(function (e) {
+      var a = PP[e[0]], b = PP[e[1]], fresh = skyLit && !(skyLit[all[e[0]].id] && skyLit[all[e[1]].id]);
+      o.push('<path class="ll' + (fresh && !intro ? ' ny' : '') + '" pathLength="1" style="--d:' + (intro ? f1(1.1 + ci * 0.05) : 0.25) + 's" d="M' + f1(a[0]) + ' ' + f1(a[1]) + 'L' + f1(b[0]) + ' ' + f1(b[1]) + '"/>');
+    });
+    for (i = 0; i < all.length; i++) {
+      var p = PP[i], on = isLit(all[i].id), rr = radii(c, i, on), d = f1(cd + i * 0.006);
+      if (on) {
+        nowLit[all[i].id] = 1;
+        var fresh2 = skyLit && !skyLit[all[i].id] && !intro, hd = intro ? f1(0.8 + Math.min(k++, 40) * 0.035) : 0;
+        o.push('<circle class="h' + (fresh2 ? ' ny' : '') + '" style="--d:' + hd + 's" cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="' + f1(rr.halo) + '" fill="url(#s-h)"/>');
+        o.push('<circle class="s on' + (i < c.K ? ' k' : '') + (fresh2 ? ' ny' : '') + '" style="--d:' + d + 's" cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="' + f1(rr.core) + '"/>');
+      } else {
+        o.push('<circle class="s' + (i < c.K ? ' k' : '') + '" style="--d:' + d + 's" cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="' + f1(rr.core) + '"/>');
+      }
+    }
+    o.push('<text class="lb" style="--d:' + f1(cd + 0.2) + 's" x="' + f1((c.box[0] + c.box[1]) / 2) + '" y="' + f1(c.box[3] + 18) + '" text-anchor="middle">' + esc(s.short) + '</text>');
+    o.push('</g>');
+  });
+  o.push(trees());
+  var svg = $("sky");
+  svg.classList.toggle("intro", !!intro && !reduce);
+  svg.innerHTML = o.join("");
+  skyLit = nowLit; skyDrawn = true;
+}
+/* the same constellation, small: in the list and at the top of a sheet */
+function mini(c, w, h, big) {
+  var all = c.s.all, P = all.map(function (it, i) { return point(c, i); }), i;
+  var x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  P.forEach(function (p) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); });
+  var padv = big ? 18 : 6, bw = x1 - x0 + 2 * padv, bh = y1 - y0 + 2 * padv;
+  var scale = Math.min(w / bw, h / bh), vw = w / scale, vh = h / scale, vx = (x0 + x1) / 2 - vw / 2, vy = (y0 + y1) / 2 - vh / 2, u = 1 / scale;
+  var o = ['<svg viewBox="' + f1(vx) + ' ' + f1(vy) + ' ' + f1(vw) + ' ' + f1(vh) + '" aria-hidden="true"' + (big ? ' class="arksky" preserveAspectRatio="xMidYMid meet"' : ' class="gl"') + '>'];
+  if (big) o.push(defs("m-"));
+  c.skel.forEach(function (e) { var a = c.P[e[0]], b = c.P[e[1]]; o.push('<path d="M' + f1(a[0]) + ' ' + f1(a[1]) + 'L' + f1(b[0]) + ' ' + f1(b[1]) + '" stroke="#B4BAF2" stroke-opacity="' + (big ? 0.22 : 0.3) + '" stroke-width="' + f1((big ? 0.8 : 0.9) * u) + '" fill="none"/>'); });
+  var litIds = []; for (i = 0; i < all.length; i++) if (isLit(all[i].id)) litIds.push(i);
+  tree(P, litIds).forEach(function (e) { var a = P[e[0]], b = P[e[1]]; o.push('<path d="M' + f1(a[0]) + ' ' + f1(a[1]) + 'L' + f1(b[0]) + ' ' + f1(b[1]) + '" stroke="#FFCC6E" stroke-opacity=".8" stroke-width="' + f1(1.1 * u) + '" fill="none" stroke-linecap="round"/>'); });
+  for (i = 0; i < all.length; i++) {
+    var p = P[i], on = isLit(all[i].id), k = i < c.K, rpx = on ? (big ? 3.2 : 2.3) : (k ? (big ? 2.1 : 1.6) : (big ? 1.4 : 1.1));
+    if (on && big) o.push('<circle cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="' + f1(12 * u) + '" fill="url(#m-h)"/>');
+    o.push('<circle cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="' + f1(rpx * u) + '" fill="' + (on ? "#FFE5AE" : "#C9CDF6") + '" fill-opacity="' + (on ? 1 : (k ? 0.75 : 0.45)) + '"/>');
+  }
+  return o.join("") + '</svg>';
+}
+
+/* ---------- Mål: the sky, search, the latest done, the constellations ---------- */
+function renderMal(intro) {
+  var t = totals();
+  $("malRad").textContent = t[0] + " av " + t[1] + " mål klara";
+  drawSky(intro);
+  renderRecent(); renderKbList();
+  if ($("sok").value.trim()) renderSearch();
+}
+function renderKbList() {
+  $("kbLista").innerHTML = SECS.map(function (s) {
+    var lit = litIn(s), n = s.all.length, full = n && lit === n;
+    return '<li><button class="krow' + (full ? ' full' : '') + '" type="button" data-sec="' + s.id + '">' + mini(GEO[s.id], 48, 48, false) +
+      '<span><span class="nm">' + esc(s.title) + '</span><span class="bar"><i style="width:' + (n ? Math.round(lit / n * 100) : 0) + '%"></i></span></span>' +
+      '<span class="ct">' + lit + ' av ' + n + '</span></button></li>';
+  }).join("");
+}
+function goalHTML(it, extra) {
+  var on = isLit(it.id);
+  return '<button class="goal" type="button" role="checkbox" aria-checked="' + on + '" data-id="' + it.id + '">' +
+    '<span class="st"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + STAR + '"/></svg></span>' +
+    '<span class="tx">' + esc(it.t) + (extra ? '<span class="var">' + esc(extra) + '</span>' : '') +
+    (on ? '<span class="nar">Klar ' + datum(S.done[it.id]) + '</span>' : '') + '</span></button>';
+}
+function renderRecent() {
+  var done = Object.keys(S.done).filter(function (id) { return ITEMS[id]; }).sort(function (a, b) { return S.done[b] - S.done[a]; }).slice(0, 3);
+  $("senast").innerHTML = done.length ? '<h2 class="rubrik">Senast klara</h2><ul class="lista">' + done.map(function (id) { return '<li>' + goalHTML(ITEMS[id], BYID[ITEMS[id].sec].title) + '</li>'; }).join("") + '</ul>' : "";
+}
+function renderSearch() {
+  var q = fold($("sok").value.trim()), box = $("traffar");
+  if (!q) { box.hidden = true; box.innerHTML = ""; $("senast").hidden = false; $("kbRubrik").hidden = false; $("kbLista").hidden = false; return; }
+  var hits = [];
+  SECS.forEach(function (s) { s.all.forEach(function (it) { if (fold(it.t).indexOf(q) !== -1 || fold(s.title).indexOf(q) !== -1) hits.push(it); }); });
+  box.hidden = false; $("senast").hidden = true; $("kbRubrik").hidden = true; $("kbLista").hidden = true;
+  box.innerHTML = hits.length
+    ? '<h2 class="rubrik">' + hits.length + ' mål</h2><ul class="lista">' + hits.slice(0, 60).map(function (it) { return '<li>' + goalHTML(it, BYID[it.sec].title) + '</li>'; }).join("") + '</ul>'
+    : '<p class="tom">Inget mål innehåller ”' + esc($("sok").value.trim()) + '”.</p>';
+}
+
+/* ---------- A constellation opened as a sheet ---------- */
+var openSec = null, opener = null, rmArm = null, rmT = 0;
+function groupsOf(s) {
+  var groups = [], cur = { h: null, b: [] };
+  s.blocks.forEach(function (b) { if (b.h) { if (cur.h || cur.b.length) groups.push(cur); cur = { h: b.h, b: [] }; } else cur.b.push(b); });
+  if (cur.h || cur.b.length) groups.push(cur);
+  return groups;
+}
+function groupItems(g) { var items = []; if (g) g.b.forEach(function (b) { if (b.c) items = items.concat(b.c); }); return items; }
+function sheetHTML(s) {
+  var c = GEO[s.id], lit = litIn(s), n = s.all.length, groups = groupsOf(s), o = [];
+  o.push(mini(c, 350, 176, true));
+  o.push('<h2 class="arktitel" id="arkTitel">' + esc(s.title) + '</h2><p class="arklead">' + esc(s.lead) + '</p>');
+  o.push('<div class="arkrad"><span id="arkTal">' + lit + ' av ' + n + ' klara</span><span class="bar"><i id="arkBar" style="width:' + (n ? Math.round(lit / n * 100) : 0) + '%"></i></span></div>');
+  groups.forEach(function (g, gi) {
+    var items = groupItems(g);
+    if (g.h) o.push('<h3 class="sub" data-g="' + gi + '"><span>' + esc(g.h) + '</span><span>' + (items.length ? cnt(items) : "") + '</span></h3>');
+    g.b.forEach(function (b) {
+      if (b.c) o.push('<ul class="lista">' + b.c.map(function (it) { return '<li>' + goalHTML(it) + '</li>'; }).join("") + '</ul>');
+      else if (b.p) o.push('<ul class="lista">' + b.p.map(function (t) { return '<li><div class="prow"><span class="dot"><i></i></span><span>' + esc(t) + '</span></div></li>'; }).join("") + '</ul>');
+      else if (b.n) {
+        var a = b.a ? (b.a.u.charAt(0) === "#" ? ' <button class="act" type="button" data-act="' + esc(b.a.u.slice(1)) + '">' + esc(b.a.t) + '</button>' : ' <a href="' + esc(b.a.u) + '" target="_blank" rel="noopener">' + esc(b.a.t) + '</a>') : "";
+        o.push('<p class="note">' + esc(b.n) + a + '</p>');
+      }
+    });
+  });
+  o.push('<h3 class="sub" data-g="egna"><span>Egna mål</span><span>' + (s.own.length ? cnt(s.own) : "") + '</span></h3>');
+  if (s.own.length) o.push('<ul class="lista">' + s.own.map(function (it) { return '<li><div class="rowwrap">' + goalHTML(it) + '<button class="ta" type="button" data-rm="' + it.id + '" aria-label="Ta bort ' + esc(it.t) + '">' + X18 + '</button></div></li>'; }).join("") + '</ul>');
+  o.push('<form class="egen" id="egenForm" autocomplete="off"><input id="egenText" type="text" placeholder="Skriv ett nytt mål" aria-label="Nytt mål" enterkeyhint="done" maxlength="200"><button class="knapp" type="submit">Lägg till</button></form>');
+  return o.join("");
+}
+function cnt(items) { var n = 0; items.forEach(function (it) { if (isLit(it.id)) n++; }); return n + " av " + items.length; }
+function refreshSheet() {
+  if (!openSec) return;
+  var s = BYID[openSec], lit = litIn(s), n = s.all.length, groups = groupsOf(s), tal = $("arkTal"), bar = $("arkBar");
+  if (tal) tal.textContent = lit + " av " + n + " klara";
+  if (bar) bar.style.width = (n ? Math.round(lit / n * 100) : 0) + "%";
+  document.querySelectorAll("#arkScroll .sub").forEach(function (h) {
+    var g = h.getAttribute("data-g"), items = g === "egna" ? s.own : groupItems(groups[+g]);
+    h.lastElementChild.textContent = items.length ? cnt(items) : "";
+  });
+  var sv = document.querySelector("#arkScroll .arksky");
+  if (sv) sv.outerHTML = mini(GEO[s.id], 350, 176, true);
+}
+function lockApp(on) {
+  var app = $("app"); if ("inert" in app) app.inert = on; else app.setAttribute("aria-hidden", on ? "true" : "false");
+  document.body.classList.toggle("las", on);
+}
+var hideT = 0;
+function showSheet(el) {
+  clearTimeout(hideT);
+  var sk = $("skymd"); sk.hidden = false; el.hidden = false; el.style.transform = "";
+  lockApp(true);
+  requestAnimationFrame(function () { requestAnimationFrame(function () { sk.classList.add("vis"); el.classList.add("vis"); }); });
+  setTimeout(function () { var b = el.querySelector("[data-stang]"); if (b) b.focus({ preventScroll: true }); }, 60);
+}
+function hideSheet(el, after) {
+  var sk = $("skymd"); el.classList.remove("vis"); sk.classList.remove("vis"); el.style.transform = "";
+  clearTimeout(hideT);
+  hideT = setTimeout(function () { el.hidden = true; if (!$("ark").classList.contains("vis") && !$("nyckel").classList.contains("vis")) { sk.hidden = true; lockApp(false); } if (after) after(); }, reduce ? 0 : 320);
+}
+function openSheet(id, from) {
+  var s = BYID[id]; if (!s) return;
+  openSec = id; opener = from || document.activeElement;
+  $("arkScroll").innerHTML = sheetHTML(s); $("arkScroll").scrollTop = 0;
+  showSheet($("ark"));
+}
+function closeSheet() {
+  if (!openSec) return;
+  openSec = null;
+  hideSheet($("ark"), function () {
+    if (!$("v-mal").hidden) renderMal(false); else skyDirty = true;
+    if (opener && document.contains(opener)) try { opener.focus({ preventScroll: true }); } catch (e) {}
+  });
+}
+var skyDirty = false;
+
+/* ticking a goal: everywhere it is shown */
+function toggle(id, btn) {
+  var it = ITEMS[id]; if (!it) return;
+  if (S.done[id]) delete S.done[id]; else S.done[id] = Date.now();
+  write(K_DONE, S.done);
+  var on = !!S.done[id];
+  document.querySelectorAll('.goal[data-id="' + id + '"]').forEach(function (b) {
+    b.setAttribute("aria-checked", on);
+    var tx = b.querySelector(".tx"), nar = tx.querySelector(".nar");
+    if (on && !nar) { nar = document.createElement("span"); nar.className = "nar"; tx.appendChild(nar); }
+    if (on) nar.textContent = "Klar " + datum(S.done[id]); else if (nar) nar.remove();
+  });
+  if (on && btn) burst(btn);
+  if (openSec) refreshSheet();
+  if (!$("v-mal").hidden && !openSec) {
+    var t = totals(); $("malRad").textContent = t[0] + " av " + t[1] + " mål klara";
+    drawSky(false); renderKbList();
+  } else skyDirty = true;
+}
+function burst(btn) {
+  if (reduce) return;
+  btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+  var st = btn.querySelector(".st"), b = document.createElement("span"); b.className = "burst";
+  for (var i = 0; i < 8; i++) { var r = document.createElement("i"); r.style.setProperty("--r", (i * 45 + 22) + "deg"); b.appendChild(r); }
+  st.appendChild(b); setTimeout(function () { b.remove(); }, 800);
+}
+function addOwn(text) {
+  var s = BYID[openSec]; if (!s) return;
+  text = text.trim().replace(/\s+/g, " "); if (!text) return;
+  var it = { id: "e" + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36), t: text, ts: Date.now() };
+  (S.own[s.id] = S.own[s.id] || []).push(it); write(K_OWN, S.own); ownIndex();
+  var y = $("arkScroll").scrollTop;
+  $("arkScroll").innerHTML = sheetHTML(s); $("arkScroll").scrollTop = y;
+  var inp = $("egenText"); if (inp) inp.focus({ preventScroll: true });
+  toast("Målet är tillagt");
+}
+function removeOwn(id) {
+  var s = BYID[openSec]; if (!s) return;
+  S.own[s.id] = (S.own[s.id] || []).filter(function (it) { return it.id !== id; }); write(K_OWN, S.own);
+  delete S.done[id]; write(K_DONE, S.done); delete ITEMS[id]; ownIndex();
+  var y = $("arkScroll").scrollTop; $("arkScroll").innerHTML = sheetHTML(s); $("arkScroll").scrollTop = y;
+  toast("Målet är borttaget");
+}
+
+/* ---------- Idag: the moon fills up as the day's list gets done ---------- */
+function phasePath(cx, cy, r, f) {
+  f = Math.max(0, Math.min(1, f));
+  if (f < 0.002) return "";
+  if (f > 0.998) return "M" + (cx - r) + " " + cy + "a" + r + " " + r + " 0 1 0 " + 2 * r + " 0a" + r + " " + r + " 0 1 0 " + (-2 * r) + " 0Z";
+  var a = f1(r * Math.abs(1 - 2 * f));
+  return "M" + cx + " " + (cy - r) + "A" + r + " " + r + " 0 0 1 " + cx + " " + (cy + r) + "A" + a + " " + r + " 0 0 " + (f < 0.5 ? 0 : 1) + " " + cx + " " + (cy - r) + "Z";
+}
+function moonSVG(f) {
+  var craters = [[96, 92, 13], [140, 78, 8], [150, 132, 16], [106, 150, 9], [128, 112, 6], [80, 128, 7]];
+  return '<svg class="stor" viewBox="0 0 240 240" aria-hidden="true"><defs>' +
+    '<radialGradient id="mg" cx=".42" cy=".38" r=".75"><stop offset="0" stop-color="#FFF8E6"/><stop offset=".6" stop-color="#F2E6C2"/><stop offset="1" stop-color="#D3C296"/></radialGradient>' +
+    '<radialGradient id="md" cx=".4" cy=".38" r=".7"><stop offset="0" stop-color="#1A1F58"/><stop offset="1" stop-color="#0C1036"/></radialGradient>' +
+    '<radialGradient id="mglow"><stop offset=".55" stop-color="#F2E6C2" stop-opacity=".26"/><stop offset="1" stop-color="#F2E6C2" stop-opacity="0"/></radialGradient>' +
+    '<filter id="msoft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.1"/></filter>' +
+    '<clipPath id="mdisc"><circle cx="120" cy="120" r="86"/></clipPath>' +
+    '<clipPath id="mclip"><path id="mclipPath" d="' + phasePath(120, 120, 86, f) + '"/></clipPath></defs>' +
+    '<circle id="mGlow" cx="120" cy="120" r="118" fill="url(#mglow)" opacity="' + f1(0.12 + 0.88 * f) + '"/>' +
+    '<circle cx="120" cy="120" r="86" fill="url(#md)"/>' +
+    '<g fill="#2A2F6E" fill-opacity=".35">' + craters.map(function (c) { return '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="' + c[2] + '"/>'; }).join("") + '</g>' +
+    '<g clip-path="url(#mdisc)"><path id="mLit" class="moon-lit" filter="url(#msoft)" d="' + phasePath(120, 120, 86, f) + '"/></g>' +
+    '<g clip-path="url(#mclip)" fill="#B3A275" fill-opacity=".3">' + craters.map(function (c) { return '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="' + c[2] + '"/>'; }).join("") + '</g>' +
+    '<circle cx="120" cy="120" r="85.6" fill="none" stroke="#F2E6C2" stroke-opacity=".14"/></svg>';
+}
+function miniMoon(f, today) {
+  return '<svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="11" fill="#171C50"' + (today ? ' stroke="#F1EFFF" stroke-opacity=".6"' : '') + '/>' +
+    (f > 0.002 ? '<path d="' + phasePath(15, 15, 11, f) + '" fill="#F2E6C2"/>' : '') + '</svg>';
+}
+function phaseName(f) {
+  if (f <= 0) return "Nymåne";
+  if (f >= 1) return "Fullmåne";
+  if (f < 0.45) return "Tilltagande skära";
+  if (f <= 0.55) return "Halvmåne";
+  return "Nästan full";
+}
+function dailyIds() { return D.daily.items.map(function (it) { return it.id; }); }
+function doneOn(key) { var ids = dailyIds(), set = S.days[key] || []; return set.filter(function (id) { return ids.indexOf(id) !== -1; }); }
+var shownDay = null, moonF = 0, moonRaf = 0;
+function renderIdag() {
+  var now = new Date(), key = dayKey(now), done = doneOn(key), n = D.daily.items.length, f = n ? done.length / n : 0;
+  shownDay = key;
+  var t = VDAG[now.getDay()] + " " + now.getDate() + " " + MAN[now.getMonth()];
+  $("idagDatum").textContent = t.charAt(0).toUpperCase() + t.slice(1);
+  $("manen").innerHTML = moonSVG(f) + '<p class="fas" id="fas">' + phaseName(f) + '</p><p class="idagrad" id="idagRad">' + done.length + ' av ' + n + ' klara i dag</p>';
+  moonF = f;
+  renderWeek();
+  $("idagLead").textContent = D.daily.lead;
+  $("idagLista").innerHTML = D.daily.items.map(function (it) {
+    var on = done.indexOf(it.id) !== -1;
+    return '<li><button class="dg" type="button" role="checkbox" aria-checked="' + on + '" data-dag="' + it.id + '"><span class="rg">' + CHECK + '</span><span class="tx">' + esc(it.t) + '</span></button></li>';
+  }).join("");
+}
+function renderWeek() {
+  var o = [], now = new Date(), n = D.daily.items.length;
+  for (var i = 6; i >= 0; i--) {
+    var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i), key = dayKey(d), f = n ? doneOn(key).length / n : 0;
+    o.push('<li' + (i === 0 ? ' class="nu"' : '') + ' aria-label="' + VDAG[d.getDay()] + ', ' + doneOn(key).length + ' av ' + n + '">' + miniMoon(f, i === 0) + '<span>' + VD3[d.getDay()] + '</span></li>');
+  }
+  $("veckan").innerHTML = o.join("");
+}
+function tweenMoon(to) {
+  var from = moonF, t0 = performance.now(), dur = reduce ? 0 : 520;
+  cancelAnimationFrame(moonRaf);
+  function step(t) {
+    var k = dur ? Math.min(1, (t - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 3), f = from + (to - from) * e, d = phasePath(120, 120, 86, f);
+    var lit = $("mLit"), cl = $("mclipPath"), gl = $("mGlow");
+    if (lit) lit.setAttribute("d", d); if (cl) cl.setAttribute("d", d); if (gl) gl.setAttribute("opacity", f1(0.12 + 0.88 * f));
+    if (k < 1) moonRaf = requestAnimationFrame(step); else moonF = to;
+  }
+  moonRaf = requestAnimationFrame(step);
+}
+function toggleDay(id, btn) {
+  var key = dayKey(), set = (S.days[key] || []).slice(), i = set.indexOf(id);
+  if (i === -1) set.push(id); else set.splice(i, 1);
+  S.days[key] = set;
+  var keys = Object.keys(S.days).sort(); while (keys.length > 60) delete S.days[keys.shift()];
+  write(K_DAYS, S.days);
+  var on = i === -1, done = doneOn(key), n = D.daily.items.length, f = n ? done.length / n : 0;
+  btn.setAttribute("aria-checked", on);
+  $("fas").textContent = phaseName(f);
+  $("idagRad").textContent = done.length + " av " + n + " klara i dag";
+  tweenMoon(f); renderWeek();
+  if (f === 1 && on) toast("Fullmåne. Allt är klart i dag.");
+}
+
+/* ---------- Ordning: the order, and the honest part ---------- */
+function renderOrdning() {
+  var O = D.order, A = D.honest;
+  $("ordTitel").textContent = O.title; $("ordLead").textContent = O.lead;
+  $("steg").innerHTML = O.steps.map(function (st, i) {
+    var s = st.go && BYID[st.go];
+    return '<li><span class="nr" aria-hidden="true">' + (i + 1) + '</span><div><div class="tx">' + esc(st.t) + '</div>' +
+      (s ? '<button class="ga" type="button" data-sec="' + s.id + '">' + mini(GEO[s.id], 28, 28, false) + 'Öppna ' + esc(s.short) + '</button>' : '') + '</div></li>';
+  }).join("");
+  $("ordNote").textContent = O.note;
+  $("arlTitel").textContent = A.title; $("arlLead").textContent = A.lead;
+  $("punkter").innerHTML = A.points.map(function (p) {
+    return '<li><b>' + esc(p.b) + '</b><p>' + esc(p.t) + '</p>' + (p.a ? '<a href="' + esc(p.a.u) + '" target="_blank" rel="noopener">' + esc(p.a.t) + '</a>' : '') + '</li>';
+  }).join("");
+}
+
+/* ---------- The whole list as text, in the same format as Dagsschema ---------- */
+function asText() {
+  var o = [D.title, "", "# " + D.daily.title];
+  D.daily.items.forEach(function (it) { o.push("- " + it.t); });
+  SECS.forEach(function (s) {
+    o.push("", "# " + s.title);
+    s.blocks.forEach(function (b) {
+      if (b.h) o.push("", b.h);
+      if (b.c) b.c.forEach(function (it) { o.push((isLit(it.id) ? "[x] " : "[ ] ") + it.t); });
+      if (b.p) b.p.forEach(function (t) { o.push("- " + t); });
+      if (b.n) o.push("> " + b.n);
+    });
+    if (s.own.length) { o.push("", "Egna mål"); s.own.forEach(function (it) { o.push((isLit(it.id) ? "[x] " : "[ ] ") + it.t); }); }
+  });
+  o.push("", "# " + D.order.title);
+  D.order.steps.forEach(function (st, i) { o.push((i + 1) + ". " + st.t); });
+  return o.join("\n");
+}
+
+/* ---------- Tabs ---------- */
+var introDone = false;
+function show(tab) {
+  ["idag", "mal", "ordning"].forEach(function (t) { $("v-" + t).hidden = t !== tab; });
+  document.querySelectorAll(".flik").forEach(function (b) { if (b.getAttribute("data-flik") === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+  write(K_TAB, tab);
+  window.scrollTo(0, 0);
+  if (tab === "mal") { if (!introDone) { introDone = true; renderMal(true); } else if (skyDirty) { skyDirty = false; renderMal(false); } }
+  if (tab === "idag" && shownDay !== dayKey()) renderIdag();
+}
+
+/* ---------- Events ---------- */
+function wire() {
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target : e.target.parentElement;
+    var g = t.closest(".goal"); if (g) { toggle(g.getAttribute("data-id"), g); return; }
+    var dg = t.closest(".dg"); if (dg) { toggleDay(dg.getAttribute("data-dag"), dg); return; }
+    var rm = t.closest("[data-rm]");
+    if (rm) {
+      var id = rm.getAttribute("data-rm");
+      if (rmArm === id) { clearTimeout(rmT); rmArm = null; removeOwn(id); return; }
+      rmArm = id; rm.classList.add("fraga"); rm.textContent = "Ta bort?";
+      clearTimeout(rmT); rmT = setTimeout(function () { rmArm = null; if (document.contains(rm)) { rm.classList.remove("fraga"); rm.innerHTML = X18; } }, 3000);
+      return;
+    }
+    var sec = t.closest("[data-sec]"); if (sec) { openSheet(sec.getAttribute("data-sec"), sec); return; }
+    var fl = t.closest("[data-flik]"); if (fl) { show(fl.getAttribute("data-flik")); return; }
+    if (t.closest("[data-stang]")) { if (!$("nyckel").hidden && $("nyckel").classList.contains("vis")) hideSheet($("nyckel")); else closeSheet(); return; }
+    if (t.closest("[data-nyckel]")) { showSheet($("nyckel")); return; }
+    var act = t.closest("[data-act]"); if (act && act.getAttribute("data-act") === "kopiera") { copy(myLink(), "Länken är kopierad"); return; }
+    if (t.closest("#skymd")) { if ($("nyckel").classList.contains("vis")) hideSheet($("nyckel")); else closeSheet(); }
+  });
+  $("sky").addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var kb = e.target.closest && e.target.closest(".kb"); if (kb) { e.preventDefault(); openSheet(kb.getAttribute("data-sec"), kb); }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if ($("nyckel").classList.contains("vis")) hideSheet($("nyckel")); else if (openSec) closeSheet();
+  });
+  document.addEventListener("submit", function (e) {
+    if (e.target.id !== "egenForm") return;
+    e.preventDefault(); var inp = $("egenText"); if (inp && inp.value.trim()) { addOwn(inp.value); }
+  });
+  $("sok").addEventListener("input", renderSearch);
+  $("kopieraLank").addEventListener("click", function () { copy(myLink(), "Länken är kopierad"); });
+  $("kopieraText").addEventListener("click", function () { copy(asText(), "Listan är kopierad"); });
+  /* drag the sheet down to close it */
+  var grepp = $("arkGrepp"), ark = $("ark"), y0 = null, dy = 0, t0 = 0;
+  grepp.addEventListener("pointerdown", function (e) { if (e.target.closest("[data-stang]")) return; y0 = e.clientY; dy = 0; t0 = Date.now(); ark.classList.add("drar"); try { grepp.setPointerCapture(e.pointerId); } catch (x) {} });
+  grepp.addEventListener("pointermove", function (e) { if (y0 === null) return; dy = Math.max(0, e.clientY - y0); ark.style.transform = "translateY(" + dy + "px)"; });
+  function release() {
+    if (y0 === null) return; y0 = null; ark.classList.remove("drar");
+    var fast = dy > 40 && (Date.now() - t0) < 250;
+    if (dy > 120 || fast) closeSheet(); else ark.style.transform = "";
+  }
+  grepp.addEventListener("pointerup", release); grepp.addEventListener("pointercancel", release);
+  /* a new day: the moon starts over */
+  setInterval(function () { if (shownDay && shownDay !== dayKey()) renderIdag(); }, 30000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && shownDay && shownDay !== dayKey()) renderIdag(); });
+}
+
+/* ---------- Start ---------- */
+function boot(plan) {
+  D = plan;
+  S.done = read(K_DONE, {}) || {}; S.days = read(K_DAYS, {}) || {}; S.own = read(K_OWN, {}) || {};
+  index(); geometry();
+  var up = D.updated ? new Date(D.updated + "T12:00:00") : null;
+  $("omListan").textContent = D.intro + (up ? " Senast uppdaterad " + up.getDate() + " " + MAN[up.getMonth()] + " " + up.getFullYear() + "." : "");
+  renderIdag(); renderOrdning(); renderKbList();
+  wire();
+  var tab = read(K_TAB, "mal"); if (["idag", "mal", "ordning"].indexOf(tab) === -1) tab = "mal";
+  show(tab);
+}
+
+/* ---------- Unlocking: the list is sealed in this file and the key is the last part of the link ---------- */
+function bytes(s) {
+  s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "=";
+  var bin = atob(s), u = new Uint8Array(bin.length), i;
+  for (i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return u;
+}
+function keyFrom(text) {
+  var s = String(text || "");
+  if (s.indexOf("#") !== -1) s = s.slice(s.lastIndexOf("#") + 1);
+  s = s.trim();
+  return /^[A-Za-z0-9_-]{22}$/.test(s) ? s : null;
+}
+function unseal(k) {
+  if (!window.crypto || !crypto.subtle) return Promise.reject(new Error("no crypto"));
+  var buf = bytes(SEALED);
+  return crypto.subtle.importKey("raw", bytes(k), "AES-GCM", false, ["decrypt"])
+    .then(function (key) { return crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(0, 12) }, key, buf.slice(12)); })
+    .then(function (plain) { return JSON.parse(new TextDecoder().decode(plain)); });
+}
+function opened(plan, k) {
+  KEY = k;
+  try { localStorage.setItem(K_KEY, k); } catch (e) { /* then the link has to carry it */ }
+  /* Keep the key in the address, so that "Lägg till på hemskärmen" saves it with the app. */
+  if (keyFrom(location.hash) !== k) { try { history.replaceState(null, "", "#" + k); } catch (e) {} }
+  $("lock").hidden = true; $("app").hidden = false;
+  boot(plan);
+}
+var saved = null;
+try { saved = localStorage.getItem(K_KEY); } catch (e) {}
+var tries = [keyFrom(location.hash), keyFrom(saved)].filter(function (k, i, a) { return k && a.indexOf(k) === i; });
+(function next() {
+  if (!tries.length) { $("lock").hidden = false; return; }
+  var k = tries.shift();
+  unseal(k).then(function (plan) { opened(plan, k); }, next);
+})();
+$("lockForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var msg = $("lockMsg"), k = keyFrom($("lockText").value);
+  if (!k) { msg.textContent = "Det där är inte hela länken. Kopiera den från Claude och klistra in den igen."; return; }
+  unseal(k).then(function (plan) { opened(plan, k); }, function () {
+    msg.textContent = "Länken passar inte den här listan. Klistra in den senaste länken från Claude.";
+  });
+});
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () { /* works without it */ }); });
+}
+})();
+</script>
+</body>
+</html>
