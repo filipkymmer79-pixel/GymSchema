@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>Filips önskelista</title>
-<meta name="description" content="Filips önskelista till jul, med pris, länk och ett rim till varje paket.">
+<meta name="description" content="Filips önskelista till jul: se vad som redan är köpt, öppna adventsluckorna och prata ihop er i chatten.">
 <meta name="robots" content="noindex">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -129,7 +129,7 @@ a{color:inherit}
 .tips{position:absolute;z-index:3;right:12px;bottom:12px;display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:var(--natt);color:var(--sno);font-size:13px;font-weight:700;pointer-events:none}
 .tips::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ljus);animation:puls 1.4s ease-in-out infinite}
 @keyframes puls{50%{transform:scale(1.7);opacity:.45}}
-.sak.vald .tips{display:none}
+.sak.inslagen .tips{display:none}
 .om{display:grid;gap:0;min-width:0}
 .sak h3{margin:0;font:700 26px/1.12 var(--rubrik);font-variation-settings:"SOFT" 100;letter-spacing:-.005em;text-wrap:balance}
 .hos{margin:5px 0 0;color:var(--is);font-size:15px}
@@ -153,8 +153,8 @@ a{color:inherit}
 .vald-rad .bock{flex:none;width:26px;height:26px;border-radius:50%;background:var(--band);display:grid;place-items:center}
 .vald-rad .bock::before{content:"";width:11px;height:6px;border-left:3px solid #fff;border-bottom:3px solid #fff;transform:translateY(-1px) rotate(-45deg)}
 .vald-rad .lank{margin-left:auto;color:var(--is)}
-.sak.vald .vald-rad{display:flex}
-.sak.vald .kop{display:none}
+.sak.inslagen .vald-rad{display:flex}
+.sak.inslagen .kop{display:none}
 
 /* Rimmet */
 .rim{display:none;margin-top:18px;padding:16px 18px 10px;background:var(--sno);color:var(--natt);border-radius:4px 18px 18px 18px}
@@ -177,11 +177,11 @@ a{color:inherit}
 .inslag .tag::before{content:"";position:absolute;left:50%;top:8px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--natt)}
 .inslag .tag span{display:block}
 .inslag .tag .fran{font-size:20px;font-weight:600;margin-top:3px}
-.sak.vald .pp{clip-path:inset(0);transition-delay:0s}
-.sak.vald .sv{transform:scaleY(1);transition:transform .3s .36s cubic-bezier(.6,0,.2,1)}
-.sak.vald .sh{transform:scaleX(1);transition:transform .3s .52s cubic-bezier(.6,0,.2,1)}
-.sak.vald .ros{transform:translate(-50%,-46%) scale(1);transition:transform .4s .8s cubic-bezier(.3,1.7,.5,1)}
-.sak.vald .tag{transform:rotate(-5deg) scale(1);opacity:1;transition:transform .55s .95s cubic-bezier(.3,1.5,.5,1),opacity .2s .95s}
+.sak.inslagen .pp{clip-path:inset(0);transition-delay:0s}
+.sak.inslagen .sv{transform:scaleY(1);transition:transform .3s .36s cubic-bezier(.6,0,.2,1)}
+.sak.inslagen .sh{transform:scaleX(1);transition:transform .3s .52s cubic-bezier(.6,0,.2,1)}
+.sak.inslagen .ros{transform:translate(-50%,-46%) scale(1);transition:transform .4s .8s cubic-bezier(.3,1.7,.5,1)}
+.sak.inslagen .tag{transform:rotate(-5deg) scale(1);opacity:1;transition:transform .55s .95s cubic-bezier(.3,1.5,.5,1),opacity .2s .95s}
 .m1{--rb:var(--ljus);--rb2:var(--ljus-djup)}
 .m1 .pp{background:repeating-linear-gradient(135deg,var(--band) 0 16px,var(--sno) 16px 32px)}
 .m2 .pp{background:radial-gradient(circle,var(--ljus) 0 5px,transparent 5.6px) 0 0/30px 30px,radial-gradient(circle,var(--ljus) 0 5px,transparent 5.6px) 15px 15px/30px 30px,var(--papper)}
@@ -293,6 +293,326 @@ dialog[open]{animation:upp .32s cubic-bezier(.3,1.1,.4,1)}
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
   .v-skiva{animation:none!important}
 }
+/* ================= Nytt 27 november: delade köp, luckor, chatt, hemskärmsguide, Filips eget läge ================= */
+
+/* ---------- Hälsningen ---------- */
+.vem .namnrad{margin:16px 0 0;display:grid;gap:6px;max-width:260px}
+.namnrad label{font-weight:700;font-size:15px}
+.vem .namnrad input{position:static;inset:auto;height:auto;opacity:1;cursor:text;min-height:46px;padding:8px 14px;border:2px solid var(--is);border-radius:14px;background:transparent;color:var(--sno);font-size:16px}
+.vem .namnrad input:focus{outline:none;border-color:var(--ljus)}
+.namnrad input::placeholder{color:rgba(169,199,227,.7)}
+.lage{display:flex;align-items:flex-start;gap:9px}
+.lage i{flex:none;width:9px;height:9px;margin-top:7px;border-radius:50%;background:var(--is)}
+.lage.ok i{background:var(--ljus);animation:puls 2.4s ease-in-out infinite}
+.hemkort{position:relative;display:grid;grid-template-columns:64px minmax(0,1fr);gap:2px 16px;align-items:center;padding:16px 16px 14px 18px;border-radius:18px;color:var(--sno);
+  background:radial-gradient(circle,rgba(242,246,250,.16) 0 1.4px,transparent 2px) 0 0/22px 22px,var(--papper)}
+.hemkort img{grid-row:span 2;width:64px;height:64px;border-radius:15px;transform:rotate(-6deg);box-shadow:0 6px 0 rgba(6,16,34,.35)}
+.hemkort strong{align-self:end;font:700 21px/1.15 var(--rubrik);font-variation-settings:"SOFT" 100}
+.hemkort span{align-self:start;font-size:15px;color:var(--is)}
+.hemkort .knappar{grid-column:1/-1;margin-top:12px}
+.hemkort .knapp{flex:0 0 auto;min-height:46px;background:var(--sno);color:var(--natt)}
+.hemkort .lank{color:var(--is)}
+
+/* ---------- Adventsluckorna ---------- */
+.kalender{max-width:1040px;margin:0 auto;padding:40px 20px 0}
+.kalender h2{margin:0;font:800 34px/1.05 var(--rubrik);font-variation-settings:"SOFT" 100;letter-spacing:-.01em}
+.kal-ingress{margin:10px 0 0;max-width:33em;font-size:17px}
+.nedrakning{margin:16px 0 0}
+.nedrakning p{margin:0}
+.nedrakning .fin{margin-top:4px}
+.luckrad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:480px;margin-top:10px;align-items:end}
+.luckplats{display:grid;justify-items:center;min-width:0}
+.luckplats .ljus{display:block;width:38px;height:74px;overflow:visible;margin-bottom:-1px}
+.lucka{position:relative;display:block;width:100%;aspect-ratio:4/5;padding:0;border:0;background:none;color:inherit;cursor:pointer;perspective:500px;-webkit-tap-highlight-color:transparent}
+.lucka:focus-visible{outline-offset:4px;border-radius:12px}
+.hal{position:absolute;inset:0;border-radius:10px;overflow:hidden;display:grid;align-content:end;justify-items:center;padding:0 2px 9px;color:var(--ljus);font:700 17px/1 var(--hand);
+  background:radial-gradient(circle at 50% 40%,rgba(245,185,66,.95) 0 10%,rgba(245,185,66,.3) 11% 30%,transparent 52%),#081527;box-shadow:inset 0 0 0 3px #081527}
+.blad{position:absolute;inset:0;transform-origin:0 50%;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.45,0,.2,1)}
+.fram,.bak{position:absolute;inset:0;border-radius:10px;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.fram{display:grid;place-items:center;overflow:hidden;box-shadow:inset 0 0 0 2px rgba(6,16,34,.25)}
+.bak{transform:rotateY(180deg);background:var(--sno);box-shadow:inset 0 0 0 2px rgba(6,16,34,.15)}
+.lucka[aria-expanded="true"] .blad{transform:rotateY(-104deg)}
+.siffra{width:62%;aspect-ratio:1;border-radius:50%;background:var(--sno);color:var(--natt);display:grid;place-items:center;font:900 clamp(26px,9.5vw,40px)/1 var(--rubrik);font-variation-settings:"SOFT" 100;box-shadow:0 3px 0 rgba(6,16,34,.3);transform:translateY(-10%)}
+.datum{position:absolute;left:50%;bottom:7px;transform:translateX(-50%);white-space:nowrap;padding:3px 8px 2px;border-radius:999px;background:var(--natt);color:var(--sno);font:700 16px/1 var(--hand)}
+.knopp{position:absolute;right:6px;top:50%;width:9px;height:9px;margin-top:-4px;border-radius:50%;background:var(--natt);box-shadow:0 0 0 2px rgba(242,246,250,.6)}
+.l1 .fram{background:repeating-linear-gradient(135deg,var(--band) 0 12px,var(--sno) 12px 24px)}
+.l2 .fram{background:radial-gradient(circle,var(--ljus) 0 4px,transparent 4.6px) 0 0/22px 22px,radial-gradient(circle,var(--ljus) 0 4px,transparent 4.6px) 11px 11px/22px 22px,var(--papper)}
+.l3 .fram{background:linear-gradient(90deg,rgba(23,55,106,.5) 50%,transparent 50%) 0 0/24px 24px,linear-gradient(rgba(23,55,106,.5) 50%,transparent 50%) 0 0/24px 24px,var(--sno)}
+.l4 .fram{background:repeating-linear-gradient(90deg,var(--ljus) 0 4px,transparent 4px 20px),var(--band-djup)}
+.lucka.aktiv::after{content:"";position:absolute;left:50%;bottom:-19px;margin-left:-11px;border:11px solid transparent;border-top-width:0;border-bottom-color:var(--sno)}
+.lucka-in{position:relative;max-width:560px;margin-top:18px;padding:20px 16px 4px;background:var(--sno);color:var(--natt);border-radius:16px;color-scheme:light;animation:fram .4s cubic-bezier(.3,1.2,.5,1)}
+.lucka-in .lr{margin:0;font:800 27px/1.05 var(--rubrik);font-variation-settings:"SOFT" 100}
+.lucka-in .nar{margin:4px 0 0;font:700 21px/1.1 var(--hand);color:var(--band-djup)}
+.lucka-in .tomt{margin:14px 0 16px;max-width:30em}
+.lucka-in .lank{color:var(--natt)}
+.lucka-fot{display:flex;flex-wrap:wrap;gap:0 18px;padding:6px 0 10px;border-top:1.5px dashed rgba(16,37,68,.25)}
+.sak.liten{grid-template-columns:108px minmax(0,1fr);column-gap:14px;row-gap:0;padding:18px 0;border-top:1.5px dashed rgba(16,37,68,.25);align-items:start}
+.lucka-in .nar+.sak.liten{border-top:0}
+.sak.liten .om{display:contents}
+.sak.liten .scen{grid-row:1/span 3;border-radius:12px;align-self:start}
+.sak.liten h3{font-size:20px}
+.sak.liten .hos{color:rgba(16,37,68,.72);font-size:14px}
+.sak.liten .pris{margin-top:6px}
+.sak.liten .pris b{font-size:24px;color:var(--band-djup)}
+.sak.liten .pris s{color:rgba(16,37,68,.62)}
+.sak.liten .fakta,.sak.liten .lapp,.sak.liten .knappar,.sak.liten .rim,.sak.liten .agarrad,.sak.liten .dold-rad,.sak.liten .prata{grid-column:1/-1}
+.sak.liten .lapp{color:var(--band-djup)}
+.sak.liten .knappar{margin-top:14px}
+.sak.liten .knapp.butik{border-color:rgba(16,37,68,.4);color:var(--natt)}
+.sak.liten .knapp.butik small{color:rgba(16,37,68,.7)}
+.sak.liten .vald-rad .lank,.sak.liten .prata .lank{color:rgba(16,37,68,.72)}
+.sak.liten .rim{background:#FBEED2}
+.sak.liten .nr,.sak.liten .tips{display:none}
+.sak.liten .inslag .sv{width:12px}
+.sak.liten .inslag .sh{height:12px}
+.sak.liten .inslag .ros{width:56px;left:calc(24% + 6px);top:calc(54% + 6px)}
+.sak.liten .inslag .tag{display:none}
+
+/* ---------- Delade köp ---------- */
+.pris b.lang{font-size:22px}
+.sak.liten .pris b.lang{font-size:18px}
+.nr2.lk{background:var(--ljus);color:var(--natt);font-size:14px}
+.sak.annans .vald-rad .lank{display:none}
+.sak.annans .bock{background:var(--is)}
+.sak.annans .bock::before{border-color:var(--natt)}
+.prata{display:none;margin:4px 0 0}
+body.moln:not(.agare) .prata{display:block}
+.prata .lank{padding:10px 2px;color:var(--is);font-weight:600}
+.dold-rad{display:none;margin:12px 0 0;padding:8px 12px;border-radius:10px;background:rgba(245,185,66,.16);color:var(--ljus);font-weight:700;font-size:15px}
+.liten .dold-rad{background:#FBEED2;color:var(--natt)}
+.sak.dold .dold-rad{display:block}
+body.agare .sak.dold .scen,body.agare .sak.dold h3,body.agare .sak.dold .pris,body.agare .sak.dold .fakta,body.agare .sak.dold .hos{opacity:.42}
+
+/* ---------- Filips eget läge ---------- */
+.agarkort{max-width:1040px;margin:0 auto;padding:28px 20px 0}
+.ruta{border:2px dashed rgba(245,185,66,.6);border-radius:18px;padding:16px 16px 14px;max-width:620px}
+.ruta .hand{margin:0;font:700 25px/1.1 var(--hand);color:var(--ljus)}
+.ruta p{margin:6px 0 0;max-width:34em}
+.ruta .knappar{margin-top:14px}
+.ruta .knapp{flex:0 1 auto;background:var(--ljus);color:var(--natt)}
+.ruta .knapp.rand{background:transparent;border-color:var(--is);color:var(--sno)}
+.steglista{margin:14px 0 0;padding:0;list-style:none;counter-reset:steg;display:grid;gap:14px}
+.steglista li{counter-increment:steg;display:grid;grid-template-columns:30px minmax(0,1fr);gap:4px 12px;align-items:start}
+.steglista li::before{content:counter(steg);grid-row:span 2;width:30px;height:30px;border-radius:50%;background:var(--ljus);color:var(--natt);display:grid;place-items:center;font-weight:800}
+.steglista b{align-self:center;min-height:30px;display:flex;align-items:center}
+.steglista span{grid-column:2;color:var(--is);font-size:15px}
+.steglista .knapp{grid-column:2;justify-self:start;margin-top:6px}
+.agarrad{display:none;flex-wrap:wrap;gap:0 18px;margin-top:8px}
+body.agare .agarrad{display:flex}
+.agarrad .lank{color:var(--ljus);padding:10px 2px}
+.liten .agarrad .lank{color:var(--band-djup)}
+body.agare .knapp.kop,body.agare .vald-rad,body.agare .rim,body.agare .inslag,body.agare .bar{display:none!important}
+body.agare{padding-bottom:0!important}
+
+/* ---------- Chatten ---------- */
+.chattknapp{position:fixed;z-index:19;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:62px;height:62px;border-radius:50%;border:0;padding:0;background:var(--band);color:#fff;cursor:pointer;display:grid;place-items:center;
+  box-shadow:0 10px 24px rgba(6,16,34,.6),inset 0 -5px 0 rgba(0,0,0,.18);transition:bottom .25s,transform .15s}
+body.har-val .chattknapp{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.chattknapp:active{transform:scale(.94)}
+.chattknapp svg{width:32px;height:32px}
+.chattknapp .antal{position:absolute;top:-5px;right:-5px;min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:var(--ljus);color:var(--natt);font-weight:800;font-size:14px;display:grid;place-items:center;box-shadow:0 0 0 3px var(--natt)}
+.chattknapp.ny{animation:ring .8s}
+@keyframes ring{0%,100%{transform:rotate(0)}15%{transform:rotate(-16deg) scale(1.1)}35%{transform:rotate(13deg) scale(1.1)}55%{transform:rotate(-9deg)}75%{transform:rotate(5deg)}}
+dialog.chatt{inset:auto 0 var(--kb,0px) 0;height:min(92%,calc(100% - var(--kb,0px) - 8px));max-height:none;background:var(--natt);color:var(--sno);color-scheme:dark;overflow:hidden;flex-direction:column}
+dialog.chatt[open]{display:flex}
+.c-topp{position:relative;flex:none;padding:18px 18px 22px;isolation:isolate}
+.c-topp::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:24px 24px 0 0;
+  background:radial-gradient(circle,rgba(242,246,250,.2) 0 1.6px,transparent 2.2px) 0 0/26px 26px,radial-gradient(circle,rgba(242,246,250,.13) 0 1.2px,transparent 1.8px) 13px 13px/26px 26px,var(--papper);
+  -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/18px 100%;mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/18px 100%}
+.c-rubrik{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.c-rubrik h2{margin:0;font:800 28px/1 var(--rubrik);font-variation-settings:"SOFT" 100}
+.c-rubrik .lank{color:var(--sno)}
+.c-under{margin:6px 0 0;font-size:15px;color:var(--is);display:flex;flex-wrap:wrap;gap:2px 12px;align-items:center}
+.c-live{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--sno)}
+.c-live i{width:8px;height:8px;border-radius:50%;background:var(--is)}
+.c-live.pa i{background:var(--ljus);animation:puls 1.6s ease-in-out infinite}
+.c-notis{flex:none;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;margin:0 14px;padding:10px 14px;border-radius:14px;background:rgba(169,199,227,.12);font-size:15px}
+.c-notis span{flex:1 1 160px}
+.c-notis .knapp{flex:none;min-height:40px;padding:6px 14px;font-size:14.5px;background:var(--ljus);color:var(--natt)}
+.c-notis .lank{padding:6px 2px;color:var(--is)}
+.c-lista{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:12px 14px 10px;display:flex;flex-direction:column;gap:3px}
+.c-tom{margin:auto;padding:20px 10px;text-align:center;max-width:20em;color:var(--is)}
+.c-tom svg{width:132px;height:auto;margin-bottom:6px}
+.c-tom b{display:block;font:700 27px/1.1 var(--hand);color:var(--sno);margin-bottom:6px}
+.c-dag{align-self:center;margin:12px 0 6px;font:700 20px/1 var(--hand);color:var(--is)}
+.c-m{max-width:86%;display:grid;justify-items:start;align-self:flex-start}
+.c-m.min{align-self:flex-end;justify-items:end}
+.c-vem{margin:9px 3px 2px;font:700 21px/1 var(--hand);color:var(--vf,var(--is))}
+.c-b{position:relative;padding:9px 14px 8px;border:0;text-align:left;background:var(--bf,#D9E8F5);color:var(--natt);border-radius:5px 17px 17px 17px;font-size:16px;line-height:1.38;overflow-wrap:anywhere}
+.c-m.min .c-b{border-radius:17px 5px 17px 17px;background:var(--sno)}
+.c-m.v-mamma{--bf:#FADCD9;--vf:#F4B8B2}
+.c-m.v-pappa{--bf:#D9E8F5;--vf:#A9C7E3}
+.c-m.v-annan{--bf:#FBEED2;--vf:#F5B942}
+.c-m.v-filip{--bf:var(--band-djup);--vf:#F28A86}
+.c-m.v-filip .c-b{color:#fff}
+.c-m.min.v-filip .c-b{background:var(--band-djup)}
+.c-om{display:block;margin:0 0 5px;padding:0;border:0;background:none;color:inherit;font-size:13.5px;font-weight:700;text-align:left;text-decoration:underline;text-underline-offset:2px;opacity:.8;cursor:pointer}
+.c-f{display:inline-flex;align-items:center;gap:5px;margin:3px 3px 0;font-size:12.5px;font-weight:700;color:#F28A86}
+.c-f::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--band)}
+.c-tid{margin:2px 4px 0;font-size:12px;color:var(--is);font-variant-numeric:tabular-nums}
+.c-m.fel .c-tid{color:var(--ljus);font-weight:700}
+.c-ta{margin:0 0 0 8px;padding:5px 2px;border:0;background:none;color:var(--is);font-weight:600;font-size:12.5px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.c-m.fel .c-ta,.c-ta.sakert{color:var(--ljus);font-weight:700}
+.c-m.ny{animation:landa .4s cubic-bezier(.3,1.5,.5,1)}
+@keyframes landa{from{opacity:0;transform:translateY(16px) rotate(-2deg) scale(.96)}}
+.c-skriv{flex:none;display:grid;gap:8px;padding:8px 12px calc(10px + env(safe-area-inset-bottom,0px));background:#0B1B33;border-top:1.5px solid rgba(169,199,227,.18)}
+.c-fraser{display:flex;gap:6px;overflow-x:auto;margin:0 -12px;padding:0 12px;scrollbar-width:none}
+.c-fraser::-webkit-scrollbar{display:none}
+.c-fras{flex:none;min-height:36px;padding:0 13px;border-radius:999px;border:1.5px solid rgba(169,199,227,.5);background:none;color:var(--sno);font-size:14.5px;font-weight:600;white-space:nowrap;cursor:pointer}
+.c-fras.till{border-color:var(--band);color:#F7A5A2}
+.c-fras.till[aria-pressed="true"]{background:var(--band-djup);border-color:var(--band-djup);color:#fff}
+.c-bilaga{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 6px 6px 12px;border-radius:12px;background:rgba(169,199,227,.14);font-size:14.5px}
+.c-bilaga b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.c-bilaga .lank{flex:none;padding:6px 8px;color:var(--is)}
+.c-rad{display:flex;align-items:flex-end;gap:8px}
+.c-rad textarea{flex:1 1 auto;min-width:0;height:46px;min-height:46px;max-height:118px;resize:none;border:2px solid transparent;border-radius:23px;padding:10px 16px;background:var(--sno);color:var(--natt);font-size:16px;line-height:1.35}
+.c-rad textarea:focus{outline:none;border-color:var(--ljus)}
+.c-skicka{flex:none;width:46px;height:46px;border-radius:50%;border:0;padding:0;background:var(--band);color:#fff;display:grid;place-items:center;cursor:pointer}
+.c-skicka:disabled{background:rgba(169,199,227,.25);color:rgba(242,246,250,.5);cursor:default}
+.c-skicka svg{width:22px;height:22px}
+.c-info{margin:0;font-size:13.5px;color:var(--is)}
+.c-vemval{display:grid;gap:10px;padding:14px 14px calc(16px + env(safe-area-inset-bottom,0px));background:#0B1B33;border-top:1.5px solid rgba(169,199,227,.18)}
+.c-vemval p{margin:0;font-weight:700}
+
+/* ---------- Ark med formulär, guide och vem-är-du ---------- */
+.ark-in .ingress2{margin:6px 0 0;max-width:34em}
+.falt{display:grid;gap:6px;margin-top:14px}
+.falt label,.falt legend{font-weight:700;font-size:15px;padding:0}
+.falt input,.falt textarea{width:100%;min-height:48px;padding:10px 12px;border:2px solid rgba(16,37,68,.35);border-radius:12px;background:#fff;color:var(--natt);font-size:16px}
+.falt textarea{min-height:84px;resize:vertical;line-height:1.4}
+.falt input:focus,.falt textarea:focus{outline:none;border-color:var(--natt)}
+.falt small{color:rgba(16,37,68,.72);font-size:14px}
+fieldset.falt{border:0;padding:0;margin-left:0;margin-right:0;min-width:0}
+.tva{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:10px}
+.felrad{margin:12px 0 0;min-height:1.4em;color:var(--band-djup);font-weight:700}
+.bildval{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.bildval label{position:relative;display:block}
+.bildval input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.bildval span{display:block;border-radius:10px;aspect-ratio:16/10;border:3px solid transparent;background:#D9E8F5;overflow:hidden}
+.bildval svg{display:block;width:100%;height:100%}
+.bildval input:checked+span{border-color:var(--band-djup);box-shadow:0 0 0 2px var(--band-djup)}
+.bildval input:focus-visible+span{outline:3px solid var(--ljus);outline-offset:2px}
+.platsval{display:flex;flex-wrap:wrap;gap:8px}
+.platsval label{position:relative;display:inline-flex}
+.platsval input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.platsval span{display:inline-flex;align-items:center;min-height:42px;padding:0 14px;border-radius:999px;border:2px solid rgba(16,37,68,.4);font-weight:700;font-size:15px}
+.platsval input:checked+span{background:var(--natt);border-color:var(--natt);color:var(--sno)}
+.platsval input:focus-visible+span{outline:3px solid var(--ljus);outline-offset:2px}
+.vemknappar{display:grid;gap:10px;margin-top:16px}
+.vemknapp{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:66px;padding:0 20px 0 22px;border:0;background:#fff;color:var(--natt);font:700 25px/1 var(--rubrik);font-variation-settings:"SOFT" 100;text-align:left;cursor:pointer;
+  clip-path:polygon(16px 0,100% 0,100% 100%,16px 100%,0 calc(100% - 16px),0 16px)}
+.vemknapp::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--sno);box-shadow:inset 0 0 0 2px rgba(16,37,68,.35);margin-right:2px;flex:none}
+.vemknapp span{flex:1}
+.vemknapp small{font:700 21px/1 var(--hand);color:var(--band-djup)}
+.vemknapp:active{transform:scale(.985)}
+.c-vemval .vemknappar{margin-top:0;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.c-vemval .vemknapp{min-height:52px;padding:0 10px 0 14px;font-size:18px;background:var(--sno)}
+.c-vemval .vemknapp::before,.c-vemval .vemknapp small{display:none}
+.flikar{display:flex;gap:8px;margin:12px 0 0}
+.flik{min-height:42px;padding:0 16px;border-radius:999px;border:2px solid rgba(16,37,68,.4);background:transparent;color:var(--natt);font-weight:700;cursor:pointer}
+.flik[aria-pressed="true"]{background:var(--natt);border-color:var(--natt);color:var(--sno)}
+.g-varning{margin:12px 0 0;padding:12px 14px;border-radius:14px;background:#FBEED2}
+.g-varning p{margin:0}
+.g-varning .lank{padding:8px 0 0}
+.g-snabb{margin:14px 0 0;padding:14px;border-radius:16px;background:#D9E8F5;display:grid;gap:10px}
+.g-snabb p{margin:0}
+.g-scen{position:relative;margin-top:14px;border-radius:16px;background:var(--gt,#D9E8F5);display:grid;place-items:center;overflow:hidden;height:min(44vh,360px);min-height:220px;transition:background .3s}
+.g-scen svg{display:block;height:100%;width:auto;max-width:100%}
+.g-scen text{font-family:var(--text)}
+.g-steg{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:center;margin:16px 0 0}
+.g-nr{width:36px;height:36px;border-radius:50%;background:var(--natt);color:var(--sno);display:grid;place-items:center;font-weight:800;font-variant-numeric:tabular-nums}
+.g-nr.klar{background:var(--band)}
+.g-steg h3{margin:0;font:700 23px/1.12 var(--rubrik);font-variation-settings:"SOFT" 100;text-wrap:balance}
+.g-text{margin:8px 0 0;max-width:34em;min-height:3em}
+.g-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+.g-nav .knapp{flex:0 0 auto;min-width:132px}
+.g-prickar{display:flex;gap:6px}
+.g-prickar i{width:8px;height:8px;border-radius:4px;background:rgba(16,37,68,.25);transition:width .25s,background .25s}
+.g-prickar i.pa{width:24px;background:var(--band-djup)}
+.finger .ring{fill:none;stroke:var(--band);stroke-width:4;transform-box:fill-box;transform-origin:center;animation:fingerring 1.5s ease-out infinite}
+.finger .r2{animation-delay:.75s}
+.finger .prick{fill:var(--band);stroke:#fff;stroke-width:2.5}
+@keyframes fingerring{0%{transform:scale(.45);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.g-landa{transform-box:fill-box;transform-origin:center;animation:landa2 .8s .25s cubic-bezier(.3,1.5,.5,1) backwards}
+@keyframes landa2{from{transform:translateY(-150px) rotate(-18deg) scale(.5);opacity:0}}
+.g-glitter{transform-box:fill-box;transform-origin:center;animation:blink .5s 1s ease-in-out 3 backwards}
+
+/* ---------- Besked ---------- */
+.toast{position:fixed;z-index:60;left:50%;top:calc(12px + env(safe-area-inset-top,0px));width:max-content;max-width:min(92vw,460px);padding:12px 16px;border-radius:14px;background:var(--sno);color:var(--natt);font-weight:700;line-height:1.3;box-shadow:0 12px 32px rgba(6,16,34,.65);display:flex;gap:14px;align-items:center;
+  transform:translate(-50%,-160%);visibility:hidden;transition:transform .35s cubic-bezier(.3,1.2,.5,1),visibility 0s .35s;pointer-events:none}
+.toast.pa{transform:translate(-50%,0);visibility:visible;transition:transform .35s cubic-bezier(.3,1.2,.5,1),visibility 0s;pointer-events:auto}
+.toast .lank{flex:none;padding:6px 2px;color:var(--band-djup)}
+.fot .lank{color:var(--is);padding:10px 0;margin-right:18px}
+
+/* ---------- De nya bilderna ---------- */
+.pk-lock{transform-origin:160px 92px}
+@keyframes lock{0%,100%{transform:translateY(0) rotate(0)}40%{transform:translateY(-28px) rotate(-8deg)}72%{transform:translateY(3px) rotate(1.5deg)}}
+.hopp .pk-lock{animation:lock .6s cubic-bezier(.3,0,.3,1)}
+.hd-v{transform-origin:108px 70px}.hd-h{transform-origin:212px 70px}
+@keyframes hd-v{0%,100%{transform:rotate(0)}40%,60%{transform:rotate(52deg)}}
+@keyframes hd-h{0%,100%{transform:rotate(0)}40%,60%{transform:rotate(-52deg)}}
+.lyft .hd-v{animation:hd-v .55s ease-in-out 2}
+.lyft .hd-h{animation:hd-h .55s ease-in-out 2}
+.hd-s1{transform-origin:150px 76px}.hd-s2{transform-origin:170px 76px}
+@keyframes gung{0%,100%{transform:rotate(0)}30%{transform:rotate(14deg)}70%{transform:rotate(-12deg)}}
+.lyft .hd-s1{animation:gung .55s ease-in-out 2}
+.lyft .hd-s2{animation:gung .55s ease-in-out 2 reverse}
+.d-blad{transform-origin:130px 104px;transition:transform .6s cubic-bezier(.5,0,.2,1)}
+.pa .d-blad{transform:scaleX(.34) skewY(-9deg)}
+.d-ljus{opacity:0;transition:opacity .3s}
+.pa .d-ljus{opacity:1;transition:opacity .4s .35s}
+.hr-rep{transform-origin:160px 96px}
+@keyframes rep{0%,100%{transform:scaleY(1)}50%{transform:scaleY(-.8)}}
+.snurr .hr-rep{animation:rep .42s linear 3}
+.hr-fart{opacity:0}
+.snurr .hr-fart{animation:blinka .42s linear 3}
+.sk{transform-origin:160px 120px}
+@keyframes skak{0%,100%{transform:rotate(0)}15%{transform:rotate(-13deg) translateY(-6px)}35%{transform:rotate(11deg)}55%{transform:rotate(-9deg) translateY(-4px)}75%{transform:rotate(6deg)}}
+.skak .sk{animation:skak .5s ease-in-out}
+.sk-streck,.gl-kling{opacity:0}
+@keyframes blinka{30%,70%{opacity:1}}
+.skak .sk-streck{animation:blinka .5s}
+.tg-o{transform-origin:64px 100px;transform:rotate(-7deg)}
+.tg-n{transform-origin:64px 100px;transform:rotate(7deg)}
+@keyframes nyp-o{50%{transform:rotate(-1deg)}}
+@keyframes nyp-n{50%{transform:rotate(1deg)}}
+.nyp .tg-o{animation:nyp-o .34s ease-in-out 2}
+.nyp .tg-n{animation:nyp-n .34s ease-in-out 2}
+.gl-v{transform-origin:92px 160px}.gl-h{transform-origin:228px 160px}
+@keyframes skal-v{45%{transform:translateX(9px) rotate(11deg)}}
+@keyframes skal-h{45%{transform:translateX(-9px) rotate(-11deg)}}
+.skal .gl-v{animation:skal-v .6s ease-in-out}
+.skal .gl-h{animation:skal-h .6s ease-in-out}
+.skal .gl-kling{animation:blinka .6s}
+@keyframes svep{0%,100%{transform:translateX(0)}30%{transform:translateX(-36px)}70%{transform:translateX(36px)}}
+.svep .bo{animation:svep .8s ease-in-out}
+.bo-damm{transition:opacity .35s .3s}
+.ren .bo-damm{opacity:0}
+.bi-talong{transform-origin:212px 140px;transition:transform .45s cubic-bezier(.4,1.5,.5,1)}
+.pa .bi-talong{transform:rotate(15deg) translate(9px,2px)}
+.ll-led circle,.ll-knapp{fill:var(--led,#F5B942);transition:fill .3s}
+.ll-glod circle{fill:var(--led,#F5B942);opacity:.2;transition:fill .3s}
+.hs{transform-origin:160px 100px}
+@keyframes vaja{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg) translateY(-5px)}60%{transform:rotate(4deg) translateY(3px)}}
+.vaja .hs{animation:vaja .9s ease-in-out}
+
+@supports (padding:max(0px)){
+  .kalender,.agarkort{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+}
+@media (max-width:359px){
+  .sak.liten{grid-template-columns:92px minmax(0,1fr);column-gap:12px}
+  .luckrad{gap:7px}
+  .datum{font-size:14px;padding:3px 6px 2px}
+  .c-vemval .vemknappar{grid-template-columns:minmax(0,1fr)}
+}
+@media (min-width:860px){
+  .hej .hemkort{grid-column:2}
+  .chattknapp{right:max(28px,calc(50% - 520px))}
+}
+@media (prefers-reduced-motion:reduce){
+  .finger .ring{animation:none!important;opacity:.9}
+  .finger .r2{display:none}
+}
 </style>
 </head>
 <body>
@@ -316,31 +636,44 @@ dialog[open]{animation:upp .32s cubic-bezier(.3,1.1,.4,1)}
     </div>
     <div class="knut">
       <svg class="rosett" viewBox="0 0 120 96" aria-hidden="true" focusable="false"><use href="#rosett"/></svg>
-      <p class="adresslapp"><span id="lappTill">Till mamma och pappa</span><small>från Filip</small></p>
+      <p class="adresslapp"><span id="lappTill">Till mamma och pappa</span><small id="lappFran">från Filip</small></p>
     </div>
   </div>
   <div class="hej">
     <div class="halsning">
-      <p class="ingress"><strong id="hej">Hej!</strong> Här är <span id="antalOrd">tolv</span> saker jag önskar mig i jul. Tryck på en bild så rör den sig. När du har bestämt dig trycker du på <strong>Jag köper den</strong>. Då slås paketet in, och du får ett rim till etiketten.</p>
-      <p class="fin" style="margin-top:12px">Det du väljer sparas bara på din egen mobil. Jag ser ingenting.</p>
+      <p class="ingress" id="ingress"><strong id="hej">Hej!</strong> Här är <span id="antalOrd">fjorton</span> saker jag önskar mig i jul. Tryck på en bild så rör den sig. När du har bestämt dig trycker du på <strong>Jag köper den</strong>. Då slås paketet in, och du får ett rim till etiketten.</p>
+      <p class="fin lage" id="lage" style="margin-top:12px"><i aria-hidden="true"></i><span id="lageText">Det du väljer sparas bara på din egen mobil. Jag ser ingenting.</span></p>
     </div>
-    <div class="advent" id="advent" hidden>
-      <span id="stake"></span>
-      <div><p class="dagar" id="dagar"></p><p class="fin" id="ljusrad"></p></div>
-    </div>
-    <fieldset class="vem">
+    <fieldset class="vem" id="vemRuta">
       <legend>Vem är du?</legend>
       <div>
         <label><input type="radio" name="vem" id="vemMamma" value="mamma"><span>Mamma</span></label>
         <label><input type="radio" name="vem" id="vemPappa" value="pappa"><span>Pappa</span></label>
         <label><input type="radio" name="vem" id="vemAnnan" value="annan"><span>Någon annan</span></label>
       </div>
+      <p class="namnrad" id="namnrad" hidden><label for="namn">Vad heter du?</label><input id="namn" maxlength="16" autocomplete="given-name" placeholder="Ditt namn"></p>
     </fieldset>
+    <div class="hemkort" id="hemkort" hidden>
+      <img src="icon-192.png" alt="" width="64" height="64">
+      <strong>Lägg listan på hemskärmen</strong>
+      <span>Tre tryck, sedan öppnas den som en vanlig app.</span>
+      <div class="knappar"><button class="knapp" type="button" id="hemVisa">Visa hur man gör</button><button class="lank" type="button" id="hemInte">Inte nu</button></div>
+    </div>
   </div>
 </header>
 
+<section class="agarkort" id="agarkort" hidden aria-label="Bara för Filip"><div class="ruta" id="agarRuta"></div></section>
+
+<section class="kalender" id="kalender" aria-labelledby="kalRubrik">
+  <h2 id="kalRubrik">Fyra luckor till advent</h2>
+  <p class="kal-ingress" id="kalIngress">Brukar du köpa något litet till advent? Bakom varje lucka ligger ett par idéer för ett par hundralappar. Inget måste, bara om du vill.</p>
+  <div class="nedrakning" id="nedrakning" hidden><p class="dagar" id="dagar"></p><p class="fin" id="ljusrad"></p></div>
+  <div class="luckrad" id="luckrad"></div>
+  <div class="lucka-in" id="luckaIn" hidden></div>
+</section>
+
 <div class="rubrikrad">
-  <h2 id="listrubrik">Tolv önskningar</h2>
+  <h2 id="listrubrik">Fjorton önskningar</h2>
   <div class="filter" role="group" aria-label="Visa efter pris">
     <button class="chip" type="button" data-filter="alla" aria-pressed="true">Alla<small></small></button>
     <button class="chip" type="button" data-filter="lag" aria-pressed="false">Under 500 kr<small></small></button>
@@ -360,18 +693,27 @@ dialog[open]{animation:upp .32s cubic-bezier(.3,1.1,.4,1)}
 <main class="lista" id="lista"></main>
 
 <footer class="fot">
-  <p>Priserna kollades den 26 november 2026. De kan ha ändrats sedan dess, och lagret kan ta slut.</p>
-  <p>Dina val finns bara i den här webbläsaren.</p>
+  <p>Priserna kollades den 26 och 27 november 2026. De kan ha ändrats sedan dess, och lagret kan ta slut.</p>
+  <p id="fotLage">Dina val finns bara i den här webbläsaren.</p>
+  <p><button class="lank" type="button" id="fotGuide">Lägg listan på hemskärmen</button><button class="lank" type="button" id="fotFilip">Är du Filip?</button></p>
 </footer>
+
+<button class="chattknapp" type="button" id="chattKnapp" hidden>
+  <svg viewBox="0 0 32 28" aria-hidden="true" focusable="false"><path d="M5 6.5A3.5 3.5 0 0 1 8.5 3h15A3.5 3.5 0 0 1 27 6.5v10a3.5 3.5 0 0 1-3.5 3.5H15l-6 5v-5H8.5A3.5 3.5 0 0 1 5 16.5Z" fill="#fff"/><circle cx="11" cy="11.5" r="1.9" fill="#BF2A2A"/><circle cx="16" cy="11.5" r="1.9" fill="#BF2A2A"/><circle cx="21" cy="11.5" r="1.9" fill="#BF2A2A"/></svg>
+  <span class="vh" id="chattKnappText">Öppna chatten</span>
+  <span class="antal" id="chattAntal" hidden></span>
+</button>
 
 <div class="bar" id="bar" hidden>
   <div><strong id="barAntal"></strong><span id="barSumma"></span></div>
   <button class="knapp ljus" type="button" id="visa">Visa listan</button>
 </div>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <dialog id="ark" aria-labelledby="arkRubrik">
   <div class="ark-in">
-    <div class="ark-topp"><h2 id="arkRubrik">Det här köper du</h2><button class="lank" type="button" id="stang">Stäng</button></div>
+    <div class="ark-topp"><h2 id="arkRubrik">Det här köper du</h2><button class="lank" type="button" data-stang>Stäng</button></div>
     <ol id="arkLista"></ol>
     <p class="summa"><span>Summa</span><b id="arkSumma"></b></p>
     <div class="knappar">
@@ -381,7 +723,104 @@ dialog[open]{animation:upp .32s cubic-bezier(.3,1.1,.4,1)}
     </div>
     <p id="kopiaStatus" role="status"></p>
     <textarea id="kopiaText" readonly hidden aria-label="Listan som text"></textarea>
-    <p class="fin">Listan finns bara på den här mobilen. Skicka den till den som behöver veta, så köper ni inte samma sak.</p>
+    <p class="fin" id="arkInfo">Listan finns bara på den här mobilen. Skicka den till den som behöver veta, så köper ni inte samma sak.</p>
+  </div>
+</dialog>
+
+<dialog id="chatt" class="chatt" aria-labelledby="chattRubrik">
+  <div class="c-topp">
+    <div class="c-rubrik"><h2 id="chattRubrik">Tomteverkstan</h2><button class="lank" type="button" data-stang>Stäng</button></div>
+    <p class="c-under"><span id="chattUnder">Filip ser inte det som skrivs här.</span><span class="c-live" id="chattLive"><i aria-hidden="true"></i><b>live</b></span></p>
+  </div>
+  <div class="c-notis" id="notisRad" hidden><span id="notisText"></span><button class="knapp" type="button" id="notisKnapp"></button></div>
+  <div class="c-lista" id="chattLista" role="log" aria-label="Meddelanden" tabindex="0"></div>
+  <div class="c-vemval" id="chattVem" hidden>
+    <p>Säg vem du är först, så vet de andra vem som skriver.</p>
+    <button class="knapp" type="button" id="chattValjVem" style="background:var(--sno);color:var(--natt)">Välj vem du är</button>
+  </div>
+  <form class="c-skriv" id="chattForm">
+    <div class="c-fraser" id="chattFraser"></div>
+    <div class="c-bilaga" id="chattOm" hidden><b></b><button class="lank" type="button" id="chattOmBort">Ta bort</button></div>
+    <div class="c-rad">
+      <label class="vh" for="chattText">Skriv ett meddelande</label>
+      <textarea id="chattText" rows="1" maxlength="500" placeholder="Skriv här" enterkeyhint="send"></textarea>
+      <button class="c-skicka" type="submit" id="chattSkicka" aria-label="Skicka" disabled><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19.5V5M5.5 11.5L12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <p class="c-info" id="chattInfo" hidden></p>
+  </form>
+</dialog>
+
+<dialog id="vemDialog" aria-labelledby="vemRubrik">
+  <div class="ark-in">
+    <div class="ark-topp"><h2 id="vemRubrik">Vem är du?</h2><button class="lank" type="button" data-stang>Stäng</button></div>
+    <p class="ingress2">Då ser de andra vem som köper vad, så att ingen köper samma sak. Filip ser det inte.</p>
+    <div class="vemknappar" id="vemKnappar">
+      <button class="vemknapp" type="button" data-vem="mamma"><span>Mamma</span><small>det är jag</small></button>
+      <button class="vemknapp" type="button" data-vem="pappa"><span>Pappa</span><small>det är jag</small></button>
+      <button class="vemknapp" type="button" data-vem="annan"><span>Någon annan</span><small>skriv ditt namn</small></button>
+    </div>
+    <form id="namnForm" hidden>
+      <div class="falt"><label for="namn2">Vad heter du?</label><input id="namn2" maxlength="16" autocomplete="given-name" placeholder="Ditt namn"><small>Namnet syns för de andra som har länken.</small></div>
+      <div class="knappar"><button class="knapp ljus" type="submit">Klar</button></div>
+    </form>
+    <p class="fin"><button class="lank" type="button" id="arFilip">Jag är Filip</button></p>
+  </div>
+</dialog>
+
+<dialog id="nyckelDialog" aria-labelledby="nyckelRubrik">
+  <div class="ark-in">
+    <div class="ark-topp"><h2 id="nyckelRubrik">Är du Filip?</h2><button class="lank" type="button" data-stang>Stäng</button></div>
+    <p class="ingress2">Klistra in din egen länk till listan, den som slutar med en lång kod. Då öppnas ditt eget läge på den här mobilen. Där syns aldrig vad som köps.</p>
+    <form id="nyckelForm">
+      <div class="falt"><label for="nyckel">Din länk eller kod</label><input id="nyckel" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+      <p class="felrad" id="nyckelFel" role="alert"></p>
+      <div class="knappar"><button class="knapp ljus" type="submit">Öppna mitt läge</button></div>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="nySak" aria-labelledby="nySakRubrik">
+  <div class="ark-in">
+    <div class="ark-topp"><h2 id="nySakRubrik">Lägg till en sak</h2><button class="lank" type="button" data-stang>Stäng</button></div>
+    <form id="nySakForm" novalidate>
+      <div class="falt"><label for="nsLank">Länk till saken</label><input id="nsLank" type="url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://"><small>Öppna saken hos butiken och kopiera adressen därifrån.</small></div>
+      <div class="falt"><label for="nsNamn">Vad är det?</label><input id="nsNamn" maxlength="80" autocomplete="off"></div>
+      <div class="tva">
+        <div class="falt"><label for="nsPris">Pris i kronor</label><input id="nsPris" inputmode="numeric" autocomplete="off" placeholder="Får vara tomt"></div>
+        <div class="falt"><label for="nsButik">Butik</label><input id="nsButik" maxlength="40" autocomplete="off"></div>
+      </div>
+      <div class="falt"><label for="nsLapp">Lapp till den som köper</label><input id="nsLapp" maxlength="160" autocomplete="off" placeholder="Till exempel storlek och färg"></div>
+      <fieldset class="falt"><legend>Var ska den ligga?</legend><div class="platsval" id="nsPlats"></div></fieldset>
+      <fieldset class="falt"><legend>Bild</legend><div class="bildval" id="nsBild"></div></fieldset>
+      <p class="felrad" id="nsFel" role="alert"></p>
+      <div class="knappar"><button class="knapp ljus" type="submit" id="nsSpara">Lägg till</button></div>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="lappDialog" aria-labelledby="lappRubrik">
+  <div class="ark-in">
+    <div class="ark-topp"><h2 id="lappRubrik">Skriv en lapp</h2><button class="lank" type="button" data-stang>Stäng</button></div>
+    <p class="ingress2" id="lappSak"></p>
+    <form id="lappForm">
+      <div class="falt"><label for="lappText">Lappen syns under saken, i handstil</label><textarea id="lappText" maxlength="160" placeholder="Till exempel: Storlek M, den svarta."></textarea></div>
+      <p class="felrad" id="lappFel" role="alert"></p>
+      <div class="knappar"><button class="knapp ljus" type="submit">Spara lappen</button><button class="knapp tunn" type="button" id="lappBort">Ingen lapp</button></div>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="guide" aria-labelledby="guideRubrik">
+  <div class="ark-in">
+    <div class="ark-topp"><h2 id="guideRubrik">Lägg listan på hemskärmen</h2><button class="lank" type="button" data-stang>Stäng</button></div>
+    <div class="flikar" role="group" aria-label="Välj mobil"><button class="flik" type="button" data-plattform="ios">iPhone</button><button class="flik" type="button" data-plattform="android">Android</button></div>
+    <div class="g-varning" id="guideVarning" hidden></div>
+    <div class="g-snabb" id="guideSnabb" hidden><p><strong>Din mobil kan göra det åt dig.</strong> Tryck på knappen, så frågar den om appen ska läggas till.</p><button class="knapp ljus" type="button" id="guideInstallera">Lägg till appen nu</button></div>
+    <div class="g-scen" id="guideScen" aria-hidden="true"></div>
+    <div class="g-steg"><span class="g-nr" id="guideNr">1</span><h3 id="guideSteg" tabindex="-1"></h3></div>
+    <p class="g-text" id="guideText"></p>
+    <div class="g-nav"><button class="lank" type="button" id="guideBak">Tillbaka</button><span class="g-prickar" id="guidePrickar" aria-hidden="true"></span><button class="knapp ljus" type="button" id="guideNasta">Nästa</button></div>
+    <p class="fin"><button class="lank" type="button" id="guideByt" hidden>Ser Safari annorlunda ut hos dig?</button></p>
   </div>
 </dialog>
 
@@ -391,67 +830,120 @@ dialog[open]{animation:upp .32s cubic-bezier(.3,1.1,.4,1)}
 
 /* ---------- Sakerna ---------- */
 var SAKER=[
- {id:'matta',nr:1,t:0,namn:'Manduka PRO yogamatta, 215 cm',hos:'Manduka, hos Yogobe',butik:'Yogobe',pris:1504,var:1769,
+ {id:'matta',t:0,namn:'Manduka PRO yogamatta, 215 cm',hos:'Manduka, hos Yogobe',butik:'Yogobe',pris:1504,var:1769,
   url:'https://store.yogobe.com/sv/articles/2.90.3298/yogamatta-pro-yoga-mat-6-mm-215-cm-manduka',
   fakta:'6 mm tät dämpning, 66 cm bred och 215 cm lång. Högst betyg i OutdoorGearLabs test 2026, och livstidsgaranti från Manduka.',
   lapp:'Ta den långa på 215 cm, inte den vanliga på 180.',
   rim:'Den rullas ut, den rullas in,\noch gör dig mjuk i kropp och sinn.'},
- {id:'shorts',nr:2,t:1,namn:'Nike Miler löparshorts, 2-i-1',hos:'Nike, hos nike.com',butik:'Nike',pris:447,var:549,
+ {id:'shorts',t:1,namn:'Nike Miler löparshorts, 2-i-1',hos:'Nike, hos nike.com',butik:'Nike',pris:447,var:549,
   url:'https://www.nike.com/se/t/loparshorts-nike-miler-dri-fit-2-i-1-18-cm-for-man-YfA6pO8m',
   fakta:'Dri-FIT som leder bort svett, inbyggda innershorts och fickor. 18 cm innerbenslängd. Finns i sex färger och XS–XXL.',
   lapp:'Fråga mig om storlek och färg.',
   rim:'För den som springer mil efter mil –\nett lätt litet plagg i snabbaste stil.'},
- {id:'airpods',nr:3,t:2,namn:'AirPods Pro 3',hos:'Apple, hos NetOnNet',butik:'NetOnNet',pris:2389,var:2590,
+ {id:'airpods',t:2,namn:'AirPods Pro 3',hos:'Apple, hos NetOnNet',butik:'NetOnNet',pris:2389,var:2590,
   url:'https://www.netonnet.se/art/ljud/horlurar/in-ear/apple-/1059118.9292/',
   fakta:'Aktiv brusreducering, upp till 8 timmars lyssning och tål svett och vatten (IP57).',
   lapp:'Black Week-pris till och med 14 december, eller så länge lagret räcker.',
   rim:'Två små vita, laddade och klara,\nsom låter dig i musiken bara vara.'},
- {id:'tofflor',nr:4,t:3,namn:'SKIMS sherpatofflor, Dark Roast',hos:'SKIMS, hos skims.com',butik:'SKIMS',pris:651,var:930,
+ {id:'tofflor',t:3,namn:'SKIMS sherpatofflor, Dark Roast',hos:'SKIMS, hos skims.com',butik:'SKIMS',pris:651,var:930,
   url:'https://skims.com/en-se/products/sherpa-mens-slipper-dark-roast',
   fakta:'Herrmodell i fuskfäll med mjuk skumsula inuti. Storlekarna är amerikanska: S (7–8), M (9–10), L (11–12) och XL (13).',
   lapp:'Fråga mig om storlek.',
   rim:'När golvet är kallt och morgonen grå\när det gott att ha något lurvigt på.'},
- {id:'satoro',nr:5,t:1,namn:'Arc’teryx Satoro, merinotröja med dragkedja',hos:'Arc’teryx, hos arcteryx.com',butik:'Arc’teryx',pris:1599,
+ {id:'satoro',t:1,namn:'Arc’teryx Satoro, merinotröja med dragkedja',hos:'Arc’teryx, hos arcteryx.com',butik:'Arc’teryx',pris:1599,
   url:'https://arcteryx.com/se/en/shop/mens/satoro-merino-wool-zip-neck-0862?colour=1836',
   fakta:'Underställströja i merinoull, 240 g/m². Reglerar värmen och tar inte åt sig lukt.',
   lapp:'Fråga mig om storlek och färg.',
   rim:'Från fårets rygg till din, min vän –\nden värmer gott och luktar inte sen.'},
- {id:'panna',nr:6,t:2,namn:'Demeyere Proline stekpanna',hos:'Demeyere, hos Kitchenlab',butik:'Kitchenlab',pris:2299,fran:true,
+ {id:'panna',t:2,namn:'Demeyere Proline stekpanna',hos:'Demeyere, hos Kitchenlab',butik:'Kitchenlab',pris:2299,fran:true,
   url:'https://www.kitchenlab.se/p/proline-stekpanna/',
   fakta:'Sju lager rostfritt stål och aluminium, 4,8 mm tjock ända upp i kanten. Funkar på gas, el och induktion. Finns i 20, 24, 28 och 32 cm, och priset beror på storleken.',
   lapp:'Fråga mig vilken storlek.',
   rim:'I den här fräser det, det är sant:\nsju lager stål från kant till kant.'},
- {id:'stekspade',nr:7,t:3,namn:'Cristel perforerad stekspade',hos:'Cristel, hos Kitchenlab',butik:'Kitchenlab',pris:329,
+ {id:'stekspade',t:3,namn:'Cristel perforerad stekspade',hos:'Cristel, hos Kitchenlab',butik:'Kitchenlab',pris:329,
   url:'https://www.kitchenlab.se/p/perforerad-stekspade-cristel/',
   fakta:'Rostfritt stål, 35 cm lång. Tillverkad i Frankrike, med livstidsgaranti.',
   rim:'Den vänder, lyfter, har små hål –\noch är förstås av rostfritt stål.'},
- {id:'hantel',nr:8,t:0,namn:'Ställbar hantel, 1,5–12,5 kg',hos:'Hos Gymbutiken',butik:'Gymbutiken',pris:1044,var:1395,
+ {id:'hantel',t:0,namn:'Ställbar hantel, 1,5–12,5 kg',hos:'Hos Gymbutiken',butik:'Gymbutiken',pris:1044,var:1395,
   url:'https://www.gymbutiken.se/stallbar-hantel-12-5kg',
   fakta:'Tio viktsteg som ställs in med ett vred, från 1,5 till 12,5 kg. Tar lika lite plats som en enda hantel.',
   lapp:'Säljs styckvis. Priset gäller en hantel.',
   rim:'Vrid ett snäpp, så blir den tung –\nperfekt för den som är stark och ung.'},
- {id:'italki',nr:9,t:1,namn:'Presentkort på italki',hos:'Språklektioner på video, hos italki',butik:'italki',pris:null,
+ {id:'italki',t:1,namn:'Presentkort på italki',hos:'Språklektioner på video, hos italki',butik:'italki',pris:null,
   url:'https://www.italki.com/giftcards',
   fakta:'Lektioner på tu man hand med en lärare, i det språk man vill. Presentkortet skickas med mejl och gäller i ett år.',
   rim:'Ord för ord och ton för ton –\nhär väntar läraren på din lektion.'},
- {id:'vinyl',nr:10,t:2,namn:'TV Girl – Death of a Party Girl',hos:'Vinyl-LP, hos Vinylpladen',butik:'Vinylpladen',pris:419,
+ {id:'vinyl',t:2,namn:'TV Girl – Death of a Party Girl',hos:'Vinyl-LP, hos Vinylpladen',butik:'Vinylpladen',pris:419,
   url:'https://vinylpladen.se/vinyl/tv-girl/death-of-a-party-girl-LP',
   fakta:'Nypressad 12-tums-LP. Albumet kom 2018.',
   lapp:'Slut hos Vinylpladen just nu. På sidan kan man bevaka den med mejl.',
   rim:'Svart och rund och full av spår.\nDen låter bäst när nålen går.'},
- {id:'tungskrapa',nr:11,t:3,namn:'Tungskrapa i koppar',hos:'Cosmic Dealer, hos Rawfoodshop',butik:'Rawfoodshop',pris:243,var:304,
+ {id:'tungskrapa',t:3,namn:'Tungskrapa i koppar',hos:'Cosmic Dealer, hos Rawfoodshop',butik:'Rawfoodshop',pris:243,var:304,
   url:'https://www.rawfoodshop.se/tungskrapa-koppar',
   fakta:'För morgonrutinen. Leverans på 1–3 vardagar.',
   rim:'En båge av koppar, liten och fin,\nför den som vill ha en morgonrutin.'},
- {id:'icebug',nr:12,t:0,namn:'Icebug NewRun BUGrip GTX',hos:'Icebug, hos Team Sportia Umeå',butik:'Team Sportia',pris:1599,var:2499,
+ {id:'icebug',t:0,namn:'Icebug NewRun BUGrip GTX',hos:'Icebug, hos Team Sportia Umeå',butik:'Team Sportia',pris:1599,var:2499,
   url:'https://umea.teamsportia.se/outlet-1/icebug-newrun-m-bugrip-gtx.html',
   fakta:'Löparskor med dubbar i hårdmetall och vattentätt GORE-TEX-membran.',
   lapp:'Ligger i outleten och finns i storlek 42,5.',
-  rim:'När Umeå-isen ligger hal\när dubbar under foten ett klokt val.'}
+  rim:'När Umeå-isen ligger hal\när dubbar under foten ett klokt val.'},
+ {id:'hoodie',t:1,namn:'Gymshark Washed Lifting Hoodie',hos:'Gymshark, hos gymshark.com',butik:'Gymshark',pris:559,var:799,
+  url:'https://se.gymshark.com/products/gymshark-washed-lifting-hoodie-pullovers-black-aw26',
+  fakta:'Tung bomull på 480 g/m² i färgen Black Wash, med tvättad och lite sliten yta. Oversized passform, känguruficka och ribbade muddar. Finns i XS–3XL.',
+  lapp:'Fråga mig om storlek.',
+  rim:'En luva bak och en ficka fram –\nför den som lyfter både kilo och gram.'},
+ {id:'dorr',t:3,namn:'Innerdörr Solid Elements Finland, 9x20',hos:'Solid Elements, hos Bauhaus',butik:'Bauhaus',pris:799,
+  url:'https://www.bauhaus.se/innerdorr-solid-elements-finland-9x20',
+  fakta:'Vit, slät innerdörr som är 825 mm bred, 1 940 mm hög och 40 mm tjock. Låskistan sitter i. Karm och handtag ingår inte.',
+  lapp:'På nätet säljer Bauhaus den bara tre åt gången (2 397 kr). Fråga i varuhuset om en enda.',
+  rim:'Den står på glänt, den slår igen,\noch stänger kalla draget ute sen.'}
 ];
+
+/* ---------- Adventsluckorna: små förslag, inget måste ---------- */
+var LUCKOR=[
+ {nr:1,ord:'Första',tema:'Rör på dig',m:'m1'},
+ {nr:2,ord:'Andra',tema:'Till köket',m:'m2'},
+ {nr:3,ord:'Tredje',tema:'Skivor och film',m:'m3'},
+ {nr:4,ord:'Fjärde',tema:'Hemma',m:'m4'}
+];
+var FORSLAG=[
+ {id:'a-hopprep',lucka:1,t:3,bild:'hopprep',namn:'Everlast Speed Rope, hopprep',hos:'Everlast, hos Boozt',butik:'Boozt',pris:111,var:149,
+  url:'https://www.boozt.com/se/en/everlast/speed-rope-335-cm_32972858',
+  fakta:'335 cm långt och så lätt att det får plats i jackfickan.',
+  rim:'Hoppa högt och hoppa lätt –\npulsen stiger på rätt sätt.'},
+ {id:'a-shaker',lucka:1,t:1,bild:'shaker',namn:'Smartshake Reforce, shaker i stål',hos:'Smartshake, hos Apotea',butik:'Apotea',pris:159,
+  url:'https://www.apotea.se/smartshake-reforce-black-900-ml',
+  fakta:'900 ml i rostfritt stål i stället för plast, med tätt lock och bärögla. Handdisk, och bara för kalla drycker.',
+  rim:'Skaka, skaka, lock ska på –\ni stål blir shaken bäst ändå.'},
+ {id:'a-tang',lucka:2,t:0,bild:'tang',namn:'Zwilling Pro kökstång',hos:'Zwilling, hos zwilling.com',butik:'Zwilling',pris:269,
+  url:'https://www.zwilling.com/se/zwilling-pro-tang-18%2F10-rostfritt-stal-37160-023-0/37160-023-0.html',
+  fakta:'27 cm lång och helt i 18/10 rostfritt stål. Tål diskmaskin.',
+  rim:'Nyp och vänd och lyft och ta –\nen tång i stål är alltid bra.'},
+ {id:'a-glas',lucka:2,t:3,bild:'glas',namn:'Duralex Picardie, sex glas',hos:'Duralex, hos Boozt',butik:'Boozt',pris:269,
+  url:'https://www.boozt.com/se/en/duralex/dricks-x-6-picardie-duralex_32870190',
+  fakta:'Sex franska dricksglas på 25 cl i härdat glas som tål stötar.',
+  rim:'Sex små glas som tål en smäll,\ntill vatten, saft och fredagskväll.'},
+ {id:'a-borste',lucka:3,t:2,bild:'borste',namn:'Pro-Ject Brush It, skivborste',hos:'Pro-Ject, hos Thomann',butik:'Thomann',pris:111,
+  url:'https://www.thomann.se/pro_ject_brush_it.htm',
+  fakta:'Kolfiberborste som tar bort dammet från skivan innan nålen går ner. Frakten tillkommer, Thomann har fri frakt först från 1 600 kr.',
+  rim:'Ett svep, ett varv, så är den ren –\nsen låter skivan klar och len.'},
+ {id:'a-bio',lucka:3,t:1,bild:'bio',namn:'Presentkort på bio',hos:'Hos Filmstaden',butik:'Filmstaden',pris:130,fran:true,
+  url:'https://www.filmstaden.se/presentkort/',
+  fakta:'Valfritt belopp från 130 kr. Finns digitalt och kommer då direkt. Gäller i två år, även hos Svenska Bio.',
+  rim:'Ridån går upp och ljuset ner –\nen kväll på bio, vem vill ha mer?'},
+ {id:'a-ljuslist',lucka:4,t:0,bild:'ljuslist',namn:'TP-Link Tapo L900-5, ljuslist',hos:'TP-Link, hos Kjell & Company',butik:'Kjell',pris:199,
+  url:'https://www.kjell.com/se/produkter/smarta-hem/smart-belysning/smarta-ljusslingor/tp-link-tapo-smart-light-strip-rgb-5-m-p51864',
+  fakta:'Fem meter färgat ljus som kopplas till wifi och styrs i Tapo-appen. Går att klippa till rätt längd.',
+  rim:'Tryck i appen, välj en ton –\nfem meter ljus får rätt fason.'},
+ {id:'a-halsduk',lucka:4,t:2,bild:'halsduk',namn:'Arsenal-halsduk från adidas',hos:'adidas, hos Stadium',butik:'Stadium',pris:299,
+  url:'https://www.stadium.se/sport/fanshop/fanshop-fotboll/952972101/adidas.adidas-arsenal-halsduk-i-tredjestallsfarger.cloud-white-alumina-team-coll-burgundy-2',
+  fakta:'Stickad supporterhalsduk i tredjeställets färger.',
+  rim:'För den som hejar, vår som höst,\npå kanonerna med full röst.'}
+];
+var RIM_EGEN='Hårt eller mjukt, det säger jag ej –\nmen tomten vet att det passar dig.';
 var TINTER=['#F2F6FA','#FBEED2','#FADCD9','#D9E8F5'];
 var ORD=['noll','en','två','tre','fyra','fem','sex','sju','åtta','nio','tio','elva','tolv','tretton','fjorton','femton','sexton','sjutton','arton','nitton','tjugo'];
-
+var BILDNAMN={paket:'Ett paket',matta:'Yogamatta',shorts:'Shorts',airpods:'Hörlurar',tofflor:'Tofflor',satoro:'Tröja',panna:'Stekpanna',stekspade:'Stekspade',hantel:'Hantel',italki:'Lektion',vinyl:'Skiva',tungskrapa:'Koppar',icebug:'Skor',hoodie:'Hoodie',dorr:'Dörr',hopprep:'Hopprep',shaker:'Shaker',tang:'Tång',glas:'Glas',borste:'Borste',bio:'Biljett',ljuslist:'Ljuslist',halsduk:'Halsduk'};
 /* ---------- Bilderna ---------- */
 function toffel(dx,dy,cls){return '<g class="'+cls+'"><g transform="translate('+dx+' '+dy+')"><rect class="fi o" x="4" y="64" width="174" height="16" rx="8"/><path class="fn o" d="M10 66V50a10 10 0 0 1 16-8a10 10 0 0 1 18 2a12 12 0 0 1 20-12a13 13 0 0 1 24-6a14 14 0 0 1 26 2a14 14 0 0 1 24 8a13 13 0 0 1 20 10a12 12 0 0 1 14 20Z"/><ellipse class="fs o" cx="34" cy="43" rx="17" ry="6"/><path d="M60 52q5-5 10 0M88 44q5-5 10 0M116 48q5-5 10 0M76 60q5-5 10 0M106 60q5-5 10 0M136 56q5-5 10 0M152 62q4-4 8 0" fill="none" stroke="#A9C7E3" stroke-width="2.5" stroke-linecap="round"/></g></g>';}
 function skivor(){var s='';for(var k=0;k<5;k++){s+='<rect class="h-p" data-k="'+k+'" x="'+(104-k*15)+'" y="58" width="12" height="84" rx="4"/><rect class="h-p" data-k="'+k+'" x="'+(204+k*15)+'" y="58" width="12" height="84" rx="4"/>';}return s;}
@@ -469,54 +961,223 @@ var KONST={
  tungskrapa:'<path class="fy k-st" d="M258 96l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path class="fy k-st" d="M56 124l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><path d="M96 56V104a64 64 0 0 0 128 0V56" fill="none" stroke="#102544" stroke-width="18" stroke-linecap="round"/><path d="M96 56V104a64 64 0 0 0 128 0V56" fill="none" stroke="#F5B942" stroke-width="10" stroke-linecap="round"/><path class="k-glans" d="M96 56V104a64 64 0 0 0 128 0V56" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-dasharray="26 600" stroke-dashoffset="40" opacity=".9"/><circle class="fy o" cx="96" cy="46" r="13"/><circle class="fy o" cx="224" cy="46" r="13"/>',
  icebug:'<path class="l t" d="M58 30v16M51 34l14 8M51 42l14-8M252 44v16M245 48l14 8M245 56l14-8M196 22v12M191 25l10 6M191 31l10-6" opacity=".55"/><path class="l t" d="M24 166H296" opacity=".35"/><g class="i-spr"><path class="l t" d="M112 168l-8 14M142 168l5 16M204 168l-6 12M232 168l10 13"/></g><g class="sko"><path class="fn" d="M84 156l4 9 4-9ZM108 156l4 9 4-9ZM132 156l4 9 4-9ZM196 156l4 9 4-9ZM220 156l4 9 4-9ZM244 156l4 9 4-9Z"/><path class="fn o" d="M58 136V100q0-20 20-20h18q10 0 16 8l30 30q40 6 74 6q22 0 40 12Z"/><path d="M76 126l14-36M92 128l14-32" fill="none" stroke="#E8443F" stroke-width="6" stroke-linecap="round"/><path d="M116 106l12-10M126 116l12-10M136 124l12-9" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path class="fs o" d="M56 134H250q22 2 26 14q2 8-10 8H72q-18 0-16-22Z"/></g>'
 };
+/* Nya bilder: paketet (för saker Filip lägger till själv), hoodien, dörren och adventsförslagen */
+function glas(x,cls){return '<g class="gl '+cls+'"><path class="fs o" d="M'+(x-27)+' 58H'+(x+27)+'L'+(x+20)+' 150Q'+(x+19)+' 160 '+(x+10)+' 160H'+(x-10)+'Q'+(x-19)+' 160 '+(x-20)+' 150Z"/><path class="l t" d="M'+(x-23)+' 102Q'+x+' 92 '+(x+23)+' 102M'+(x-12)+' 100V158M'+x+' 97V160M'+(x+12)+' 100V158" opacity=".4"/><path d="M'+(x-18)+' 68L'+(x-15)+' 92" stroke="#A9C7E3" stroke-width="4" stroke-linecap="round"/></g>';}
+function ljuslist(){
+  var p='',led='',glod='',i=0;
+  for(var x=40;x<=288;x+=8){
+    var y=Math.round((98+24*Math.sin((x-40)/40))*10)/10;
+    p+=(i?'L':'M')+x+' '+y;
+    if(i%3===1)led+='<circle cx="'+x+'" cy="'+y+'" r="4.5"/>';
+    if(i%6===1)glod+='<circle cx="'+x+'" cy="'+y+'" r="27"/>';
+    i++;
+  }
+  return '<g class="ll-glod">'+glod+'</g><path d="'+p+'" fill="none" stroke="#102544" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/><path d="'+p+'" fill="none" stroke="#F2F6FA" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><g class="ll-led">'+led+'</g><rect class="fn o" x="14" y="80" width="28" height="36" rx="7"/><circle class="ll-knapp" cx="28" cy="98" r="5.5"/><text class="ll-txt" x="160" y="182" text-anchor="middle" font-size="14">Varmvitt</text>';
+}
+KONST.paket='<path class="l t" d="M40 172H280" opacity=".3"/><path class="fy k-st" d="M262 44l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path class="fy k-st" d="M54 92l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><rect class="fi o" x="98" y="100" width="124" height="70" rx="6"/><rect class="fr" x="150" y="102" width="20" height="66"/><g class="pk-lock"><rect class="fs o" x="88" y="78" width="144" height="26" rx="6"/><rect class="fr" x="150" y="80" width="20" height="22"/><path class="fr o" d="M160 78c-8-26-46-26-40-6c4 12 28 10 40 6Z"/><path class="fr o" d="M160 78c8-26 46-26 40-6c-4 12-28 10-40 6Z"/><circle class="fr o" cx="160" cy="76" r="7"/></g>';
+KONST.hoodie='<path class="l t" d="M40 184H280" opacity=".3"/><g class="hd-v"><path class="fn o" d="M112 62L86 74L48 146L76 162L108 104Z"/><path d="M53 139l26 15" stroke="#A9C7E3" stroke-width="2.5" stroke-linecap="round"/></g><g class="hd-h"><path class="fn o" d="M208 62L234 74L272 146L244 162L212 104Z"/><path d="M267 139l-26 15" stroke="#A9C7E3" stroke-width="2.5" stroke-linecap="round"/></g><path class="fn o" d="M110 62H210L220 108V178H100V108Z"/><path d="M104 168H216" stroke="#A9C7E3" stroke-width="2.5" stroke-linecap="round"/><path d="M128 150l10-20h44l10 20v18h-64Z" fill="none" stroke="#A9C7E3" stroke-width="2.5" stroke-linejoin="round"/><path class="fn o" d="M124 66Q116 26 160 22Q204 26 196 66Q180 82 160 82Q140 82 124 66Z"/><path class="fp" d="M138 62Q134 40 160 37Q186 40 182 62Q172 71 160 71Q148 71 138 62Z"/><g class="hd-s1"><path d="M150 76V110" stroke="#F2F6FA" stroke-width="4" stroke-linecap="round"/><circle class="fy" cx="150" cy="113" r="4"/></g><g class="hd-s2"><path d="M170 76V104" stroke="#F2F6FA" stroke-width="4" stroke-linecap="round"/><circle class="fy" cx="170" cy="107" r="4"/></g>';
+KONST.dorr='<path class="l t" d="M36 174H284" opacity=".3"/><path class="l t" d="M130 22H190M130 16v12M190 16v12"/><text x="160" y="13" text-anchor="middle" font-size="13">825 mm</text><path class="l t" d="M106 36V172M100 36h12M100 172h12"/><text x="96" y="104" text-anchor="middle" font-size="13" transform="rotate(-90 96 104)">1 940 mm</text><rect class="fy" x="130" y="36" width="60" height="136"/><path class="l" d="M126 172V32H194V172"/><g class="d-blad"><rect class="fs o" x="130" y="36" width="60" height="136"/><circle class="fn" cx="180" cy="108" r="4"/><path class="l t" d="M180 108h-11"/></g><path class="fy k-st d-ljus" d="M240 62l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path class="fy k-st d-ljus" d="M226 118l3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/>';
+KONST.hopprep='<path class="l t" d="M40 182H280" opacity=".3"/><g class="hr-rep"><path class="l" d="M98 96C98 200 222 200 222 96"/></g><g transform="rotate(10 98 66)"><rect class="fn o" x="87" y="30" width="22" height="70" rx="10"/><rect class="fr" x="89" y="44" width="18" height="8"/><rect class="fr" x="89" y="58" width="18" height="4"/></g><g transform="rotate(-10 222 66)"><rect class="fn o" x="211" y="30" width="22" height="70" rx="10"/><rect class="fr" x="213" y="44" width="18" height="8"/><rect class="fr" x="213" y="58" width="18" height="4"/></g><g class="hr-fart"><path class="l t" d="M150 150l-6 14M160 152v16M170 150l6 14"/></g>';
+KONST.shaker='<path class="l t" d="M40 184H280" opacity=".3"/><g class="sk-streck"><path class="l t" d="M92 84l-14-8M88 110H70M92 136l-14 8M228 84l14-8M232 110h18M228 136l14 8"/></g><g class="sk"><path class="l" d="M196 60q30 0 26 34"/><path class="fi o" d="M124 72H196L189 172Q188 182 178 182H142Q132 182 131 172Z"/><path d="M142 92L146 166" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".75"/><path class="l t" d="M176 110h10M176 128h9M176 146h8" opacity=".5"/><rect class="fn o" x="116" y="50" width="88" height="26" rx="8"/><rect class="fn o" x="144" y="30" width="32" height="24" rx="7"/><rect class="fr" x="150" y="36" width="20" height="6" rx="3"/></g>';
+KONST.tang='<path class="fy k-st" d="M70 42l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><path class="fy k-st" d="M252 150l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><g transform="rotate(-16 160 100)"><g class="tg-o"><path class="fi o" d="M64 86H236Q244 78 262 78H270Q280 78 280 88V96H64Z"/><path class="l t" d="M246 96l5 4 5-4 5 4 5-4 5 4 5-4"/></g><g class="tg-n"><path class="fi o" d="M64 114H236Q244 122 262 122H270Q280 122 280 112V104H64Z"/><path class="l t" d="M246 104l5-4 5 4 5-4 5 4 5-4 5 4"/></g><rect class="fn o" x="44" y="80" width="30" height="40" rx="10"/><circle class="fy" cx="59" cy="100" r="5"/></g>';
+KONST.glas='<path class="l t" d="M30 162H290" opacity=".3"/><g class="gl-kling"><path class="l t" d="M124 44l-6-12M136 38V24M196 44l6-12M184 38V24"/></g>'+glas(92,'gl-v')+glas(228,'gl-h')+glas(160,'gl-m');
+KONST.borste='<circle class="fn o" cx="160" cy="330" r="200"/><circle cx="160" cy="330" r="184" fill="none" stroke="#A9C7E3" stroke-width="1.5" opacity=".45"/><circle cx="160" cy="330" r="168" fill="none" stroke="#A9C7E3" stroke-width="1.5" opacity=".45"/><circle cx="160" cy="330" r="152" fill="none" stroke="#A9C7E3" stroke-width="1.5" opacity=".45"/><g class="bo-damm"><circle class="fy" cx="92" cy="150" r="3"/><circle class="fy" cx="120" cy="142" r="2.5"/><circle class="fy" cx="206" cy="141" r="3"/><circle class="fy" cx="236" cy="150" r="2.5"/><circle class="fy" cx="160" cy="138" r="2.5"/></g><g class="bo"><path class="l t" d="M100 96v30M108 96v32M116 96v30M124 96v32M132 96v30M140 96v32M148 96v30M156 96v32M164 96v30M172 96v32M180 96v30M188 96v32M196 96v30M204 96v32M212 96v30M220 96v32"/><rect class="fs o" x="92" y="62" width="136" height="36" rx="8"/><rect class="fr" x="92" y="74" width="136" height="8"/></g>';
+KONST.bio='<path class="fy k-st" d="M262 34l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path class="fy k-st" d="M50 146l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><g transform="rotate(-8 160 100)"><path class="fs o" d="M56 60H212V140H56V114a14 14 0 0 0 0-28Z"/><text x="134" y="115" text-anchor="middle" font-size="40" style="font-family:var(--rubrik);font-weight:900">BIO</text><path class="l t" d="M78 74h36M78 128h60" opacity=".35"/><g class="bi-talong"><path class="fr o" d="M212 60H264V86a14 14 0 0 0 0 28V140H212Z"/><path d="M212 68V132" stroke="#fff" stroke-width="2.5" stroke-dasharray="3 6" stroke-linecap="round"/><text x="241" y="109" text-anchor="middle" font-size="24" style="fill:#fff;font-family:var(--rubrik);font-weight:900">1</text></g></g>';
+KONST.ljuslist=ljuslist();
+KONST.halsduk='<g class="hs"><path class="l t" d="M52 78l-18-4M52 90h-20M52 102l-18 4M52 114l-20 2M52 124l-16 6M268 78l18-4M268 90h20M268 102l18 4M268 114l20 2M268 124l16 6"/><rect class="fs o" x="52" y="72" width="216" height="58" rx="4"/><path d="M54 86H266M54 116H266" stroke="#BF2A2A" stroke-width="10"/><path d="M92 74v54M228 74v54" stroke="#BF2A2A" stroke-width="10"/><circle class="fr o" cx="160" cy="101" r="16"/><path class="fy" d="M160 89l3.2 7.6 8.2.6-6.3 5.3 2 8-7.1-4.4-7.1 4.4 2-8-6.3-5.3 8.2-.6Z"/></g>';
 
 /* ---------- Hjälp ---------- */
 function $(s,r){return (r||document).querySelector(s);}
 function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-function kr(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' kr';}
+function kr(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' kr';}
 function stor(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 var minne={};
 function las(k,d){try{var v=localStorage.getItem('filips-onskelista-'+k);if(v!=null)return JSON.parse(v);}catch(e){}return k in minne?minne[k]:d;}
 function spara(k,v){minne[k]=v;try{localStorage.setItem('filips-onskelista-'+k,JSON.stringify(v));}catch(e){}}
 function kor(el,cls,ms){el.classList.remove(cls);void el.getBoundingClientRect();el.classList.add(cls);clearTimeout(el['_'+cls]);el['_'+cls]=setTimeout(function(){el.classList.remove(cls);},ms);}
-function sak(id){for(var i=0;i<SAKER.length;i++)if(SAKER[i].id===id)return SAKER[i];return null;}
+function oppna(d){if(d.open)return;try{d.showModal();}catch(e){d.setAttribute('open','');}}
+function stang(d){if(!d.open)return;try{d.close();}catch(e){d.removeAttribute('open');}}
+function paus(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function slump(n){
+  var a='abcdefghijklmnopqrstuvwxyz0123456789',s='',u=[],i;
+  try{u=new Uint8Array(n);crypto.getRandomValues(u);}catch(e){u=[];for(i=0;i<n;i++)u.push(Math.floor(Math.random()*256));}
+  for(i=0;i<n;i++)s+=a.charAt(u[i]%36);
+  return s;
+}
+function kopiera(text,klar,fel){
+  try{navigator.clipboard.writeText(text).then(klar,fel);}catch(e){fel();}
+}
+var toastT=0;
+function toast(text,knapp,fn){
+  var t=$('#toast');clearTimeout(toastT);
+  t.innerHTML='<span>'+esc(text)+'</span>'+(knapp?'<button class="lank" type="button">'+esc(knapp)+'</button>':'');
+  if(knapp)$('button',t).addEventListener('click',function(){t.classList.remove('pa');fn();});
+  void t.offsetWidth;t.classList.add('pa');
+  toastT=setTimeout(function(){t.classList.remove('pa');},knapp?8000:5000);
+}
+var MAN=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+var DAG=['söndag','måndag','tisdag','onsdag','torsdag','fredag','lördag'];
+function tva(n){return (n<10?'0':'')+n;}
+function klocka(t){var d=new Date(t);return tva(d.getHours())+':'+tva(d.getMinutes());}
+function dagNyckel(t){var d=new Date(t);return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
+function dagText(t){
+  var d=new Date(t),nu=new Date(),a=new Date(d.getFullYear(),d.getMonth(),d.getDate()),b=new Date(nu.getFullYear(),nu.getMonth(),nu.getDate()),diff=Math.round((b-a)/864e5);
+  return diff<=0?'I dag':diff===1?'I går':stor(DAG[d.getDay()])+' '+d.getDate()+' '+MAN[d.getMonth()];
+}
+function https(u){return /^https:\/\/[^\s"'<>]+$/.test(String(u||''))?String(u):'#';}
+
+/* Vilken mobil det är, och om listan redan ligger på hemskärmen */
+var UA=navigator.userAgent||'';
+function arIos(){return /iPhone|iPad|iPod/.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+function arAndroid(){return /Android/.test(UA);}
+function iosNy(){var m=/Version\/(\d+)/.exec(UA);return m?+m[1]>=26:true;}        // Safari 26 och senare har delningen bakom de tre prickarna
+function iApp(){return /FBAN|FBAV|FB_IAB|Instagram|Messenger|Snapchat|Line\/|LinkedInApp|GSA\//.test(UA);}   // öppnad inuti en annan app
+function fristaende(){try{return navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;}catch(e){return false;}}
 
 /* ---------- Tillstånd ---------- */
-var kanda={};SAKER.forEach(function(s){kanda[s.id]=1;});
-var val=las('val',[]);if(!Array.isArray(val))val=[];val=val.filter(function(id){return kanda[id];});
-var vem=las('vem','');if(['mamma','pappa','annan'].indexOf(vem)<0)vem='';
+var VEM=['mamma','pappa','annan'],SLOTS=['mamma','pappa','annan','filip'];
+var MOLN='https://gymschema-switchbot.filipkymmer79.workers.dev';   // mellanhanden på Cloudflare (gymschema-worker.js i repot)
+var agare=las('agare','');if(typeof agare!=='string'||agare.length<20)agare='';   // Filips nyckel: finns den är det här hans egen mobil
+var vem=las('vem','');if(VEM.indexOf(vem)<0)vem='';
+var namn=String(las('namn','')||'').slice(0,16);
+var enhet=las('enhet',null);                                         // mobilens hemliga kod (d) och dess avtryck (p)
+if(!enhet||typeof enhet.d!=='string'||!/^[A-Za-z0-9_-]{16,40}$/.test(enhet.d)){enhet={d:slump(24),p:''};spara('enhet',enhet);}
+var val=las('val',{});                                               // det jag köper: {id: när}
+if(Array.isArray(val)){var gamlaVal=val;val={};gamlaVal.forEach(function(id){val[id]=1;});spara('val',val);}
+if(!val||typeof val!=='object')val={};
+var bort=las('bort',{});if(!bort||typeof bort!=='object')bort={};    // det jag har ångrat: {id: när}
+var vantar=las('vantar',{});if(!vantar||typeof vantar!=='object')vantar={};   // köp och ångrade köp som inte är bekräftade: {id:{pa,t,n}}
+var moln=las('moln',null);if(!moln||typeof moln!=='object'||!moln.slots||!moln.rev)moln={slots:{},rev:{}};
+var lage=las('lage','');     // 'ok' delningen är igång · 'gammal' mellanhanden har inte den nya koden · 'kv' lagringen saknas · '' vet inte än
+var kontakt=true,skev=0;      // skev: skillnaden mellan mobilens klocka och mellanhandens
+var sett={};                  // nyaste stämpeln per nyckel under den här körningen: {nyckel:{r,t}}
+var gen=0;                    // räknas upp när mobilen byter mellan Filips läge och det vanliga: svar på äldre frågor kastas
+var K={},C=[],SAK={},HUVUD=[],ILUCKA={1:[],2:[],3:[],4:[]};   // sammanräknat: köpen, chatten, alla saker, listan och luckorna
 var filter='alla',ordning='min';
+function molnOk(){return lage==='ok';}
+function nuS(){return Date.now()+skev;}
+function slot(k){return moln.slots[k]||{};}
+function listan(){var l=slot('filip').lista||{};return {egna:Array.isArray(l.egna)?l.egna:[],lappar:l.lappar||{},dolda:l.dolda||{}};}
+function nollaMoln(){moln={slots:{},rev:{}};sett={};spara('moln',moln);raknaOm();}
+// Köpen ligger i tre nycklar. Har två markerat samma sak vinner den som var först.
+function raknaOm(){
+  K={};C=[];
+  VEM.forEach(function(k){
+    var m=slot(k).kopt||{};
+    Object.keys(m).forEach(function(id){var x=m[id];if(!x)return;if(!K[id]||(x.t||0)<K[id].t)K[id]={v:k,n:x.n||'',p:x.p||'',t:x.t||0};});
+  });
+  SLOTS.forEach(function(k){
+    (slot(k).m||[]).forEach(function(x){if(x&&x.id)C.push({id:x.id,t:x.t||0,v:k,n:x.n||'',p:x.p||'',x:String(x.x||''),f:x.f?1:0,s:x.s||''});});
+  });
+  C.sort(function(a,b){return a.t-b.t||(a.id<b.id?-1:1);});
+}
+// Är markeringen eller meddelandet mitt? Samma mobil, eller samma person från en annan mobil.
+function arMin(m){
+  if(!m)return false;
+  if(agare)return m.v==='filip';
+  return (!!enhet.p&&m.p===enhet.p)||(!!vem&&m.v===vem&&(vem!=='annan'||(!!namn&&m.n===namn)));
+}
+function vemText(m){return m.v==='mamma'?'Mamma':m.v==='pappa'?'Pappa':m.v==='filip'?'Filip':(m.n||'Någon annan');}
+function vemNamn(){return vem==='mamma'?'mamma':vem==='pappa'?'pappa':vem==='annan'?(namn||'en hemlig tomte'):'någon snäll';}
+function avtryck(){
+  if(enhet.p)return;
+  try{
+    crypto.subtle.digest('SHA-256',new TextEncoder().encode(enhet.d)).then(function(b){
+      var u=new Uint8Array(b),s='';for(var i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);
+      enhet.p=btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'').slice(0,12);spara('enhet',enhet);
+    },function(){});
+  }catch(e){}
+}
+
+/* ---------- Allt som finns att önska sig: det inbyggda, förslagen i luckorna och det Filip har lagt till ---------- */
+function byggModell(){
+  var L=listan(),ordn=[];
+  SAK={};HUVUD=[];ILUCKA={1:[],2:[],3:[],4:[]};
+  function ta(s,egen){
+    var o={},k;for(k in s)o[k]=s[k];
+    o.bild=KONST[o.bild||o.id]?(o.bild||o.id):'paket';o.egen=!!egen;o.lucka=o.lucka||0;
+    if(Object.prototype.hasOwnProperty.call(L.lappar,o.id))o.lapp=L.lappar[o.id];
+    o.dold=!!L.dolda[o.id];
+    SAK[o.id]=o;return o;
+  }
+  SAKER.forEach(function(s){ta(s,false);ordn.push(s.id);});
+  FORSLAG.forEach(function(s){ta(s,false);});
+  L.egna.forEach(function(e,i){
+    if(!e||!e.id||SAK[e.id])return;
+    ta({id:e.id,namn:String(e.namn||''),hos:e.butik?'Hos '+e.butik:'Tillagd av Filip',butik:e.butik||'butiken',pris:e.pris==null?null:+e.pris,utanPris:e.pris==null,
+        url:e.url,fakta:'',lapp:e.lapp||'',bild:e.bild,lucka:e.lucka>=1&&e.lucka<=4?e.lucka:0,t:(i+1)%4,rim:RIM_EGEN},true);
+    if(!SAK[e.id].lucka)ordn.push(e.id);
+  });
+  function syns(s){return !!agare||!s.dold||!!val[s.id];}        // det Filip har dolt syns bara för honom – och för den som redan har valt det
+  ordn.forEach(function(id){var s=SAK[id];if(s&&syns(s))HUVUD.push(s);});
+  HUVUD.forEach(function(s,i){s.nr=i+1;});
+  FORSLAG.forEach(function(s){var o=SAK[s.id];if(syns(o))ILUCKA[o.lucka].push(o);});
+  L.egna.forEach(function(e){var o=e&&SAK[e.id];if(o&&o.egen&&o.lucka)ILUCKA[o.lucka].push(o);});
+}
+function valda(){
+  var ut=[];
+  HUVUD.forEach(function(s){if(val[s.id])ut.push(s);});
+  [1,2,3,4].forEach(function(l){ILUCKA[l].forEach(function(s){if(val[s.id])ut.push(s);});});
+  return ut;
+}
+// Vem som har saken: null (ledig), {min:true} eller den andres markering. Andras köp syns först när man har sagt vem man är.
+function koptAv(id){
+  if(agare)return null;
+  if(val[id])return {min:true};
+  if(!molnOk()||!vem)return null;
+  var m=K[id];
+  return m&&!arMin(m)?m:null;
+}
 
 /* ---------- Bygg listan ---------- */
+var INGRESS='<strong id="hej">Hej!</strong> Här är <span id="antalOrd">fjorton</span> saker jag önskar mig i jul. Tryck på en bild så rör den sig. När du har bestämt dig trycker du på <strong>Jag köper den</strong>. Då slås paketet in, och du får ett rim till etiketten.';
 function prisHtml(s){
-  if(s.pris==null)return '<b>Valfritt belopp</b>';
+  if(s.pris==null)return s.utanPris?'<b class="lang">Priset står hos butiken</b>':'<b>Valfritt belopp</b>';
   var h='<b>'+(s.fran?'<small>från</small>':'')+kr(s.pris)+'</b>';
-  if(s.var){h+='<span class="vh">Tidigare </span><s>'+kr(s.var)+'</s><span class="rea">−'+Math.round((1-s.pris/s.var)*100)+' %</span>';}
+  if(s.var){h+='<span class="vh">Tidigare </span><s>'+kr(s.var)+'</s><span class="rea">−'+Math.round((1-s.pris/s.var)*100)+' %</span>';}
   return h;
 }
-function sakHtml(s,i){
-  return '<article class="sak" id="sak-'+s.id+'" data-id="'+s.id+'" style="--tint:'+TINTER[s.t]+'">'+
-   '<div class="scen"><span class="nr" aria-hidden="true">'+s.nr+'</span>'+
-   '<button class="spela" type="button" data-spela="'+s.id+'"><svg class="bild" viewBox="0 0 320 200" aria-hidden="true" focusable="false">'+KONST[s.id]+'</svg></button>'+
-   (i===0?'<span class="tips" id="tips">Tryck på bilden</span>':'')+
+function prisText(s){return s.pris==null?(s.utanPris?'pris hos butiken':'valfritt belopp'):(s.fran?'från ':'')+kr(s.pris);}
+function agarKnappar(s){
+  var h='<button class="lank" type="button" data-lapp="'+s.id+'">'+(s.lapp?'Ändra lappen':'Skriv en lapp')+'</button>';
+  if(s.egen)h+='<button class="lank" type="button" data-andra="'+s.id+'">Ändra</button><button class="lank" type="button" data-tabort="'+s.id+'">Ta bort</button>';
+  else h+='<button class="lank" type="button" data-dolj="'+s.id+'">'+(s.dold?'Visa igen':(s.lucka?'Ta bort förslaget':'Dölj från listan'))+'</button>';
+  return h;
+}
+function sakHtml(s,i,liten){
+  var dold=s.dold?(agare?'Dold. De andra ser den inte.':'Filip har tagit bort den här från listan.'):'';
+  return '<article class="sak'+(liten?' liten':'')+(s.dold?' dold':'')+'" id="sak-'+s.id+'" data-id="'+s.id+'" style="--tint:'+TINTER[(s.t||0)%4]+'">'+
+   '<div class="scen">'+(liten?'':'<span class="nr" aria-hidden="true">'+s.nr+'</span>')+
+   '<button class="spela" type="button" data-spela="'+s.id+'"><svg class="bild" viewBox="0 0 320 200" aria-hidden="true" focusable="false">'+KONST[s.bild]+'</svg></button>'+
+   (!liten&&i===0&&!las('tips',0)?'<span class="tips" id="tips">Tryck på bilden</span>':'')+
    '<div class="inslag m'+((i%6)+1)+'" aria-hidden="true"><i class="pp"></i><i class="snore sv"></i><i class="snore sh"></i><svg class="ros" viewBox="0 0 120 96" focusable="false"><use href="#rosett"/></svg><div class="tag"><span>Till Filip</span><span class="fran"></span></div></div></div>'+
-   '<div class="om"><h3><span class="vh">Nummer '+s.nr+': </span>'+esc(s.namn)+'</h3>'+
+   '<div class="om"><h3>'+(liten?'':'<span class="vh">Nummer '+s.nr+': </span>')+esc(s.namn)+'</h3>'+
    '<p class="hos">'+esc(s.hos)+'</p>'+
    '<p class="pris">'+prisHtml(s)+'</p>'+
-   '<p class="fakta">'+esc(s.fakta)+'</p>'+
+   (s.fakta?'<p class="fakta">'+esc(s.fakta)+'</p>':'')+
    (s.lapp?'<p class="lapp">'+esc(s.lapp)+'</p>':'')+
+   (dold?'<p class="dold-rad">'+dold+'</p>':'')+
    '<div class="knappar"><button class="knapp kop" type="button" data-kop="'+s.id+'">Jag köper den</button>'+
-   '<p class="vald-rad"><span class="bock" aria-hidden="true"></span><span>Du köper den här.</span><button class="lank" type="button" data-angra="'+s.id+'">Ångra</button></p>'+
-   '<a class="knapp butik" target="_blank" rel="noopener" href="'+esc(s.url)+'"><small>Öppna hos</small> <span>'+esc(s.butik)+'</span></a></div>'+
+   '<p class="vald-rad"><span class="bock" aria-hidden="true"></span><span class="vald-text">Du köper den här.</span><button class="lank" type="button" data-angra="'+s.id+'">Ångra</button></p>'+
+   '<a class="knapp butik" target="_blank" rel="noopener" href="'+esc(https(s.url))+'"><small>Öppna hos</small> <span>'+esc(s.butik)+'</span></a></div>'+
+   '<p class="prata"><button class="lank" type="button" data-fraga="'+s.id+'">Fråga Filip om den</button></p>'+
+   (agare?'<div class="agarrad">'+agarKnappar(s)+'</div>':'')+
    '<div class="rim"><p class="etik">Rim till paketet</p><p class="vers">'+esc(s.rim)+'</p><button class="lank" type="button" data-rim="'+s.id+'">Kopiera rimmet</button><span class="kvitto" role="status"></span></div>'+
    '</div></article>';
 }
-var lista=$('#lista');
-lista.innerHTML=SAKER.map(sakHtml).join('');
-var noder={};SAKER.forEach(function(s){noder[s.id]=document.getElementById('sak-'+s.id);});
-$('#antalOrd').textContent=ORD[SAKER.length]||String(SAKER.length);
-$('#listrubrik').textContent=(ORD[SAKER.length]?stor(ORD[SAKER.length]):SAKER.length)+' önskningar';
+var lista=$('#lista'),noder={};
+function bygg(){
+  byggModell();
+  lista.innerHTML=HUVUD.map(function(s,i){return sakHtml(s,i,false);}).join('');
+  noder={};
+  HUVUD.forEach(function(s){noder[s.id]=document.getElementById('sak-'+s.id);});
+  var n=HUVUD.length,ao=$('#antalOrd');
+  if(ao)ao.textContent=ORD[n]||String(n);
+  $('#listrubrik').textContent=(ORD[n]?stor(ORD[n]):n)+(n===1?' önskning':' önskningar');
+  ritaLuckor();
+  ordna();uppdatera();
+}
 
 /* ---------- Filter och ordning ---------- */
 function passar(s,f){
@@ -526,7 +1187,7 @@ function passar(s,f){
   return s.pris>1500;
 }
 function ordna(){
-  var arr=SAKER.slice();
+  var arr=HUVUD.slice();
   if(ordning!=='min'){
     arr.sort(function(a,b){
       if(a.pris==null&&b.pris==null)return a.nr-b.nr;
@@ -534,19 +1195,277 @@ function ordna(){
       return ordning==='billig'?a.pris-b.pris:b.pris-a.pris;
     });
   }
-  arr.forEach(function(s){var n=noder[s.id];n.hidden=!passar(s,filter);lista.appendChild(n);});
+  arr.forEach(function(s){var n=noder[s.id];if(!n)return;n.hidden=!passar(s,filter);lista.appendChild(n);});
   $$('.chip').forEach(function(c){
     var f=c.getAttribute('data-filter');
     c.setAttribute('aria-pressed',f===filter?'true':'false');
-    $('small',c).textContent=SAKER.filter(function(s){return passar(s,f);}).length;
+    $('small',c).textContent=HUVUD.filter(function(s){return passar(s,f);}).length;
   });
 }
-$$('.chip').forEach(function(c){c.addEventListener('click',function(){filter=c.getAttribute('data-filter');ordna();});});
-$('#sortera').addEventListener('change',function(e){ordning=e.target.value;ordna();});
+
+/* ---------- Adventsluckorna ---------- */
+var ADVENT=(function(){
+  var nu=new Date(),y=nu.getFullYear(),jul=new Date(y,11,24),fjarde=new Date(y,11,24-jul.getDay()),ut=[];
+  for(var i=0;i<4;i++)ut.push(new Date(y,11,fjarde.getDate()-21+7*i));
+  return ut;
+})();
+var IDAG=(function(){var nu=new Date();return new Date(nu.getFullYear(),nu.getMonth(),nu.getDate());})();
+var TANDA=ADVENT.filter(function(d){return IDAG>=d;}).length;
+var aktiv=+las('lucka',0)||0;if(aktiv<0||aktiv>4)aktiv=0;
+function ljusSvg(i){
+  var tand=i<TANDA,h=tand?46-(TANDA-i)*6:46,topp=66-h;
+  var s='<svg class="ljus" viewBox="0 0 38 74" aria-hidden="true" focusable="false"><rect x="5" y="64" width="28" height="9" rx="4.5" fill="#A9C7E3"/><rect x="12" y="'+topp+'" width="14" height="'+(h+2)+'" rx="3" fill="#F2F6FA"/><path d="M19 '+topp+'v-6" stroke="#A9C7E3" stroke-width="2" stroke-linecap="round"/>';
+  if(tand)s+='<circle cx="19" cy="'+(topp-13)+'" r="15" fill="#F5B942" opacity=".18"/><path class="laga" style="animation-delay:-'+(i*0.45)+'s" d="M19 '+(topp-3)+'q-7-9 0-20q7 11 0 20Z" fill="#F5B942"/>';
+  return s+'</svg>';
+}
+function luckaHtml(L,i){
+  var d=ADVENT[i],pa=aktiv===L.nr,antal=ILUCKA[L.nr].length;
+  return '<div class="luckplats">'+ljusSvg(i)+
+   '<button class="lucka l'+L.nr+(pa?' aktiv':'')+'" type="button" data-lucka="'+L.nr+'" aria-expanded="'+(pa?'true':'false')+'" aria-controls="luckaIn" aria-label="Lucka '+L.nr+', '+L.ord.toLowerCase()+' advent, '+d.getDate()+' '+MAN[d.getMonth()]+'">'+
+   '<span class="hal" aria-hidden="true">'+(antal===1?'1 idé':antal+' idéer')+'</span>'+
+   '<span class="blad" aria-hidden="true"><span class="fram"><span class="siffra">'+L.nr+'</span><span class="datum">'+d.getDate()+' '+MAN[d.getMonth()].slice(0,3)+'</span><i class="knopp"></i></span><span class="bak"></span></span></button></div>';
+}
+function ritaLuckaIn(){
+  var p=$('#luckaIn');
+  Object.keys(noder).forEach(function(id){if(!SAK[id]||SAK[id].lucka)delete noder[id];});
+  if(!aktiv){p.hidden=true;p.innerHTML='';return;}
+  var L=LUCKOR[aktiv-1],d=ADVENT[aktiv-1],saker=ILUCKA[aktiv];
+  var h='<h3 class="lr" id="luckaRubrik" tabindex="-1">Lucka '+aktiv+': '+esc(L.tema)+'</h3><p class="nar">'+L.ord+' advent, '+DAG[d.getDay()]+' '+d.getDate()+' '+MAN[d.getMonth()]+'</p>';
+  if(!saker.length)h+='<p class="tomt">'+(agare?'Här ligger inget just nu.':'Den här luckan är tom just nu.')+'</p>';
+  h+=saker.map(function(s,i){return sakHtml(s,i+aktiv,true);}).join('');
+  h+='<p class="lucka-fot">'+(agare?'<button class="lank" type="button" data-nysak="'+aktiv+'">Lägg en egen sak i luckan</button>':'')+'<button class="lank" type="button" data-stanglucka>Stäng luckan</button></p>';
+  p.innerHTML=h;p.hidden=false;
+  saker.forEach(function(s){noder[s.id]=document.getElementById('sak-'+s.id);});
+}
+function ritaLuckor(){
+  $('#luckrad').innerHTML=LUCKOR.map(luckaHtml).join('');
+  ritaLuckaIn();
+}
+function valjLucka(nr,rulla){
+  aktiv=aktiv===nr?0:nr;spara('lucka',aktiv);
+  $$('.lucka').forEach(function(b){var pa=+b.getAttribute('data-lucka')===aktiv;b.setAttribute('aria-expanded',pa?'true':'false');b.classList.toggle('aktiv',pa);});
+  ritaLuckaIn();uppdatera();
+  if(aktiv&&rulla){var p=$('#luckaIn');setTimeout(function(){try{p.scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}},380);}
+}
+function ritaNedrakning(){
+  var jul=new Date(IDAG.getFullYear(),11,24),dagar=Math.round((jul-IDAG)/864e5),n=dagar<0?4:TANDA;
+  if(dagar>60||dagar<-7)return;
+  $('#dagar').textContent=dagar>1?dagar+' dagar kvar till julafton':dagar===1?'I morgon är det julafton':dagar===0?'I dag är det julafton. God jul!':'God fortsättning!';
+  $('#ljusrad').textContent=n===0?'Första ljuset tänds söndag '+ADVENT[0].getDate()+' '+MAN[ADVENT[0].getMonth()]+'.':n===1?'Ett ljus är tänt.':n===2?'Två ljus är tända.':n===3?'Tre ljus är tända.':'Alla fyra ljusen är tända.';
+  $('#nedrakning').hidden=false;
+}
+
+/* ---------- Det som ändras när någon väljer ---------- */
+function summaText(v){
+  var tal=v.filter(function(s){return s.pris!=null;});
+  if(!tal.length)return v.some(function(s){return s.utanPris;})?'Pris hos butiken':'Valfritt belopp';
+  var sum=tal.reduce(function(a,s){return a+s.pris;},0);
+  var osaker=v.some(function(s){return s.pris==null||s.fran;});
+  return (osaker?'minst ':'')+kr(sum);
+}
+function uppdatera(){
+  Object.keys(noder).forEach(function(id){
+    var n=noder[id],s=SAK[id];if(!n||!s)return;
+    var k=koptAv(id),min=!!(k&&k.min),annan=!!(k&&!k.min);
+    n.classList.toggle('inslagen',min||annan);n.classList.toggle('vald',min);n.classList.toggle('annans',annan);
+    $('.spela',n).setAttribute('aria-label',(min||annan)?'Paketet med '+s.namn+' är inslaget. Tryck för att skaka på det.':'Spela upp bilden av '+s.namn);
+    $('.fran',n).textContent='från '+(annan?(k.v==='mamma'?'mamma':k.v==='pappa'?'pappa':(k.n||'en hemlig tomte')):vemNamn());
+    $('.vald-text',n).textContent=annan?vemText(k)+' köper den här.':'Du köper den här.';
+  });
+  var v=agare?[]:valda();
+  document.body.classList.toggle('har-val',v.length>0);
+  $('#bar').hidden=!v.length;
+  $('#barAntal').textContent='Du köper '+(v.length===1?'1 sak':v.length+' saker');
+  $('#barSumma').textContent=summaText(v);
+  $('#arkSumma').textContent=v.length?summaText(v):'0 kr';
+  $('#arkLista').innerHTML=v.map(function(s){
+    return '<li><span class="nr2'+(s.lucka?' lk':'')+'" aria-hidden="true">'+(s.lucka?'L'+s.lucka:s.nr)+'</span><div><strong>'+esc(s.namn)+'</strong><span class="rad2">'+(s.lucka?'Lucka '+s.lucka+' · ':'')+'<b>'+esc(stor(prisText(s)))+'</b> hos '+esc(s.butik)+'</span><em>'+esc(s.rim)+'</em><span class="radknappar"><a target="_blank" rel="noopener" href="'+esc(https(s.url))+'">Öppna hos '+esc(s.butik)+'</a><button class="lank" type="button" data-angra="'+s.id+'">Ta bort</button></span></div></li>';
+  }).join('');
+  $('#kopiaStatus').textContent='';$('#kopiaText').hidden=true;
+  if(!v.length&&$('#ark').open)stang($('#ark'));
+  if(!agare){
+    var hej=$('#hej');
+    if(hej)hej.textContent=vem==='mamma'?'Hej mamma!':vem==='pappa'?'Hej pappa!':(vem==='annan'&&namn?'Hej '+namn+'!':'Hej!');
+    $('#lappTill').textContent=vem==='mamma'?'Till mamma':vem==='pappa'?'Till pappa':vem==='annan'?(namn?'Till '+namn:'Till dig'):'Till mamma och pappa';
+  }
+}
+function listText(){
+  var v=valda(),vemS=vem==='mamma'?'Mamma':vem==='pappa'?'Pappa':(vem==='annan'&&namn?namn:'Jag');
+  return vemS+' köper från Filips önskelista:\n'+v.map(function(s){return (s.lucka?'Lucka '+s.lucka+': ':s.nr+'. ')+s.namn+', '+prisText(s)+' ('+s.butik+')';}).join('\n')+'\nSumma: '+summaText(v);
+}
+
+/* ---------- Hälsningen och läget ---------- */
+function ritaHalsning(){
+  $('#vemRuta').hidden=!!agare;
+  if(agare){
+    $('#ingress').innerHTML='<strong>Hej Filip!</strong> Det här är ditt eget exemplar av listan. Här lägger du till saker, skriver lappar med storlek och färg och svarar på frågor. Vad som köps syns aldrig här.';
+    $('#lappTill').textContent='Mitt eget exemplar';$('#lappFran').textContent='bara för Filip';
+    $('#kalIngress').textContent='Det här ser mamma och pappa: ett par små idéer bakom varje lucka. Ta bort det du inte vill ha, eller lägg dit något eget.';
+  }else{
+    $('#ingress').innerHTML=INGRESS;$('#lappFran').textContent='från Filip';
+    $('#kalIngress').textContent='Brukar du köpa något litet till advent? Bakom varje lucka ligger ett par idéer för ett par hundralappar. Inget måste, bara om du vill.';
+  }
+  $('#fotFilip').hidden=!!agare;
+  $('#chattRubrik').textContent=agare?'Frågor till dig':'Tomteverkstan';
+  $('#chattUnder').textContent=agare?'Här syns bara det som är skrivet till dig.':'Filip ser inte det som skrivs här.';
+  $('#chattKnappText').textContent=agare?'Öppna frågorna till dig':'Öppna chatten';
+  $$('input[name="vem"]').forEach(function(r){r.checked=r.value===vem;});
+  $('#namnrad').hidden=vem!=='annan';$('#namn').value=namn;
+}
+function visaLage(){
+  var b=document.body,ok=molnOk(),t;
+  b.classList.toggle('moln',ok);b.classList.toggle('agare',!!agare);
+  if(agare)t=ok?'Delningen är igång. Vad som köps syns aldrig på den här mobilen.':'Delningen är inte igång än. Se rutan här nedanför.';
+  else if(!ok)t='Det du väljer sparas bara på din egen mobil. Jag ser ingenting.';
+  else if(!kontakt)t='Ingen kontakt just nu. Det du väljer sparas på mobilen och skickas när nätet är tillbaka.';
+  else if(!vem)t='Säg vem du är här nedanför, så ser du vad de andra redan har köpt. Jag ser ingenting.';
+  else t='Det du väljer syns för de andra som har länken, så att ingen köper samma sak. Jag ser ingenting.';
+  $('#lageText').textContent=t;$('#lage').classList.toggle('ok',ok&&kontakt);
+  $('#fotLage').textContent=agare?'Du är inne i ditt eget läge på den här mobilen.':ok?'Dina val delas med de andra som har länken, så att ingen köper samma sak.':'Dina val finns bara i den här webbläsaren.';
+  $('#arkInfo').textContent=ok?'De andra som har länken ser vad du har valt, så att ni inte köper samma sak. Filip ser det inte.':'Listan finns bara på den här mobilen. Skicka den till den som behöver veta, så köper ni inte samma sak.';
+  $('#chattKnapp').hidden=!ok;
+  ritaAgare();ritaOlasta();
+}
+
+/* ---------- Delningen: prata med mellanhanden ---------- */
+function revStr(){return SLOTS.map(function(k){return (moln.slots[k]&&moln.rev[k])||0;}).join('.');}
+function api(metod,vag,kropp,nyckel){
+  var o={method:metod,cache:'no-store',headers:{}},ac=null,tm=0,g=gen;
+  if(nyckel||agare)o.headers['X-OL-Key']=nyckel||agare;
+  if(kropp){kropp.r=revStr();o.body=JSON.stringify(kropp);}       // skickas som vanlig text, då slipper webbläsaren fråga om lov först
+  try{ac=new AbortController();o.signal=ac.signal;tm=setTimeout(function(){ac.abort();},12000);}catch(e){}
+  return fetch(MOLN+vag,o).then(function(r){
+    clearTimeout(tm);
+    return r.text().then(function(t){var j={};try{j=JSON.parse(t)||{};}catch(e){}j._s=r.status;j._g=g;return j;});
+  },function(e){clearTimeout(tm);throw e;});
+}
+function nyttLage(l){
+  if(l===lage)return;
+  var forst=l==='ok'&&lage!=='ok';
+  lage=l;spara('lage',lage);
+  if(forst&&!agare){Object.keys(val).forEach(function(id){if(!vantar[id])vantar[id]={pa:true,t:0,n:0};});spara('vantar',vantar);}   // det som valdes innan delningen kom igång ska också upp
+}
+// Läser ett svar: lägger in det som har ändrats och säger hur det gick ('ok', 'tagen', 'tak', 'snabbt', 'gammal', 'kv', 'agare' eller 'fel')
+function lasSvar(j){
+  if(j._g!==gen)return 'fel';                 // frågan ställdes innan mobilen bytte läge: svaret hör inte hit
+  if(j._s===403&&j.error==='agare'){lamnaAgare(true);return 'agare';}
+  if(j._s===403&&j.message==='not allowed'){nyttLage('gammal');return 'gammal';}
+  if(j._s===503&&j.error==='kv'){nyttLage('kv');return 'kv';}
+  if(j.ol!==1)return j.error||'fel';
+  kontakt=true;nyttLage('ok');
+  if(typeof j.t==='number')skev=j.t-Date.now();
+  if(j.du&&enhet.p!==j.du){enhet.p=j.du;spara('enhet',enhet);}
+  taEmot(j);
+  return j._s===200?'ok':(j.error||'fel');
+}
+function chattNyckel(){return C.map(function(m){return m.id;}).join(',');}
+function taEmot(j){
+  var nu=Date.now(),foreL=JSON.stringify(listan()),foreC=chattNyckel(),andrat=false;
+  if(j.slots)SLOTS.forEach(function(k){
+    var s=j.slots[k];if(!s)return;
+    var r=s.r||0,g=sett[k];
+    if(g&&r<g.r&&nu-g.t<180000)return;        // KV svarade med något äldre än det vi redan har sett: hoppa över
+    sett[k]={r:r,t:nu};
+    moln.slots[k]=s;moln.rev[k]=r;andrat=true;
+  });
+  var nyLista=false;
+  if(andrat){spara('moln',moln);raknaOm();nyLista=JSON.stringify(listan())!==foreL;if(nyLista)byggModell();}
+  stam();
+  if(andrat){
+    if(nyLista)bygg();else uppdatera();
+    if(chattNyckel()!==foreC)chattAndrad();
+  }
+  stamChatt();
+}
+// En skrivning i taget med drygt en sekund emellan: KV tar emot en skrivning i sekunden per nyckel
+var ko=Promise.resolve();
+function iKo(fn){
+  var p=ko.then(fn,fn);
+  ko=p.then(function(){return paus(1150);},function(){return paus(1150);});
+  return p;
+}
+
+/* ---------- Köpen: se till att mellanhanden och mobilen är överens ---------- */
+function skickaKop(id,pa){
+  var v=vantar[id];if(!v||v.pa!==pa)v=vantar[id]={pa:pa,t:0,n:0};
+  v.t=Date.now();v.n++;spara('vantar',vantar);
+  var s=SAK[id],somVem=vem,somNamn=namn;
+  iKo(function(){return api('POST','/onskelista/kop',{id:id,d:enhet.d,vem:somVem,namn:somNamn||undefined,av:pa?undefined:true,sak:pa&&s?s.namn:undefined});}).then(function(j){
+    var u=lasSvar(j);visaLage();
+    if(u==='tak')toast('Det har sparats väldigt mycket i dag. Ditt val ligger kvar på mobilen och skickas i morgon.');
+    else if(u!=='ok'&&u!=='tagen')setTimeout(stam,9000);
+  },function(){kontakt=false;visaLage();setTimeout(stam,9000);});
+}
+function stam(){
+  if(agare||!molnOk()||!vem)return;
+  var nu=Date.now(),borta=slot(vem).borta||{},andrat=false;
+  Object.keys(val).forEach(function(id){
+    var m=K[id],v=vantar[id];
+    if(!SAK[id]){delete val[id];delete vantar[id];andrat=true;return;}                 // Filip har tagit bort saken
+    if(m&&!arMin(m)){                                                                    // någon annan hann före
+      delete val[id];delete vantar[id];andrat=true;
+      toast(vemText(m)+' köper redan '+SAK[id].namn+'.');return;
+    }
+    if(m){if(v&&v.pa&&nu-v.t>8000)delete vantar[id];return;}                             // framme
+    if(borta[id]&&borta[id]>val[id]&&!(v&&v.pa)){delete val[id];andrat=true;return;}     // ångrat från min andra mobil
+    if(!v||!v.pa)v=vantar[id]={pa:true,t:0,n:0};                                         // saknas: skicka (igen)
+    if(nu-v.t>8000){if(v.n>=6)delete vantar[id];else skickaKop(id,true);}
+  });
+  Object.keys(K).forEach(function(id){
+    var m=K[id];if(val[id]||!arMin(m))return;
+    var v=vantar[id];
+    if(bort[id]&&bort[id]>m.t){                                                          // jag har ångrat den, men den ligger kvar
+      if(!v||v.pa)v=vantar[id]={pa:false,t:0,n:0};
+      if(nu-v.t>8000){if(v.n>=6)delete vantar[id];else skickaKop(id,false);}
+    }else if(SAK[id]){val[id]=m.t;delete vantar[id];andrat=true;}                        // markerad från min andra mobil
+  });
+  Object.keys(vantar).forEach(function(id){var v=vantar[id];if(!v.pa&&!(K[id]&&arMin(K[id]))&&nu-v.t>8000)delete vantar[id];});
+  Object.keys(bort).forEach(function(id){if(nuS()-bort[id]>14*864e5)delete bort[id];});
+  spara('val',val);spara('vantar',vantar);spara('bort',bort);
+  if(andrat){byggOmDolda();uppdatera();}
+}
+// Har jag valt något som Filip har dolt ska det synas för mig – och försvinna när jag ångrar det
+function byggOmDolda(){
+  var behovs=Object.keys(SAK).some(function(id){var s=SAK[id];return s.dold&&!s.lucka&&(!!val[id])!==(HUVUD.indexOf(s)>=0);});
+  if(behovs&&!agare)bygg();
+}
+
+/* ---------- Hämta med jämna mellanrum ---------- */
+var hamtar=false,pollT=0,senastRort=Date.now(),chattOppen=false,forstaSvar=true;
+function hamta(){
+  if(hamtar)return Promise.resolve();
+  hamtar=true;
+  var g=gen;
+  return api('GET','/onskelista?r='+revStr()).then(function(j){
+    if(g!==gen)return;                 // mobilen bytte läge under tiden: en ny hämtning är redan på väg
+    hamtar=false;lasSvar(j);
+    if(g!==gen)return;                 // svaret fick mobilen att lämna Filips läge: den nya hämtningen sköter resten
+    forstaSvar=false;visaLage();
+  },function(){if(g!==gen)return;hamtar=false;kontakt=false;visaLage();});
+}
+function takt(){                                    // hur ofta det är värt att fråga, i millisekunder (0 = vila)
+  if(document.hidden)return 0;
+  if(lage!=='ok')return 120000;
+  var still=Date.now()-senastRort;
+  if(chattOppen)return still<120000?3500:still<600000?8000:still<1800000?15000:0;
+  return still<600000?30000:still<3600000?90000:0;
+}
+function schema(){
+  clearTimeout(pollT);pollT=0;
+  var ms=takt();
+  if(ms)pollT=setTimeout(function(){pollT=0;hamta().then(schema,schema);},ms);
+}
+function rort(){
+  var vilade=!pollT&&!hamtar,snabbare=chattOppen&&Date.now()-senastRort>120000;
+  senastRort=Date.now();
+  if(vilade&&!document.hidden){hamta().then(schema,schema);}
+  else if(snabbare)schema();
+}
 
 /* ---------- Bilderna rör sig ---------- */
 var STEG=[1.5,2.5,3.5,4.5,5.5,6.5,7.5,9,10.5,12.5],SKIVOR=[0,1,1,2,2,3,3,4,4,5];
 var HALS=['Bonjour !','こんにちは','¡Hola!','Hallo!'];
+var LED=[['Varmvitt','#F5B942'],['Rött','#E8443F'],['Isblått','#5AA7E0'],['Grönt','#4BB37A'],['Lila','#9B6BD6']];
 var SPEL={
   matta:function(el){el.classList.toggle('pa');},
   shorts:function(el){kor(el,'spring',1850);},
@@ -563,95 +1482,125 @@ var SPEL={
   italki:function(el){var i=((+el.getAttribute('data-h')||0)+1)%HALS.length;el.setAttribute('data-h',i);$('.i-txt',el).textContent=HALS[i];kor(el,'pop',320);},
   vinyl:function(el){el.classList.toggle('pa');},
   tungskrapa:function(el){kor(el,'glans',920);},
-  icebug:function(el){kor(el,'stamp',520);el.classList.add('pa');}
+  icebug:function(el){kor(el,'stamp',520);el.classList.add('pa');},
+  paket:function(el){kor(el,'hopp',620);kor(el,'glans',920);},
+  hoodie:function(el){kor(el,'lyft',1150);},
+  dorr:function(el){el.classList.toggle('pa');},
+  hopprep:function(el){kor(el,'snurr',1300);},
+  shaker:function(el){kor(el,'skak',520);},
+  tang:function(el){kor(el,'nyp',700);kor(el,'glans',920);},
+  glas:function(el){kor(el,'skal',620);},
+  borste:function(el){kor(el,'svep',820);el.classList.toggle('ren');},
+  bio:function(el){el.classList.toggle('pa');kor(el,'glans',920);},
+  ljuslist:function(el){var i=((+el.getAttribute('data-f')||0)+1)%LED.length;el.setAttribute('data-f',i);el.style.setProperty('--led',LED[i][1]);$('.ll-txt',el).textContent=LED[i][0];},
+  halsduk:function(el){kor(el,'vaja',920);}
 };
 
-/* ---------- Val ---------- */
-function vemNamn(){return vem==='mamma'?'mamma':vem==='pappa'?'pappa':vem==='annan'?'en hemlig tomte':'någon snäll';}
-function valda(){return SAKER.filter(function(s){return val.indexOf(s.id)>=0;});}
-function summaText(v){
-  var tal=v.filter(function(s){return s.pris!=null;});
-  if(!tal.length)return 'Valfritt belopp';
-  var sum=tal.reduce(function(a,s){return a+s.pris;},0);
-  var osaker=v.some(function(s){return s.pris==null||s.fran;});
-  return (osaker?'minst ':'')+kr(sum);
-}
-function prisText(s){return s.pris==null?'valfritt belopp':(s.fran?'från ':'')+kr(s.pris);}
-function uppdatera(){
-  SAKER.forEach(function(s){
-    var n=noder[s.id],v=val.indexOf(s.id)>=0;
-    n.classList.toggle('vald',v);
-    $('.spela',n).setAttribute('aria-label',v?'Paket nummer '+s.nr+' är inslaget. Tryck för att skaka på det.':'Spela upp bilden av '+s.namn);
-    $('.fran',n).textContent='från '+vemNamn();
-  });
-  var v=valda();
-  document.body.classList.toggle('har-val',v.length>0);
-  $('#bar').hidden=!v.length;
-  $('#barAntal').textContent='Du köper '+(v.length===1?'1 sak':v.length+' saker');
-  $('#barSumma').textContent=summaText(v);
-  $('#arkSumma').textContent=v.length?summaText(v):'0 kr';
-  $('#arkLista').innerHTML=v.map(function(s){
-    return '<li><span class="nr2" aria-hidden="true">'+s.nr+'</span><div><strong>'+esc(s.namn)+'</strong><span class="rad2"><b>'+esc(stor(prisText(s)))+'</b> hos '+esc(s.butik)+'</span><em>'+esc(s.rim)+'</em><span class="radknappar"><a target="_blank" rel="noopener" href="'+esc(s.url)+'">Öppna hos '+esc(s.butik)+'</a><button class="lank" type="button" data-angra="'+s.id+'">Ta bort</button></span></div></li>';
-  }).join('');
-  $('#kopiaStatus').textContent='';$('#kopiaText').hidden=true;
-  if(!v.length&&$('#ark').open)$('#ark').close();
-  $('#hej').textContent=vem==='mamma'?'Hej mamma!':vem==='pappa'?'Hej pappa!':'Hej!';
-  $('#lappTill').textContent=vem==='mamma'?'Till mamma':vem==='pappa'?'Till pappa':vem==='annan'?'Till dig':'Till mamma och pappa';
-}
+/* ---------- Välja och ångra ---------- */
+var efterVem=null;                       // det som väntar på att man säger vem man är
 function valj(id,pa){
-  var i=val.indexOf(id);
-  if(pa&&i<0)val.push(id);
-  if(!pa&&i>=0)val.splice(i,1);
-  spara('val',val);uppdatera();
+  if(agare||!SAK[id])return;
+  if(pa&&molnOk()&&!vem){efterVem=function(){valj(id,true);};oppnaVem();return;}
+  if(pa){val[id]=nuS();delete bort[id];}else{delete val[id];bort[id]=nuS();}
+  spara('val',val);spara('bort',bort);
+  byggOmDolda();uppdatera();
   if(pa){try{if(navigator.vibrate)navigator.vibrate([12,60,18]);}catch(e){}}
-}
-function kopiera(text,klar,fel){
-  try{navigator.clipboard.writeText(text).then(klar,fel);}catch(e){fel();}
-}
-function listText(){
-  var v=valda(),namn=vem==='mamma'?'Mamma':vem==='pappa'?'Pappa':'Jag';
-  return namn+' köper från Filips önskelista:\n'+v.map(function(s){return s.nr+'. '+s.namn+', '+prisText(s)+' ('+s.butik+')';}).join('\n')+'\nSumma: '+summaText(v);
+  if(molnOk()&&vem)skickaKop(id,pa);
 }
 function stangTips(){var t=document.getElementById('tips');if(t)t.remove();spara('tips',1);}
-if(las('tips',0))stangTips();
 
-document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-spela],[data-kop],[data-angra],[data-rim]');
-  if(!t)return;
-  var id;
-  if((id=t.getAttribute('data-spela'))){
-    var n=noder[id];
-    if(n.classList.contains('vald')){kor($('.scen',n),'skaka',560);return;}
-    SPEL[id]($('.bild',n));stangTips();return;
+/* ---------- Vem är du? ---------- */
+function sattVem(v,n){
+  var gVem=vem,gNamn=namn;
+  n=String(n||'').replace(/\s+/g,' ').trim().slice(0,16);
+  if(v==='annan'&&!n&&gVem==='annan')n=gNamn;
+  if(molnOk()&&gVem&&(gVem!==v||(v==='annan'&&gNamn!==n))){            // byter man vem man är flyttas köpen med
+    var gk=slot(gVem).kopt||{};
+    Object.keys(val).forEach(function(id){
+      if(gk[id])iKo(function(){return api('POST','/onskelista/kop',{id:id,d:enhet.d,vem:gVem,namn:gNamn||undefined,av:true});}).then(lasSvar,function(){});
+    });
+    Object.keys(val).forEach(function(id){vantar[id]={pa:true,t:0,n:0};});spara('vantar',vantar);
   }
-  if((id=t.getAttribute('data-kop'))){valj(id,true);var b=$('.vald-rad .lank',noder[id]);if(b)b.focus({preventScroll:true});return;}
+  vem=v;spara('vem',vem);
+  if(v==='annan'){namn=n;spara('namn',namn);}
+  ritaHalsning();visaLage();uppdatera();ritaSkriv();
+  if(molnOk()){stam();uppdatera();notisOm();}
+  if(efterVem){var f=efterVem;efterVem=null;f();}
+}
+function oppnaVem(){
+  $('#namnForm').hidden=true;$('#vemKnappar').hidden=false;
+  oppna($('#vemDialog'));
+}
+
+/* ---------- Tryck ---------- */
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-spela],[data-kop],[data-angra],[data-rim],[data-lucka],[data-stanglucka],[data-fraga],[data-stang],[data-vem],[data-lapp],[data-dolj],[data-andra],[data-tabort],[data-nysak],[data-tillsak],[data-tabortm],[data-igen]');
+  if(!t){if(e.target.nodeName==='DIALOG')stang(e.target);return;}       // tryck utanför arket stänger det
+  var id,n;
+  if((id=t.getAttribute('data-spela'))){
+    n=noder[id];if(!n||!SAK[id])return;
+    if(n.classList.contains('inslagen')){kor($('.scen',n),'skaka',560);return;}
+    SPEL[SAK[id].bild]($('.bild',n));stangTips();return;
+  }
+  if((id=t.getAttribute('data-kop'))){valj(id,true);n=noder[id]&&$('.vald-rad .lank',noder[id]);if(n&&val[id])n.focus({preventScroll:true});return;}
   if((id=t.getAttribute('data-angra'))){valj(id,false);return;}
   if((id=t.getAttribute('data-rim'))){
+    if(!noder[id]||!SAK[id])return;
     var k=$('.kvitto',noder[id]),vers=$('.vers',noder[id]);
-    kopiera(sak(id).rim,function(){k.textContent='Rimmet är kopierat.';},function(){
+    kopiera(SAK[id].rim,function(){k.textContent='Rimmet är kopierat.';},function(){
       try{var r=document.createRange();r.selectNodeContents(vers);var s=getSelection();s.removeAllRanges();s.addRange(r);}catch(x){}
       k.textContent='Rimmet är markerat. Kopiera det själv.';
     });
+    return;
   }
+  if((id=t.getAttribute('data-lucka'))){valjLucka(+id,true);return;}
+  if(t.hasAttribute('data-stanglucka')){var nr=aktiv;valjLucka(aktiv,false);n=$('.lucka[data-lucka="'+nr+'"]');if(n)n.focus();return;}
+  if((id=t.getAttribute('data-fraga'))){oppnaChatt(id,true);return;}
+  if(t.hasAttribute('data-stang')){n=t.closest('dialog');if(n)stang(n);return;}
+  if((id=t.getAttribute('data-vem'))){
+    if(id==='annan'){$('#vemKnappar').hidden=true;$('#namnForm').hidden=false;$('#namn2').value=namn;$('#namn2').focus();return;}
+    stang($('#vemDialog'));sattVem(id,'');return;
+  }
+  if((id=t.getAttribute('data-tillsak'))){stang($('#chatt'));visaSak(id);return;}
+  if((id=t.getAttribute('data-tabortm'))){taBortMsg(id);return;}
+  if((id=t.getAttribute('data-igen'))){forsokIgen(id);return;}
+  if((id=t.getAttribute('data-lapp'))){oppnaLapp(id);return;}
+  if((id=t.getAttribute('data-dolj'))){dolj(id);return;}
+  if((id=t.getAttribute('data-andra'))){oppnaNySak(0,id);return;}
+  if((id=t.getAttribute('data-tabort'))){taBortSak(id,t);return;}
+  if(t.hasAttribute('data-nysak')){oppnaNySak(+t.getAttribute('data-nysak')||0,'');return;}
 });
+// Rulla till en sak (och öppna luckan om den ligger i en)
+function visaSak(id){
+  var s=SAK[id];if(!s)return;
+  if(s.lucka&&aktiv!==s.lucka)valjLucka(s.lucka,false);
+  if(!s.lucka&&filter!=='alla'){filter='alla';ordna();}
+  var n=document.getElementById('sak-'+id);if(!n)return;
+  setTimeout(function(){try{n.scrollIntoView({block:'center',behavior:'smooth'});}catch(e){n.scrollIntoView();}kor($('.scen',n),'skaka',560);},60);
+}
+$$('.chip').forEach(function(c){c.addEventListener('click',function(){filter=c.getAttribute('data-filter');ordna();});});
+$('#sortera').addEventListener('change',function(e){ordning=e.target.value;ordna();});
 $$('input[name="vem"]').forEach(function(r){
-  r.checked=r.value===vem;
-  r.addEventListener('change',function(){vem=r.value;spara('vem',vem);uppdatera();});
+  r.addEventListener('change',function(){
+    if(r.value==='annan'){$('#namnrad').hidden=false;sattVem('annan',$('#namn').value);}
+    else sattVem(r.value,'');
+  });
 });
+$('#namn').addEventListener('change',function(){if(vem==='annan')sattVem('annan',this.value);});
+$('#namnForm').addEventListener('submit',function(e){e.preventDefault();stang($('#vemDialog'));sattVem('annan',$('#namn2').value);});
+$('#vemDialog').addEventListener('close',function(){if(!vem)efterVem=null;});
+$('#arFilip').addEventListener('click',function(){stang($('#vemDialog'));oppnaNyckel();});
 
-/* ---------- Arket ---------- */
+/* ---------- Arket med det man har valt ---------- */
 var ark=$('#ark');
-$('#visa').addEventListener('click',function(){if(ark.showModal)ark.showModal();else ark.setAttribute('open','');});
-$('#stang').addEventListener('click',function(){ark.close();});
-ark.addEventListener('click',function(e){if(e.target===ark)ark.close();});
-$('#tom').addEventListener('click',function(){val=[];spara('val',val);uppdatera();});
+$('#visa').addEventListener('click',function(){oppna(ark);});
+$('#tom').addEventListener('click',function(){Object.keys(val).forEach(function(id){valj(id,false);});});
 $('#kopieraLista').addEventListener('click',function(){
   var text=listText(),st=$('#kopiaStatus'),ta=$('#kopiaText');
   kopiera(text,function(){st.textContent='Listan är kopierad. Klistra in den i ett sms.';},function(){
     ta.value=text;ta.hidden=false;ta.focus();ta.select();st.textContent='Markera texten och kopiera den själv.';
   });
 });
-
 if(navigator.share){
   var dela=$('#delaLista');dela.hidden=false;$('#kopieraLista').className='knapp tunn';
   dela.addEventListener('click',function(){
@@ -660,31 +1609,580 @@ if(navigator.share){
   });
 }
 
-/* ---------- Advent ---------- */
-function stake(n){
-  var s='<svg viewBox="0 0 150 100" role="img" aria-label="Adventsljusstake, '+n+' av 4 ljus är tända"><rect x="6" y="88" width="138" height="10" rx="5" fill="#A9C7E3"/>';
-  for(var i=0;i<4;i++){
-    var x=24+i*34,lit=i<n,h=lit?50-(n-i)*7:50,top=88-h;
-    s+='<rect x="'+(x-11)+'" y="82" width="22" height="8" rx="4" fill="#A9C7E3"/><rect x="'+(x-7)+'" y="'+top+'" width="14" height="'+(h-4)+'" rx="3" fill="#F2F6FA"/><path d="M'+x+' '+top+'v-6" stroke="#A9C7E3" stroke-width="2" stroke-linecap="round"/>';
-    if(lit)s+='<circle cx="'+x+'" cy="'+(top-13)+'" r="15" fill="#F5B942" opacity=".18"/><path class="laga" style="animation-delay:-'+(i*0.45)+'s" d="M'+x+' '+(top-3)+'q-7-9 0-20q7 11 0 20Z" fill="#F5B942"/>';
-  }
-  return s+'</svg>';
+/* ---------- Chatten ----------
+   Mamma, pappa och andra med länken skriver till varandra. Filip ser bara det som är märkt som en fråga till honom,
+   och det han själv svarar. Nya meddelanden hämtas med några sekunders mellanrum medan chatten är öppen. */
+var skickar=las('skickar',[]);if(!Array.isArray(skickar))skickar=[];     // mina meddelanden som inte är bekräftade än
+var sedd=+las('sedd',0)||0;                                               // tiden för det senaste meddelandet jag har sett
+var ritade={},forstaRit=true,omSak='',tillFilip=false,sakerM='',chattIKo=false,senastToast='';
+var FRASER=['Jag tar den!','Ska vi dela på den?','Har du köpt något än?','Vad tycker du om den?'];
+function minMsg(m){return !!m.egen||arMin(m);}
+function chattAlla(){
+  var ids={},ut=C.slice();
+  C.forEach(function(m){ids[m.id]=1;});
+  skickar.forEach(function(m){if(!ids[m.id])ut.push({id:m.id,t:m.t0,v:agare?'filip':vem,n:namn,p:enhet.p,x:m.x,f:m.f,s:m.s,egen:true,vantar:!m.fel,fel:!!m.fel});});
+  return ut;
 }
-(function(){
-  var nu=new Date(),y=nu.getFullYear(),idag=new Date(y,nu.getMonth(),nu.getDate());
-  var jul=new Date(y,11,24),fjarde=new Date(y,11,24-jul.getDay()),forsta=new Date(y,11,fjarde.getDate()-21);
-  var dagar=Math.round((jul-idag)/864e5),n=0;
-  for(var i=0;i<4;i++){if(idag>=new Date(forsta.getFullYear(),forsta.getMonth(),forsta.getDate()+7*i))n++;}
-  if(dagar>60||dagar<-7)return;
-  var MAN=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
-  if(dagar<0)n=4;
-  $('#stake').innerHTML=stake(n);
-  $('#dagar').textContent=dagar>1?dagar+' dagar kvar till julafton':dagar===1?'I morgon är det julafton':dagar===0?'I dag är det julafton. God jul!':'God fortsättning!';
-  $('#ljusrad').textContent=n===0?'Första ljuset tänds söndag '+forsta.getDate()+' '+MAN[forsta.getMonth()]+'.':n===1?'Ett ljus är tänt.':n===2?'Två ljus är tända.':n===3?'Tre ljus är tända.':'Alla fyra ljusen är tända.';
-  $('#advent').hidden=false;
-})();
+function olasta(){return C.filter(function(m){return m.t>sedd&&!minMsg(m);});}
+function ritaOlasta(){
+  var n=molnOk()?olasta().length:0,a=$('#chattAntal');
+  a.hidden=!n;a.textContent=n>9?'9+':String(n);
+  $('#chattKnappText').textContent=(agare?'Öppna frågorna till dig':'Öppna chatten')+(n?', '+n+(n===1?' nytt meddelande':' nya meddelanden'):'');
+}
+function tomChatt(){
+  return '<div class="c-tom"><svg viewBox="0 0 132 92" aria-hidden="true" focusable="false"><rect x="16" y="18" width="100" height="64" rx="8" fill="#F2F6FA"/><path d="M18 22l48 34 48-34" fill="none" stroke="#102544" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="66" cy="58" r="13" fill="#E8443F"/><path d="M60 58l4.5 4.5 8-8.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+    (agare?'<b>Inga frågor än</b>När mamma eller pappa frågar dig något dyker det upp här, och du kan svara.':'<b>Här är det tyst än</b>Skriv till varandra om julklapparna. Vem köper vad, och ska ni dela på något? Filip ser det inte.')+'</div>';
+}
+function ritaChatt(tvinga){
+  var l=$('#chattLista'),alla=chattAlla(),vidBotten=l.scrollHeight-l.scrollTop-l.clientHeight<70,h='',dag=0,forra=null;
+  if(!alla.length)h=tomChatt();
+  alla.forEach(function(m){
+    var dn=dagNyckel(m.t);
+    if(dn!==dag){h+='<p class="c-dag">'+dagText(m.t)+'</p>';dag=dn;forra=null;}
+    var min=minMsg(m),ihop=forra&&forra.v===m.v&&forra.n===m.n&&minMsg(forra)===min&&m.t-forra.t<5*60000;
+    h+='<div class="c-m v-'+m.v+(min?' min':'')+(m.fel?' fel':'')+(!forstaRit&&!ritade[m.id]?' ny':'')+'">'+
+      (ihop?'':'<span class="c-vem">'+(min?'Du':esc(vemText(m)))+'</span>')+
+      '<div class="c-b">'+(m.s&&SAK[m.s]?'<button class="c-om" type="button" data-tillsak="'+m.s+'">Om '+esc(SAK[m.s].namn)+'</button>':'')+esc(m.x)+'</div>'+
+      (m.f&&!agare&&m.v!=='filip'?'<span class="c-f">Filip ser den här</span>':'')+
+      '<span class="c-tid">'+(m.fel?'Gick inte att skicka.<button class="c-ta" type="button" data-igen="'+m.id+'">Försök igen</button>':
+        m.vantar?'Skickar …':klocka(m.t)+(min&&nuS()-m.t<600000?'<button class="c-ta'+(sakerM===m.id?' sakert':'')+'" type="button" data-tabortm="'+m.id+'">'+(sakerM===m.id?'Säkert? Ta bort':'Ta bort')+'</button>':''))+'</span></div>';
+    forra=m;
+  });
+  l.innerHTML=h;
+  alla.forEach(function(m){ritade[m.id]=1;});forstaRit=false;
+  if(tvinga||vidBotten)l.scrollTop=l.scrollHeight;
+}
+function ritaSkriv(){
+  var behoverVem=!agare&&!vem;
+  $('#chattVem').hidden=!behoverVem;$('#chattForm').hidden=behoverVem;
+  $('#chattFraser').innerHTML=agare?'':'<button class="c-fras till" type="button" id="tillFilip" aria-pressed="'+(tillFilip?'true':'false')+'">Fråga Filip</button>'+FRASER.map(function(f){return '<button class="c-fras" type="button" data-fras="'+esc(f)+'">'+esc(f)+'</button>';}).join('');
+  $('#chattFraser').hidden=!!agare;
+  var om=$('#chattOm'),s=omSak&&SAK[omSak];
+  om.hidden=!s;if(s)$('b',om).textContent='Om '+s.namn;
+  var info=$('#chattInfo');
+  info.hidden=!tillFilip||!!agare;info.textContent='Filip får se den här frågan och kan svara på den.';
+  $('#chattText').placeholder=agare?'Svara här':tillFilip?'Skriv din fråga till Filip':'Skriv här';
+  ritaNotis();
+}
+function markeraSedd(){
+  var senast=C.length?C[C.length-1].t:0;
+  if(senast>sedd){sedd=senast;spara('sedd',sedd);}
+  ritaOlasta();
+}
+// Kallas när chatten har ändrats på mellanhanden
+function chattAndrad(){
+  if(chattOppen&&!document.hidden){ritaChatt(false);markeraSedd();senastRort=Math.max(senastRort,Date.now()-60000);return;}
+  var nya=olasta(),sista=nya[nya.length-1];
+  ritaOlasta();
+  if(sista&&!forstaSvar&&sista.id!==senastToast){
+    senastToast=sista.id;kor($('#chattKnapp'),'ny',820);
+    toast(vemText(sista)+': '+(sista.x.length>70?sista.x.slice(0,68)+'…':sista.x),'Öppna',function(){oppnaChatt('',false);});
+  }
+}
+// Mina meddelanden: de som är framme stryks, de som saknas skickas igen
+function stamChatt(){
+  var ids={},nu=Date.now(),fore=skickar.length,felFore=skickar.filter(function(m){return m.fel;}).length,igen=false;
+  C.forEach(function(m){ids[m.id]=1;});
+  skickar=skickar.filter(function(m){return ids[m.id]?nu-m.t<60000:nuS()-m.t0<864e5;});      // framme: bevakas en minut till, ifall KV tappar det
+  skickar.forEach(function(m){
+    if(ids[m.id]||m.fel||nu-m.t<8000)return;
+    if(m.n>=4)m.fel=1;else igen=true;
+  });
+  if(skickar.length!==fore||skickar.filter(function(m){return m.fel;}).length!==felFore){spara('skickar',skickar);if(chattOppen)ritaChatt(false);}
+  if(igen)planeraChatt();
+}
+// Allt som väntar går i en och samma skrivning
+function planeraChatt(){
+  if(chattIKo||!molnOk())return;
+  chattIKo=true;
+  iKo(function(){
+    chattIKo=false;
+    var nu=Date.now(),ids={},pa;
+    C.forEach(function(m){ids[m.id]=1;});
+    pa=skickar.filter(function(m){return !ids[m.id]&&!m.fel&&nu-m.t>=8000;}).slice(0,8);
+    if(!pa.length||(!agare&&!vem))return Promise.resolve(null);
+    pa.forEach(function(m){m.t=nu;m.n++;});spara('skickar',skickar);
+    return api('POST','/onskelista/chatt',{d:enhet.d,vem:vem||undefined,namn:namn||undefined,flera:pa.map(function(m){return {id:m.id,text:m.x,f:m.f?1:undefined,sak:m.s||undefined};})});
+  }).then(function(j){
+    if(!j)return;
+    var u=lasSvar(j);visaLage();
+    if(u==='tak'){skickar.forEach(function(m){m.fel=1;});spara('skickar',skickar);ritaChatt(false);$('#chattInfo').hidden=false;$('#chattInfo').textContent='Det har skrivits väldigt mycket i dag. Försök igen i morgon.';}
+    else if(u!=='ok')setTimeout(function(){stamChatt();},8500);
+    if(skickar.some(function(m){return !m.t;}))planeraChatt();
+  },function(){kontakt=false;visaLage();setTimeout(function(){stamChatt();},8500);});
+}
+function skickaChatt(){
+  var ta=$('#chattText'),x=ta.value.replace(/\s+/g,' ').trim().slice(0,500);
+  if(!x)return;
+  if(!agare&&!vem){oppnaVem();return;}
+  skickar.push({id:'c'+Date.now().toString(36)+slump(5),x:x,f:(agare||tillFilip)?1:0,s:omSak||'',t0:nuS(),t:0,n:0,fel:0});
+  spara('skickar',skickar);
+  ta.value='';vaxText();omSak='';tillFilip=false;sakerM='';
+  ritaSkriv();ritaChatt(true);rort();planeraChatt();
+}
+function forsokIgen(id){
+  skickar.forEach(function(m){if(m.id===id){m.fel=0;m.n=0;m.t=0;}});
+  spara('skickar',skickar);ritaChatt(false);planeraChatt();
+}
+function taBortMsg(id){
+  if(sakerM!==id){sakerM=id;ritaChatt(false);return;}
+  sakerM='';
+  skickar=skickar.filter(function(m){return m.id!==id;});spara('skickar',skickar);      // annars skickas det om, som om det hade tappats bort
+  iKo(function(){return api('POST','/onskelista/chatt',{d:enhet.d,vem:vem||undefined,namn:namn||undefined,bort:id});}).then(function(j){lasSvar(j);ritaChatt(false);},function(){});
+}
+function vaxText(){var ta=$('#chattText');ta.style.height='46px';ta.style.height=Math.min(118,Math.max(46,ta.scrollHeight+4))+'px';$('#chattSkicka').disabled=!ta.value.trim();}
+// Tangentbordet på mobilen: håll skrivraden ovanför det
+function passaTangent(){
+  var d=$('#chatt'),vv=window.visualViewport;
+  if(!vv||!d.open){d.style.removeProperty('--kb');return;}
+  var under=Math.max(0,Math.round(window.innerHeight-vv.height-vv.offsetTop));
+  d.style.setProperty('--kb',(under>80?under:0)+'px');
+  if(under>80){var l=$('#chattLista');l.scrollTop=l.scrollHeight;}
+}
+function oppnaChatt(sakId,fraga){
+  if(!molnOk())return;
+  if(sakId&&SAK[sakId])omSak=sakId;
+  if(fraga&&!agare)tillFilip=true;
+  chattOppen=true;sakerM='';
+  ritaSkriv();oppna($('#chatt'));ritaChatt(true);markeraSedd();passaTangent();
+  senastRort=Date.now();hamta().then(schema,schema);
+  if((sakId||fraga)&&(agare||vem)){try{$('#chattText').focus();}catch(e){}}
+}
+$('#chattKnapp').addEventListener('click',function(){oppnaChatt('',false);});
+$('#chatt').addEventListener('close',function(){chattOppen=false;omSak='';tillFilip=false;$('#chatt').style.removeProperty('--kb');schema();});
+$('#chattForm').addEventListener('submit',function(e){e.preventDefault();skickaChatt();});
+$('#chattText').addEventListener('input',function(){vaxText();rort();});
+$('#chattText').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();skickaChatt();}});
+$('#chattFraser').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  if(b.id==='tillFilip'){tillFilip=!tillFilip;ritaSkriv();$('#chattText').focus();return;}
+  var ta=$('#chattText');ta.value=(ta.value?ta.value.replace(/\s+$/,'')+' ':'')+b.getAttribute('data-fras');vaxText();ta.focus();
+});
+$('#chattOmBort').addEventListener('click',function(){omSak='';ritaSkriv();});
+$('#chattValjVem').addEventListener('click',function(){oppnaVem();});
+if(window.visualViewport){visualViewport.addEventListener('resize',passaTangent);visualViewport.addEventListener('scroll',passaTangent);}
 
-ordna();uppdatera();
+/* ---------- Notiser ----------
+   Mellanhanden skickar en notis när någon skriver, köper något eller när Filip lägger till en sak.
+   På iPhone går det bara när listan ligger på hemskärmen. Filips mobil får aldrig notiser om köp. */
+var notisJobbar=false,notisFel='';
+function notisStod(){
+  if(!('serviceWorker' in navigator)||!('PushManager' in window)||!('Notification' in window))return arIos()&&!fristaende()?'hemskarm':'nej';
+  return 'ja';
+}
+function b64uTillU8(s){
+  s=String(s).replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';
+  var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;
+}
+function fragaLov(){
+  return new Promise(function(res){
+    try{var r=Notification.requestPermission(res);if(r&&r.then)r.then(res,function(){res('denied');});}catch(e){res('denied');}
+  });
+}
+function notisAnmal(sub){
+  var j=sub.toJSON?sub.toJSON():sub;
+  return api('POST','/onskelista/push',{d:enhet.d,sub:{endpoint:j.endpoint,keys:j.keys}}).then(function(s){
+    if(!s.ok)throw new Error(s.error||'spara');
+    spara('notis',1);spara('notisKoll',Date.now());
+  });
+}
+function swKlar(){          // service workern ska vara igång; väntar högst tio sekunder
+  return Promise.race([navigator.serviceWorker.ready,paus(10000).then(function(){throw new Error('sw');})]);
+}
+function notisPa(){
+  if(notisJobbar)return;
+  notisJobbar=true;notisFel='';ritaNotis();
+  fragaLov().then(function(lov){
+    if(lov!=='granted')throw new Error('lov');
+    return Promise.all([swKlar(),api('GET','/onskelista/pushnyckel')]);
+  }).then(function(a){
+    if(!a[1]||!a[1].key)throw new Error('nyckel');
+    return a[0].pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64uTillU8(a[1].key)});
+  }).then(notisAnmal).then(function(){
+    notisJobbar=false;ritaNotis();
+  },function(e){
+    notisJobbar=false;
+    notisFel=e&&e.message==='lov'?'Notiser är avstängda för listan i mobilens inställningar.':'Det gick inte att slå på notiserna. Försök igen om en stund.';
+    ritaNotis();
+  });
+}
+function notisAv(){
+  spara('notis',0);ritaNotis();
+  try{navigator.serviceWorker.ready.then(function(reg){return reg.pushManager.getSubscription();}).then(function(s){if(s)s.unsubscribe();},function(){});}catch(e){}
+  api('POST','/onskelista/push',{d:enhet.d,av:true}).then(function(){},function(){});
+}
+// Är notiserna på ska mellanhanden ha rätt adress – den kan bytas av mobilen, och Filips läge anmäls för sig
+function notisOm(tvinga){
+  if(!las('notis',0)||notisStod()!=='ja'||!molnOk())return;
+  try{if(Notification.permission!=='granted')return;}catch(e){return;}
+  if(!tvinga&&Date.now()-(+las('notisKoll',0)||0)<20*3600e3)return;
+  navigator.serviceWorker.ready.then(function(reg){
+    return reg.pushManager.getSubscription().then(function(s){
+      if(s)return s;
+      return api('GET','/onskelista/pushnyckel').then(function(k){return reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64uTillU8(k.key)});});
+    });
+  }).then(notisAnmal).then(function(){},function(){});
+}
+function ritaNotis(){
+  var rad=$('#notisRad'),text=$('#notisText'),knapp=$('#notisKnapp'),stod=notisStod(),pa=!!las('notis',0),lov='default';
+  try{lov=Notification.permission;}catch(e){}
+  knapp.hidden=false;knapp.disabled=notisJobbar;knapp.className='knapp';
+  if(!molnOk()||stod==='nej'){rad.hidden=true;return;}
+  rad.hidden=false;
+  if(stod==='hemskarm'){text.textContent='På iPhone kommer notiser först när listan ligger på hemskärmen.';knapp.textContent='Visa hur';knapp.setAttribute('data-gor','guide');return;}
+  if(lov==='denied'){text.textContent='Notiser är avstängda för listan i mobilens inställningar.';knapp.hidden=true;return;}
+  if(pa&&lov==='granted'){text.textContent='Notiser är på.';knapp.textContent='Stäng av';knapp.className='lank';knapp.setAttribute('data-gor','av');return;}
+  text.textContent=notisFel||(agare?'Få en notis när någon frågar dig något.':'Få en notis när någon skriver eller köper något.');
+  knapp.textContent=notisJobbar?'Slår på …':'Slå på notiser';knapp.setAttribute('data-gor','pa');
+}
+$('#notisKnapp').addEventListener('click',function(){
+  var g=this.getAttribute('data-gor');
+  if(g==='guide'){stang($('#chatt'));oppnaGuide();}
+  else if(g==='av')notisAv();
+  else notisPa();
+});
+// Ett tryck på en notis öppnar rätt ställe i appen
+function ga(mal){
+  mal=String(mal||'').replace(/^#/,'');
+  if(mal==='chatt'){if(molnOk())oppnaChatt('',false);}
+  else if(mal==='guide')oppnaGuide();
+  else if(mal.indexOf('sak-')===0)visaSak(mal.slice(4));
+}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.addEventListener('message',function(e){if(e.data&&typeof e.data.nav==='string'){hamta().then(function(){ga(e.data.nav);},function(){ga(e.data.nav);});}});
+}
+
+/* ---------- Filips eget läge ----------
+   Med nyckeln i adressen (#agare=…) eller inklistrad under "Är du Filip?" blir det här Filips mobil.
+   Då svarar mellanhanden utan köpen, och appen visar verktygen för att lägga till, dölja och skriva lappar. */
+var agarRitat='',workerKod='';
+function hamtaKod(){
+  if(workerKod)return;
+  fetch('../gymschema-worker.js',{cache:'no-store'}).then(function(r){return r.ok?r.text():'';}).then(function(t){
+    if(t.indexOf('wishApi')>0&&t.indexOf('ol:mamma')>0)workerKod=t;
+  },function(){});
+}
+function ritaAgare(){
+  var k=$('#agarkort'),r=$('#agarRuta'),h;
+  if(!agare){k.hidden=true;agarRitat='';return;}
+  k.hidden=false;
+  if(agarRitat===lage)return;
+  agarRitat=lage;
+  h='<p class="hand">Bara du ser den här rutan</p>';
+  if(lage==='ok'){
+    h+='<p>Det du lägger till eller ändrar syns direkt för mamma, pappa och andra som har länken. Under varje sak kan du skriva en lapp, till exempel storlek och färg.</p>'+
+       '<div class="knappar"><button class="knapp" type="button" data-nysak="0">Lägg till en sak</button><button class="knapp rand" type="button" id="delaLank">Kopiera länken till listan</button></div>'+
+       '<p class="fin" id="delaStatus" role="status"></p>';
+  }else if(lage==='kv'){
+    h+='<p>Mellanhanden på Cloudflare saknar sin lagring (bindningen GS). Skriv det till Claude, så löser vi det.</p>'+
+       '<div class="knappar"><button class="knapp" type="button" id="kollaIgen">Kolla igen</button></div><p class="fin" id="kollStatus" role="status"></p>';
+  }else{
+    h+='<p><strong>Ett steg kvar.</strong> Mellanhanden på Cloudflare behöver den nya koden. Innan dess sparas allt bara på var och ens mobil, och chatten är avstängd.</p>'+
+       '<ol class="steglista">'+
+       '<li><b>Kopiera den nya koden</b><button class="knapp" type="button" id="kopieraKod">Kopiera koden</button><span id="kodStatus" role="status"></span></li>'+
+       '<li><b>Klistra in den i Cloudflare</b><span>Öppna gymschema-switchbot och tryck på Edit code. Markera allt som står där, klistra in och tryck på Deploy.</span><a class="knapp rand" target="_blank" rel="noopener" href="https://dash.cloudflare.com/?to=/:account/workers-and-pages">Öppna Cloudflare</a></li>'+
+       '<li><b>Kom tillbaka hit</b><button class="knapp rand" type="button" id="kollaIgen">Kolla om det är igång</button><span id="kollStatus" role="status"></span></li></ol>'+
+       '<textarea id="kodText" readonly hidden aria-label="Den nya koden" style="width:100%;min-height:120px;margin-top:12px;border-radius:10px;border:2px solid var(--is);background:transparent;color:var(--sno);font:13px/1.4 ui-monospace,Menlo,monospace;padding:10px"></textarea>';
+    hamtaKod();
+  }
+  h+='<p class="fin" style="margin-top:12px"><button class="lank" type="button" id="lamna">Lämna mitt läge på den här mobilen</button></p>';
+  r.innerHTML=h;
+}
+$('#agarRuta').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  var st;
+  if(b.id==='delaLank'){
+    var lank=location.origin+location.pathname;st=$('#delaStatus');
+    kopiera(lank,function(){st.textContent='Länken är kopierad. Den visar listan utan ditt eget läge, så den kan du skicka till vem du vill.';},function(){st.textContent=lank;});
+  }else if(b.id==='kopieraKod'){
+    st=$('#kodStatus');
+    if(!workerKod){st.textContent='Koden hämtas. Tryck en gång till om en sekund.';hamtaKod();return;}
+    kopiera(workerKod,function(){st.textContent='Koden är kopierad.';},function(){
+      var ta=$('#kodText');ta.value=workerKod;ta.hidden=false;ta.focus();ta.select();st.textContent='Markera allt i rutan här nedanför och kopiera det själv.';
+    });
+  }else if(b.id==='kollaIgen'){
+    st=$('#kollStatus');st.textContent='Kollar …';
+    hamta().then(function(){if(lage!=='ok'&&$('#kollStatus'))$('#kollStatus').textContent=lage==='kv'?'Lagringen saknas fortfarande.':'Inte än. Mellanhanden har kvar den gamla koden.';schema();});
+  }else if(b.id==='lamna'){
+    if(b.getAttribute('data-sakert')){lamnaAgare(false);return;}
+    b.setAttribute('data-sakert','1');b.textContent='Säkert? Då behöver du din länk för att komma in igen';
+  }
+});
+function bytLage(){           // när den här mobilen blir, eller slutar vara, Filips
+  gen++;hamtar=false;nollaMoln();forstaSvar=true;agarRitat='';
+  ritaHalsning();bygg();visaLage();ritaSkriv();
+  hamta().then(function(){notisOm(true);schema();},schema);
+}
+function lamnaAgare(felNyckel){
+  if(!agare)return;
+  agare='';spara('agare','');
+  bytLage();
+  toast(felNyckel?'Koden till Filips läge stämmer inte längre. Mobilen visar den vanliga listan.':'Du har lämnat ditt eget läge.');
+}
+function oppnaNyckel(){$('#nyckelFel').textContent='';$('#nyckel').value='';oppna($('#nyckelDialog'));setTimeout(function(){try{$('#nyckel').focus();}catch(e){}},60);}
+function nyckelUr(text){
+  var m=/agare=([A-Za-z0-9_-]{20,80})/.exec(text)||/^\s*([A-Za-z0-9_-]{20,80})\s*$/.exec(text);
+  return m?m[1]:'';
+}
+$('#fotFilip').addEventListener('click',oppnaNyckel);
+$('#nyckelForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var k=nyckelUr($('#nyckel').value),fel=$('#nyckelFel');
+  if(!k){fel.textContent='Det där ser inte ut som din länk. Den slutar med #agare= och en lång kod.';return;}
+  fel.textContent='Kollar …';
+  api('POST','/onskelista/lista',{op:'hej'},k).then(function(j){
+    if(j._s===403&&j.error==='agare'){fel.textContent='Koden stämmer inte. Kopiera hela länken och försök igen.';return;}
+    agare=k;spara('agare',agare);stang($('#nyckelDialog'));bytLage();toast('Välkommen, Filip. Det här är ditt eget läge.');
+  },function(){fel.textContent='Ingen kontakt just nu. Försök igen om en stund.';});
+});
+
+/* ---------- Lägg till eller ändra en sak ---------- */
+var nsId='',butikAuto='';
+function butikAv(u){
+  try{
+    var h=new URL(u).hostname.replace(/^www\./,'').split('.'),strunt={se:1,com:1,net:1,org:1,nu:1,co:1,uk:1,de:1,dk:1,no:1,fi:1,eu:1,shop:1,store:1,m:1,sv:1,en:1};
+    var d=h.filter(function(x){return !strunt[x];});
+    var ord=d.length?d[d.length-1]:h[0];
+    return ord?stor(ord):'';
+  }catch(e){return '';}
+}
+function oppnaNySak(lucka,id){
+  var e=id?listan().egna.filter(function(x){return x.id===id;})[0]:null;
+  nsId=e?e.id:'';
+  $('#nySakRubrik').textContent=e?'Ändra saken':'Lägg till en sak';$('#nsSpara').textContent=e?'Spara':'Lägg till';
+  $('#nsLank').value=e?e.url:'';$('#nsNamn').value=e?e.namn:'';$('#nsPris').value=e&&e.pris!=null?e.pris:'';$('#nsButik').value=e?e.butik||'':'';$('#nsLapp').value=e?e.lapp||'':'';
+  var plats=e?e.lucka||0:lucka||0,bild=e?e.bild:'paket';
+  $('#nsPlats').innerHTML=[['0','På listan']].concat(LUCKOR.map(function(L){return [String(L.nr),'Lucka '+L.nr];})).map(function(p){
+    return '<label><input type="radio" name="nsPlats" value="'+p[0]+'"'+(+p[0]===plats?' checked':'')+'><span>'+p[1]+'</span></label>';
+  }).join('');
+  $('#nsBild').innerHTML=Object.keys(BILDNAMN).map(function(b){
+    return '<label><input type="radio" name="nsBild" value="'+b+'"'+(b===bild?' checked':'')+'><span><svg class="bild" viewBox="0 0 320 200" role="img" aria-label="'+esc(BILDNAMN[b])+'">'+KONST[b]+'</svg></span></label>';
+  }).join('');
+  $('#nsFel').textContent='';butikAuto='';
+  oppna($('#nySak'));
+}
+$('#nsLank').addEventListener('change',function(){      // butiken fylls i efter länken, tills man har skrivit något eget där
+  var b=$('#nsButik'),u=this.value.trim();
+  if(u&&!/^https?:\/\//i.test(u))u='https://'+u;
+  if(!b.value||b.value===butikAuto){butikAuto=butikAv(u);b.value=butikAuto;}
+});
+$('#nySakForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var fel=$('#nsFel'),lank=$('#nsLank').value.trim(),sakNamn=$('#nsNamn').value.replace(/\s+/g,' ').trim(),pris=$('#nsPris').value.replace(/[^\d,.]/g,'').replace(',','.');
+  if(lank&&!/^https?:\/\//i.test(lank))lank='https://'+lank;
+  lank=lank.replace(/^http:\/\//i,'https://');
+  if(!/^https:\/\/[^\s/]+\.[^\s/]+/.test(lank)){fel.textContent='Klistra in länken till saken. Den börjar med https://';$('#nsLank').focus();return;}
+  if(/^https:\/\/(www\.)?google\.[a-z.]+\/(aclk|url|search)/i.test(lank)||/googleadservices\.com/i.test(lank)){fel.textContent='Det där är en länk från Google och inte till butiken. Öppna saken hos butiken och kopiera adressen därifrån.';$('#nsLank').focus();return;}
+  if(lank.length>400){fel.textContent='Länken är för lång. Öppna saken hos butiken och kopiera adressen därifrån.';return;}
+  if(!sakNamn){fel.textContent='Skriv vad det är för sak.';$('#nsNamn').focus();return;}
+  var b=$('input[name="nsBild"]:checked'),p=$('input[name="nsPlats"]:checked'),knapp=$('#nsSpara');
+  var sak={namn:sakNamn,url:lank,pris:pris?Math.round(parseFloat(pris)):'',butik:$('#nsButik').value.trim()||butikAv(lank),lapp:$('#nsLapp').value.trim(),bild:b?b.value:'paket',lucka:p?+p.value:0};
+  knapp.disabled=true;fel.textContent='Sparar …';
+  iKo(function(){return api('POST','/onskelista/lista',nsId?{op:'andra',id:nsId,sak:sak}:{op:'ny',sak:sak});}).then(function(j){
+    knapp.disabled=false;
+    var u=lasSvar(j);visaLage();
+    if(u!=='ok'){fel.textContent=u==='full'?'Listan är full. Ta bort något först.':u==='tak'?'Det har sparats väldigt mycket i dag. Försök igen i morgon.':'Det gick inte att spara. Försök igen.';return;}
+    stang($('#nySak'));
+    toast(nsId?'Sparat.':'Tillagd. Nu syns den för alla som har länken.');
+    if(j.id)visaSak(j.id);
+  },function(){knapp.disabled=false;fel.textContent='Ingen kontakt just nu. Försök igen om en stund.';});
+});
+function agarSkriv(kropp,klart){
+  iKo(function(){return api('POST','/onskelista/lista',kropp);}).then(function(j){
+    var u=lasSvar(j);visaLage();
+    if(u!=='ok')toast(u==='tak'?'Det har sparats väldigt mycket i dag. Försök igen i morgon.':'Det gick inte att spara. Försök igen.');
+    else if(klart)klart(j);
+  },function(){toast('Ingen kontakt just nu. Försök igen om en stund.');});
+}
+function taBortSak(id,knapp){
+  if(!knapp.getAttribute('data-sakert')){knapp.setAttribute('data-sakert','1');knapp.textContent='Säkert? Ta bort';return;}
+  knapp.disabled=true;
+  agarSkriv({op:'bort',id:id},function(){toast('Borttagen.');});
+}
+function dolj(id){
+  var s=SAK[id];if(!s)return;
+  agarSkriv({op:'dolj',id:id,dold:!s.dold},function(){toast(s.dold?'Nu syns den igen.':(s.lucka?'Förslaget är borta för de andra.':'Nu är den dold för de andra.')+' Du kan ta fram den igen här.');});
+}
+
+/* ---------- Lappen under en sak ---------- */
+var lappId='';
+function grundLapp(id){var a=SAKER.concat(FORSLAG).filter(function(s){return s.id===id;})[0];return a?a.lapp||'':null;}
+function oppnaLapp(id){
+  var s=SAK[id];if(!s)return;
+  lappId=id;$('#lappSak').textContent=s.namn;$('#lappText').value=s.lapp||'';$('#lappFel').textContent='';
+  $('#lappRubrik').textContent=s.lapp?'Ändra lappen':'Skriv en lapp';
+  oppna($('#lappDialog'));setTimeout(function(){try{$('#lappText').focus();}catch(e){}},60);
+}
+function sparaLapp(text){
+  var s=SAK[lappId],grund=grundLapp(lappId),kropp;if(!s)return;
+  if(s.egen){var e=listan().egna.filter(function(x){return x.id===lappId;})[0];if(!e)return;kropp={op:'andra',id:lappId,sak:{namn:e.namn,url:e.url,pris:e.pris==null?'':e.pris,butik:e.butik,lapp:text,bild:e.bild,lucka:e.lucka||0}};}
+  else kropp=text===grund?{op:'lapp',id:lappId}:{op:'lapp',id:lappId,text:text};     // samma som den som står i appen: ingen egen lapp behövs
+  stang($('#lappDialog'));
+  agarSkriv(kropp,function(){toast(text?'Lappen är sparad.':'Lappen är borta.');});
+}
+$('#lappForm').addEventListener('submit',function(e){e.preventDefault();sparaLapp($('#lappText').value.replace(/\s+/g,' ').trim().slice(0,160));});
+$('#lappBort').addEventListener('click',function(){sparaLapp('');});
+
+/* ---------- Guiden: lägg listan på hemskärmen ----------
+   En ritad mobil visar var man trycker, steg för steg. iPhone har två varianter eftersom Safari 26 flyttade
+   delningen bakom de tre prickarna. På Android kan webbläsaren ofta lägga till appen själv (knappen överst). */
+var G_TXT='style="font-family:var(--text)"';
+function gMobil(del,inne,fx,fy){     // del: 'nere' visar mobilens nedre del, 'uppe' den övre – så blir det man ska trycka på stort nog att läsa
+  return '<svg viewBox="'+(del==='nere'?'0 150 200 236':'0 -6 200 236')+'" focusable="false"><defs><clipPath id="gSk"><rect x="18" y="14" width="164" height="352" rx="24"/></clipPath></defs>'+
+   '<rect x="8" y="4" width="184" height="372" rx="34" fill="#102544"/><g clip-path="url(#gSk)"><g transform="translate(18 14)">'+inne+'</g></g>'+
+   '<rect x="78" y="21" width="44" height="11" rx="5.5" fill="#102544"/>'+
+   (fx==null?'':'<g class="finger" transform="translate('+(18+fx)+' '+(14+fy)+')"><circle class="ring" r="20"/><circle class="ring r2" r="20"/><circle class="prick" r="8"/></g>')+'</svg>';
+}
+function gIkon(x,y,s){
+  return '<g transform="translate('+x+' '+y+') scale('+(s/44)+')"><rect width="44" height="44" rx="10" fill="#17376A"/><rect y="19" width="44" height="7" fill="#E8443F"/><rect x="26" width="7" height="44" fill="#E8443F"/><use href="#rosett" x="15" y="9" width="29" height="23"/></g>';
+}
+function gSida(dy){
+  return '<g transform="translate(0 '+(dy||0)+')"><rect width="164" height="352" fill="#102544"/><rect width="164" height="164" fill="#17376A"/>'+
+   '<rect y="98" width="164" height="12" fill="#E8443F"/><rect x="118" width="12" height="164" fill="#E8443F"/>'+
+   '<text x="12" y="72" font-size="26" style="font-family:var(--rubrik);font-weight:900;fill:#F2F6FA">Filips</text><text x="12" y="96" font-size="26" style="font-family:var(--rubrik);font-weight:900;fill:#F2F6FA">önske-</text><text x="12" y="134" font-size="26" style="font-family:var(--rubrik);font-weight:900;fill:#F2F6FA">lista</text>'+
+   '<use href="#rosett" x="98" y="82" width="52" height="42"/>'+
+   '<rect x="12" y="180" width="140" height="74" rx="8" fill="#FBEED2"/><rect x="12" y="264" width="98" height="9" rx="4.5" fill="#A9C7E3"/><rect x="12" y="280" width="58" height="9" rx="4.5" fill="#F5B942"/></g>';
+}
+function gRad(y,text,pa,ikon){     // en rad i en meny eller ett delningsark
+  return (pa?'<rect x="6" y="'+(y-2)+'" width="152" height="28" rx="8" fill="#F5B942"/>':'')+
+   (text?'<text x="16" y="'+(y+16)+'" font-size="10.5" '+G_TXT+' font-weight="'+(pa?800:600)+'" fill="#102544">'+text+'</text>':'<rect x="16" y="'+(y+8)+'" width="'+(70+(y%3)*14)+'" height="8" rx="4" fill="#C9D8E8"/>')+
+   (ikon||'<rect x="138" y="'+(y+6)+'" width="12" height="12" rx="3" fill="#C9D8E8"/>');
+}
+var G_DELA='<path d="M0 3V-9M-4.5 -4.5L0 -9l4.5 4.5" fill="none" stroke="#17376A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M-5 -2h-3v11h16v-11h-3" fill="none" stroke="#17376A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+var G_PLUS='<rect x="-7" y="-7" width="14" height="14" rx="4" fill="none" stroke="#102544" stroke-width="2"/><path d="M0 -3.5v7M-3.5 0h7" stroke="#102544" stroke-width="2" stroke-linecap="round"/>';
+var G_PRICKAR='<circle cx="140" cy="324" r="16" fill="#F2F6FA"/><circle cx="133" cy="324" r="2.2" fill="#17376A"/><circle cx="140" cy="324" r="2.2" fill="#17376A"/><circle cx="147" cy="324" r="2.2" fill="#17376A"/>';
+var GBILD={
+ iosKnapp:function(){return gMobil('nere',gSida(0)+'<rect y="286" width="164" height="66" fill="#F2F6FA"/><rect x="10" y="292" width="144" height="20" rx="10" fill="#D9E8F5"/><text x="82" y="306" text-anchor="middle" font-size="9" '+G_TXT+' fill="#102544">önskelistan</text>'+
+   '<path d="M24 326l-6 6 6 6M50 326l6 6-6 6" fill="none" stroke="#17376A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/><g transform="translate(82 333)">'+G_DELA+'</g>'+
+   '<path d="M106 327h14v11h-14zM113 327v11" fill="none" stroke="#17376A" stroke-width="2" stroke-linejoin="round" opacity=".55"/><rect x="136" y="325" width="11" height="11" rx="2.5" fill="none" stroke="#17376A" stroke-width="2" opacity=".55"/><rect x="140" y="329" width="11" height="11" rx="2.5" fill="#F2F6FA" stroke="#17376A" stroke-width="2" opacity=".55"/>',95,343);},
+ iosPrickar:function(){return gMobil('nere',gSida(0)+'<circle cx="24" cy="324" r="16" fill="#F2F6FA"/><path d="M27 318l-6 6 6 6" fill="none" stroke="#17376A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'+
+   '<rect x="46" y="308" width="72" height="32" rx="16" fill="#F2F6FA"/><text x="82" y="328" text-anchor="middle" font-size="9" '+G_TXT+' fill="#102544">önskelistan</text>'+G_PRICKAR,151,336);},
+ iosMeny:function(){return gMobil('nere',gSida(0)+'<rect width="164" height="352" fill="#061022" opacity=".35"/>'+
+   '<rect x="2" y="168" width="160" height="132" rx="16" fill="#F2F6FA"/><g transform="translate(0 176)">'+gRad(0,'Dela',true,'<g transform="translate(144 15)">'+G_DELA+'</g>')+gRad(30,'')+gRad(60,'')+gRad(90,'')+'</g>'+G_PRICKAR,104,196);},
+ iosDela:function(){return gMobil('nere',gSida(0)+'<rect width="164" height="352" fill="#061022" opacity=".45"/><rect y="146" width="164" height="230" rx="16" fill="#F2F6FA"/><rect x="68" y="152" width="28" height="4" rx="2" fill="#C9D8E8"/>'+
+   gIkon(12,162,24)+'<text x="44" y="173" font-size="10" '+G_TXT+' font-weight="700" fill="#102544">Filips önskelista</text><text x="44" y="184" font-size="8" '+G_TXT+' fill="#5B7391">önskelistan</text>'+
+   '<circle cx="26" cy="212" r="13" fill="#D9E8F5"/><circle cx="62" cy="212" r="13" fill="#FADCD9"/><circle cx="98" cy="212" r="13" fill="#FBEED2"/><circle cx="134" cy="212" r="13" fill="#D9E8F5"/>'+
+   '<g transform="translate(0 236)">'+gRad(0,'')+gRad(30,'')+gRad(62,'Lägg till på hemskärmen',true,'<g transform="translate(144 14)">'+G_PLUS+'</g>')+gRad(94,'')+'</g>',150,322);},
+ iosLagg:function(){return gMobil('uppe','<rect width="164" height="352" fill="#F2F6FA"/><text x="12" y="62" font-size="10" '+G_TXT+' fill="#17376A">Avbryt</text>'+
+   '<rect x="94" y="46" width="60" height="24" rx="12" fill="#F5B942"/><text x="124" y="62" text-anchor="middle" font-size="10.5" '+G_TXT+' font-weight="800" fill="#102544">Lägg till</text>'+
+   '<text x="12" y="98" font-size="12" '+G_TXT+' font-weight="800" fill="#102544">Hemskärmen</text>'+
+   '<rect x="8" y="110" width="148" height="62" rx="12" fill="#fff"/>'+gIkon(18,121,40)+'<text x="68" y="138" font-size="11" '+G_TXT+' font-weight="700" fill="#102544">Önskelista</text><rect x="68" y="146" width="72" height="7" rx="3.5" fill="#C9D8E8"/>'+
+   '<rect x="8" y="184" width="148" height="34" rx="12" fill="#fff"/><rect x="18" y="197" width="74" height="8" rx="4" fill="#C9D8E8"/><rect x="126" y="193" width="22" height="14" rx="7" fill="#A9C7E3"/>',146,78);},
+ hem:function(){
+   var s='<rect width="164" height="352" fill="#17376A"/><circle cx="30" cy="70" r="60" fill="#1F4686"/><circle cx="150" cy="250" r="90" fill="#1F4686"/>',r,k;
+   for(r=0;r<4;r++)for(k=0;k<4;k++){if(r===1&&k===2)continue;s+='<rect x="'+(14+k*36)+'" y="'+(52+r*52)+'" width="28" height="28" rx="8" fill="#F2F6FA" opacity="'+(0.16+((r+k)%3)*0.07)+'"/>';}
+   s+='<g class="g-landa">'+gIkon(84,102,32)+'<text x="100" y="146" text-anchor="middle" font-size="7.5" '+G_TXT+' font-weight="700" fill="#F2F6FA">Önskelista</text></g>'+
+      '<path class="g-glitter" d="M128 88l2.5 6.5 6.5 2.5-6.5 2.5-2.5 6.5-2.5-6.5-6.5-2.5 6.5-2.5Z" fill="#F5B942"/><path class="g-glitter" d="M72 130l2 5 5 2-5 2-2 5-2-5-5-2 5-2Z" fill="#F5B942"/>';
+   return gMobil('uppe',s,null,null);},
+ andPrickar:function(){return gMobil('uppe',gSida(48)+'<rect width="164" height="50" fill="#F2F6FA"/><rect x="10" y="24" width="118" height="20" rx="10" fill="#D9E8F5"/><text x="20" y="38" font-size="9" '+G_TXT+' fill="#102544">önskelistan</text>'+
+   '<circle cx="146" cy="27" r="2.2" fill="#17376A"/><circle cx="146" cy="34" r="2.2" fill="#17376A"/><circle cx="146" cy="41" r="2.2" fill="#17376A"/>',150,46);},
+ andMeny:function(){return gMobil('uppe',gSida(48)+'<rect width="164" height="50" fill="#F2F6FA"/><rect x="10" y="24" width="118" height="20" rx="10" fill="#D9E8F5"/><rect width="164" height="352" fill="#061022" opacity=".3"/>'+
+   '<rect x="2" y="20" width="160" height="196" rx="14" fill="#F2F6FA"/><g transform="translate(0 30)">'+gRad(0,'')+gRad(30,'')+gRad(60,'')+gRad(92,'Lägg till på startskärmen',true,'<g transform="translate(144 14)">'+G_PLUS+'</g>')+gRad(124,'')+gRad(154,'')+'</g>',150,148);},
+ andInst:function(){return gMobil('uppe',gSida(48)+'<rect width="164" height="352" fill="#061022" opacity=".5"/><rect x="10" y="66" width="144" height="128" rx="16" fill="#F2F6FA"/>'+
+   '<text x="24" y="92" font-size="12" '+G_TXT+' font-weight="800" fill="#102544">Installera appen</text>'+gIkon(24,104,30)+'<text x="62" y="118" font-size="10.5" '+G_TXT+' font-weight="700" fill="#102544">Önskelista</text><rect x="62" y="124" width="62" height="6" rx="3" fill="#C9D8E8"/>'+
+   '<text x="54" y="174" text-anchor="middle" font-size="10" '+G_TXT+' fill="#17376A">Avbryt</text><rect x="80" y="158" width="64" height="24" rx="12" fill="#F5B942"/><text x="112" y="174" text-anchor="middle" font-size="10.5" '+G_TXT+' font-weight="800" fill="#102544">Installera</text>',138,188);}
+};
+var KLAR={bild:'hem',rubrik:'Klart!',text:'Nu ligger önskelistan bland dina appar. Öppna den därifrån nästa gång, så ser du direkt om något har hänt.',tint:'#FBEED2'};
+var GUIDE={
+ iosNy:[
+  {bild:'iosPrickar',rubrik:'Tryck på de tre prickarna',text:'De sitter längst ner till höger i Safari.',tint:'#D9E8F5'},
+  {bild:'iosMeny',rubrik:'Välj Dela',text:'En liten meny fälls upp. Tryck på Dela i den.',tint:'#D9E8F5'},
+  {bild:'iosDela',rubrik:'Välj Lägg till på hemskärmen',text:'Dra listan uppåt tills du ser raden. Hittar du den inte? Tryck på Mer eller Redigera åtgärder längst ner.',tint:'#FADCD9'},
+  {bild:'iosLagg',rubrik:'Tryck på Lägg till',text:'Knappen sitter uppe till höger. Namnet Önskelista är redan ifyllt.',tint:'#FBEED2'},KLAR],
+ iosGammal:[
+  {bild:'iosKnapp',rubrik:'Tryck på dela-knappen',text:'Den sitter längst ner i Safari: en fyrkant med en pil som pekar uppåt.',tint:'#D9E8F5'},
+  {bild:'iosDela',rubrik:'Välj Lägg till på hemskärmen',text:'Dra listan uppåt tills du ser raden. Hittar du den inte? Tryck på Redigera åtgärder längst ner.',tint:'#FADCD9'},
+  {bild:'iosLagg',rubrik:'Tryck på Lägg till',text:'Knappen sitter uppe till höger. Namnet Önskelista är redan ifyllt.',tint:'#FBEED2'},KLAR],
+ android:[
+  {bild:'andPrickar',rubrik:'Tryck på de tre prickarna',text:'De sitter uppe till höger i Chrome. I Samsung Internet är det tre streck nere till höger.',tint:'#D9E8F5'},
+  {bild:'andMeny',rubrik:'Välj Lägg till på startskärmen',text:'I en del mobiler står det Installera appen i stället.',tint:'#FADCD9'},
+  {bild:'andInst',rubrik:'Tryck på Installera',text:'Står det Lägg till i stället trycker du på det.',tint:'#FBEED2'},KLAR]
+};
+var gPlattform=arAndroid()?'android':'ios',gNy=iosNy(),gSteg=0,installFraga=null;
+function gLista(){return gPlattform==='android'?GUIDE.android:(gNy?GUIDE.iosNy:GUIDE.iosGammal);}
+function ritaGuide(fokus){
+  var steg=gLista(),s=steg[gSteg],sist=gSteg===steg.length-1;
+  $$('.flik').forEach(function(f){f.setAttribute('aria-pressed',f.getAttribute('data-plattform')===gPlattform?'true':'false');});
+  var scen=$('#guideScen');scen.innerHTML=GBILD[s.bild]();scen.style.setProperty('--gt',s.tint);
+  $('#guideNr').textContent=sist?'✓':gSteg+1;$('#guideNr').classList.toggle('klar',sist);
+  $('#guideSteg').textContent=s.rubrik;$('#guideText').textContent=s.text;
+  $('#guidePrickar').innerHTML=steg.map(function(x,i){return '<i'+(i===gSteg?' class="pa"':'')+'></i>';}).join('');
+  $('#guideBak').style.visibility=gSteg?'visible':'hidden';
+  $('#guideNasta').textContent=sist?'Stäng':'Nästa';
+  $('#guideByt').hidden=gPlattform!=='ios';
+  $('#guideByt').textContent=gNy?'Ser du ingen knapp med tre prickar?':'Har du tre prickar i stället för dela-knappen?';
+  var v=$('#guideVarning');
+  if(iApp()){
+    v.hidden=false;
+    v.innerHTML='<p><strong>Öppna listan i '+(arAndroid()?'Chrome':'Safari')+' först.</strong> Just nu visas den inuti en annan app, och därifrån går den inte att lägga på hemskärmen. Tryck på de tre prickarna eller dela-symbolen och välj Öppna i '+(arAndroid()?'Chrome':'Safari')+'.</p><button class="lank" type="button" id="guideLank">Kopiera länken</button>';
+  }else if(arIos()&&/CriOS|FxiOS|EdgiOS/.test(UA)&&gPlattform==='ios'){
+    v.hidden=false;v.innerHTML='<p>Du använder inte Safari. Här sitter dela-knappen uppe till höger, i adressfältet. Resten är likadant.</p>';
+  }else if(fristaende()){
+    v.hidden=false;v.innerHTML='<p><strong>Listan ligger redan på din hemskärm.</strong> Så här gör den som inte har lagt dit den än.</p>';
+  }else v.hidden=true;
+  $('#guideSnabb').hidden=!(installFraga&&gPlattform==='android');
+  if(fokus){try{$('#guideSteg').focus({preventScroll:true});}catch(e){}}
+}
+function oppnaGuide(){gSteg=0;ritaGuide(false);oppna($('#guide'));}
+$('#guideNasta').addEventListener('click',function(){if(gSteg>=gLista().length-1){stang($('#guide'));return;}gSteg++;ritaGuide(true);});
+$('#guideBak').addEventListener('click',function(){if(gSteg>0){gSteg--;ritaGuide(true);}});
+$('#guideByt').addEventListener('click',function(){gNy=!gNy;gSteg=0;ritaGuide(true);});
+$$('.flik').forEach(function(f){f.addEventListener('click',function(){gPlattform=f.getAttribute('data-plattform');gSteg=0;ritaGuide(false);});});
+$('#guideVarning').addEventListener('click',function(e){
+  if(e.target.id!=='guideLank')return;
+  var b=e.target,lank=location.origin+location.pathname;
+  kopiera(lank,function(){b.textContent='Länken är kopierad. Klistra in den i '+(arAndroid()?'Chrome':'Safari')+'.';},function(){b.textContent=lank;});
+});
+$('#guideInstallera').addEventListener('click',function(){
+  if(!installFraga)return;
+  var f=installFraga;installFraga=null;
+  try{f.prompt();(f.userChoice||Promise.resolve({})).then(function(r){if(r&&r.outcome==='accepted'){gSteg=gLista().length-1;}ritaGuide(true);ritaHemkort();},function(){ritaGuide(false);});}catch(e){ritaGuide(false);}
+});
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();installFraga=e;ritaHemkort();if($('#guide').open)ritaGuide(false);});
+window.addEventListener('appinstalled',function(){installFraga=null;spara('hemInte',Date.now()+365*864e5);ritaHemkort();});
+// Kortet under hälsningen: syns på mobiler som inte redan har listan på hemskärmen
+function ritaHemkort(){
+  var mobil=arIos()||arAndroid()||!!installFraga;
+  $('#hemkort').hidden=!mobil||fristaende()||Date.now()<(+las('hemInte',0)||0);
+}
+$('#hemVisa').addEventListener('click',oppnaGuide);
+$('#hemInte').addEventListener('click',function(){spara('hemInte',Date.now()+14*864e5);ritaHemkort();});
+$('#fotGuide').addEventListener('click',oppnaGuide);
+
+/* ---------- Start ---------- */
+var startMal=(location.hash||'').replace(/^#/,'');
+(function(){                       // Filips egen länk: koden står efter #agare= och plockas bort ur adressen direkt
+  var m=/(?:^|&)agare=([A-Za-z0-9_-]{20,80})/.exec(startMal);
+  if(!m)return;
+  startMal='';
+  if(m[1]!==agare){agare=m[1];spara('agare',agare);moln={slots:{},rev:{}};spara('moln',moln);}
+  try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+})();
+avtryck();raknaOm();
+ritaHalsning();ritaNedrakning();bygg();visaLage();ritaSkriv();ritaHemkort();
+
+var rortT=0;
+function rorSig(){var nu=Date.now();if(nu-rortT<4000)return;rortT=nu;rort();}
+window.addEventListener('pointerdown',rorSig,{passive:true});
+window.addEventListener('keydown',rorSig);
+window.addEventListener('scroll',rorSig,{passive:true});
+document.addEventListener('visibilitychange',function(){
+  if(document.hidden){clearTimeout(pollT);pollT=0;return;}
+  senastRort=Date.now();
+  hamta().then(function(){schema();if(chattOppen){ritaChatt(false);markeraSedd();}},schema);
+});
+window.addEventListener('online',function(){hamta().then(schema,schema);});
+window.addEventListener('hashchange',function(){var m=(location.hash||'').replace(/^#/,'');if(m&&m.indexOf('agare=')<0)ga(m);});
+
+hamta().then(function(){
+  schema();notisOm(false);
+  if(startMal)ga(startMal);
+  // första besöket med delningen igång: fråga vem man är, annars syns inte de andras köp
+  else if(molnOk()&&!agare&&!vem&&!las('fragat',0)){
+    spara('fragat',1);
+    setTimeout(function(){if(!vem&&!document.querySelector('dialog[open]'))oppnaVem();},900);
+  }
+},schema);
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){/* fungerar utan */});}
 })();
 </script>

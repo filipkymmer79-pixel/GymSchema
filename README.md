@@ -600,21 +600,56 @@ Status och anteckningar sparas bara på telefonen. Skallen kommer från exempel-
 
 ## Önskelistan
 
-Filips önskelista till jul som app: https://filipkymmer79-pixel.github.io/GymSchema/onskelista/ – länken skickas till den som ska köpa. Den öppnas som en vanlig sida, och går också att lägga på hemskärmen (*Dela → Lägg till på hemskärmen*).
+Filips önskelista till jul som app: https://filipkymmer79-pixel.github.io/GymSchema/onskelista/ – länken skickas till den som ska köpa. Den öppnas som en vanlig sida och går att lägga på hemskärmen. Appen visar själv hur, steg för steg.
 
-- **Tolv saker** i den ordning Filip gav dem, med pris, butik och knappen *Öppna hos …* som öppnar butikens sida i en ny flik. Det som är nedsatt visar det gamla priset och hur många procent.
-- **Bilderna** är ritade för appen och rör sig när man trycker på dem: mattan rullas ut bredvid måtten 180 och 215 cm, hanteln går igenom sina tio viktsteg, skivan snurrar i 33⅓ varv per minut, dragkedjan öppnas, ägget vänds och så vidare.
-- **Jag köper den** slår in paketet i papper med snöre, rosett och etikett, och visar ett julklappsrim till saken som går att kopiera. Ett tryck på ett inslaget paket skakar det. *Ångra* tar upp det igen.
-- **Vem är du?** (Mamma, Pappa eller Någon annan) styr hälsningen och vad som står på etiketterna.
+- **Fjorton saker** med pris, butik och knappen *Öppna hos …* som öppnar butikens sida i en ny flik. Det som är nedsatt visar det gamla priset och hur många procent. Filip kan lägga till fler själv (se *Filips eget läge*).
+- **Bilderna** är ritade för appen och rör sig när man trycker på dem: mattan rullas ut bredvid måtten 180 och 215 cm, hanteln går igenom sina tio viktsteg, skivan snurrar, dörren öppnas, hoodien lyfter armarna och så vidare.
+- **Jag köper den** slår in paketet i papper med snöre, rosett och etikett, och visar ett julklappsrim som går att kopiera. De andra som har länken ser paketet inslaget med texten *Mamma köper den här.*, utan köp- och ångra-knapp, så att ingen köper samma sak. Trycker två på samma sak samtidigt behåller den som var först saken, och den andra får veta det direkt.
+- **Vem är du?** (Mamma, Pappa eller Någon annan med namn) frågas första gången. Andras köp syns först när man har svarat.
+- **Fyra luckor till advent**: en lucka per advent med ett par små förslag för ett par hundralappar, inget måste. Luckan svänger upp, och förslagen köps och delas som resten av listan. Över varje lucka står ett ljus som tänds när den adventen har varit, och ovanför räknas dagarna till julafton ner.
+- **Tomteverkstan** är chatten (knappen nere till höger). Mamma, pappa och andra med länken skriver till varandra, och nya meddelanden kommer av sig själva medan chatten är öppen. Filip ser inget av det. Med *Fråga Filip*, eller knappen *Fråga Filip om den* under en sak, märks ett meddelande så att han ser det och kan svara. Egna meddelanden går att ta bort i tio minuter.
+- **Notiser** slås på i chatten: när någon skriver, köper något eller när Filip lägger till en sak. På iPhone går det först när listan ligger på hemskärmen.
+- **Lägg listan på hemskärmen**: en ritad mobil visar var man trycker. iPhone har två varianter (Safari 26 flyttade delningen bakom de tre prickarna, äldre har dela-knappen direkt), Android en. Kan webbläsaren lägga till appen själv visas en knapp för det. Öppnas listan inuti Messenger eller liknande säger guiden att den måste öppnas i Safari först.
 - **Visa listan** längst ner samlar det man har valt, med rim och summa. *Skicka listan* öppnar telefonens delningsmeny där den finns, och *Kopiera listan* ger samma text.
-- **Filtret** visar sakerna efter pris (under 500 kr, 500–1 500 kr, över 1 500 kr), och ordningen kan bytas till billigast eller dyrast först.
-- Överst räknas dagarna till julafton ner, och ljusstaken tänder ett ljus för varje advent som har varit.
+- **Filtret** visar sakerna efter pris, och ordningen kan bytas till billigast eller dyrast först.
 
-Det man väljer sparas bara på den egna telefonen (`filips-onskelista-val`, `-vem` och `-tips`). Mamma och pappa ser alltså inte varandras val, och Filip ser ingenting – därför finns *Skicka listan*. Repot är öppet för alla, så sidan är märkt `noindex` och innehåller inget privat utöver förnamnet och själva önskningarna.
+### Filips eget läge
 
-Sakerna står i `SAKER` överst i skriptet i `onskelista/index.html`, och bilderna i `KONST`. Priserna kollades 26 november 2026. Kläderna saknar storlek och stekpannan diameter tills Filip har sagt vilka (det står *Fråga mig* på sidan). Sju av länkarna han skickade var Google-annonslänkar som inte gick att öppna, så de sakerna är inte med. italki-länken gick till sidan för blivande lärare och är utbytt mot presentkortet. Samma sida finns som Filips privata Claude-artifact *Filips önskelista*, där typsnitten hämtas från Google.
+Filip har en egen länk som slutar med `#agare=` och en lång kod. Koden plockas bort ur adressen direkt och sparas på mobilen. I hemskärmsappen, som har eget minne, klistrar han in länken under *Är du Filip?* längst ner. I det läget:
 
-Typsnitten är Fraunces, Schibsted Grotesk och Caveat (`onskelista/fonts/`, alla OFL). Ikonen är ritad för appen: paketet uppifrån med snöre och rosett. Kontrollerat i Chromium på 320, 390 och 1200 px, och utan nät. Inte provat på en riktig iPhone.
+- syns aldrig vad som är köpt, och det finns inga köp-knappar. Det är mellanhanden som håller det hemligt: anrop med hans kod får svar utan köpen och utan den del av chatten som inte är skriven till honom.
+- kan han **lägga till en sak** (länk, namn, pris, butik, lapp, bild och om den ska ligga på listan eller i en lucka), ändra den och ta bort den. Annonslänkar från Google tas inte emot.
+- kan han **skriva en lapp** under vilken sak som helst, till exempel storlek och färg, **dölja** saker och ta bort förslag ur luckorna. Det dolda går att ta fram igen.
+- visar chatten bara *Frågor till dig*, och det han svarar ser alla.
+
+Koden finns inte i repot. I `gymschema-worker.js` står bara dess SHA-256 (`OL_AGARE`). Den som öppnar den vanliga länken och säger sig vara mamma ser förstås köpen – skyddet är att Filip inte gör så.
+
+### Så hänger det ihop
+
+Sidan är statisk, så det delade ligger hos samma Cloudflare Worker som gardinen och notiserna ([`gymschema-worker.js`](gymschema-worker.js), del 4) i samma KV (`GS`):
+
+- `GET /onskelista?r=…` ger det som har ändrats sedan sist. `POST /onskelista/kop` markerar eller ångrar ett köp, `/onskelista/chatt` skriver eller tar bort meddelanden, `/onskelista/lista` är Filips ändringar (kräver koden i rubriken `X-OL-Key`), `/onskelista/push` slår på eller av notiser och `GET /onskelista/pushnyckel` ger den publika VAPID-nyckeln.
+- Var och en skriver bara i sin egen nyckel: `ol:mamma`, `ol:pappa`, `ol:annan` och `ol:filip` (köp, ångrade köp och de sextio senaste meddelandena; i Filips nyckel hans tillagda saker, lappar och det han har dolt). KV kan svara med ett halvminutsgammalt värde, och med en gemensam nyckel hade mamma och pappa kunnat skriva över varandra. Har två ändå hunnit markera samma sak vinner den tidigaste. `ol:push` håller notisadresserna.
+- Varje nyckel har en tidsstämpel som byts vid varje skrivning. Appen skickar de stämplar den har och får bara det ändrade tillbaka, och kastar svar som är äldre än något den redan har sett.
+- Appen ser till att mellanhanden och mobilen blir överens: ett köp eller meddelande som saknas hos mellanhanden skickas igen, ett köp som en annan hann före med tas bort med ett besked, och ett köp som ångrats på personens andra mobil försvinner även här.
+- Appen frågar var 3,5:e sekund medan chatten är öppen och används, annars var 30:e, glesare när ingen rör den och inte alls när den är gömd. KV tar en skrivning i sekunden per nyckel, så skrivningarna går en i taget, och flera väntande meddelanden skickas i samma skrivning. Taket är 200 skrivningar om dagen för mamma och pappa var, 150 för övriga och 120 för Filip.
+- Varje mobil har en slumpad hemlig kod. Utåt syns bara dess avtryck (de tolv första tecknen av SHA-256).
+- Har mellanhanden kvar den gamla koden svarar den `403 not allowed`. Då fungerar listan som förut, bara på den egna mobilen, chatten är gömd, och i Filips läge visas tre steg med *Kopiera koden* (hela `gymschema-worker.js`), *Öppna Cloudflare* och *Kolla om det är igång*. **Kopian av koden som ligger inbäddad i GymSchemas `index.html` saknar del 4.** Klistras den in i Cloudflare slutar önskelistans delning att fungera, så ta koden från filen eller från önskelistan.
+
+På mobilen sparas valen och resten under `filips-onskelista-…` i webbläsarens minne. Repot är öppet för alla, så sidan är märkt `noindex` och innehåller inget privat utöver förnamnet och själva önskningarna.
+
+Sakerna står i `SAKER` överst i skriptet i `onskelista/index.html`, adventsförslagen i `FORSLAG` och bilderna i `KONST`. Priserna kollades 26 och 27 november 2026. Kläderna saknar storlek och stekpannan diameter tills Filip har skrivit dem som lappar. Innerdörren kostar 799 kr styck, men på bauhaus.se säljs den bara tre åt gången. Google-annonslänkarna han skickade gick inte att öppna, så de sakerna är inte med – han kan lägga in dem själv med butikens riktiga länk. Samma sida i en äldre version finns som Filips privata Claude-artifact *Filips önskelista*. Den delar ingenting.
+
+Typsnitten är Fraunces, Schibsted Grotesk och Caveat (`onskelista/fonts/`, alla OFL). Ikonen är ritad för appen: paketet uppifrån med snöre och rosett.
+
+**Kontrollerat**, allt i Chromium med mellanhandens kod körd lokalt i en Workers-miljö (miniflare):
+
+- Mellanhanden för sig: de gamla adresserna svarar som förut, och köp, krockar, ångra, Filips kod, chatten, notisernas mottagare och taket per dygn. Filip får aldrig ett svar med köp i, och ingen notis om köp.
+- Hela flödet med mamma, pappa, Emmy och Filip i var sin webbläsare mot samma mellanhand: köp som syns hos den andra, krock, ångra, luckorna, chatten åt båda hållen, fråga Filip, lägga till och ta bort, lappar, dölj, fel kod, utan nät, och övergången från gammal till ny kod.
+- Service workern: sidan sparas och öppnas utan nät, en push blir en notis, och ett tryck på den öppnar chatten.
+- 320, 390 och 1200 px.
+
+**Inte provat:** en riktig iPhone eller Android, den riktiga mellanhanden på Cloudflare (koden måste klistras in där först), riktiga notiser genom Apples och Googles push-tjänster, och hur långa KV:s fördröjningar blir i verkligheten. Guidens steg för iPhone bygger på hur Safari 26 beskrivs, inte på en mobil i handen.
 
 ## Frågor till syrrans gymapp
 
