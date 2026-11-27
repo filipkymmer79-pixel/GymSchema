@@ -645,7 +645,7 @@ Typsnitten är Fraunces, Schibsted Grotesk och Caveat (`onskelista/fonts/`, alla
 **Kontrollerat**, allt i Chromium med mellanhandens kod körd lokalt i en Workers-miljö (miniflare):
 
 - Mellanhanden för sig: de gamla adresserna svarar som förut, och köp, krockar, ångra, Filips kod, chatten, notisernas mottagare och taket per dygn. Filip får aldrig ett svar med köp i, och ingen notis om köp.
-- Hela flödet med mamma, pappa, Emmy och Filip i var sin webbläsare mot samma mellanhand: köp som syns hos den andra, krock, ångra, luckorna, chatten åt båda hållen, fråga Filip, lägga till och ta bort, lappar, dölj, fel kod, utan nät, och övergången från gammal till ny kod.
+- Hela flödet med mamma, pappa, någon annan och Filip i var sin webbläsare mot samma mellanhand: köp som syns hos den andra, krock, ångra, luckorna, chatten åt båda hållen, fråga Filip, lägga till och ta bort, lappar, dölj, fel kod, utan nät, och övergången från gammal till ny kod.
 - Service workern: sidan sparas och öppnas utan nät, en push blir en notis, och ett tryck på den öppnar chatten.
 - 320, 390 och 1200 px.
 
