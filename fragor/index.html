@@ -12,174 +12,246 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Gymfrågor">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#E8E9ED">
+<meta name="theme-color" content="#FF5B52">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="preload" href="fonts/big-shoulders-latin-900.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:"Big Shoulders Display";font-style:normal;font-display:swap;font-weight:900;src:url("fonts/big-shoulders-latin-900.woff2") format("woff2")}
 @font-face{font-family:"Manrope";font-style:normal;font-display:swap;font-weight:200 800;src:url("fonts/manrope-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:"Manrope";font-style:normal;font-display:swap;font-weight:200 800;src:url("../vendor/manrope-latin-ext.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 :root{
-  /* Plan: Bento, samma familj som GymSchema. Ljusgrå botten, vita rutor med stora runda hörn,
-     en stor färgad ruta per del med svart text, och det som är valt blir svart.
-     En kolumn, en fråga per skärm, knappen alltid längst ner. Teckningarna är svart bläck och vitt
-     på den färgade rutan. Ett enda ljust läge, som appen. */
+  /* Plan: en gymaffisch som lever. Hela skärmen har delens färg, rubriken står i stor smal idrottsstil,
+     teckningarna är svart bläck och vitt med hård skugga, och svaren ligger på en vit matta som studsar upp.
+     Det som landar har tyngd: skivor slår i, skärmen skakar till och knappar trycks ner.
+     Färgerna är GymSchemas sex, och mobilen i bilden ser ut som appen. */
   color-scheme:light;
-  --ground:#E8E9ED;
-  --tile:#FFFFFF;
   --ink:#111214;
-  --on-ink:#FFFFFF;
+  --paper:#FFFFFF;
   --muted:#5B616B;
-  --line:#DADBE0;
-  --ring:#8A8E98;
   --red:#FF5B52; --blue:#6B95FF; --yellow:#FFC93A; --green:#3CCB7C; --orange:#FF8A4C; --purple:#A48BFF;
-  --accent:var(--red);
-  --on-accent:var(--ink);
-  --display:"Manrope",ui-rounded,-apple-system,"Segoe UI",system-ui,sans-serif;
+  --bg:#FF5B52;
+  --on-bg:#111214;
+  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue Condensed",Impact,sans-serif;
   --body:"Manrope",-apple-system,"Segoe UI",system-ui,sans-serif;
-  --r-lg:28px; --r-md:20px; --r-sm:14px;
+  --studs:cubic-bezier(.2,1.5,.4,1);
 }
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none !important}
 html,body{height:100%;margin:0}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body{background:var(--ground);color:var(--ink);font-family:var(--body);font-weight:500;font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:600;font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;overflow:hidden;transition:background .2s}
 button,input,textarea{font:inherit;color:inherit}
-button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 p,h1,h2{margin:0}
-:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.top :focus-visible,.scen :focus-visible{outline-color:var(--on-bg)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-.app{height:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column}
+.app{position:relative;height:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;transition:background .2s}
+@keyframes skak{0%,100%{transform:none}20%{transform:translate(-4px,2px)}40%{transform:translate(4px,-3px)}60%{transform:translate(-3px,-1px)}80%{transform:translate(2px,2px)}}
+.app.skak{animation:skak .26s linear}
 
-/* ---------- Toppen: tillbaka, stången och mobilen ---------- */
-.top{flex:none;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 8px;min-height:68px}
-.rund{flex:none;width:44px;height:44px;border:0;border-radius:50%;background:var(--tile);display:grid;place-items:center;padding:0}
+/* ---------- Bakgrunden: skivor och tecken som driver ---------- */
+.deko{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;color:var(--on-bg)}
+.deko svg{position:absolute;opacity:.13;animation:deko-svav 16s ease-in-out infinite alternate}
+.deko .d1{width:270px;height:270px;right:-96px;top:-70px;animation-duration:24s}
+.deko .d2{width:128px;height:128px;left:-46px;top:232px;animation-duration:18s;animation-delay:-6s}
+.deko .d3{width:44px;height:44px;left:46%;top:70px;animation-duration:13s;animation-delay:-3s}
+.deko .d4{width:70px;height:70px;right:18px;top:318px;animation-duration:15s;animation-delay:-9s}
+@keyframes deko-svav{from{transform:translate(0,0) rotate(0deg)}to{transform:translate(16px,24px) rotate(55deg)}}
+
+/* ---------- Toppen ---------- */
+.top{position:relative;z-index:3;flex:none;display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 4px;min-height:62px}
+.rund{flex:none;width:44px;height:44px;border-radius:50%;background:#fff;border:2.5px solid var(--ink);box-shadow:0 3px 0 var(--ink);display:grid;place-items:center;padding:0;transition:transform .08s ease,box-shadow .08s ease}
+.rund:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
+.app.mork .rund{box-shadow:0 3px 0 rgba(255,255,255,.4)}
 .rund svg{display:block}
 .back svg{width:18px;height:18px;stroke:var(--ink)}
 .peek svg{width:22px;height:22px}
 .pk-sk{fill:var(--red);transition:fill .2s}
-.prog{flex:1;min-width:0;display:flex;align-items:center;gap:10px}
-.stang{flex:1;min-width:0;height:30px}
+.stang{flex:1;min-width:0;height:34px}
 .stang svg{display:block;width:100%;height:100%;overflow:visible}
-.prog-text{flex:none;font-size:13px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.st-jarn{fill:var(--on-bg);transition:fill .2s}
 .sk{stroke:var(--ink);stroke-width:1.5}
-.sk.nasta{fill:none;stroke-dasharray:2.5 2.5;opacity:.55}
-@keyframes sk-in-v{from{transform:translateX(-16px);opacity:0}}
-@keyframes sk-in-h{from{transform:translateX(16px);opacity:0}}
-.sk.ny.v{animation:sk-in-v .45s cubic-bezier(.3,1.5,.5,1)}
-.sk.ny.h{animation:sk-in-h .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes sk-in-v{0%{transform:translateX(-34px);opacity:0}65%{transform:translateX(2px);opacity:1}}
+@keyframes sk-in-h{0%{transform:translateX(34px);opacity:0}65%{transform:translateX(-2px);opacity:1}}
+.sk.ny.v{animation:sk-in-v .5s var(--studs) .1s backwards}
+.sk.ny.h{animation:sk-in-h .5s var(--studs) .1s backwards}
 
-/* ---------- Scenen ---------- */
-.stage{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:4px 16px 24px;display:flex;flex-direction:column;gap:12px}
-.stage > *{flex:none;animation:rise .18s ease both}
-@keyframes rise{from{transform:translateY(8px)}to{transform:none}}
+/* ---------- Scenen: färgen, rubriken, siffran och teckningen ---------- */
+.stage{position:relative;z-index:2;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
+.stage.ut > *{opacity:0;transform:translateY(-12px);transition:opacity .12s ease,transform .12s ease}
+.scen{--kant:18px;flex:none;padding:6px var(--kant) 0;color:var(--on-bg)}
+.ogon{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:900;font-size:15px;letter-spacing:.09em;text-transform:uppercase;animation:in-v .4s ease backwards}
+.ogon-prick{flex:none;width:10px;height:10px;border-radius:50%;background:var(--on-bg);animation:puls 1.6s ease-in-out infinite}
+@keyframes puls{50%{transform:scale(1.6);opacity:.45}}
+.scen h1{margin-top:6px;font-family:var(--display);font-weight:900;font-size:clamp(40px,12.4vw,54px);line-height:.92;letter-spacing:.01em;text-transform:uppercase;overflow-wrap:break-word}
+.scen h1:focus{outline:none}
+.ord{display:inline-block;animation:ord-in .5s var(--studs) backwards;animation-delay:calc(var(--n) * 55ms + 40ms)}
+@keyframes ord-in{from{transform:translateY(55%) rotate(6deg);opacity:0}}
+.scen-rad{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;align-items:start;margin-top:10px;min-height:128px}
+.scen-v{display:flex;flex-direction:column;gap:8px;min-width:0;padding-bottom:16px}
+.nr{display:flex;align-items:baseline;gap:5px;animation:in-v .45s var(--studs) .12s backwards}
+.nr b{font-family:var(--display);font-weight:900;font-size:84px;line-height:.82;letter-spacing:.01em;color:transparent;-webkit-text-stroke:3px var(--on-bg)}
+@supports not (-webkit-text-stroke:1px #000){.nr b{color:var(--on-bg)}}
+.nr span{font-family:var(--display);font-weight:900;font-size:24px;letter-spacing:.04em}
+.hint{font-size:14.5px;font-weight:700;line-height:1.3;animation:in-v .45s ease .2s backwards}
+@keyframes in-v{from{transform:translateX(-16px);opacity:0}}
 
-.hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:start;background:var(--accent);color:var(--on-accent);border-radius:var(--r-lg);padding:20px 14px 22px 20px;overflow:hidden;transition:background .2s ease}
-.hero-txt{display:flex;flex-direction:column;gap:8px;min-width:0}
-.hero .eyebrow{font-size:13px;font-weight:800}
-.hero h1{font-family:var(--display);font-weight:800;font-size:26px;line-height:1.1;letter-spacing:-.02em;text-wrap:balance;overflow-wrap:break-word}
-.hero h1:focus{outline:none}
-.hero .hint{font-size:15px;font-weight:600;line-height:1.35}
-.art{flex:none;width:112px;height:112px;border:0;background:none;padding:0;align-self:center;border-radius:20px;color:inherit}
-.art-phone{width:auto;height:auto;align-self:end;margin:0 6px -22px 0;border-radius:18px 18px 0 0}
-.tips{position:absolute;right:12px;bottom:10px;display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:99px;background:var(--ink);color:#fff;font-size:12px;font-weight:800;pointer-events:none}
+.art{position:relative;z-index:2;flex:none;width:138px;height:138px;border:0;background:none;padding:0;margin:0 -2px -30px 0;border-radius:24px;color:inherit;transition:transform .1s ease;animation:art-in .55s var(--studs) .1s backwards}
+.art:active{transform:scale(.93)}
+@keyframes art-in{from{transform:scale(.3) rotate(-20deg);opacity:0}}
+.art > svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(3px 5px 0 rgba(17,18,20,.26));animation:svav 3.4s ease-in-out infinite}
+@keyframes svav{0%,100%{transform:translateY(0) rotate(-1.4deg)}50%{transform:translateY(-5px) rotate(1.4deg)}}
+.art-phone{z-index:0;width:auto;height:auto;margin:0 6px -100px 0;border-radius:22px}
+.tips{position:absolute;right:2px;bottom:-24px;z-index:3;display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:99px;border:2px solid #fff;background:var(--ink);color:#fff;font-size:12px;font-weight:800;pointer-events:none;white-space:nowrap;animation:pop-in .4s var(--studs) .7s backwards}
 .tips::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--yellow);animation:puls 1.4s ease-in-out infinite}
-@keyframes puls{50%{transform:scale(1.7);opacity:.5}}
 
-.tile{background:var(--tile);border-radius:var(--r-lg);padding:16px;display:flex;flex-direction:column;gap:12px}
-.tile-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.group-label{font-size:15px;font-weight:800}
+/* ---------- Mattan: det vita arket med svaren ---------- */
+.matta{position:relative;z-index:1;flex:1 0 auto;margin-top:16px;background:#fff;color:var(--ink);border-top:3px solid var(--ink);border-radius:30px 30px 0 0;padding:28px 16px 22px;display:flex;flex-direction:column;gap:24px;animation:matta-in .55s ease-out backwards}
+@keyframes matta-in{0%{transform:translateY(120px)}55%{transform:translateY(0)}75%{transform:translateY(10px)}100%{transform:none}}
+.grupp{display:flex;flex-direction:column;gap:12px}
+.grupp-topp{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.rubrik{font-family:var(--display);font-weight:900;font-size:18px;letter-spacing:.07em;text-transform:uppercase}
 .link{border:0;background:none;padding:6px 0;font-size:14px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+@keyframes pop-in{from{transform:scale(.55);opacity:0}}
+@keyframes vald{0%{transform:scale(1)}35%{transform:scale(1.13,.88)}65%{transform:scale(.95,1.06)}100%{transform:none}}
 
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:0;border-radius:99px;background:var(--ground);min-height:46px;padding:12px 16px;font-size:15px;font-weight:700;line-height:1.15;text-align:left;transition:background .12s ease,color .12s ease,transform .12s ease}
-.chip:active{transform:scale(.96)}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+.chips{display:flex;flex-wrap:wrap;gap:12px 8px}
+.chip{border:2.5px solid var(--ink);border-radius:99px;background:#fff;min-height:46px;padding:10px 16px;font-size:15px;font-weight:800;line-height:1.15;text-align:left;box-shadow:0 4px 0 var(--ink);transition:transform .08s ease,box-shadow .08s ease,background .15s ease,color .15s ease}
+.matta.in .chip{animation:pop-in .38s var(--studs) backwards;animation-delay:calc(var(--n,0) * 24ms + 160ms)}
+.chip:active{transform:translateY(4px);box-shadow:0 0 0 var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;box-shadow:0 4px 0 var(--bg)}
+.matta .chip.nu,.matta .row.nu{animation:vald .32s ease-out}
 
-.rows{display:flex;flex-direction:column}
-.row{border:0;border-top:1px solid var(--line);background:none;width:100%;text-align:left;padding:14px 0;display:flex;align-items:center;gap:14px}
-.row:first-child{border-top:0;padding-top:2px}
-.row:last-child{padding-bottom:2px}
+.rows{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2.5px solid var(--ink);border-radius:20px;background:#fff;box-shadow:0 4px 0 var(--ink);padding:12px 14px;transition:transform .08s ease,box-shadow .08s ease,background .15s ease}
+.matta.in .row{animation:pop-in .38s var(--studs) backwards;animation-delay:calc(var(--n,0) * 22ms + 160ms)}
+.row:active{transform:translateY(4px);box-shadow:0 0 0 var(--ink)}
+.row[aria-pressed="true"]{background:var(--bg)}
 .row .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .row b{font-size:16px;font-weight:800;line-height:1.2}
-.row .d{font-size:14px;font-weight:600;color:var(--muted);line-height:1.3}
-.check{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--ring);display:grid;place-items:center;transition:background .12s ease,border-color .12s ease}
-.check svg{width:14px;height:14px;stroke:var(--on-ink);opacity:0}
-.row[aria-pressed="true"] .check{background:var(--ink);border-color:var(--ink)}
-.row[aria-pressed="true"] .check svg{opacity:1}
+.row .d{font-size:13.5px;font-weight:600;line-height:1.3;color:var(--muted);transition:color .15s}
+.row[aria-pressed="true"] .d{color:var(--ink)}
+.check{flex:none;width:30px;height:30px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;display:grid;place-items:center;transition:background .12s ease}
+.check svg{width:15px;height:15px;stroke:#fff;stroke-dasharray:16;stroke-dashoffset:16;transition:stroke-dashoffset .25s ease .05s}
+.row[aria-pressed="true"] .check{background:var(--ink)}
+.row[aria-pressed="true"] .check svg{stroke-dashoffset:0}
 
-.swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 10px}
-.swatch{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:700}
-.swatch i{width:100%;aspect-ratio:1;border-radius:var(--r-md);display:grid;place-items:center;transition:transform .12s ease}
-.swatch:active i{transform:scale(.94)}
-.swatch i svg{width:22px;height:22px;stroke:var(--ink);opacity:0}
-.swatch i.dark svg{stroke:#FFFFFF}
-.swatch[aria-pressed="true"] i{box-shadow:0 0 0 3px var(--tile),0 0 0 6px var(--ink)}
-.swatch[aria-pressed="true"] i svg{opacity:1}
+.swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 10px}
+.swatch{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:9px;font-size:13px;font-weight:800}
+.matta.in .swatch{animation:pop-in .38s var(--studs) backwards;animation-delay:calc(var(--n,0) * 30ms + 160ms)}
+.swatch i{width:100%;aspect-ratio:1;border-radius:20px;border:2.5px solid var(--ink);box-shadow:0 4px 0 var(--ink);display:grid;place-items:center;transition:transform .16s var(--studs),box-shadow .16s ease}
+.swatch:active i{transform:translateY(4px);box-shadow:0 0 0 var(--ink)}
+.swatch[aria-pressed="true"] i{transform:translateY(-5px) rotate(-5deg);box-shadow:0 9px 0 var(--ink)}
+.swatch i svg{width:24px;height:24px;stroke:var(--ink);opacity:0;transform:scale(.3);transition:transform .2s var(--studs),opacity .1s}
+.swatch i.dark svg{stroke:#fff}
+.swatch[aria-pressed="true"] i svg{opacity:1;transform:none}
 
-.field{display:flex;flex-direction:column;gap:6px}
-.field label{font-size:15px;font-weight:800}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-family:var(--display);font-weight:900;font-size:18px;letter-spacing:.07em;text-transform:uppercase}
 .field .help{font-size:13px;font-weight:600;color:var(--muted)}
-.field input,.field textarea{width:100%;border:2px solid transparent;border-radius:var(--r-sm);background:var(--ground);padding:13px 14px;font-size:16px;font-weight:600;line-height:1.35;outline:none}
-.field input:focus,.field textarea:focus{border-color:var(--ink);background:var(--tile)}
+.field input,.field textarea{-webkit-appearance:none;appearance:none;width:100%;border:2.5px solid var(--ink);border-radius:18px;background:#fff;padding:13px 14px;font-size:16px;font-weight:700;line-height:1.35;outline:none;box-shadow:0 0 0 var(--ink);transition:box-shadow .12s ease,transform .12s ease}
+.field input:focus,.field textarea:focus{box-shadow:0 5px 0 var(--ink);transform:translateY(-3px)}
 .field textarea{min-height:104px;resize:vertical}
-::placeholder{color:var(--muted);opacity:1;font-weight:500}
+::placeholder{color:var(--muted);opacity:1;font-weight:600}
 
-.bento{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mini{border-radius:var(--r-lg);padding:16px;min-height:112px;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
-.mini b{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.05}
-.mini span{font-size:14px;font-weight:700;line-height:1.25}
-.mini.blue{background:var(--blue)}
-.mini.yellow{background:var(--yellow)}
-.mini.wide{grid-column:1 / -1;min-height:0;background:var(--tile)}
-.mini.wide span{font-weight:600;line-height:1.4}
+/* ---------- Knappraden ---------- */
+.bar{position:relative;z-index:3;flex:none;display:flex;gap:10px;padding:10px 16px calc(14px + env(safe-area-inset-bottom,0px));background:#fff}
+.app.oppen .bar{background:transparent}
+.primary{flex:1;min-width:0;min-height:60px;border:2.5px solid var(--ink);border-radius:99px;background:var(--ink);color:#fff;font-family:var(--display);font-weight:900;font-size:25px;letter-spacing:.06em;text-transform:uppercase;padding:0 22px;box-shadow:0 5px 0 rgba(17,18,20,.3);transition:transform .08s ease,box-shadow .08s ease,background .15s ease,color .15s ease}
+.ghost{flex:none;min-height:60px;border:2.5px solid var(--ink);border-radius:99px;background:#fff;font-family:var(--display);font-weight:900;font-size:21px;letter-spacing:.06em;text-transform:uppercase;padding:0 18px;box-shadow:0 5px 0 rgba(17,18,20,.3);transition:transform .08s ease,box-shadow .08s ease}
+.primary:active,.ghost:active{transform:translateY(5px);box-shadow:0 0 0 rgba(17,18,20,.3)}
+.primary.tom{background:#fff;color:var(--ink)}
+.primary.fylld{animation:vald .32s ease-out}
+@keyframes lock{0%,100%{transform:none}50%{transform:scale(1.04)}}
+.app.oppen .primary{animation:pop-in .45s var(--studs) 1.25s backwards,lock 1.8s ease-in-out 2.6s infinite}
 
-.note{background:var(--ink);color:var(--on-ink);border-radius:var(--r-md);padding:14px 16px;font-size:15px;font-weight:700;line-height:1.35}
+/* ---------- Öppningen ---------- */
+.oppen .scen h1{font-size:clamp(60px,20vw,88px);line-height:.86}
+@keyframes slam{0%{transform:scale(2.6) rotate(-7deg);opacity:0}55%{transform:scale(.92) rotate(1deg);opacity:1}75%{transform:scale(1.05)}100%{transform:none}}
+.oppen .ord,.final .ord{animation:slam .5s cubic-bezier(.2,.9,.3,1) backwards;animation-delay:calc(var(--n) * 150ms + 150ms)}
+.ingress{font-size:16px;font-weight:700;line-height:1.35;margin-top:12px;max-width:30ch;animation:in-v .5s ease .65s backwards}
+.yta{position:relative;height:256px;margin-top:8px}
+.yta .mobil-in{position:absolute;right:4px;top:2px;border:0;background:none;padding:0;border-radius:30px;animation:mobil-in .9s cubic-bezier(.2,1.2,.3,1) .5s backwards}
+@keyframes mobil-in{from{transform:translateY(360px) rotate(40deg)}}
+.klister{position:absolute;z-index:2;display:inline-block;border:2.5px solid var(--ink);border-radius:99px;padding:7px 14px 8px;color:var(--ink);font-family:var(--display);font-weight:900;font-size:19px;letter-spacing:.05em;line-height:1.1;text-transform:uppercase;box-shadow:0 4px 0 var(--ink);white-space:nowrap}
+@keyframes klister-in{from{transform:scale(0) rotate(-40deg)}}
+.k1{left:0;top:24px;background:var(--yellow);transform:rotate(-7deg);animation:klister-in .5s var(--studs) .9s backwards}
+.k2{left:8px;top:84px;background:var(--blue);transform:rotate(4deg);animation:klister-in .5s var(--studs) 1.02s backwards}
+.marke{position:absolute;z-index:2;left:26px;top:140px;width:108px;height:108px;animation:klister-in .55s var(--studs) 1.14s backwards}
+.marke svg{display:block;width:100%;height:100%;filter:drop-shadow(0 4px 0 #111214)}
+.marke-ring{transform-origin:60px 60px;animation:snurr 16s linear infinite}
+.marke text{font-family:var(--display);font-weight:900;fill:#111214}
+@keyframes snurr{to{transform:rotate(360deg)}}
+.kort{flex:none;margin:8px 18px 14px;background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:20px;box-shadow:0 4px 0 var(--ink);padding:13px 15px;font-size:13.5px;font-weight:600;line-height:1.4;animation:kort-in .5s cubic-bezier(.2,1.25,.35,1) 1.05s backwards}
+@keyframes kort-in{from{transform:translateY(70px);opacity:0}}
 
-/* ---------- Sista sidan ---------- */
-.visa{align-items:center;gap:14px;padding-bottom:18px}
-.visa .tile-head{align-self:stretch}
-.visa-knapp{border:0;background:none;padding:0;border-radius:34px}
-.visa > p{font-size:14px;font-weight:600;color:var(--muted);text-align:center;max-width:30ch}
-.lyft-ruta{gap:8px;padding-top:30px}
+/* ---------- Finalen ---------- */
+.final .scen h1{font-size:clamp(54px,17vw,76px);line-height:.88}
+.fyta{position:relative;height:388px;margin:2px calc(var(--kant) * -1) 0;display:grid;place-items:center;overflow:hidden}
+.sol{position:absolute;left:50%;top:50%;width:600px;height:600px;margin:-300px 0 0 -300px;animation:sol-in .9s cubic-bezier(.2,1.2,.3,1) backwards}
+.sol-ring{display:block;width:100%;height:100%;-webkit-mask-image:radial-gradient(circle,#000 28%,transparent 66%);mask-image:radial-gradient(circle,#000 28%,transparent 66%);animation:snurr 60s linear infinite;will-change:transform}
+.sol svg{display:block;width:100%;height:100%}
+@keyframes sol-in{from{transform:scale(.2);opacity:0}}
+.fyta .ph3d{position:relative;z-index:1}
+.fyta .mobil-knapp{position:relative;z-index:1;border:0;background:none;padding:0;border-radius:30px}
+.k3{left:16px;top:30px;transform:rotate(-8deg);animation:klister-in .5s var(--studs) 1s backwards}
+.k4{right:14px;bottom:34px;background:#fff;transform:rotate(5deg);animation:klister-in .5s var(--studs) 1.15s backwards}
+.note{background:var(--ink);color:#fff;border-radius:18px;padding:14px 16px;font-size:15px;font-weight:700;line-height:1.35;animation:pop-in .35s var(--studs)}
+.ruta{border:2.5px solid var(--ink);border-radius:22px;box-shadow:0 4px 0 var(--ink);padding:16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+.lyft-ruta{padding-top:34px;--on-bg:#111214}
 .lyft{border:0;background:none;padding:0;width:100%;display:block;border-radius:16px}
 .lyft svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto;overflow:visible}
-@keyframes lyft{30%{transform:translateY(-20px) rotate(-1.6deg)}50%{transform:translateY(-23px) rotate(1.3deg)}70%{transform:translateY(-20px) rotate(-.6deg)}}
+@keyframes lyft{30%{transform:translateY(-20px) rotate(-1.6deg)}50%{transform:translateY(-24px) rotate(1.3deg)}70%{transform:translateY(-20px) rotate(-.6deg)}}
 .lyft.upp svg{animation:lyft .8s cubic-bezier(.3,0,.3,1)}
-.lyft-txt{font-size:15px;font-weight:800;text-align:center;min-height:1.4em}
+.lyft-txt{font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:.04em;text-transform:uppercase;text-align:center;min-height:1.3em}
 .lyft-txt + p{font-size:13px;font-weight:600;color:var(--muted);text-align:center}
-
 .sum{display:flex;flex-direction:column}
-.sum-row{border:0;border-top:1px solid var(--line);background:none;width:100%;text-align:left;padding:12px 0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center}
+.sum-row{border:0;border-top:2px solid #E3E5EA;background:none;width:100%;text-align:left;padding:12px 0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center}
 .sum-row:first-child{border-top:0;padding-top:2px}
 .sum-row:last-child{padding-bottom:2px}
 .sum-row .k{grid-column:1;font-size:13px;font-weight:800;color:var(--muted)}
 .sum-row .v{grid-column:1;font-size:15px;font-weight:700;overflow-wrap:anywhere;white-space:pre-line}
 .sum-row .v.none{color:var(--muted);font-weight:600}
 .sum-row .e{grid-column:2;grid-row:1 / span 2;font-size:13px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
-
 details.raw summary{font-size:15px;font-weight:800;cursor:pointer}
-details.raw textarea{margin-top:12px;width:100%;min-height:220px;border:0;border-radius:var(--r-sm);background:var(--ground);padding:12px 14px;font-size:14px;font-weight:600;line-height:1.4}
+details.raw textarea{margin-top:12px;width:100%;min-height:220px;border:2.5px solid var(--ink);border-radius:16px;background:#fff;padding:12px 14px;font-size:14px;font-weight:600;line-height:1.4}
 
-.bar{flex:none;display:flex;gap:10px;padding:10px 16px calc(16px + env(safe-area-inset-bottom,0px))}
-.primary{flex:1;min-width:0;border:0;border-radius:99px;background:var(--ink);color:var(--on-ink);min-height:56px;padding:0 22px;font-size:17px;font-weight:800;transition:transform .12s ease}
-.ghost{flex:none;border:0;border-radius:99px;background:var(--tile);min-height:56px;padding:0 20px;font-size:16px;font-weight:800;transition:transform .12s ease}
-.primary:active,.ghost:active{transform:scale(.97)}
+/* ---------- Skivan som slår in mellan delarna och blir nästa färg ---------- */
+.wipe{position:fixed;inset:0;z-index:40;overflow:hidden}
+.wipe-kant,.wipe-fyll{position:absolute;inset:0;-webkit-clip-path:circle(0px at 50% 44%);clip-path:circle(0px at 50% 44%)}
+.wipe-kant{background:#111214}
+.wipe-skiva{position:absolute;left:50%;top:44%;width:230px;height:230px;margin:-115px 0 0 -115px;will-change:transform}
+.wipe-skiva svg{display:block;width:100%;height:100%;overflow:visible}
+.wipe-skiva text{font-family:var(--display);font-weight:900}
+
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
 
 /* ---------- Arket med mobilen ---------- */
-dialog.sheet{position:fixed;inset:auto 0 0 0;margin:0 auto;width:min(100%,520px);max-width:100%;max-height:94%;padding:0;border:0;border-radius:28px 28px 0 0;background:var(--ground);color:var(--ink);overflow:auto}
-dialog.sheet::backdrop{background:rgba(17,18,20,.55)}
-dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
-@keyframes upp{from{transform:translateY(60px);opacity:0}}
-.sheet-in{padding:18px 16px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;align-items:center}
+dialog.sheet{position:fixed;inset:auto 0 0 0;margin:0 auto;width:min(100%,520px);max-width:100%;max-height:94%;padding:0;border:0;border-top:3px solid var(--ink);border-radius:30px 30px 0 0;background:#fff;color:var(--ink);overflow:auto}
+dialog.sheet::backdrop{background:rgba(17,18,20,.6)}
+dialog.sheet[open]{animation:upp .32s cubic-bezier(.2,1.2,.4,1)}
+@keyframes upp{from{transform:translateY(90px);opacity:0}}
+.sheet-in{padding:20px 16px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;align-items:center}
 .sheet-top{align-self:stretch;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.sheet-top h2{font-family:var(--display);font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.sheet-top h2{font-family:var(--display);font-weight:900;font-size:32px;letter-spacing:.02em;line-height:1;text-transform:uppercase}
+.sheet-visa{align-self:stretch;display:grid;place-items:center;background:var(--bg);border:2.5px solid var(--ink);border-radius:26px;box-shadow:0 4px 0 var(--ink);padding:26px 0 32px;overflow:hidden}
 .sheet-in > p{font-size:14px;font-weight:600;color:var(--muted);text-align:center;max-width:32ch}
 
-/* ---------- Mobilen: en liten GymSchema som följer svaren ---------- */
-.phone{display:block;position:relative;flex:none;width:calc(220px * var(--s,1));height:calc(var(--h,440px) * var(--s,1));overflow:hidden}
-.ph{display:block;position:absolute;left:0;top:0;width:220px;height:440px;transform:scale(var(--s,1));transform-origin:0 0;border:7px solid #111214;border-radius:38px;overflow:hidden;text-align:left;font-family:var(--body);line-height:1.2;
+/* ---------- Mobilen: en liten GymSchema som följer svaren, med baksida så att den går att snurra ---------- */
+.ph3d{display:block;perspective:900px}
+.ph-tilt{display:block;position:relative;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;animation:ph-svav 5.5s ease-in-out infinite}
+.ph-snurr{display:block;position:relative;-webkit-transform-style:preserve-3d;transform-style:preserve-3d}
+@keyframes ph-svav{0%,100%{transform:rotateY(-16deg) rotateX(5deg) rotate(3deg) translateY(0)}50%{transform:rotateY(-6deg) rotateX(2deg) rotate(5deg) translateY(-7px)}}
+.ph-bak{display:block;position:absolute;inset:0;border-radius:calc(38px * var(--s,1));border:calc(7px * var(--s,1)) solid #111214;background:var(--bak,#FF5B52);box-shadow:-5px 7px 0 rgba(17,18,20,.28);transform:rotateY(180deg);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.ph-bak::before{content:"";position:absolute;left:9%;top:5%;width:42%;aspect-ratio:1;border-radius:28%;background:radial-gradient(circle at 30% 30%,#fff 0 8%,#3A3D44 9% 19%,transparent 20%),radial-gradient(circle at 70% 70%,#fff 0 8%,#3A3D44 9% 19%,transparent 20%),#111214}
+.ph-bak::after{content:"";position:absolute;left:50%;top:58%;width:24%;aspect-ratio:1;margin-left:-12%;border-radius:50%;border:calc(6px * var(--s,1)) solid rgba(17,18,20,.85)}
+.phone{display:block;position:relative;flex:none;width:calc(220px * var(--s,1));height:calc(var(--h,440px) * var(--s,1));overflow:hidden;border-radius:calc(38px * var(--s,1));box-shadow:5px 7px 0 rgba(17,18,20,.28);transform:translateZ(0);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.ph{display:block;position:absolute;left:0;top:0;width:220px;height:440px;transform:scale(var(--s,1));transform-origin:0 0;border:7px solid #111214;border-radius:38px;overflow:hidden;text-align:left;font-family:var(--body);font-weight:600;line-height:1.2;letter-spacing:0;text-transform:none;
   --p-ground:#E8E9ED;--p-tile:#FFFFFF;--p-ink:#111214;--p-muted:#5B616B;--p-on:#FFFFFF;--p-line:#C9CBD2;--ac:#FF5B52;--on-ac:#111214;
   background:var(--p-ground);color:var(--p-ink)}
 .ph.dark{--p-ground:#0D0E11;--p-tile:#1B1D22;--p-ink:#F2F3F5;--p-muted:#A3A8B1;--p-on:#111214;--p-line:#3B3F47}
@@ -209,12 +281,10 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
 .ph-flikar{position:absolute;left:10px;right:10px;bottom:10px;display:flex;gap:2px;background:var(--p-tile);border-radius:99px;padding:5px;box-shadow:0 4px 14px rgba(0,0,0,.14)}
 .ph-flikar i{flex:1 1 auto;min-width:0;text-align:center;font-size:8.5px;font-weight:800;padding:8px 4px;border-radius:99px;color:var(--p-muted);white-space:nowrap;overflow:hidden}
 .ph-flikar i.on{background:var(--p-ink);color:var(--p-on)}
-@keyframes ph-pop{40%{transform:scale(1.07)}}
+@keyframes ph-pop{40%{transform:scale(1.08)}}
 .ph .pop{animation:ph-pop .35s ease-out}
 
 /* ---------- Teckningarna ---------- */
-.art svg{display:block;width:100%;height:100%;overflow:visible;transition:transform .12s ease}
-.art:active svg{transform:scale(.95)}
 .art text{font-family:var(--body);fill:var(--ink)}
 .d-i{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
 .d-o{stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
@@ -223,7 +293,7 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
 
 /* måltavlan */
 .tg-all{transform-origin:54px 66px}
-.tg-pil{opacity:0;transform:translate(24px,-24px);transition:transform .3s cubic-bezier(.3,1.5,.5,1),opacity .12s}
+.tg-pil{opacity:0;transform:translate(24px,-24px);transition:transform .3s var(--studs),opacity .12s}
 .n1 .p1,.n2 .p1,.n2 .p2,.n3 .tg-pil{opacity:1;transform:none}
 .tg-star{transform-box:fill-box;transform-origin:center;transform:scale(0) rotate(-40deg);transition:transform .35s cubic-bezier(.3,1.7,.5,1)}
 .star .tg-star{transform:none}
@@ -275,7 +345,7 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
 .har .kb-antal{transform:none}
 
 /* veckan */
-.vk-b{opacity:0;transform:scaleY(.3);transform-box:fill-box;transform-origin:50% 100%;transition:transform .3s cubic-bezier(.3,1.5,.5,1),opacity .12s}
+.vk-b{opacity:0;transform:scaleY(.3);transform-box:fill-box;transform-origin:50% 100%;transition:transform .3s var(--studs),opacity .12s}
 .vk.on .vk-b{opacity:1;transform:none}
 @keyframes vk-hopp{45%{transform:translateY(-9px)}}
 .go .vk{animation:vk-hopp .45s ease-out;animation-delay:calc(var(--i) * 45ms)}
@@ -285,7 +355,7 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
 @keyframes sw-snurr{from{transform:rotate(var(--a,0deg))}to{transform:rotate(calc(var(--a,0deg) + 360deg))}}
 .go .sw-visare{animation:sw-snurr .7s cubic-bezier(.4,0,.2,1)}
 .sw-sol,.sw-mane{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.4);transition:transform .3s cubic-bezier(.3,1.7,.5,1),opacity .15s}
-.sol .sw-sol,.mane .sw-mane{opacity:1;transform:none}
+.sol-pa .sw-sol,.mane-pa .sw-mane{opacity:1;transform:none}
 
 /* hanteln */
 .db{transform-box:fill-box;transform-origin:center}
@@ -350,15 +420,18 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
 @keyframes ik-skak{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
 .go .ik{animation:ik-skak .22s linear 4}
 
-.konfetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
-
 @media (max-width:350px){
-  .hero{padding-left:16px}
-  .hero h1{font-size:22px}
-  .art:not(.art-phone){width:86px;height:86px}
-  .art-phone .phone{--s:.4 !important}
-  .bento{grid-template-columns:1fr}
-  .mini{min-height:0}
+  .scen{--kant:16px}
+  .scen h1{font-size:38px}
+  .oppen .scen h1{font-size:58px}
+  .final .scen h1{font-size:50px}
+  .art:not(.art-phone){width:108px;height:108px}
+  .nr b{font-size:66px}
+  .klister{font-size:16px}
+  .primary{font-size:21px;padding:0 14px}
+  .ghost{font-size:18px;padding:0 14px}
+  .marke{width:92px;height:92px;top:132px}
+  .yta{height:232px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;transition-delay:0s !important}
@@ -366,21 +439,24 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="app" id="app">
+  <div class="deko" aria-hidden="true">
+    <svg class="d1" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="50" cy="50" r="9" fill="currentColor"/></svg>
+    <svg class="d2" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="8"/><circle cx="50" cy="50" r="12" fill="currentColor"/></svg>
+    <svg class="d3" viewBox="0 0 100 100"><path d="M50 8v84M8 50h84" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"/></svg>
+    <svg class="d4" viewBox="0 0 100 100"><path d="M6 60q11-36 22 0t22 0 22 0 22 0" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/></svg>
+  </div>
   <header class="top">
     <button type="button" class="rund back" id="back" aria-label="Tillbaka" hidden>
-      <svg viewBox="0 0 16 16" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
     </button>
-    <div class="prog">
-      <div class="stang" id="stang" role="img" aria-label="Skivstången"></div>
-      <span class="prog-text" id="progText"></span>
-    </div>
+    <div class="stang" id="stang" role="img" aria-label="Skivstången"></div>
     <button type="button" class="rund peek" id="peek" aria-label="Visa din app hittills">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="1.5" width="13" height="21" rx="3.5" fill="#111214"/><rect class="pk-sk" x="7.5" y="5" width="9" height="8" rx="2"/><rect x="7.5" y="14.5" width="9" height="2" rx="1" fill="#fff"/><rect x="7.5" y="18" width="5" height="2" rx="1" fill="#fff" opacity=".6"/></svg>
     </button>
   </header>
   <main class="stage" id="stage">
-    <noscript><div class="tile">Sidan behöver JavaScript för att visa frågorna.</div></noscript>
+    <noscript><div class="kort">Sidan behöver JavaScript för att visa frågorna.</div></noscript>
   </main>
   <footer class="bar">
     <button type="button" class="ghost" id="alt" hidden></button>
@@ -388,10 +464,16 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
   </footer>
 </div>
 
+<div class="wipe" id="wipe" aria-hidden="true" hidden>
+  <div class="wipe-kant" id="wipeKant"></div>
+  <div class="wipe-fyll" id="wipeFyll"></div>
+  <div class="wipe-skiva" id="wipeSkiva"></div>
+</div>
+
 <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle">
   <div class="sheet-in">
     <div class="sheet-top"><h2 id="sheetTitle">Din app hittills</h2><button type="button" class="link" id="sheetClose">Stäng</button></div>
-    <div id="sheetPhone"></div>
+    <div class="sheet-visa" id="sheetPhone"></div>
     <p>Så här ser den ut med det du har svarat. Filip bygger den riktiga efter dina svar.</p>
   </div>
 </dialog>
@@ -404,21 +486,25 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
   var CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg>';
 
   function $(id){ return document.getElementById(id); }
-  var stage = $('stage'), backBtn = $('back'), nextBtn = $('next'), altBtn = $('alt');
-  var ptext = $('progText'), stangBox = $('stang'), peekBtn = $('peek');
+  var app = $('app'), stage = $('stage'), backBtn = $('back'), nextBtn = $('next'), altBtn = $('alt');
+  var stangBox = $('stang'), peekBtn = $('peek');
   var sheet = $('sheet'), sheetPhone = $('sheetPhone');
+  var wipe = $('wipe'), wipeSkiva = $('wipeSkiva'), wipeFyll = $('wipeFyll'), wipeKant = $('wipeKant');
   var root = document.documentElement;
   var STILLA = false;
   try { STILLA = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
 
-  /* Delarna. Skivorna på stången har delens färg, tyngst först. */
+  var FARG = {red: '#FF5B52', blue: '#6B95FF', yellow: '#FFC93A', green: '#3CCB7C', orange: '#FF8A4C', purple: '#A48BFF'};
+  var KONF = ['#FF5B52', '#6B95FF', '#FFC93A', '#3CCB7C', '#FF8A4C', '#A48BFF', '#FFFFFF', '#111214'];
+
+  /* Delarna. Varje del är en skiva på stången, tyngst först: 20 kg stång + två av varje = 175 kg. */
   var SECTIONS = [
-    {id: 'du',   name: 'Du',         color: 'red'},
-    {id: 'nu',   name: 'Nuläget',    color: 'blue'},
-    {id: 'upp',  name: 'Upplägget',  color: 'yellow'},
-    {id: 'ovn',  name: 'Övningarna', color: 'green'},
-    {id: 'app',  name: 'Appen',      color: 'orange'},
-    {id: 'sist', name: 'Sist',       color: 'purple'}
+    {id: 'du',   name: 'Du',         color: 'red',    kg: '25'},
+    {id: 'nu',   name: 'Nuläget',    color: 'blue',   kg: '20'},
+    {id: 'upp',  name: 'Upplägget',  color: 'yellow', kg: '15'},
+    {id: 'ovn',  name: 'Övningarna', color: 'green',  kg: '10'},
+    {id: 'app',  name: 'Appen',      color: 'orange', kg: '5'},
+    {id: 'sist', name: 'Sist',       color: 'purple', kg: '2,5'}
   ];
   function secIndex(id){ for (var i = 0; i < SECTIONS.length; i++) if (SECTIONS[i].id === id) return i; return 0; }
 
@@ -442,7 +528,7 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
 
   /* Frågorna. type: multi (flera val), single (ett val), rows (flera val med förklaring),
      pick (ett val med förklaring), color, text, area. sum är namnet i svarstexten.
-     art är teckningen i den färgade rutan; phone är mobilen, och part den del av den som rör sig. */
+     art är teckningen i scenen; phone är mobilen, och part den del av den som rör sig. */
   var STEPS = [
     {id: 'namn', sec: 'du', art: 'phone', part: 'hej', title: 'Vad ska appen kalla dig?', hint: 'Namn eller smeknamn. Det står överst i appen.', fields: [
       {type: 'text', key: 'namn', sum: 'Namn', label: 'Namn', placeholder: 'Skriv här', max: 40, auto: 'given-name'}
@@ -535,7 +621,7 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     {id: 'ton', sec: 'app', art: 'phone', part: 'ton', title: 'Hur ska appen prata med dig?', hint: 'Välj en, så ser du hur den låter.', fields: [
       {type: 'single', key: 'ton', sum: 'Ton', options: ['Peppig', 'Lugn och snäll', 'Rak och saklig', 'Sträng, som en hård tränare', 'Med humor']}
     ]},
-    {id: 'utseende', sec: 'app', art: 'phone', part: 'pass', title: 'Vilken färg ska appen ha?', hint: 'Mobilen får färgen du väljer.', fields: [
+    {id: 'utseende', sec: 'app', art: 'phone', part: 'pass', title: 'Vilken färg ska appen ha?', hint: 'Hela sidan får färgen du väljer.', fields: [
       {type: 'color', key: 'farg', sum: 'Färg'},
       {type: 'single', key: 'lage', sum: 'Ljus eller mörk', label: 'Ljus eller mörk?', options: ['Ljus', 'Mörk', 'Som telefonen']}
     ]},
@@ -553,6 +639,12 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
       {type: 'area', key: 'ovrigt', sum: 'Övrigt', label: 'Skriv fritt', placeholder: 'Lämna tomt om du inte kommer på något', max: 1200}
     ]}
   ];
+  function stegSec(at){   // -1 öppningen, 0–5 delarna, 6 finalen
+    if (at === 'intro') return -1;
+    if (at === 'klar') return 6;
+    for (var i = 0; i < STEPS.length; i++) if (STEPS[i].id === at) return secIndex(STEPS[i].sec);
+    return -1;
+  }
 
   /* ---------- sparat på den egna telefonen ---------- */
   function load(){
@@ -590,8 +682,20 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     clearTimeout(n['_' + cls]);
     n['_' + cls] = setTimeout(function(){ n.classList.remove(cls); }, ms);
   }
-  function surr(m){ try { if (navigator.vibrate) navigator.vibrate(m); } catch(e){} }
+  var rort = false;   // telefonen får bara surra efter ett tryck
+  ['pointerdown', 'touchstart', 'keydown'].forEach(function(t){ document.addEventListener(t, function(){ rort = true; }, {passive: true, capture: true}); });
+  function surr(m){ if (!rort) return; try { if (navigator.vibrate) navigator.vibrate(m); } catch(e){} }
+  function skaka(){ if (!STILLA) kor(app, 'skak', 280); }
   function each(list, fn){ Array.prototype.forEach.call(list, fn); }
+  function vanta(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  function anim(n, frames, o){   // Web Animations, med ett löfte som alltid går i mål
+    if (STILLA || !n || !n.animate) return Promise.resolve();
+    try {
+      var a = n.animate(frames, o);
+      return new Promise(function(r){ a.onfinish = r; a.oncancel = r; setTimeout(r, (o.duration || 0) + (o.delay || 0) + 200); });
+    } catch(e){ return Promise.resolve(); }
+  }
+  function stopp(n){ try { n.getAnimations().forEach(function(a){ a.cancel(); }); } catch(e){} }
   function isMulti(f){ return f.type === 'multi' || f.type === 'rows'; }
   function opts(f){ return typeof f.options === 'function' ? f.options() : f.options; }
   function optNames(f){
@@ -633,6 +737,7 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     summary(list).forEach(function(r){ out.push(r.k + ': ' + (r.v ? r.v.replace(/\s*\n+\s*/g, ' / ') : '–')); });
     return out.join('\n');
   }
+  function tva(n){ return (n < 10 ? '0' : '') + n; }
 
   /* ---------- det som mobilen och teckningarna läser ur svaren ---------- */
   var PRESET = {2: [0, 3], 3: [0, 2, 4], 4: [0, 1, 3, 4], 5: [0, 1, 2, 3, 4], 6: [0, 1, 2, 3, 4, 5]};
@@ -699,12 +804,77 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     return out;
   }
 
+  /* ---------- gnistor och konfetti: en enda duk över allt ---------- */
+  var FX = (function(){
+    var c = null, ctx = null, ps = [], igang = false, d = 1, W = 0, H = 0, sist = 0;
+    function start(){
+      if (STILLA) return false;
+      if (!c){
+        c = document.createElement('canvas');
+        c.id = 'fx';
+        c.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(c);
+        ctx = c.getContext && c.getContext('2d');
+      }
+      if (!ctx) return false;
+      d = Math.min(2, window.devicePixelRatio || 1);
+      var w = Math.round(window.innerWidth * d), h = Math.round(window.innerHeight * d);
+      if (c.width !== w || c.height !== h){ c.width = w; c.height = h; }
+      W = w; H = h;
+      if (!igang){ igang = true; sist = 0; requestAnimationFrame(tick); }
+      return true;
+    }
+    function tick(t){
+      var dt = sist ? Math.min(2.2, (t - sist) / 16.7) : 1;
+      sist = t;
+      ctx.clearRect(0, 0, W, H);
+      for (var i = ps.length - 1; i >= 0; i--){
+        var p = ps[i];
+        p.liv += dt;
+        if (p.liv >= p.max || p.y > H + 60){ ps.splice(i, 1); continue; }
+        p.vy += p.g * dt; p.vx *= Math.pow(.985, dt); p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.vr * dt;
+        var k = p.liv / p.max;
+        ctx.save();
+        ctx.globalAlpha = k > .7 ? Math.max(0, (1 - k) / .3) : 1;
+        ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+        if (p.f === 1){ ctx.beginPath(); ctx.arc(0, 0, p.s / 2, 0, 6.283); ctx.fill(); }
+        else if (p.f === 2){ ctx.fillRect(-p.s / 2, -p.s / 7, p.s, p.s / 3.5); ctx.fillRect(-p.s / 7, -p.s / 2, p.s / 3.5, p.s); }
+        else ctx.fillRect(-p.s / 2, -p.s / 3, p.s, p.s * .66);
+        ctx.restore();
+      }
+      if (ps.length) requestAnimationFrame(tick);
+      else { igang = false; ctx.clearRect(0, 0, W, H); }
+    }
+    function ny(x, y, vx, vy, o){
+      ps.push({x: x * d, y: y * d, vx: vx * d, vy: vy * d, g: (o.g == null ? .45 : o.g) * d, s: (o.s || 8) * d, r: Math.random() * 6.28, vr: (Math.random() - .5) * .5, c: o.c, f: o.f || 0, liv: 0, max: o.max || 110});
+    }
+    return {
+      gnista: function(x, y, cols, n){
+        if (!start()) return;
+        for (var i = 0; i < (n || 9); i++){
+          var a = Math.random() * 6.283, v = 2.5 + Math.random() * 4.5;
+          ny(x, y, Math.cos(a) * v, Math.sin(a) * v - 2.2, {c: cols[i % cols.length], s: 5 + Math.random() * 6, f: i % 3, max: 30 + Math.random() * 16, g: .32});
+        }
+      },
+      regn: function(n){
+        if (!start()) return;
+        for (var i = 0; i < n; i++) ny(window.innerWidth * (.1 + Math.random() * .8), window.innerHeight * .36, (Math.random() - .5) * 15, -(7 + Math.random() * 12), {c: KONF[i % KONF.length], s: 6 + Math.random() * 7, f: i % 4 === 0 ? 1 : 0, max: 120});
+      },
+      kanon: function(vanster, n){
+        if (!start()) return;
+        for (var i = 0; i < n; i++){
+          var vink = (28 + Math.random() * 50) * Math.PI / 180, v = 12 + Math.random() * 15;
+          ny(vanster ? -8 : window.innerWidth + 8, window.innerHeight * .8, (vanster ? 1 : -1) * Math.cos(vink) * v, -Math.sin(vink) * v, {c: KONF[i % KONF.length], s: 6 + Math.random() * 7, f: i % 4 === 0 ? 1 : 0, max: 135, g: .4});
+        }
+      }
+    };
+  })();
+
   /* ---------- mobilen ---------- */
-  function phone(scale, crop, part){
+  function phone(scale, part){
     var c = appFarg(), namn = str('namn').trim();
     var wrap = el('span', {class: 'phone'});
     wrap.style.setProperty('--s', String(scale));
-    if (crop) wrap.style.setProperty('--h', crop + 'px');
     var ph = el('span', {class: 'ph' + (morkt() ? ' dark' : '') + (str('mobil') === 'Android' ? ' android' : '')});
     ph.style.setProperty('--ac', c.bg);
     ph.style.setProperty('--on-ac', c.on);
@@ -738,11 +908,31 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     if (part) each(ph.querySelectorAll('[data-p="' + part + '"]' + (part === 'rutor' ? ',[data-p="flikar"]' : '')), function(n){ n.classList.add('pop'); });
     return wrap;
   }
+  function mobil3d(scale, part, snurr){   // mobilen i rymd: svävar, och har en baksida så att den går att snurra
+    var w = el('span', {class: 'ph3d'}), t = el('span', {class: 'ph-tilt'});
+    var bak = el('span', {class: 'ph-bak'});
+    bak.style.setProperty('--s', String(scale));
+    bak.style.setProperty('--bak', appFarg().bg);
+    var hall = t;
+    if (snurr){ hall = el('span', {class: 'ph-snurr'}); t.appendChild(hall); }
+    hall.appendChild(phone(scale, part));
+    hall.appendChild(bak);
+    w.appendChild(t);
+    return w;
+  }
+  function bytMobil(holder, scale, part){   // byter bara framsidan, så att svävandet inte börjar om
+    var gammal = holder.querySelector('.phone'), bak = holder.querySelector('.ph-bak');
+    if (!gammal) return;
+    gammal.parentNode.replaceChild(phone(scale, part), gammal);
+    if (bak) bak.style.setProperty('--bak', appFarg().bg);
+  }
   function openSheet(){
-    var s = 1.15;
-    try { s = Math.max(.8, Math.min(1.2, (window.innerHeight * .94 - 160) / 440, (window.innerWidth - 56) / 220)); } catch(e){}
+    var s = 1.1;
+    try { s = Math.max(.8, Math.min(1.15, (window.innerHeight * .94 - 230) / 440, (window.innerWidth - 110) / 220)); } catch(e){}
+    var c = appFarg();
     sheetPhone.textContent = '';
-    sheetPhone.appendChild(phone(s, 0, null));
+    sheetPhone.style.background = c.bg === '#111214' ? '#E8E9ED' : c.bg;
+    sheetPhone.appendChild(mobil3d(s, null, false));
     try { if (sheet.showModal) sheet.showModal(); else sheet.setAttribute('open', ''); } catch(e){ sheet.setAttribute('open', ''); }
   }
   function closeSheet(){ try { sheet.close(); } catch(e){ sheet.removeAttribute('open'); } }
@@ -751,62 +941,96 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
   peekBtn.addEventListener('click', openSheet);
   function paintPeek(){ var r = peekBtn.querySelector('.pk-sk'); if (r) r.style.fill = appFarg().bg; }
 
-  /* ---------- stången: en skiva per del som är klar ---------- */
-  var SKIVA_H = [28, 26, 23, 20, 17, 14];
+  /* ---------- stången: en skiva för varje del hon har kommit till ---------- */
+  var SKIVA_H = [30, 28, 25, 22, 19, 16];
   var lastad = 0;
-  function stangSvg(klara, nasta, ny){
-    var s = '<svg viewBox="0 0 200 32" aria-hidden="true" focusable="false">' +
-      '<rect x="56" y="14.5" width="88" height="3" rx="1.5" fill="#111214"/>' +
-      '<rect x="4" y="13.5" width="48" height="5" rx="2.5" fill="#111214"/><rect x="148" y="13.5" width="48" height="5" rx="2.5" fill="#111214"/>' +
-      '<rect x="52" y="10" width="4" height="12" rx="1.5" fill="#111214"/><rect x="144" y="10" width="4" height="12" rx="1.5" fill="#111214"/>';
-    for (var i = 0; i < 6; i++){
-      if (i >= klara && i !== nasta) continue;
-      var h = SKIVA_H[i], y = 16 - h / 2, xv = 52 - 7.5 * (i + 1) + .75, xh = 148 + 7.5 * i + .75;
-      var cls = i < klara ? 'sk' + (i === ny ? ' ny' : '') : 'sk nasta';
-      var fill = i < klara ? ' style="fill:var(--' + SECTIONS[i].color + ')"' : '';
-      s += '<rect class="' + cls + ' v" x="' + xv + '" y="' + y + '" width="6" height="' + h + '" rx="2"' + fill + '/>' +
-           '<rect class="' + cls + ' h" x="' + xh + '" y="' + y + '" width="6" height="' + h + '" rx="2"' + fill + '/>';
+  function stangSvg(antal, ny){
+    var s = '<svg viewBox="0 0 200 34" aria-hidden="true" focusable="false">' +
+      '<rect class="st-jarn" x="56" y="15.5" width="88" height="3" rx="1.5"/>' +
+      '<rect class="st-jarn" x="4" y="14.5" width="48" height="5" rx="2.5"/><rect class="st-jarn" x="148" y="14.5" width="48" height="5" rx="2.5"/>' +
+      '<rect class="st-jarn" x="52" y="10" width="4" height="14" rx="1.5"/><rect class="st-jarn" x="144" y="10" width="4" height="14" rx="1.5"/>';
+    for (var i = 0; i < antal && i < 6; i++){
+      var h = SKIVA_H[i], y = 17 - h / 2, xv = 52 - 7.5 * (i + 1) + .75, xh = 148 + 7.5 * i + .75, cls = 'sk' + (i === ny ? ' ny' : '');
+      s += '<rect class="' + cls + ' v" x="' + xv + '" y="' + y + '" width="6" height="' + h + '" rx="2" fill="' + FARG[SECTIONS[i].color] + '"/>' +
+           '<rect class="' + cls + ' h" x="' + xh + '" y="' + y + '" width="6" height="' + h + '" rx="2" fill="' + FARG[SECTIONS[i].color] + '"/>';
     }
     return s + '</svg>';
   }
-  function setProgress(klara, nasta, text){
-    stangBox.innerHTML = stangSvg(klara, nasta, klara > lastad ? klara - 1 : -1);
-    stangBox.setAttribute('aria-label', klara >= 6 ? 'Skivstången är fullastad, alla sex delarna är klara' : 'Skivstången: ' + klara + ' av 6 delar klara');
-    lastad = klara;
-    ptext.textContent = text;
+  function setProgress(antal){
+    stangBox.innerHTML = stangSvg(antal, antal > lastad ? antal - 1 : -1);
+    stangBox.setAttribute('aria-label', antal >= 6 ? 'Skivstången är fullastad, alla sex delarna är klara' : 'Skivstången: del ' + Math.max(1, antal) + ' av 6');
+    lastad = antal;
   }
 
-  /* ---------- konfetti ---------- */
-  function konfetti(antal){
-    if (STILLA) return;
-    var c = document.createElement('canvas'), ctx = c.getContext && c.getContext('2d');
-    if (!ctx) return;
-    c.className = 'konfetti';
-    c.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(c);
-    var d = Math.min(2, window.devicePixelRatio || 1), w = c.width = window.innerWidth * d, h = c.height = window.innerHeight * d;
-    var cols = ['#FF5B52', '#6B95FF', '#FFC93A', '#3CCB7C', '#FF8A4C', '#A48BFF', '#111214'], ps = [], i;
-    for (i = 0; i < antal; i++) ps.push({x: w / 2 + (Math.random() - .5) * w * .5, y: h * .38, vx: (Math.random() - .5) * 15 * d, vy: -(7 + Math.random() * 12) * d, s: (6 + Math.random() * 6) * d, r: Math.random() * 6.28, vr: (Math.random() - .5) * .4, c: cols[i % cols.length], o: i % 4 === 0});
-    var t0 = 0;
-    function tick(t){
-      if (!t0) t0 = t;
-      var k = (t - t0) / 1900;
-      ctx.clearRect(0, 0, w, h);
-      ps.forEach(function(p){
-        p.vy += .45 * d; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr;
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, 1 - k * k);
-        ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
-        if (p.o){ ctx.beginPath(); ctx.arc(0, 0, p.s / 2, 0, 6.283); ctx.fill(); }
-        else ctx.fillRect(-p.s / 2, -p.s / 3, p.s, p.s * .66);
-        ctx.restore();
-      });
-      if (k < 1) requestAnimationFrame(tick); else if (c.parentNode) c.parentNode.removeChild(c);
+  /* ---------- skivan som slår in och blir nästa färg ---------- */
+  function ringText(txt, cx, cy, r, size, fill){   // tecknen jämnt runt en cirkel
+    var s = '', n = txt.length;
+    for (var i = 0; i < n; i++){
+      var ch = txt.charAt(i);
+      if (ch === ' ') continue;
+      s += '<text x="' + cx + '" y="' + (cy - r) + '" text-anchor="middle" font-size="' + size + '" fill="' + fill + '" transform="rotate(' + (i * 360 / n).toFixed(2) + ' ' + cx + ' ' + cy + ')">' + ch + '</text>';
     }
-    requestAnimationFrame(tick);
+    return s;
+  }
+  function skivaSvg(i){
+    var sista = i >= 6, sec = sista ? null : SECTIONS[i];
+    var fyll = sista ? '#111214' : FARG[sec.color], blk = sista ? '#FFFFFF' : '#111214', pa = sista ? '#111214' : '#FFFFFF';
+    var bit = sista ? 'KLART • 175 KG • ' : (sec.name + ' • ' + sec.kg + ' KG • ').toUpperCase();
+    var txt = '', rep = Math.max(1, Math.round(40 / bit.length));
+    for (var k = 0; k < rep; k++) txt += bit;
+    return '<svg viewBox="0 0 240 240" aria-hidden="true" focusable="false">' +
+      '<circle cx="120" cy="120" r="113" fill="' + fyll + '" stroke="' + (sista ? '#FFFFFF' : '#111214') + '" stroke-width="7"/>' +
+      '<circle cx="120" cy="120" r="99" fill="none" stroke="' + blk + '" stroke-width="2" opacity=".4"/>' +
+      ringText(txt, 120, 120, 71, 21, blk) +
+      '<circle cx="120" cy="120" r="60" fill="none" stroke="' + blk + '" stroke-width="4"/>' +
+      '<circle cx="120" cy="120" r="43" fill="' + blk + '"/>' +
+      (sista ? '<path d="M98 121l15 15 30-33" fill="none" stroke="' + pa + '" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>'
+             : '<text x="120" y="142" text-anchor="middle" font-size="62" fill="' + pa + '">' + (i + 1) + '</text>') +
+      '</svg>';
+  }
+  var upptagen = false;
+  function spelaSkiva(i, mitt){
+    upptagen = true;
+    var fyll = i >= 6 ? '#111214' : FARG[SECTIONS[i].color], fardig = false;
+    var R = Math.ceil(Math.sqrt(window.innerWidth * window.innerWidth + window.innerHeight * window.innerHeight));
+    function klar(){   // byter skärm under skivan och tar bort den, en enda gång vad som än händer
+      if (fardig) return;
+      fardig = true;
+      upptagen = false;
+      try { mitt(); } finally {
+        wipe.hidden = true;
+        [wipeSkiva, wipeFyll, wipeKant].forEach(stopp);
+      }
+    }
+    [wipeSkiva, wipeFyll, wipeKant].forEach(stopp);
+    wipeSkiva.innerHTML = skivaSvg(i);
+    wipeSkiva.style.opacity = '1';
+    wipeFyll.style.background = fyll;
+    wipeKant.style.background = i >= 6 ? '#FFFFFF' : '#111214';
+    wipe.hidden = false;
+    anim(wipeSkiva, [
+      {transform: 'translateY(-95vh) rotate(-170deg)', easing: 'cubic-bezier(.55,0,.9,.55)'},
+      {transform: 'translateY(0) rotate(0deg)', offset: .5, easing: 'cubic-bezier(.2,.7,.4,1)'},
+      {transform: 'translateY(-34px) rotate(6deg)', offset: .68, easing: 'cubic-bezier(.6,0,.9,.6)'},
+      {transform: 'translateY(0) rotate(0deg)', offset: .84, easing: 'cubic-bezier(.2,.7,.4,1)'},
+      {transform: 'translateY(-9px) rotate(-1deg)', offset: .92, easing: 'ease-in'},
+      {transform: 'translateY(0) rotate(0deg)'}
+    ], {duration: 620, fill: 'both'});
+    setTimeout(function(){
+      skaka(); surr(20);
+      FX.gnista(window.innerWidth / 2, window.innerHeight * .44 + 108, ['#111214', '#FFFFFF', fyll], 16);
+    }, 310);
+    setTimeout(klar, 2600);   // skyddsnät om webbläsaren inte spelar animationerna
+    vanta(620 + 250).then(function(){
+      // skivan växer ut över hela skärmen och blir bakgrunden
+      var o = {duration: 400, easing: 'cubic-bezier(.7,0,.85,.35)', fill: 'both'};
+      anim(wipeSkiva, [{opacity: 1}, {opacity: 0}], {duration: 130, fill: 'both'});
+      anim(wipeFyll, [{clipPath: 'circle(109px at 50% 44%)'}, {clipPath: 'circle(' + R + 'px at 50% 44%)'}], o);
+      return anim(wipeKant, [{clipPath: 'circle(116px at 50% 44%)'}, {clipPath: 'circle(' + (R + 24) + 'px at 50% 44%)'}], o);
+    }).then(klar, klar);
   }
 
-  /* ---------- teckningarna: ritade för sidan, följer svaren och rör sig när man trycker ---------- */
+  /* ---------- teckningarna: ritade för sidan, följer svaren och rör sig ---------- */
   function pil(x, y, c){
     var tx = x + 38, ty = y - 38;
     return '<g class="tg-pil ' + c + '"><path class="d-i" d="M' + x + ' ' + y + 'L' + tx + ' ' + ty + '"/><path class="d-i d-t" d="M' + tx + ' ' + ty + 'l10-1M' + tx + ' ' + ty + 'l1-10M' + (tx - 7) + ' ' + (ty + 7) + 'l10-1M' + (tx - 7) + ' ' + (ty + 7) + 'l1-10"/></g>';
@@ -884,8 +1108,8 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
         }
         r.querySelector('.sw-kil').setAttribute('d', d);
         var t = str('tidpunkt');
-        r.classList.toggle('sol', t === 'Morgon' || t === 'Lunch' || t === 'Eftermiddag' || t === 'Olika');
-        r.classList.toggle('mane', t === 'Kväll' || t === 'Olika');
+        r.classList.toggle('sol-pa', t === 'Morgon' || t === 'Lunch' || t === 'Eftermiddag' || t === 'Olika');
+        r.classList.toggle('mane-pa', t === 'Kväll' || t === 'Olika');
       }
     },
     dumbbell: {
@@ -935,38 +1159,62 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     }
   };
 
-  /* ---------- fält ---------- */
+  /* ---------- scenen och fälten ---------- */
   var current = null;   // steget som visas
   var artBtn = null;    // knappen med teckningen eller mobilen
   var hintEl = null;
+  var varTom = true;    // om knappen stod på Hoppa över
   var armTimer = null;  // Börja om: andra trycket inom fyra sekunder rensar
+  var klockor = [];     // skakningarna i öppningen och finalen
 
-  function accentFor(s){
+  function bgFor(s){
     if (s && s.id === 'utseende'){
       var sw = farg();
       if (sw) return {bg: sw.c, on: sw.dark ? '#FFFFFF' : '#111214'};
     }
-    return {bg: 'var(--' + (s ? SECTIONS[secIndex(s.sec)].color : 'red') + ')', on: 'var(--ink)'};
+    return {bg: FARG[s ? SECTIONS[secIndex(s.sec)].color : 'red'], on: '#111214'};
   }
-  function setAccent(a){
-    root.style.setProperty('--accent', a.bg);
-    root.style.setProperty('--on-accent', a.on);
+  function setBg(a){
+    root.style.setProperty('--bg', a.bg);
+    root.style.setProperty('--on-bg', a.on);
+    app.classList.toggle('mork', a.on !== '#111214');
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', a.bg);
   }
-  function hero(eyebrow, title, hint, art){
-    var h = el('section', {class: 'hero'});
-    var t = el('div', {class: 'hero-txt'});
-    t.appendChild(el('p', {class: 'eyebrow', text: eyebrow}));
-    t.appendChild(el('h1', {id: 'q', tabindex: '-1', text: title}));
-    hintEl = el('p', {class: 'hint', text: hint || ''});
-    hintEl.hidden = !hint;
-    t.appendChild(hintEl);
-    h.appendChild(t);
-    if (art) h.appendChild(art);
-    return h;
+  function ordIn(h, text){   // ett ord i taget, så att rubriken landar
+    text.split(' ').forEach(function(w, i){
+      var s = el('span', {class: 'ord', text: w});
+      s.style.setProperty('--n', String(i));
+      if (i) h.appendChild(document.createTextNode(' '));
+      h.appendChild(s);
+    });
+    return text.split(' ').length;
+  }
+  function scen(o){
+    var s = el('section', {class: 'scen'});
+    var og = el('p', {class: 'ogon'}, [el('i', {class: 'ogon-prick', 'aria-hidden': 'true'})]);
+    og.appendChild(document.createTextNode(o.ogon));
+    if (o.sr) og.appendChild(el('span', {class: 'sr', text: o.sr}));
+    s.appendChild(og);
+    var h = el('h1', {id: 'q', tabindex: '-1'});
+    ordIn(h, o.titel);
+    s.appendChild(h);
+    if (o.ingress) s.appendChild(el('p', {class: 'ingress', text: o.ingress}));
+    if (o.nr || o.art || o.hint != null){
+      var rad = el('div', {class: 'scen-rad'}), v = el('div', {class: 'scen-v'});
+      if (o.nr) v.appendChild(el('p', {class: 'nr', 'aria-hidden': 'true'}, [el('b', {text: o.nr}), el('span', {text: '/' + o.av})]));
+      hintEl = el('p', {class: 'hint', text: o.hint || ''});
+      hintEl.hidden = !o.hint;
+      v.appendChild(hintEl);
+      rad.appendChild(v);
+      if (o.art) rad.appendChild(o.art);
+      s.appendChild(rad);
+    }
+    return s;
   }
   function phoneBtn(part){
     var b = el('button', {type: 'button', class: 'art art-phone', 'aria-label': 'Din app hittills. Tryck för att se den större.'});
-    b.appendChild(phone(.47, 320, part));
+    b.appendChild(mobil3d(.5, part, false));
     b.addEventListener('click', openSheet);
     return b;
   }
@@ -976,27 +1224,34 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     if (!a) return null;
     var b = el('button', {type: 'button', class: 'art', 'aria-label': 'Bilden rör sig när du trycker på den'});
     b.innerHTML = '<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">' + a.svg + '</svg>';
-    b.addEventListener('click', function(){
+    b.addEventListener('click', function(ev){
       kor(b.firstChild, 'go', a.ms);
       surr(8);
+      var r = b.getBoundingClientRect();
+      FX.gnista(ev.clientX || r.left + r.width / 2, ev.clientY || r.top + r.height / 2, ['#111214', '#FFFFFF'], 10);
       if (!state.tip){ state.tip = 1; save(); var t = stage.querySelector('.tips'); if (t) t.parentNode.removeChild(t); }
     });
     return b;
   }
-  function syncArt(pop){
+  function syncArt(pop, ryck){
     if (!current || !artBtn) return;
-    if (current.art === 'phone'){
-      artBtn.textContent = '';
-      artBtn.appendChild(phone(.47, 320, pop ? current.part : null));
-    } else if (ART[current.art]) ART[current.art].sync(artBtn.firstChild);
+    if (current.art === 'phone') bytMobil(artBtn, .5, pop ? current.part : null);
+    else if (ART[current.art]){
+      ART[current.art].sync(artBtn.firstChild);
+      if (ryck) kor(artBtn.firstChild, 'go', ART[current.art].ms);
+    }
   }
-  function changed(pop){
+  function changed(pop, ryck){
     save();
     paintPeek();
     if (!current) return;
-    nextBtn.textContent = state.edit ? 'Klar' : (stepHas(current) ? 'Nästa' : 'Hoppa över');
-    setAccent(accentFor(current));
-    syncArt(pop);
+    var tom = !state.edit && !stepHas(current);
+    nextBtn.textContent = state.edit ? 'Klar' : (tom ? 'Hoppa över' : 'Nästa');
+    nextBtn.classList.toggle('tom', tom);
+    if (varTom && !tom && pop) kor(nextBtn, 'fylld', 340);
+    varTom = tom;
+    setBg(bgFor(current));
+    syncArt(pop, ryck);
     if (current.id === 'ton' && hintEl){
       var t = tonRad();
       hintEl.textContent = t ? '”' + t + '”' : current.hint;
@@ -1011,52 +1266,63 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     box.addEventListener('click', function(ev){
       var b = ev.target.closest ? ev.target.closest('[data-o]') : null;
       if (!b || !box.contains(b)) return;
+      var inne = stage.querySelector('.matta.in');
+      if (inne) inne.classList.remove('in');   // inträdet är över när man börjar trycka
       pick(f, b.getAttribute('data-o'));
       paint(box, f);
-      surr(6);
+      if (b.getAttribute('aria-pressed') === 'true'){
+        var r = b.getBoundingClientRect();
+        FX.gnista(ev.clientX || r.left + r.width / 2, ev.clientY || r.top + r.height / 2, [getComputedStyle(root).getPropertyValue('--bg').trim() || '#FF5B52', '#111214', '#FFC93A']);
+        if (f.type !== 'color') kor(b, 'nu', 340);
+        surr(10);
+      } else surr(5);
       if (after) after();
-      changed(true);
+      changed(true, true);
     });
     paint(box, f);
   }
-  function fieldTile(f){
-    var tile = el('div', {class: 'tile'});
+  function falt(f){
+    var g = el('div', {class: 'grupp'});
     var labelId = 'q';
 
     if (f.type === 'text' || f.type === 'area'){
       var id = 'f-' + f.key;
-      var w = el('div', {class: 'field'});
-      w.appendChild(el('label', {'for': id, text: f.label}));
+      g.className = 'grupp field';
+      g.appendChild(el('label', {'for': id, text: f.label}));
       var inp = f.type === 'area'
         ? el('textarea', {id: id, rows: '4', maxlength: String(f.max || 600), placeholder: f.placeholder || ''})
         : el('input', {id: id, type: 'text', maxlength: String(f.max || 80), placeholder: f.placeholder || '', autocomplete: f.auto || 'off', enterkeyhint: 'next'});
       inp.value = str(f.key);
       inp.addEventListener('input', function(){
         if (inp.value.trim()) state.a[f.key] = inp.value; else delete state.a[f.key];
-        changed(true);
+        changed(true, false);
       });
       if (f.type === 'text') inp.addEventListener('keydown', function(ev){
         if (ev.key === 'Enter'){ ev.preventDefault(); inp.blur(); nextBtn.click(); }
       });
-      w.appendChild(inp);
-      if (f.help) w.appendChild(el('p', {class: 'help', text: f.help}));
-      tile.appendChild(w);
-      return tile;
+      g.appendChild(inp);
+      if (f.help) g.appendChild(el('p', {class: 'help', text: f.help}));
+      return g;
     }
 
     if (f.label){
       labelId = 'l-' + f.key;
-      tile.appendChild(el('div', {class: 'tile-head'}, [el('p', {class: 'group-label', id: labelId, text: f.label})]));
+      g.appendChild(el('div', {class: 'grupp-topp'}, [el('p', {class: 'rubrik', id: labelId, text: f.label})]));
     }
     var box;
     if (f.type === 'multi' || f.type === 'single'){
       box = el('div', {class: 'chips', role: 'group', 'aria-labelledby': labelId});
-      opts(f).forEach(function(o){ box.appendChild(el('button', {type: 'button', class: 'chip', 'aria-pressed': 'false', 'data-o': o, text: o})); });
+      opts(f).forEach(function(o, n){
+        var b = el('button', {type: 'button', class: 'chip', 'aria-pressed': 'false', 'data-o': o, text: o});
+        b.style.setProperty('--n', String(n));
+        box.appendChild(b);
+      });
       wire(box, f);
     } else if (f.type === 'rows' || f.type === 'pick'){
       box = el('div', {class: 'rows', role: 'group', 'aria-labelledby': labelId});
-      opts(f).forEach(function(o){
+      opts(f).forEach(function(o, n){
         var b = el('button', {type: 'button', class: 'row', 'aria-pressed': 'false', 'data-o': o.t});
+        b.style.setProperty('--n', String(n));
         b.appendChild(el('span', {class: 'txt'}, [el('b', {text: o.t}), el('span', {class: 'd', text: o.d})]));
         var c = el('span', {class: 'check', 'aria-hidden': 'true'});
         c.innerHTML = CHECK;
@@ -1068,18 +1334,20 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
       if (f.all){
         allBtn = el('button', {type: 'button', class: 'link'});
         allBtn.addEventListener('click', function(){
-          if (arr(f.key).length === optNames(f).length) delete state.a[f.key];
-          else state.a[f.key] = optNames(f);
-          paint(box, f); syncAll(); changed(true);
+          var alla = arr(f.key).length === optNames(f).length;
+          if (alla) delete state.a[f.key]; else state.a[f.key] = optNames(f);
+          paint(box, f); syncAll(); changed(true, true);
+          if (!alla){ FX.regn(40); surr([8, 30, 8]); }
         });
-        tile.appendChild(el('div', {class: 'tile-head'}, [el('p', {class: 'group-label', text: 'Välj så många du vill'}), allBtn]));
+        g.appendChild(el('div', {class: 'grupp-topp'}, [el('p', {class: 'rubrik', text: 'Välj så många du vill'}), allBtn]));
       }
       wire(box, f, syncAll);
       syncAll();
     } else if (f.type === 'color'){
       box = el('div', {class: 'swatches', role: 'group', 'aria-labelledby': labelId});
-      SWATCHES.forEach(function(s){
+      SWATCHES.forEach(function(s, n){
         var b = el('button', {type: 'button', class: 'swatch', 'aria-pressed': 'false', 'data-o': s.name});
+        b.style.setProperty('--n', String(n));
         var i = el('i', {'aria-hidden': 'true', class: s.dark ? 'dark' : ''});
         i.style.background = s.c;
         i.innerHTML = CHECK;
@@ -1089,18 +1357,43 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
       });
       wire(box, f);
     }
-    tile.appendChild(box);
-    return tile;
+    g.appendChild(box);
+    return g;
   }
 
   /* ---------- skärmarna ---------- */
-  function go(at, edit, fest){
+  var finalNu = false;   // finalen spelas bara när man kommer dit framifrån
+  function go(at, o){
+    o = o || {};
+    if (upptagen) return;
+    var fran = state.at, lugn = o.edit || o.bak || state.edit;
+    var fram = !lugn && stegSec(at) > stegSec(fran);
     state.at = at;
-    state.edit = !!edit;
+    state.edit = !!o.edit;
     tidy();
     save();
-    render(true);
-    if (fest){ konfetti(110); surr([12, 60, 18]); }
+    if (fram && !STILLA){
+      var till = stegSec(at);
+      spelaSkiva(till, function(){
+        finalNu = till === 6;
+        render(true);
+        if (till === 6) fest();
+      });
+    } else if (!STILLA && fran !== at){
+      upptagen = true;
+      stage.classList.add('ut');
+      setTimeout(function(){ stage.classList.remove('ut'); upptagen = false; render(true); }, 130);
+    } else render(true);
+  }
+  function fest(){
+    surr([14, 50, 14, 50, 30]);
+    FX.kanon(true, 70); FX.kanon(false, 70);
+    klockor.push(setTimeout(function(){ FX.regn(90); }, 450));
+    klockor.push(setTimeout(function(){ FX.kanon(true, 40); FX.kanon(false, 40); }, 1000));
+  }
+  function slag(antal){   // rubrikens ord slår i ett i taget
+    if (STILLA) return;
+    for (var i = 0; i < antal; i++) klockor.push(setTimeout(function(){ skaka(); surr(12); }, 150 + i * 150 + 270));
   }
   function render(focus){
     tidy();
@@ -1112,11 +1405,15 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     hintEl = null;
     altBtn.hidden = true;
     altBtn.onclick = null;
+    nextBtn.classList.remove('tom');
     clearTimeout(armTimer);
+    klockor.forEach(clearTimeout);
+    klockor = [];
     paintPeek();
     if (state.at === 'intro') drawIntro(list);
     else if (state.at === 'klar') drawDone(list);
     else drawStep(list);
+    finalNu = false;
     stage.scrollTop = 0;
     if (focus){
       var h = $('q');
@@ -1124,18 +1421,31 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     }
   }
 
+  function markeSvg(){
+    return '<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="56" fill="#fff" stroke="#111214" stroke-width="3.5"/><g class="marke-ring">' +
+      ringText('DRYGT 20 FRÅGOR • TRYCK PÅ ALLT • ', 60, 60, 37, 13.5, '#111214') +
+      '</g><circle cx="60" cy="60" r="23" fill="#111214"/><path d="M60 49v20M51 61l9 9 9-9" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
   function drawIntro(list){
-    setAccent(accentFor(null));
-    setProgress(0, -1, 'Drygt 20 frågor');
+    app.className = 'app oppen';
+    setBg(bgFor(null));
+    setProgress(0);
     backBtn.hidden = true;
-    artBtn = phoneBtn(null);
-    current = null;
-    stage.appendChild(hero('Din egen gymapp', 'Hur vill du ha din gymapp?', 'Filip bygger en gymapp åt dig. Den blir som hans, fast gjord för dig. Mobilen här visar hur den blir medan du svarar.', artBtn));
-    var g = el('div', {class: 'bento'});
-    g.appendChild(el('div', {class: 'mini blue'}, [el('b', {text: 'Ca 5 min'}), el('span', {text: 'Mest att trycka på, lite att skriva.'})]));
-    g.appendChild(el('div', {class: 'mini yellow'}, [el('b', {text: 'Hoppa över'}), el('span', {text: 'det du inte vill svara på.'})]));
-    g.appendChild(el('div', {class: 'mini wide'}, [el('span', {text: 'På slutet skickar du svaren själv till Filip. Fram till dess sparas de bara här, på din egen mobil eller dator. Filip bygger appen ihop med Claude, en AI, som läser svaren.'})]));
-    stage.appendChild(g);
+    var s = scen({ogon: 'Filip bygger', titel: 'Din egen gymapp', ingress: 'Svara på frågorna, så blir den som du vill ha den. Mobilen visar appen medan du svarar.'});
+    var yta = el('div', {class: 'yta'});
+    artBtn = el('button', {type: 'button', class: 'mobil-in', 'aria-label': 'Din app hittills. Tryck för att se den större.'});
+    artBtn.appendChild(mobil3d(.56, null, false));
+    artBtn.addEventListener('click', openSheet);
+    yta.appendChild(artBtn);
+    yta.appendChild(el('span', {class: 'klister k1', text: 'Ca 5 min'}));
+    yta.appendChild(el('span', {class: 'klister k2', text: 'Hoppa över det du vill'}));
+    var marke = el('span', {class: 'marke', 'aria-hidden': 'true'});
+    marke.innerHTML = markeSvg();
+    yta.appendChild(marke);
+    s.appendChild(yta);
+    stage.appendChild(s);
+    stage.appendChild(el('p', {class: 'kort', text: 'På slutet skickar du svaren själv till Filip. Fram till dess sparas de bara här, på din egen mobil eller dator. Filip bygger appen ihop med Claude, en AI, som läser svaren.'}));
+    slag(3);
 
     var started = anyAnswer();
     nextBtn.textContent = started ? 'Fortsätt' : 'Börja';
@@ -1152,7 +1462,7 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
           return;
         }
         state.a = {};
-        go('intro');
+        go('intro', {bak: true});
       };
     }
   }
@@ -1162,94 +1472,135 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     list.forEach(function(s, n){ if (s.id === state.at) i = n; });
     var s = list[i], si = secIndex(s.sec);
     current = s;
-    setAccent(accentFor(s));
-    setProgress(si, si, (i + 1) + ' av ' + list.length);
+    app.className = 'app steg';
+    setBg(bgFor(s));
+    setProgress(si + 1);
     backBtn.hidden = false;
     backBtn.onclick = function(){
-      if (state.edit) go('klar');
-      else go(i > 0 ? list[i - 1].id : 'intro');
+      if (state.edit) go('klar', {bak: true});
+      else go(i > 0 ? list[i - 1].id : 'intro', {bak: true});
     };
     artBtn = artFor(s);
-    var h = hero(SECTIONS[si].name, s.title, s.hint, artBtn);
-    if (artBtn && s.art !== 'phone' && !state.tip) h.appendChild(el('span', {class: 'tips', text: 'Tryck på bilden'}));
-    stage.appendChild(h);
-    s.fields.forEach(function(f){ stage.appendChild(fieldTile(f)); });
+    var sc = scen({ogon: 'Del ' + (si + 1) + ' av 6 · ' + SECTIONS[si].name, sr: '. Fråga ' + (i + 1) + ' av ' + list.length + '.', titel: s.title, nr: tva(i + 1), av: list.length, hint: s.hint || '', art: artBtn});
+    stage.appendChild(sc);
+    if (artBtn && s.art !== 'phone' && !state.tip){
+      var tip = el('span', {class: 'tips', text: 'Tryck på bilden'});
+      artBtn.parentNode.style.position = 'relative';
+      artBtn.parentNode.appendChild(tip);
+    }
+    var m = el('section', {class: 'matta in'});
+    s.fields.forEach(function(f){ m.appendChild(falt(f)); });
+    stage.appendChild(m);
+    klockor.push(setTimeout(function(){ m.classList.remove('in'); }, 1100));
     nextBtn.onclick = function(){
-      if (state.edit) go('klar');
+      if (state.edit) go('klar', {bak: true});
       else {
         var now = steps(), at = 0;
         now.forEach(function(x, n){ if (x.id === s.id) at = n; });
-        if (at < now.length - 1) go(now[at + 1].id); else go('klar', false, true);
+        go(at < now.length - 1 ? now[at + 1].id : 'klar');
       }
     };
-    changed(false);
+    varTom = !state.edit && !stepHas(s);
+    changed(false, false);
   }
 
+  function solSvg(c, svag){
+    var s = '<svg viewBox="-100 -100 200 200" aria-hidden="true" focusable="false" opacity="' + (svag ? '.2' : '.95') + '">';
+    for (var i = 0; i < 12; i++) s += '<path d="M0 0L-13-100H13Z" fill="' + c + '" transform="rotate(' + (i * 30) + ')"/>';
+    return s + '</svg>';
+  }
   function drawDone(list){
-    setAccent({bg: 'var(--purple)', on: 'var(--ink)'});
-    setProgress(6, -1, 'Klart');
+    app.className = 'app final';
+    setBg({bg: '#111214', on: '#FFFFFF'});
+    setProgress(6);
     backBtn.hidden = false;
-    backBtn.onclick = function(){ go(list[list.length - 1].id); };
+    backBtn.onclick = function(){ go(list[list.length - 1].id, {bak: true}); };
 
     var canShare = false;
     try { canShare = window.self === window.top && typeof navigator.share === 'function'; } catch(e){ canShare = false; }
 
-    var name = str('namn').trim();
-    stage.appendChild(hero(name ? 'Tack, ' + name : 'Klart', 'Skicka svaren till Filip',
-      canShare ? 'Tryck på Skicka svaren här nere och välj Filip.' : 'Tryck på Kopiera svaren här nere och klistra in dem i ett meddelande till Filip.', null));
+    var name = str('namn').trim(), c = appFarg();
+    var s = scen({ogon: 'Alla sex delar klara · 175 kg', titel: name ? 'Klart, ' + name + '!' : 'Klart!',
+      ingress: canShare ? 'Tryck på Skicka svaren här nere och välj Filip, så bygger han appen.' : 'Tryck på Kopiera svaren här nere och klistra in dem i ett meddelande till Filip, så bygger han appen.'});
 
+    // Mobilen i strålkastarljuset: appen som svaren har byggt. Ett tryck snurrar den.
+    var yta = el('div', {class: 'fyta'});
+    var sol = el('span', {class: 'sol', 'aria-hidden': 'true'});
+    sol.innerHTML = '<span class="sol-ring">' + (c.bg === '#111214' ? solSvg('#FFFFFF', true) : solSvg(c.bg, false)) + '</span>';
+    yta.appendChild(sol);
+    var vb = el('button', {type: 'button', class: 'mobil-knapp', 'aria-label': 'Din app. Tryck så snurrar den.'});
+    var m3 = mobil3d(.78, null, true);
+    vb.appendChild(m3);
+    yta.appendChild(vb);
+    var snurr = m3.querySelector('.ph-snurr'), varv = 0;
+    vb.addEventListener('click', function(ev){
+      varv++;
+      stopp(snurr);
+      anim(snurr, [{transform: 'rotateY(0deg) scale(1)'}, {transform: 'rotateY(180deg) scale(1.08)', offset: .5}, {transform: 'rotateY(360deg) scale(1)'}], {duration: 900, easing: 'cubic-bezier(.5,0,.2,1)'});
+      surr([8, 40, 12]);
+      var r = vb.getBoundingClientRect();
+      FX.gnista(r.left + r.width / 2, r.top + r.height / 2, KONF, 22);
+    });
+    var k3 = el('span', {class: 'klister k3', text: 'Din app'});
+    k3.style.background = c.bg === '#111214' ? '#FFFFFF' : c.bg;
+    yta.appendChild(k3);
+    yta.appendChild(el('span', {class: 'klister k4', text: 'Tryck på mobilen'}));
+    s.appendChild(yta);
+    stage.appendChild(s);
+    if (finalNu){
+      slag(s.querySelectorAll('.ord').length);
+      anim(snurr, [{transform: 'translateY(300px) rotateY(-560deg) scale(.3)', opacity: 0}, {transform: 'translateY(0) rotateY(-40deg) scale(1.04)', opacity: 1, offset: .8}, {transform: 'translateY(0) rotateY(0deg) scale(1)', opacity: 1}], {duration: 1250, easing: 'cubic-bezier(.2,1,.3,1)', fill: 'backwards'});
+    }
+
+    var matta = el('section', {class: 'matta'});
     var note = el('div', {class: 'note', role: 'status', 'aria-live': 'polite', hidden: ''});
-    stage.appendChild(note);
-
-    // Mobilen: appen som svaren har byggt
-    var visa = el('div', {class: 'tile visa'});
-    visa.appendChild(el('div', {class: 'tile-head'}, [el('p', {class: 'group-label', text: 'Din app'})]));
-    var vb = el('button', {type: 'button', class: 'visa-knapp', 'aria-label': 'Din app. Tryck för att se den större.'});
-    vb.appendChild(phone(.8, 0, null));
-    vb.addEventListener('click', openSheet);
-    visa.appendChild(vb);
-    visa.appendChild(el('p', {text: 'Så här ser den ut med det du har svarat. Filip bygger den riktiga.'}));
-    stage.appendChild(visa);
+    matta.appendChild(note);
 
     // Stången: fullastad, och den går att lyfta
     var reps = 0;
-    var lyftRuta = el('div', {class: 'tile lyft-ruta'});
+    var lyftRuta = el('div', {class: 'ruta lyft-ruta'});
     var lyft = el('button', {type: 'button', class: 'lyft', 'aria-label': 'Lyft stången'});
-    lyft.innerHTML = stangSvg(6, -1, -1);
-    var lyftTxt = el('p', {class: 'lyft-txt', role: 'status', text: 'Sex delar klara. 175 kg på stången.'});
+    lyft.innerHTML = stangSvg(6, -1);
+    var lyftTxt = el('p', {class: 'lyft-txt', role: 'status', text: '175 kg på stången'});
     lyft.addEventListener('click', function(){
       reps++;
       kor(lyft, 'upp', 820);
       surr([10, 40, 14]);
-      if (reps === 1 || reps % 5 === 0) konfetti(reps % 5 === 0 ? 100 : 50);
-      lyftTxt.textContent = reps === 1 ? '1 lyft. En till?' : reps === 5 ? '5 lyft. Bra set!' : reps === 10 ? '10 lyft. Nu är du uppvärmd.' : reps + ' lyft.';
+      setTimeout(skaka, 640);
+      if (reps === 1 || reps % 5 === 0) FX.regn(reps % 5 === 0 ? 110 : 50);
+      lyftTxt.textContent = reps === 1 ? '1 lyft. En till?' : reps === 5 ? '5 lyft. Bra set!' : reps === 10 ? '10 lyft. Nu är du uppvärmd.' : reps + ' lyft';
     });
     lyftRuta.appendChild(lyft);
     lyftRuta.appendChild(lyftTxt);
     lyftRuta.appendChild(el('p', {text: 'Tryck på stången så lyfter du den.'}));
-    stage.appendChild(lyftRuta);
+    matta.appendChild(lyftRuta);
 
-    var tile = el('div', {class: 'tile'});
-    tile.appendChild(el('div', {class: 'tile-head'}, [el('p', {class: 'group-label', text: 'Dina svar'})]));
+    var g = el('div', {class: 'grupp'});
+    g.appendChild(el('div', {class: 'grupp-topp'}, [el('p', {class: 'rubrik', text: 'Dina svar'})]));
     var sum = el('div', {class: 'sum'});
     summary(list).forEach(function(r){
       var b = el('button', {type: 'button', class: 'sum-row', 'aria-label': r.k + ': ' + (r.v || 'inget svar') + '. Ändra'});
       b.appendChild(el('span', {class: 'k', text: r.k}));
       b.appendChild(el('span', {class: 'v' + (r.v ? '' : ' none'), text: r.v || 'Inget svar'}));
       b.appendChild(el('span', {class: 'e', 'aria-hidden': 'true', text: 'Ändra'}));
-      b.addEventListener('click', function(){ go(r.step, true); });
+      b.addEventListener('click', function(){ go(r.step, {edit: true}); });
       sum.appendChild(b);
     });
-    tile.appendChild(sum);
-    stage.appendChild(tile);
+    g.appendChild(sum);
+    matta.appendChild(g);
 
     var text = summaryText(list);
     var raw = el('textarea', {id: 'raw', readonly: '', 'aria-label': 'Svaren som text'});
     raw.value = text;
     var det = el('details', {class: 'raw'}, [el('summary', {text: 'Visa svaren som text'}), raw]);
-    stage.appendChild(el('div', {class: 'tile'}, [det]));
+    matta.appendChild(det);
+    stage.appendChild(matta);
 
-    function say(msg){ note.textContent = msg; note.hidden = false; stage.scrollTop = 0; }
+    function say(msg){
+      note.textContent = msg;
+      note.hidden = false;
+      try { matta.scrollIntoView({block: 'start', behavior: STILLA ? 'auto' : 'smooth'}); } catch(e){ stage.scrollTop = matta.offsetTop; }
+    }
     function selectRaw(){
       det.open = true;
       try { raw.focus(); raw.select(); raw.setSelectionRange(0, text.length); } catch(e){}
@@ -1257,6 +1608,7 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
     function copy(btn, vila){
       var done = function(){
         say('Kopierat. Öppna ett meddelande till Filip och klistra in.');
+        FX.regn(40);
         btn.textContent = 'Kopierat';
         setTimeout(function(){ if (state.at === 'klar') btn.textContent = vila; }, 2500);
       };
@@ -1284,7 +1636,7 @@ dialog.sheet[open]{animation:upp .28s cubic-bezier(.3,1.1,.4,1)}
           if (err && err.name === 'AbortError') return;
           copy(altBtn, 'Kopiera');
         };
-        try { navigator.share({text: text}).then(function(){ say('Skickat vidare. Tack!'); }, miss); } catch(e){ miss(e); }
+        try { navigator.share({text: text}).then(function(){ say('Skickat vidare. Tack!'); FX.regn(60); }, miss); } catch(e){ miss(e); }
       };
       altBtn.hidden = false;
       altBtn.textContent = 'Kopiera';

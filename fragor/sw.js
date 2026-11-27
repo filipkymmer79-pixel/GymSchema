@@ -1,8 +1,8 @@
 // Frågorna till syrrans gymapp: sidan sparas så att den öppnas utan nät. Bara den här sidans egna cacher städas,
 // eftersom de andra apparna ligger på samma webbplats och har egna.
 const PREFIX = "fragor-";
-const CACHE = PREFIX + "v202611262312";
-const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./fonts/manrope-latin.woff2", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
+const CACHE = PREFIX + "v202611270400";
+const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./fonts/manrope-latin.woff2", "./fonts/big-shoulders-latin-900.woff2", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith(PREFIX) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {
