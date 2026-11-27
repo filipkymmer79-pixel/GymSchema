@@ -615,6 +615,37 @@ fieldset.falt{border:0;padding:0;margin-left:0;margin-right:0;min-width:0}
 }
 .lageknapp{display:inline;margin-left:4px;color:var(--ljus)}
 .c-last{font-style:italic;opacity:.75}
+/* balansbrädan gungar och rullen rullar med */
+.bb-bra{transform-origin:160px 130px}.bb-hjul{transform-origin:160px 152px}
+@keyframes bb-gung{0%,100%{transform:rotate(0)}20%{transform:translateX(-8px) rotate(-7deg)}45%{transform:translateX(7px) rotate(6deg)}70%{transform:translateX(-4px) rotate(-3deg)}86%{transform:translateX(2px) rotate(1.5deg)}}
+@keyframes bb-rull{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}45%{transform:translateX(7px)}70%{transform:translateX(-4px)}86%{transform:translateX(2px)}}
+@keyframes bb-hjul{0%,100%{transform:rotate(0)}20%{transform:rotate(-42deg)}45%{transform:rotate(36deg)}70%{transform:rotate(-20deg)}86%{transform:rotate(10deg)}}
+.gung .bb-bra{animation:bb-gung 1.4s ease-in-out}.gung .bb-rulle{animation:bb-rull 1.4s ease-in-out}.gung .bb-hjul{animation:bb-hjul 1.4s ease-in-out}
+/* massagerullen rullar fram och tillbaka */
+@keyframes rl-rulla{0%,100%{transform:translateX(0)}30%{transform:translateX(-20px)}70%{transform:translateX(18px)}}
+@keyframes rl-rand{0%,100%{transform:translateX(0)}30%{transform:translateX(-14px)}70%{transform:translateX(13px)}}
+.rl-fart{opacity:0}
+.rulla .rl-rulle{animation:rl-rulla 1.2s ease-in-out}.rulla .rl-rand{animation:rl-rand 1.2s ease-in-out}.rulla .rl-fart{animation:blinka .6s 2}
+/* hantlarna hoppar en i taget */
+.hx{transform-box:fill-box;transform-origin:center bottom}
+@keyframes hx-hopp{0%,100%{transform:translateY(0)}35%{transform:translateY(-16px)}60%{transform:translateY(0)}}
+.vag .hx{animation:hx-hopp .45s ease-in-out both;animation-delay:calc(var(--i)*80ms)}
+/* massagebollarna studsar */
+.mb{transform-box:fill-box;transform-origin:center bottom}
+@keyframes mb-studs{0%,100%{transform:translateY(0) scale(1,1)}30%{transform:translateY(-30px) scale(.96,1.04)}55%{transform:translateY(0) scale(1.1,.88)}72%{transform:translateY(-9px) scale(1,1)}86%{transform:translateY(0) scale(1.03,.97)}}
+.studs .mb{animation:mb-studs .75s ease-in-out both;animation-delay:calc(var(--i)*120ms)}
+/* hanteln faller på gymgolvet */
+.gg-hantel,.gg-golv{transform-box:fill-box;transform-origin:center bottom}
+.gg-smack{opacity:0}
+@keyframes gg-fall{0%{transform:translateY(0)}30%{transform:translateY(-52px)}58%{transform:translateY(0) scale(1.06,.94)}70%{transform:translateY(-7px) scale(1,1)}82%,100%{transform:translateY(0)}}
+@keyframes gg-golv{0%,54%,72%,100%{transform:scaleY(1)}60%{transform:scaleY(.96)}}
+@keyframes gg-smack{0%,55%{opacity:0}60%{opacity:1}82%,100%{opacity:0}}
+.dunk .gg-hantel{animation:gg-fall 1s ease-in-out}.dunk .gg-golv{animation:gg-golv 1s}.dunk .gg-smack{animation:gg-smack 1s}
+/* vinden blåser mot kalsongerna */
+.bx-vind{opacity:.4}.bx{transform-origin:160px 160px}
+@keyframes bx-vind{0%{transform:translateX(-16px);opacity:0}30%{opacity:1}100%{transform:translateX(26px);opacity:0}}
+@keyframes bx-fl{0%,100%{transform:skewX(0)}30%{transform:skewX(-4deg)}65%{transform:skewX(2.5deg)}}
+.blas .bx-vind{animation:bx-vind .7s ease-out 2}.blas .bx{animation:bx-fl .7s ease-in-out 2}
 </style>
 </head>
 <body>
@@ -917,7 +948,34 @@ var SAKER=[
   url:'https://www.bauhaus.se/innerdorr-solid-elements-finland-9x20',
   fakta:'Vit, slät innerdörr som är 825 mm bred, 1 940 mm hög och 40 mm tjock. Låskistan sitter i. Karm och handtag ingår inte.',
   lapp:'På nätet säljer Bauhaus den bara tre åt gången (2 397 kr). Fråga i varuhuset om en enda.',
-  rim:'Den står på glänt, den slår igen,\noch stänger kalla draget ute sen.'}
+  rim:'Den står på glänt, den slår igen,\noch stänger kalla draget ute sen.'},
+ {id:'balans',t:0,namn:'Balansbräda i trä med rulle',hos:'Hos 24.se',butik:'24.se',pris:549,
+  url:'https://www.24.se/traningsprodukter/redskap/balanstraning/balansbrada-tra-balansplatta-1',
+  fakta:'Bräda i trä, 75 × 30 cm, med en rulle under som är klädd i mjukt material så att golvet klarar sig. Tränar balansen och de små musklerna runt lederna.',
+  rim:'Den gungar hit och gungar dit –\nså tränar du balans med flit.'},
+ {id:'foamroller',t:2,namn:'Dinox foam roller, 90 cm',hos:'Dinox, hos Motivon',butik:'Motivon',pris:322,var:379,
+  url:'https://www.motivon.se/sv/produkt/massagerulle_dinox_foam_roller_90cm',
+  fakta:'Svart massagerulle i medelhårt skum, 15 cm tjock och 90 cm lång, så att den räcker till hela ryggen. Slät yta som är lätt att torka av.',
+  rim:'Rulla rygg och rulla lår –\nså känns det bättre när du går.'},
+ {id:'hantelset',t:1,namn:'Body-Solid hantelpaket, 5–25 kg med ställ',hos:'Body-Solid, hos Träningsprodukter',butik:'Träningsprodukter',pris:8390,
+  url:'https://traningsprodukter.se/produkt/hantelpaket-5-kg-25-kg-inkl-stativ/',
+  fakta:'Sju par gummerade hexhantlar på 5, 7, 10, 12,5, 15, 20 och 25 kg, 189 kg sammanlagt, och ett ställ som tar lite golvplats. Leveranstiden är ungefär 1–2 veckor.',
+  lapp:'Black Friday-pris. Det lägsta priset de senaste 30 dagarna var 8 451 kr.',
+  rim:'Sju par i rad på ett och samma ställ –\nett helt gym hemma, kväll efter kväll.'},
+ {id:'massagebollar',t:3,namn:'Massagebollar, tre i ett paket',hos:'Hos Hälsoteket',butik:'Hälsoteket',pris:159,var:199,
+  url:'https://xn--hlsoteket-v2a.se/halsoprodukter/massageprodukter/massagebollar-paket',
+  fakta:'En avlång boll för större muskler, en rund för till exempel hålfoten och en taggig för triggerpunkter, i en svart påse.',
+  rim:'En rund, en lång och en med tagg –\nsom rullar bort varenda knagg.'},
+ {id:'gymgolv',t:0,namn:'Gymgolv i gummi, fyra plattor 1 × 1 m',hos:'Hos Gymkompaniet',butik:'Gymkompaniet',pris:1756,
+  url:'https://gymkompaniet.se/20mmgolvnymodell',
+  fakta:'Stötdämpande plattor i återvunnet gummi, 20 mm tjocka och 18 kg styck. Läggs direkt på golvet, även på parkett och golvvärme, och tar emot hantlar som släpps.',
+  lapp:'Säljs minst fyra åt gången, 439 kr styck. Fråga mig hur många.',
+  rim:'Släpp din hantel, golvet tål –\nfyra plattor gummi, inte ett hål.'},
+ {id:'boxer',t:2,namn:'Craft Active Extreme X Wind Boxer',hos:'Craft, hos Outnorth',butik:'Outnorth',pris:375,var:500,
+  url:'https://www.outnorth.com/se/varumarken/craft/men-s-active-extreme-x-wind-boxer-96356-FS145151',
+  fakta:'Funktionskalsonger med vindtät front, för löpning och träning i kyla från −5 till +10 grader. Svarta och grå.',
+  lapp:'Fråga mig om storlek. Priset gäller till och med 21 december.',
+  rim:'Där vinden biter som allra mest\när ett vindskydd fram det allra bäst.'}
 ];
 
 /* ---------- Adventsluckorna: små förslag, inget måste ---------- */
@@ -963,8 +1021,8 @@ var FORSLAG=[
 ];
 var RIM_EGEN='Hårt eller mjukt, det säger jag ej –\nmen tomten vet att det passar dig.';
 var TINTER=['#F2F6FA','#FBEED2','#FADCD9','#D9E8F5'];
-var ORD=['noll','en','två','tre','fyra','fem','sex','sju','åtta','nio','tio','elva','tolv','tretton','fjorton','femton','sexton','sjutton','arton','nitton','tjugo'];
-var BILDNAMN={paket:'Ett paket',matta:'Yogamatta',shorts:'Shorts',airpods:'Hörlurar',tofflor:'Tofflor',satoro:'Tröja',panna:'Stekpanna',stekspade:'Stekspade',hantel:'Hantel',italki:'Lektion',vinyl:'Skiva',tungskrapa:'Koppar',icebug:'Skor',hoodie:'Hoodie',dorr:'Dörr',hopprep:'Hopprep',shaker:'Shaker',tang:'Tång',glas:'Glas',borste:'Borste',bio:'Biljett',ljuslist:'Ljuslist',halsduk:'Halsduk'};
+var ORD=['noll','en','två','tre','fyra','fem','sex','sju','åtta','nio','tio','elva','tolv','tretton','fjorton','femton','sexton','sjutton','arton','nitton','tjugo','tjugoen','tjugotvå','tjugotre','tjugofyra','tjugofem','tjugosex','tjugosju','tjugoåtta','tjugonio','trettio','trettioen','trettiotvå','trettiotre','trettiofyra','trettiofem','trettiosex','trettiosju','trettioåtta','trettionio','fyrtio'];
+var BILDNAMN={paket:'Ett paket',matta:'Yogamatta',shorts:'Shorts',airpods:'Hörlurar',tofflor:'Tofflor',satoro:'Tröja',panna:'Stekpanna',stekspade:'Stekspade',hantel:'Hantel',italki:'Lektion',vinyl:'Skiva',tungskrapa:'Koppar',icebug:'Skor',hoodie:'Hoodie',dorr:'Dörr',hopprep:'Hopprep',shaker:'Shaker',tang:'Tång',glas:'Glas',borste:'Borste',bio:'Biljett',ljuslist:'Ljuslist',halsduk:'Halsduk',balans:'Balansbräda',foamroller:'Massagerulle',hantelset:'Hantelställ',massagebollar:'Massagebollar',gymgolv:'Gymgolv',boxer:'Kalsonger'};
 /* ---------- Bilderna ---------- */
 function toffel(dx,dy,cls){return '<g class="'+cls+'"><g transform="translate('+dx+' '+dy+')"><rect class="fi o" x="4" y="64" width="174" height="16" rx="8"/><path class="fn o" d="M10 66V50a10 10 0 0 1 16-8a10 10 0 0 1 18 2a12 12 0 0 1 20-12a13 13 0 0 1 24-6a14 14 0 0 1 26 2a14 14 0 0 1 24 8a13 13 0 0 1 20 10a12 12 0 0 1 14 20Z"/><ellipse class="fs o" cx="34" cy="43" rx="17" ry="6"/><path d="M60 52q5-5 10 0M88 44q5-5 10 0M116 48q5-5 10 0M76 60q5-5 10 0M106 60q5-5 10 0M136 56q5-5 10 0M152 62q4-4 8 0" fill="none" stroke="#A9C7E3" stroke-width="2.5" stroke-linecap="round"/></g></g>';}
 function skivor(){var s='';for(var k=0;k<5;k++){s+='<rect class="h-p" data-k="'+k+'" x="'+(104-k*15)+'" y="58" width="12" height="84" rx="4"/><rect class="h-p" data-k="'+k+'" x="'+(204+k*15)+'" y="58" width="12" height="84" rx="4"/>';}return s;}
@@ -1006,6 +1064,66 @@ KONST.borste='<circle class="fn o" cx="160" cy="330" r="200"/><circle cx="160" c
 KONST.bio='<path class="fy k-st" d="M262 34l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path class="fy k-st" d="M50 146l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><g transform="rotate(-8 160 100)"><path class="fs o" d="M56 60H212V140H56V114a14 14 0 0 0 0-28Z"/><text x="134" y="115" text-anchor="middle" font-size="40" style="font-family:var(--rubrik);font-weight:900">BIO</text><path class="l t" d="M78 74h36M78 128h60" opacity=".35"/><g class="bi-talong"><path class="fr o" d="M212 60H264V86a14 14 0 0 0 0 28V140H212Z"/><path d="M212 68V132" stroke="#fff" stroke-width="2.5" stroke-dasharray="3 6" stroke-linecap="round"/><text x="241" y="109" text-anchor="middle" font-size="24" style="fill:#fff;font-family:var(--rubrik);font-weight:900">1</text></g></g>';
 KONST.ljuslist=ljuslist();
 KONST.halsduk='<g class="hs"><path class="l t" d="M52 78l-18-4M52 90h-20M52 102l-18 4M52 114l-20 2M52 124l-16 6M268 78l18-4M268 90h20M268 102l18 4M268 114l20 2M268 124l16 6"/><rect class="fs o" x="52" y="72" width="216" height="58" rx="4"/><path d="M54 86H266M54 116H266" stroke="#BF2A2A" stroke-width="10"/><path d="M92 74v54M228 74v54" stroke="#BF2A2A" stroke-width="10"/><circle class="fr o" cx="160" cy="101" r="16"/><path class="fy" d="M160 89l3.2 7.6 8.2.6-6.3 5.3 2 8-7.1-4.4-7.1 4.4 2-8-6.3-5.3 8.2-.6Z"/></g>';
+/* Fler bilder: balansbrädan, massagerullen, hantelstället, massagebollarna, gymgolvet och kalsongerna */
+function sexkant(cx,cy,r){var p='';for(var k=0;k<6;k++){var a=Math.PI/3*k;p+=(k?'L':'M')+Math.round((cx+r*Math.cos(a))*10)/10+' '+Math.round((cy+r*Math.sin(a))*10)/10;}return p+'Z';}
+function hantlar(){                       // sju par hexhantlar från kortsidan, 5 till 25 kg, på hyllan
+  var kg=[5,7,10,12.5,15,20,25],x=34,s='';
+  kg.forEach(function(k,i){
+    var r=10+(k-5)*.55,cx=x+r,cy=140-r*.866;
+    s+='<g class="hx" style="--i:'+i+'"><path class="fn o" d="'+sexkant(cx,cy,r)+'"/><circle class="fi" cx="'+cx+'" cy="'+(Math.round(cy*10)/10)+'" r="'+(Math.round(r*3)/10)+'"/></g>';
+    x+=2*r+8;
+  });
+  return s;
+}
+function spikboll(cx,cy,r){                // massagebollen med taggar
+  var s='<circle class="fi o" cx="'+cx+'" cy="'+cy+'" r="'+r+'"/>',k,a;
+  for(k=0;k<14;k++){a=Math.PI*2*k/14;s+='<circle class="fi o" cx="'+Math.round((cx+(r+2)*Math.cos(a))*10)/10+'" cy="'+Math.round((cy+(r+2)*Math.sin(a))*10)/10+'" r="4"/>';}
+  for(k=0;k<7;k++){a=Math.PI*2*k/7+.4;s+='<circle cx="'+Math.round((cx+r*.55*Math.cos(a))*10)/10+'" cy="'+Math.round((cy+r*.55*Math.sin(a))*10)/10+'" r="2.6" fill="#102544" opacity=".55"/>';}
+  return s+'<circle cx="'+cx+'" cy="'+cy+'" r="2.6" fill="#102544" opacity=".55"/>';
+}
+function gummiprickar(){                   // återvunnet gummi: prickar på plattornas ovansida
+  var s='',k,u,v;
+  for(k=0;k<46;k++){u=((k*37)%100)/100*.94+.03;v=((k*61+17)%100)/100*.94+.03;s+='<circle cx="'+Math.round((160+79.6*(u-v))*10)/10+'" cy="'+Math.round((70+46*(u+v))*10)/10+'" r="1.6"/>';}
+  return s;
+}
+KONST.balans='<path class="l t" d="M30 176H290" opacity=".3"/>'+
+  '<g class="bb-rulle"><circle class="fn o" cx="160" cy="152" r="22"/><g class="bb-hjul"><circle class="fs" cx="160" cy="152" r="7"/><path d="M160 144V134" stroke="#A9C7E3" stroke-width="3.5" stroke-linecap="round"/></g></g>'+
+  '<g class="bb-bra"><rect class="fn" x="50" y="128" width="14" height="10" rx="3"/><rect class="fn" x="256" y="128" width="14" height="10" rx="3"/>'+
+  '<rect class="o" x="34" y="114" width="252" height="16" rx="7" fill="#E2AE73"/><path class="l t" d="M58 120h44M120 124h60M198 119h62" opacity=".3"/>'+
+  '<path class="fn o" d="M78 114v-7q0-13 22-13t22 13v7Z"/><path d="M82 111H118" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M93 99l14 4M93 104l14-4" stroke="#A9C7E3" stroke-width="2" stroke-linecap="round"/>'+
+  '<path class="fn o" d="M198 114v-7q0-13 22-13t22 13v7Z"/><path d="M202 111H238" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M213 99l14 4M213 104l14-4" stroke="#A9C7E3" stroke-width="2" stroke-linecap="round"/></g>'+
+  '<text x="160" y="196" text-anchor="middle" font-size="14">75 × 30 cm</text>';
+KONST.foamroller='<path class="l t" d="M30 176H290" opacity=".3"/>'+
+  '<path class="l t" d="M46 88v12M278 88v12M46 94H278"/><text x="162" y="80" text-anchor="middle" font-size="14">90 cm</text>'+
+  '<g class="rl-fart"><path class="l t" d="M14 140h18M8 152h24M14 164h18"/></g>'+
+  '<g class="rl-rulle"><rect class="fn o" x="46" y="128" width="232" height="46" rx="6"/>'+
+  '<g class="rl-rand"><path d="M78 133v36M108 133v36M138 133v36M168 133v36M198 133v36M228 133v36" stroke="#2B4A75" stroke-width="3.5" stroke-linecap="round"/></g>'+
+  '<path d="M60 136H262" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".16"/>'+
+  '<ellipse class="o" cx="278" cy="151" rx="11" ry="23" fill="#24426E"/><ellipse cx="278" cy="151" rx="4" ry="9" fill="#102544"/></g>';
+KONST.hantelset='<path class="l t" d="M24 178H296" opacity=".3"/>'+
+  '<path class="fs o" d="M42 150L32 176H52L60 150Z"/><path class="fs o" d="M278 150L288 176H268L260 150Z"/><path class="fs o" d="M152 150h16v26h-16Z"/>'+
+  '<rect class="fs o" x="24" y="140" width="272" height="11" rx="3"/>'+hantlar()+
+  '<g class="hs-tal"><rect class="fy o" x="92" y="26" width="136" height="30" rx="15"/><text x="160" y="47" text-anchor="middle" font-size="15">7 par, 5–25 kg</text></g>';
+KONST.massagebollar='<path class="l t" d="M30 178H290" opacity=".3"/>'+
+  '<path class="fy k-st" d="M206 56l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><path class="fy k-st" d="M112 70l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5Z"/>'+
+  '<g class="mb" style="--i:0"><ellipse class="fn o" cx="78" cy="152" rx="42" ry="24"/><path d="M52 141q26-12 52 0" stroke="#A9C7E3" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/></g>'+
+  '<g class="mb" style="--i:1"><circle class="fr o" cx="164" cy="150" r="26"/><path d="M149 136q8-6 18-4" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".6"/></g>'+
+  '<g class="mb" style="--i:2">'+spikboll(248,153,21)+'</g>';
+KONST.gymgolv='<path class="l t" d="M40 178H280" opacity=".3"/>'+
+  '<g class="gg-golv"><path class="o" d="M80.4 116L160 162V172L80.4 126Z" fill="#102544"/><path class="o" d="M160 162L239.6 116V126L160 172Z" fill="#0B1B33"/>'+
+  '<path class="o" d="M160 70L239.6 116L160 162L80.4 116Z" fill="#24426E"/>'+
+  '<g fill="#A9C7E3" opacity=".35">'+gummiprickar()+'</g>'+
+  '<path d="M199.8 93L120.2 139M120.2 93L199.8 139M120.2 139V149M199.8 139V149" stroke="#A9C7E3" stroke-width="2.5" stroke-linecap="round" opacity=".55"/></g>'+
+  '<g class="gg-smack"><path class="l t" d="M106 100l-14-7M104 113h-16M214 100l14-7M216 113h16"/></g>'+
+  '<g class="gg-hantel"><rect class="fs o" x="138" y="98" width="44" height="9" rx="3"/><rect class="fn o" x="116" y="88" width="24" height="28" rx="5"/><rect class="fn o" x="180" y="88" width="24" height="28" rx="5"/></g>'+
+  '<text x="160" y="196" text-anchor="middle" font-size="14">fyra plattor, 1 × 1 m</text>';
+KONST.boxer='<path class="l t" d="M40 182H280" opacity=".3"/>'+
+  '<g class="bx-vind"><path class="l t" d="M10 84q16-8 32 0t32 0M4 112q18-8 36 0t36 0M14 140q14-7 28 0t28 0"/></g>'+
+  '<g class="bx"><path class="fn o" d="M104 70H216L230 156L178 162L160 122L142 162L90 156Z"/>'+
+  '<rect class="fn o" x="100" y="54" width="120" height="18" rx="6"/><path d="M108 63H212" stroke="#A9C7E3" stroke-width="3" stroke-linecap="round" opacity=".7"/>'+
+  '<path class="fi o" d="M130 72H190L184 112Q160 126 136 112Z"/><path class="l t" d="M142 86h36M144 98h32" opacity=".35"/>'+
+  '<rect class="fr" x="196" y="140" width="18" height="6" rx="3"/></g>'+
+  '<text x="160" y="198" text-anchor="middle" font-size="14">−5 till +10 °C</text>';
 
 /* ---------- Hjälp ---------- */
 function $(s,r){return (r||document).querySelector(s);}
@@ -1781,7 +1899,13 @@ var SPEL={
   borste:function(el){kor(el,'svep',820);el.classList.toggle('ren');},
   bio:function(el){el.classList.toggle('pa');kor(el,'glans',920);},
   ljuslist:function(el){var i=((+el.getAttribute('data-f')||0)+1)%LED.length;el.setAttribute('data-f',i);el.style.setProperty('--led',LED[i][1]);$('.ll-txt',el).textContent=LED[i][0];},
-  halsduk:function(el){kor(el,'vaja',920);}
+  halsduk:function(el){kor(el,'vaja',920);},
+  balans:function(el){kor(el,'gung',1450);},
+  foamroller:function(el){kor(el,'rulla',1250);},
+  hantelset:function(el){kor(el,'vag',1050);},
+  massagebollar:function(el){kor(el,'studs',1050);},
+  gymgolv:function(el){kor(el,'dunk',1050);},
+  boxer:function(el){kor(el,'blas',1450);}
 };
 
 /* ---------- Välja och ångra ---------- */

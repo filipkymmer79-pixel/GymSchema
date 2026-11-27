@@ -1,7 +1,7 @@
 // Önskelistan: sidan sparas så att den öppnas utan nät. Bara den här appens egna cacher städas,
 // eftersom de andra apparna ligger på samma webbplats och har egna.
 const PREFIX = "onskelista-";
-const CACHE = PREFIX + "v202611271525";
+const CACHE = PREFIX + "v202611272156";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./fonts/fraunces.woff2", "./fonts/schibsted-grotesk.woff2", "./fonts/caveat.woff2", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith(PREFIX) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
