@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "971494c",
+   "ts": 202611271549,
+   "build": "27 nov 15.49",
+   "date": "27 nov 16.20",
+   "title": "Bilder på nästan alla atletövningar"
+  },
+  {
    "id": "5a55748",
    "ts": 202611271521,
    "build": "27 nov 15.21",
@@ -76,13 +83,6 @@
    "build": "25 nov 00.15",
    "date": "25 nov 00.39",
    "title": "Versioner: en egen flik där du går tillbaka till en tidigare version"
-  },
-  {
-   "id": "35216f1",
-   "ts": 202611242142,
-   "build": "24 nov 21.42",
-   "date": "24 nov 22.13",
-   "title": "Tisdag blir aktiv vila: ingen löpning de närmaste tre månaderna"
   }
  ]
 }
