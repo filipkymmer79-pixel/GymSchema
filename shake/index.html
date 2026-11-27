@@ -471,11 +471,14 @@ var SHAKE = (function () {
   // than the juice did. In the 2 000: at most 3 dl yoghurt, 1.5 dl oat flour and 5 msk oil, as Filip asked on 22 Nov;
   // about 9.7 dl instead of 11. The bigger sizes lost the juice too, and got ½ msk more honey in its place.
   // No salt in the recipe, because the keso is salted. build() puts the pinch back when the keso is out.
+  // 27 Nov 2026: the 2 000 was too thick ("inte lika tjock"). 2½ dl milk instead of 1, 1 dl keso instead of 2, 1 dl oat flour instead
+  // of 1½ (the flour swells) and 2½ dl yoghurt instead of 3. The energy comes back with 1 dl more whey and 1 msk more milk powder –
+  // not more powder than that, since the powder brings lactose. Same 2 000 kcal and about the same 9.8 dl; more protein.
   var SIZES = {
     3000: { milk: 5,   smp: 4, yog: 3.5, keso: 2.5, oat: 5,   whey: 1, blue: 2,   currant: 1, spinach: 1,   honey: 1.5, oil: 5 },
     2700: { milk: 3,   smp: 4, yog: 3.5, keso: 2.5, oat: 4,   whey: 1, blue: 2,   currant: 1, spinach: 1,   honey: 1.5, oil: 5 },
     2500: { milk: 2.5, smp: 4, yog: 3,   keso: 2.5, oat: 3.5, whey: 1, blue: 1.5, currant: 1, spinach: 1,   honey: 1.5, oil: 5 },
-    2000: { milk: 1,   smp: 6, yog: 3,   keso: 2,   oat: 1.5, whey: 1, blue: 0.5, currant: 1, spinach: 0.5, honey: 1.5, oil: 5 }
+    2000: { milk: 2.5, smp: 7, yog: 2.5, keso: 1,   oat: 1,   whey: 2, blue: 0.5, currant: 1, spinach: 0.5, honey: 1.5, oil: 5 }
   };
   var STANDARD = 2000;
 
