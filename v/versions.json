@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "3520498",
+   "ts": 202611271705,
+   "build": "27 nov 17.05",
+   "date": "27 nov 17.35",
+   "title": "Fler teckningar rör sig"
+  },
+  {
    "id": "121c8f3",
    "ts": 202611271630,
    "build": "27 nov 16.30",
@@ -76,13 +83,6 @@
    "build": "25 nov 01.24",
    "date": "25 nov 01.27",
    "title": "En sida i taget: slå på det själv i Program → Över eller Ben"
-  },
-  {
-   "id": "ffa29ee",
-   "ts": 202611250103,
-   "build": "25 nov 01.03",
-   "date": "25 nov 01.04",
-   "title": "Löpning: slå på den själv när du börjar springa igen"
   }
  ]
 }
