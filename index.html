@@ -4762,6 +4762,91 @@ html:not(.ny) #t-versioner{display:none}
 .a32-undo:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:6px}
 .a32-wu{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:12px;background:var(--surface2);font-size:13px;font-weight:600;color:var(--muted)}
 .a32-wu .exlink{flex:0 0 auto;padding:6px 0}
+
+/* Bild på varje övning (27 nov 2026, omgång lr12) */
+.ex-h.b33-h{justify-content:flex-start;gap:12px;align-items:center}
+.ex-h.b33-h > div{flex:1 1 auto;min-width:0}
+.b33-th{all:unset;box-sizing:border-box;flex:0 0 auto;display:block;width:80px;height:64px;border-radius:16px;overflow:hidden;background:var(--surface2);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.b33-th svg{display:block;width:100%;height:100%}
+.b33-th:active{transform:scale(.97)}
+.b33-th:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+/* Teknik, Upptagen? och Gör det ont? som tre knappar på en rad */
+.ex .ex-links.b33-acts{display:flex;gap:6px;align-items:stretch;justify-content:flex-start;flex-wrap:nowrap}
+.ex .ex-links.b33-acts > .exlink{all:unset;box-sizing:border-box;flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;min-height:40px;padding:0 6px;border-radius:13px;background:var(--surface2);
+  font-size:clamp(11.5px,3.3vw,13px);font-weight:650;color:var(--ink);text-align:center;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ex .ex-links.b33-acts > .exlink:active{transform:scale(.98)}
+.ex .ex-links.b33-acts > .exlink:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (max-width:339px){.ex .ex-links.b33-acts{gap:4px}.ex .ex-links.b33-acts > .exlink{padding:0 2px;font-size:11px;letter-spacing:-.01em}}
+html.xl .ex .ex-links.b33-acts{flex-wrap:wrap}
+html.xl .ex .ex-links.b33-acts > .exlink{flex:1 1 40%;min-height:48px;font-size:15px;padding:0 10px}
+/* Bytt i dag, Hemma i dag och En sida i taget: rutans knappar på en rad, knappen tillbaka under */
+.ex .alt-on.b33-bx{flex-direction:row;flex-wrap:wrap;align-items:stretch;gap:8px;padding:12px;border-radius:16px}
+.ex .alt-on.b33-bx > span{flex:1 0 100%;margin-bottom:2px}
+.ex .alt-on.b33-bx > .es-links{display:contents}
+.ex .alt-on.b33-bx .exlink{all:unset;box-sizing:border-box;flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;min-height:40px;padding:0 8px;border-radius:13px;background:color-mix(in srgb,var(--ink) 8%,transparent);
+  font-size:13px;font-weight:650;color:var(--ink);text-align:center;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ex .alt-on.b33-bx .exlink:active,.ex .alt-on.b33-bx > .btn.sm.ghost:active{transform:scale(.98)}
+.ex .alt-on.b33-bx .exlink:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.ex .alt-on.b33-bx > .btn.sm.ghost{flex:1 0 100%;box-sizing:border-box;margin:0;min-height:40px;padding:6px 12px;border-radius:13px;border:0;background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ink) 16%,transparent);
+  font-size:13px;font-weight:650;color:var(--ink);text-align:center;white-space:normal}
+html.xl .ex .alt-on.b33-bx .exlink,html.xl .ex .alt-on.b33-bx > .btn.sm.ghost{min-height:48px;font-size:15px}
+/* Idag: Näst på tur med övningens bild uppe till höger */
+.bt-t.b33-nx{position:relative}
+.bt-t.b33-nx > .bt-l{white-space:nowrap;min-height:48px}   /* texten under börjar nedanför bilden, även när namnet är långt */
+.b33-nt{all:unset;box-sizing:border-box;position:absolute;top:10px;right:10px;width:66px;height:53px;border-radius:14px;overflow:hidden;background:color-mix(in srgb,var(--ink) 6%,transparent);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.b33-nt svg{display:block;width:100%;height:100%}
+.b33-nt:active{transform:scale(.97)}
+.b33-nt:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+@media (max-width:369px){.b33-nt{width:54px;height:43px;border-radius:12px}}
+@media (max-width:339px){.b33-nt{display:none}.bt-t.b33-nx > .bt-l{min-height:0}}   /* de smalaste skärmarna: rutan är för smal för både rubrik och bild */
+/* Program: liten bild i raden */
+.gcard.b33-has > summary{grid-template-columns:auto minmax(0,1fr) auto auto}
+.b33-pt{display:block;width:60px;height:48px;border-radius:12px;overflow:hidden;background:var(--surface2);pointer-events:none}
+.b33-pt svg{display:block;width:100%;height:100%}
+details.gcard[open] > summary .b33-pt,.q18-bild details.gcard > summary .b33-pt{display:none}
+details.gcard[open].b33-has > summary,.q18-bild details.gcard.b33-has > summary{grid-template-columns:auto minmax(0,1fr) auto}
+/* Atlet idag: bilden först i varje block, numret eller bocken som en bricka i hörnet */
+.at-bh:has(> .b33-cov),.at-card .at-bh:has(> .b33-cov){grid-template-columns:62px minmax(0,1fr) auto auto;gap:12px}
+.at-card div.at-bh:has(> .b33-cov),div.at-bh:has(> .b33-cov){grid-template-columns:62px minmax(0,1fr)}
+.b33-cov{position:relative;display:block;width:62px;height:50px;border-radius:14px;background:var(--surface2)}
+.b33-cov > svg{display:block;width:100%;height:100%;border-radius:14px}
+.at-blk.alldone .b33-cov > svg{opacity:.5}
+.b33-cov > .at-num,.at-card .b33-cov > .at-num{position:absolute;right:-5px;bottom:-5px;width:22px;height:22px;font-size:11.5px;outline:2.5px solid var(--surface)}
+.at-card .at-blk:not(.alldone) .b33-cov > .at-num{background:var(--surface);box-shadow:none;color:var(--ink)}
+.at-card .at-blk:nth-child(1 of :not(.alldone)) .b33-cov > .at-num{background:var(--day);color:var(--on-day)}
+/* Färg i bilderna: bakgrunden får en ton av övningens eller blockets färg */
+.b33-th,.b33-pt,.b33-cov{background:color-mix(in srgb,var(--c,var(--ink)) 9%,var(--surface2))}
+.b33-nt{background:color-mix(in srgb,var(--c,var(--ink)) 9%,color-mix(in srgb,var(--ink) 6%,transparent))}
+/* Kör passet, sidan före uppvärmningen: liten bild framför varje del */
+.fk-wl.b33-wl li{display:grid;grid-template-columns:56px minmax(0,1fr) auto;align-items:center;gap:12px;padding:8px 0}
+.fk-wl.b33-wl small{max-width:118px}
+.b33-wt{display:block;width:56px;height:42px;border-radius:11px;overflow:hidden;background:color-mix(in srgb,var(--c) 9%,var(--surface))}
+.b33-wt svg{display:block;width:100%;height:100%}
+.b33-wt:empty{background:none}
+/* Passet i bilder: en rad med en bild per del, överst i passet */
+.b33-rad{position:relative;display:flex;gap:8px;margin:0 -16px;padding:8px 16px 2px;overflow-x:auto;overscroll-behavior-x:contain;scroll-padding-inline:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.b33-rad::-webkit-scrollbar{display:none}
+.b33-ri{all:unset;box-sizing:border-box;position:relative;flex:0 0 auto;display:flex;flex-direction:column;gap:6px;width:68px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.b33-rp{display:block;width:68px;height:54px;border-radius:15px;overflow:hidden;background:color-mix(in srgb,var(--c) 9%,var(--surface));box-shadow:inset 0 0 0 2.5px transparent;transition:box-shadow .2s ease}
+.b33-rp svg{display:block;width:100%;height:100%;transition:opacity .2s ease}
+.b33-rb{display:block;height:4px;margin:0 8px;border-radius:2px;background:color-mix(in srgb,var(--ink) 12%,transparent);overflow:hidden}
+.b33-rb > i{display:block;height:100%;width:calc(var(--p,0)*100%);border-radius:2px;background:var(--ink);transition:width .35s ease}
+.b33-ri.cur .b33-rp{box-shadow:inset 0 0 0 2.5px var(--ink)}
+.b33-ri.full .b33-rp svg{opacity:.38}
+.b33-ri.full::after{content:"";position:absolute;right:-4px;top:-5px;width:20px;height:20px;border-radius:50%;background:var(--ink) no-repeat center/12px 12px;box-shadow:0 0 0 2.5px var(--bg)}
+.b33-ri.full::before{content:"";position:absolute;z-index:1;right:0;top:-1px;width:12px;height:12px;background:var(--bg);-webkit-mask:var(--ik-check) center/contain no-repeat;mask:var(--ik-check) center/contain no-repeat}
+.b33-ri:active .b33-rp{transform:scale(.96)}
+.b33-ri:focus-visible .b33-rp{outline:2px solid var(--ink);outline-offset:2px}
+@keyframes b33-hit{0%,30%{box-shadow:0 0 0 3px var(--ink)}100%{box-shadow:0 0 0 3px transparent}}
+.b33-hit{animation:b33-hit 1.2s ease-out}
+/* Levande teckningar: i de stora bilderna ritas pilen mot spetsen och glöden andas */
+@media (prefers-reduced-motion:no-preference){
+  :is(.t32-b .gfig,.fk-fig,details.gcard[open] .gfig,.gt-figw,.at-fig) svg path[marker-end]:not([stroke-dasharray]){stroke-dasharray:120;animation:b33-pil 3.2s cubic-bezier(.45,0,.2,1) infinite}
+  :is(.t32-b .gfig,.fk-fig,details.gcard[open] .gfig,.gt-figw,.at-fig) svg circle[opacity="0.28"]{transform-box:fill-box;transform-origin:center;animation:b33-glod 3.2s ease-in-out infinite}
+}
+@keyframes b33-pil{0%,10%{stroke-dashoffset:120}48%,100%{stroke-dashoffset:0}}
+@keyframes b33-glod{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+@media (prefers-reduced-motion:reduce){.b33-hit{animation:none}.b33-rb > i,.b33-rp,.b33-rp svg{transition:none}}
 </style>
 
 <div class="app">
@@ -9585,7 +9670,7 @@ function sjLoad(){
   // Första gången. Schemat sköts fram en dag lördag 21 nov 2026. Den som redan körde programmet då (appen uppdateras från en äldre
   // version) får med den dagen. En ny installation börjar på grundschemat.
   let prev = null; try { prev = localStorage.getItem("gymschema.build"); } catch(e){}
-  sjL = prev && prev !== "26 nov 22.46" ? ["2026-11-21"] : [];
+  sjL = prev && prev !== "27 nov 13.21" ? ["2026-11-21"] : [];
   sjFresh = sjL.length > 0;
   sjStore();
   return sjL;
@@ -19109,6 +19194,7 @@ atCoachLines = (f => function(){
 /* ===== 87: Nytt i appen ===== */
 // [datum, rubrik, [sakernas namn i Allt …]] – nyast först. Namnen ska finnas i guiden; ett som saknas visas utan knapp.
 const Q17_NYTT = [
+  ["27 nov", "Bild på varje övning och varje block – Passet i bilder överst i passet, och pilarna i teckningarna rör sig", ["Dagens pass", "Atlet idag", "Rutorna högst upp", "Programmet med bild", "Kör passet – ett set i taget"]],
   ["26 nov", "Teknikbladet i passet, bild och video på alla byten, hemmapasset och En sida i taget – och Ångra när uppvärmningen bockats av misstag", ["Upptagen? Byt", "Hemmapass och annat gym", "Programmet med bild", "Uppvärmning, mage och stretch"]],
   ["26 nov", "Video och bild på varje steg – teckningar till uppvärmningen, magen efter passet och stretchen, och riktiga videor i stället för sökningar", ["Programmet med bild", "Videon i appen", "Atlet idag"]],
   ["26 nov", "Hoppen tillbaka – hela Spänst-passet på tisdagar och Hopp varje dag de andra dagarna", ["Atlet idag", "Programmets ändringar"]],
@@ -22542,6 +22628,204 @@ fkSetHTML = (f => function(steps, at){
   return h;
 })(fkSetHTML);
 
+
+/* ---------- Bild på varje övning (27 nov 2026, omgång lr12 – det visuella) ---------- */
+// Filip: "videos på varje och bilder och beskrivningar på allt … även det visuella 100 x bättre". Passets lista var bara text: namn,
+// siffror och länkar. Nu har varje övningskort sin teckning som en liten bild – samma teckning som i Program och Kör passet, utan text
+// och beskuren runt figuren. Ett tryck på bilden öppnar Teknikbladet. Är övningen bytt, hemma eller en sida i taget visas den bilden.
+const B33_TV = {"assisted_dips": "-26.1 1.5 233.8 187", "b_benpress45": "50 37.8 187.5 150", "b_brostrodd": "97 28.5 198.8 159", "b_enarmsrodd": "19 68.4 159.5 127.6", "b_goblet": "22 21.6 209.3 167.5", "b_goblet_hal": "18.8 17.6 211.8 169.5", "b_hack": "59.7 44.5 179.2 143.4", "b_kabel_abd": "17 12 220 176", "b_kabel_add": "8.5 12 220 176", "b_liggande_larcurl": "49 58.7 163.1 130.5", "b_lutcurl": "61.9 52.9 167.6 134.1", "b_omvflyes": "17.5 13 289.5 231.6", "b_pecdeck_omv": "24 -9.6 184 147.2", "b_vadpress_bp": "41.1 42.7 180.4 144.3", "balloon_9090": "68.8 36.9 167.7 134.2", "band_pullapart": "40 -3.5 240 192", "bear_hold": "52.7 59.6 190.3 152.2", "bicycle_crunch": "95.4 54.5 173.8 139", "box_drop_jump": "13 -14.7 272.3 217.8", "cable_lateral_raise": "-14.2 10 222.5 178", "cable_oh_triceps": "-31.9 6 231.1 184.9", "cable_row": "3.8 27.1 200.5 160.4", "cable_triceps_pushdown": "8.6 6 231.9 185.5", "calf_press": "-18.3 7.5 226.6 181.3", "calf_step": "-11.9 -4 240 192", "chin_tucks": "-21 -21.5 267.5 214", "chins_assist": "-26 1.5 233.8 187", "db_bench": "4.1 47 175 140", "db_curl": "1.2 33 198.3 158.6", "db_hammer_curl": "5.4 33 198.3 158.6", "db_lateral_raise": "3.7 25 200.6 160.5", "db_rdl": "-9.5 33 200.5 160.4", "db_shoulder_press": "-14.9 7.5 219.4 175.5", "db_shrug": "1.4 23 203.1 162.5", "dead_bug": "55.5 32.4 211 168.8", "dead_hang": "33.1 -3.5 253.8 203", "doorway_stretch": "88.2 1 250.1 200.1", "face_pull": "6.5 18.5 215.5 172.4", "fascia_hold": "25.2 5.5 257.5 206", "hanging_knee_raise": "41.8 -3.5 256.4 205.1", "hip_abduction_machine": "-17.5 24.5 205 164", "hip_adduction_machine": "-21 24.5 205 164", "hip_shift_9090": "64 38.5 163.7 131", "hip_thrust": "7 85.9 162.4 129.9", "incline_db_press": "-25.7 -9.8 246 196.8", "incline_machine_press": "7.7 16 215 172", "k_backe": "29.5 -6.6 267 213.6", "k_iso": "45.7 10 228.7 183", "k_kalistenik": "62.6 2 232.5 186", "k_kvall": "51.5 18 212.5 170", "k_lop": "39.9 37.2 198.9 159.1", "k_morgon": "45.2 4.8 229.5 183.6", "k_promenad": "82.8 31.8 205.8 164.6", "k_shaolin": "63.1 31 193.8 155", "k_slass": "86.2 29.7 193.5 154.8", "k_utfall": "68.9 55 172.9 138.3", "k_yoga": "74.1 53.5 162.8 130.2", "kb_rdl": "-9.5 33 200.5 160.4", "lat_pulldown": "-15.9 -0.5 236.2 189", "leg_curl": "6.4 29.2 197.2 157.8", "leg_extension": "2.4 29.2 197.2 157.8", "leg_press": "16.1 42.7 180.4 144.3", "machine_chest_press": "-31 18 207.5 166", "machine_lateral_raise": "-9.9 18.5 211.2 169", "machine_shoulder_press": "-36.2 8 220 176", "neg_chin": "-42.4 -6.5 268.8 215", "pike_push": "31.5 71.5 155.3 124.2", "plank": "56.2 38.9 221.4 177.1", "plank_side": "56.2 38.9 221.4 177.1", "prone_ytw": "56.9 20.6 206.1 164.9", "push_up": "25.5 62.6 183.3 146.6", "push_up_decline": "25.5 39.5 225.5 180.4", "r_9090": "32.8 28 172.1 137.7", "r_baklar": "62.8 39 181.4 145.2", "r_benlyft": "38.8 39.4 179.6 143.7", "r_benpendling": "47.7 29.6 212.1 169.7", "r_biceps": "38.5 14.5 217.9 174.3", "r_boken": "93.6 31 187.8 150.2", "r_couch": "47.5 49.8 173.1 138.5", "r_figur4": "90.8 55.8 155.5 124.4", "r_framlar": "58.7 18.5 212.9 170.3", "r_hang_aktiv": "37 -5.5 246 196.8", "r_hang_passiv": "37 -5.5 246 196.8", "r_kickout": "68 60.7 159.8 127.8", "r_kondition": "72.1 20.8 195.9 156.7", "r_lats": "56.9 45.9 230.1 184.1", "r_nacke": "60.1 27.1 199.9 159.9", "r_pinne": "7.1 -7.5 240.4 192.3", "r_rakasitup": "25.3 32.4 219.5 175.6", "r_rulle_langs": "63 52.8 205.7 164.6", "r_rulle_tvars": "80.5 59.5 176.1 140.9", "r_situp": "88.8 51.9 164.4 131.6", "r_tatouch": "71 55.9 140.4 112.3", "r_triceps": "55.3 19.2 210.4 168.3", "r_vad": "62.8 14.5 216.2 173", "r_varmset": "65 29.3 190 152", "r_wall_angels": "42.2 5 235.6 188.5", "seated_calf": "26.9 46.2 176.6 141.3", "seated_dip": "-23.8 28 195 156", "serratus_slide": "69.8 -4 247.5 198", "short_foot_right": "59 21.4 204 163.2", "shoulder_taps": "18.7 42 228.3 182.6", "side_leg": "81.2 64.9 191.3 153", "side_leg_in": "81.2 69.9 195.3 156.2", "side_plank": "49.5 37.1 222 177.6", "sl_rdl": "-10.9 23 208.6 166.9", "slide_curl": "40.4 81.7 166.3 133", "smith_rdl": "-35.7 5 234.6 187.7", "split_squat": "62.9 26.1 201.1 160.9", "standing_calf": "-18.3 7.5 226.6 181.3", "suboccipital_release": "69.5 61.1 167.8 134.2", "suitcase": "77 37.6 198.6 158.9", "tf_jump": "33 -1.9 240.4 192.3", "thoracic_ext": "80.5 59.5 176.1 140.9", "vest_row": "18.5 64.7 168.6 134.9", "wall_angels": "42.2 5 235.6 188.5", "wall_sit": "-27.8 18 212.5 170", "weighted_crunch": "107.2 64 166.5 133.2"};   // teckning → viewBox för den lilla bilden (5:4), tätt runt figuren
+const B33_FIG = {"k_backe": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_backe\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"40.0\" y1=\"178.0\" x2=\"286.0\" y2=\"120.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"160.0,83.6 143.9,113.9 123.7,139.7 131.1,152.5\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"176.0,39.6 191.4,59.3 207.6,43.5\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"160.0,83.6 176.0,39.6\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"176.0,39.6 180.1,29.5\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"180.1\" cy=\"29.5\" r=\"8.6\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"160.0,83.6 188.5,102.8 176.2,133.1 189.0,140.5\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"176.0,39.6 160.6,59.3 180.6,69.9\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"180.6\" cy=\"69.9\" r=\"3.7\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M214.0,112.0 Q233.0,107.0 252.0,102.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-b-k_backe)\"/></svg>", "k_iso": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_iso\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"50.0\" y1=\"176.0\" x2=\"270.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"222.0\" y1=\"22.0\" x2=\"222.0\" y2=\"176.0\" stroke=\"var(--fig-equip-dark)\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"98.0\" y1=\"22.0\" x2=\"98.0\" y2=\"176.0\" stroke=\"var(--fig-equip)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"94.0\" y1=\"43.3\" x2=\"226.0\" y2=\"43.3\" stroke=\"var(--fig-equip-dark)\" stroke-width=\"6\" stroke-linecap=\"round\"/><rect x=\"214.0\" y=\"38.3\" width=\"16.0\" height=\"10.0\" rx=\"3\" fill=\"var(--c)\"/><rect x=\"90.0\" y=\"38.3\" width=\"16.0\" height=\"10.0\" rx=\"3\" fill=\"var(--c)\"/><circle cx=\"158.0\" cy=\"95.0\" r=\"19\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"158.0\" cy=\"95.0\" r=\"13\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"158.0,136.0 140.5,164.0 109.1,166.2 107.6,180.4\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"158.0,91.0 167.8,69.1 160.3,48.6\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"158.0,136.0 158.0,91.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"158.0,91.0 158.0,80.5\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"158.0\" cy=\"80.5\" r=\"8.3\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"158.0,136.0 190.7,140.6 190.7,172.1 204.9,172.1\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"158.0,91.0 166.2,68.4 158.1,48.3\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"158.1\" cy=\"48.3\" r=\"3.6\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/></svg>", "k_kalistenik": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_kalistenik\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"60.0\" y1=\"176.0\" x2=\"260.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"196.0\" y1=\"14.0\" x2=\"196.0\" y2=\"176.0\" stroke=\"var(--fig-equip-dark)\" stroke-width=\"6\" stroke-linecap=\"round\"/><circle cx=\"170.5\" cy=\"122.1\" r=\"20\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"170.5\" cy=\"122.1\" r=\"14\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"172.0,84.9 173.1,53.2 175.2,23.1 188.9,23.1\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"170.5,128.1 164.1,150.2 162.0,171.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"172.0,84.9 170.5,128.1\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"9.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"170.5,128.1 170.5,138.1\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"170.5\" cy=\"138.1\" r=\"7.9\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"172.0,84.9 174.2,53.3 177.4,23.2 191.1,23.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"170.5,128.1 176.8,150.2 179.0,171.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"179.0\" cy=\"171.0\" r=\"3.5\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/></svg>", "k_kvall": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_kvall\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"40.0\" y1=\"176.0\" x2=\"280.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"214.0\" y1=\"30.0\" x2=\"214.0\" y2=\"176.0\" stroke=\"var(--fig-equip-dark)\" stroke-width=\"6\" stroke-linecap=\"round\"/><rect x=\"121.8\" y=\"168.0\" width=\"32.0\" height=\"7.0\" rx=\"3.5\" fill=\"var(--fig-equip)\"/><circle cx=\"168.0\" cy=\"162.0\" r=\"19\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"168.0\" cy=\"162.0\" r=\"13\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"198.0,164.0 198.0,128.8 198.0,95.2 182.8,95.2\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"150.0,164.0 124.6,167.6 102.3,161.2\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"198.0,164.0 150.0,164.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"150.0,164.0 138.8,163.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"138.8\" cy=\"163.2\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"198.0,164.0 199.2,128.8 199.2,95.2 184.0,95.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"150.0,164.0 125.0,169.3 103.2,161.4\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"103.2\" cy=\"161.4\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/></svg>", "k_lop": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_lop\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"40.0\" y1=\"176.0\" x2=\"280.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"164.0,112.8 147.5,143.9 126.8,170.4 134.4,183.5\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"174.0,65.8 189.7,86.0 206.4,69.9\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"164.0,112.8 174.0,65.8\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"174.0,65.8 176.7,55.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"176.7\" cy=\"55.0\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"164.0,112.8 193.2,132.5 180.6,163.6 193.8,171.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"174.0,65.8 158.2,86.0 178.7,96.9\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"178.7\" cy=\"96.9\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><line x1=\"70.0\" y1=\"92.0\" x2=\"92.0\" y2=\"92.0\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"86.0\" y1=\"108.0\" x2=\"104.0\" y2=\"108.0\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"102.0\" y1=\"124.0\" x2=\"116.0\" y2=\"124.0\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>", "k_morgon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_morgon\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"60.0\" y1=\"176.0\" x2=\"260.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"160.0\" cy=\"76.1\" r=\"20\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"160.0\" cy=\"76.1\" r=\"14\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"160.0,103.3 160.0,135.0 160.0,165.2 168.4,176.0\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"160.0,60.1 166.4,37.9 169.3,17.3\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"160.0,103.3 160.0,60.1\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"9.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"160.0,60.1 160.0,50.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"160.0\" cy=\"50.0\" r=\"7.9\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"160.0,103.3 160.0,135.0 160.0,165.2 168.4,176.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"160.0,60.1 153.6,37.9 150.7,17.3\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"6.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"150.7\" cy=\"17.3\" r=\"3.5\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M206.0,104.0 Q206.0,78.0 206.0,52.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-b-k_morgon)\"/><path d=\"M114.0,104.0 Q114.0,78.0 114.0,52.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-b-k_morgon)\"/></svg>", "k_promenad": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_promenad\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"40.0\" y1=\"176.0\" x2=\"280.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"160.0,108.8 150.3,142.6 137.7,173.8 149.4,183.6\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"161.7,60.8 168.7,85.4 178.9,106.3\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"160.0,108.8 161.7,60.8\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"161.7,60.8 162.1,49.6\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"162.1\" cy=\"49.6\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"160.0,108.8 170.9,142.3 167.4,175.7 182.3,178.3\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"161.7,60.8 155.5,85.7 157.9,108.7\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"157.9\" cy=\"108.7\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M204.0,150.0 Q220.0,150.0 236.0,150.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-b-k_promenad)\"/></svg>", "k_shaolin": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_shaolin\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"60.0\" y1=\"176.0\" x2=\"260.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"130.0\" cy=\"136.0\" r=\"18\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"130.0\" cy=\"136.0\" r=\"12\" fill=\"var(--c)\" opacity=\"0.28\"/><circle cx=\"190.0\" cy=\"136.0\" r=\"18\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"190.0\" cy=\"136.0\" r=\"12\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"151.0,128.0 116.0,136.0 114.0,172.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"114.0,172.0 100.0,173.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"138.0,76.0 126.0,100.0 141.0,116.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"141.0\" cy=\"116.0\" r=\"5.4\" fill=\"var(--fig-ink)\"/><polyline points=\"169.0,128.0 204.0,136.0 206.0,172.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"206.0,172.0 220.0,173.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"182.0,76.0 194.0,100.0 179.0,116.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"8.0\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"179.0\" cy=\"116.0\" r=\"5.4\" fill=\"var(--fig-ink)\"/><rect x=\"145.0\" y=\"78.0\" width=\"30.0\" height=\"54.0\" rx=\"10\" fill=\"var(--fig-ink)\"/><rect x=\"136.0\" y=\"68.0\" width=\"48.0\" height=\"16.0\" rx=\"8\" fill=\"var(--fig-ink)\"/><circle cx=\"160.0\" cy=\"52.0\" r=\"12.0\" fill=\"var(--fig-ink)\"/></svg>", "k_slass": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_slass\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"50.0\" y1=\"176.0\" x2=\"270.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><polyline points=\"146.0,106.0 132.8,138.6 127.0,171.7 142.2,171.7\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"152.7,58.5 164.7,81.1 169.5,58.4\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"146.0,106.0 152.7,58.5\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"152.7,58.5 155.0,47.5\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"155.0\" cy=\"47.5\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"146.0,106.0 161.4,137.6 153.3,170.2 168.5,170.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"152.7,58.5 178.1,55.8 201.3,55.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"204.3\" cy=\"55.0\" r=\"7.0\" fill=\"var(--c)\"/><circle cx=\"170.5\" cy=\"56.4\" r=\"6.2\" fill=\"var(--c)\" opacity=\"0.75\"/><path d=\"M217.3,55.0 Q229.3,55.0 241.3,55.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-b-k_slass)\"/></svg>", "k_utfall": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_utfall\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"50.0\" y1=\"176.0\" x2=\"270.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"173.0\" cy=\"137.7\" r=\"20\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"173.0\" cy=\"137.7\" r=\"14\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"156.0,132.0 139.5,163.1 106.0,165.4 104.4,180.5\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"156.0,84.0 148.1,108.3 167.3,121.3\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"156.0,132.0 156.0,84.0\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"156.0,84.0 156.0,72.8\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"156.0\" cy=\"72.8\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"156.0,132.0 191.0,135.7 191.0,169.3 206.2,169.3\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"156.0,84.0 146.4,107.7 166.5,119.3\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"166.5\" cy=\"119.3\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M134.0,92.0 Q134.0,108.0 134.0,124.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-b-k_utfall)\"/></svg>", "k_yoga": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"Archivo, Inter, sans-serif\"><defs><marker id=\"ah2-b-k_yoga\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"4.5\" markerHeight=\"4.5\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"var(--c)\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"320\" height=\"200\" rx=\"14\" fill=\"var(--fig-bg)\"/><line x1=\"40.0\" y1=\"176.0\" x2=\"280.0\" y2=\"176.0\" stroke=\"var(--fig-floor)\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"174.0\" cy=\"112.0\" r=\"20\" fill=\"var(--c)\" opacity=\"0.10\"/><circle cx=\"174.0\" cy=\"112.0\" r=\"14\" fill=\"var(--c)\" opacity=\"0.28\"/><polyline points=\"178.0,108.0 193.4,139.6 207.1,170.3 191.9,170.3\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"141.2,138.9 122.2,156.0 104.4,170.9\" fill=\"none\" stroke=\"var(--fig-far)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"178.0,108.0 141.2,138.9\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"10.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"141.2,138.9 131.9,145.1\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"131.9\" cy=\"145.1\" r=\"8.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/>\n<polyline points=\"178.0,108.0 192.3,140.2 206.0,170.9 190.8,170.9\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<polyline points=\"141.2,138.9 121.6,155.3 103.8,170.2\" fill=\"none\" stroke=\"var(--fig-ink)\" stroke-width=\"7.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<circle cx=\"103.8\" cy=\"170.2\" r=\"3.8\" fill=\"var(--fig-ink)\" opacity=\"1.0\"/><path d=\"M184.0,94.0 Q184.0,79.0 184.0,64.0\" fill=\"none\" stroke=\"var(--c)\" stroke-width=\"3\" stroke-linecap=\"round\" marker-end=\"url(#ah2-b-k_yoga)\"/></svg>"}; // blockens egna teckningar (fig_block.py): Morgonsträck, Kvällsvila, Yoga, Kalistenik, Shaolin, Slåss, Isometriskt, Starka ben, löpning, backe, promenad
+const b33Cache = {};
+function b33Thumb(key, svg){
+  if (!svg) return "";
+  const s = b33Cache[key] || (b33Cache[key] = String(svg).replace(/<text[\s\S]*?<\/text>/g, "").replace(/<rect x="0" y="0" width="320" height="200"[^>]*\/>/, "")
+    .replace(/viewBox="[^"]*"/, 'viewBox="' + (B33_TV[key] || "34 4 252 176") + '"').replace(/>\s+</g, "><"));   // inga radbrytningar: bilden ska inte lägga tomrum i kortets text
+  return t32Uniq(s);
+}
+// de små bilderna från m31Thumb (rutinernas steg) – samma sak: egna id:n och inget tomrum
+const b33Mini = f => f ? t32Uniq(m31Thumb(f)).replace(/>\s+</g, "><") : "";
+// övningens bild i dagens pass: bytet, hemmaövningen eller varianten om den är vald – annars programmets
+function b33ExThumb(ex){
+  if (!ex) return "";
+  if (ex.alt){
+    const h = HOME[ex.k] && HOME[ex.k].n === ex.alt ? HOME[ex.k] : null, m = T32_ALT[ex.alt];
+    if (h && hmOn(ex.k) && HOME_FIG[h.fig]) return b33Thumb(h.fig, HOME_FIG[h.fig]);
+    if (m && m.f && M31_FIG[m.f]) return b33Thumb(m.f, M31_FIG[m.f]);
+    return h && HOME_FIG[h.fig] ? b33Thumb(h.fig, HOME_FIG[h.fig]) : "";
+  }
+  const g = fkGuide(ex.k); return g && g.svg ? b33Thumb(g.key, g.svg) : "";
+}
+exHTML = (f => function(ex){
+  let h = f.apply(this, arguments), th = "";
+  try {
+    th = b33ExThumb(ex);
+    if (th){
+      const btn = '<button type="button" class="b33-th" data-t32="open" data-k="' + ex.k + '" style="--c:' + fkSecColor(fkGuide(ex.k)) + '" aria-label="Teknik, bild och video för ' + esc(ex.alt || ex.n) + '">' + th + '</button>';
+      h = h.replace(/<header class="ex-h([^"]*)">/, (m, c) => '<header class="ex-h' + c + ' b33-h">' + btn);
+    }
+  } catch(e){}
+  try { h = b33Acts(h); } catch(e){}
+  try { h = b33Box(h, !!th); } catch(e){}
+  return h;
+})(exHTML);
+// Länkarna under förslaget – Teknik, Upptagen? och Gör det ont? – stod på två rader som ren text. Nu är de tre knappar på en rad.
+// Raden om ömhet (Lite öm i …) står kvar för sig under knapparna.
+function b33Acts(h){
+  const lk = /<div class="ex-links">([\s\S]*?)<\/div>/, k5 = /<div class="k5-exrow">([\s\S]*?)(<button type="button" class="exlink k5-ontbtn"[\s\S]*?<\/button>)<\/div>/;
+  if (!lk.test(h)) return h;
+  const m = h.match(k5);
+  if (m) h = h.replace(m[0], () => m[1] ? '<div class="k5-exrow">' + m[1] + '</div>' : '');
+  return h.replace(lk, (x, a) => '<div class="ex-links b33-acts">' + (a + (m ? m[2] : ""))
+    .replace(/>Teknik, bild och video →<\/a>/, ' aria-label="Teknik, bild och video">Teknik &amp; video</a>').replace(/ →(?=<\/(?:a|button)>)/g, "") + '</div>');
+}
+// Bytt i dag, Hemma i dag och En sida i taget: rutans knappar – Bild och video, Upptagen? Byt och Gör det ont? – står på en rad som
+// riktiga knappar, och knappen tillbaka under dem. Visa bilden (hemma) behövs inte längre: bilden står överst på kortet, och i stort
+// format i bladet bakom Bild och video.
+function b33Box(h, hasThumb){
+  const back = '<button type="button" class="btn sm ghost" data-alt-off="', k5 = /<div class="k5-exrow">([\s\S]*?)(<button type="button" class="exlink k5-ontbtn"[\s\S]*?<\/button>)<\/div>/;
+  if (h.indexOf('<div class="alt-on') < 0 || h.indexOf(back) < 0) return h;
+  if (hasThumb) h = h.replace(/<details class="hm-det">[\s\S]*?<\/details>/, "");
+  const m = h.match(k5);
+  if (m){ h = h.replace(m[0], () => m[1] ? '<div class="k5-exrow">' + m[1] + '</div>' : ''); h = h.replace(back, () => m[2].replace(" →</button>", "</button>") + back); }
+  return h.replace(/<div class="alt-on([^"]*)">/, '<div class="alt-on$1 b33-bx">').replace(/(class="exlink t32-open"[^>]*>Bild och video) →<\/button>/, "$1</button>").replace(/(class="exlink bz-link"[^>]*>Upptagen\? Byt) →<\/button>/, "$1</button>");
+}
+// Atlet idag: varje block har en bild. Blockets egen teckning där den finns (fig_block.py), annars en övning som blocket känns igen på –
+// och för gympasset dagens första övning. Numret och bocken sitter som en liten bricka i bildens hörn.
+const B33_COV = {morgon: "k_morgon", kvall: "k_kvall", yoga: "k_yoga", kalistenik: "k_kalistenik", shaolin: "k_shaolin", slass: "k_slass", iso: "k_iso", starka_ben: "k_utfall",
+  tis_jogg: "k_lop", tis_hem: "k_lop", lopning: "k_lop", vo2: "k_lop", backe: "k_backe", promenad: "k_promenad",
+  hopp_dag: "tf_jump", spanst_a: "tf_jump", spanst_b: "tf_jump", hallning: "wall_angels", sta_rak: "r_wall_angels", rorlighet: "r_couch",
+  mage30: "r_situp", mage: "r_situp", mage_ben: "r_situp", mage_hem: "r_situp", viktvast: "plank_side", fotter: "sl_rdl", surf: "push_up", uppv_ben: "r_kondition"};
+const b33FigSrc = key => B33_FIG[key] || M31_FIG[key] || (GUIDE.find(x => x.key === key) || {}).svg || HOME_FIG[key] || "";
+function b33BlockKey(b, day){
+  if (AT_GYMB.indexOf(b.id) >= 0){   // gympasset: första övningen i den dagens pass
+    let t = draft && day && draft.date === day.date ? draft.type : null;
+    if (!t && day){ try { t = sjGym(parseIso(day.date)); } catch(e){} }
+    if (!t || !PROGRAM[t]) t = /^over/.test(b.id) ? "oA" : "uA";
+    const ex = PROGRAM[t] && PROGRAM[t].ex[0], g = ex && fkGuide(ex.k);
+    return g ? g.key : "";
+  }
+  return B33_COV[b.id] || "";
+}
+function b33BlockCover(b, day){ const key = b ? b33BlockKey(b, day) : "", svg = key ? b33FigSrc(key) : ""; return svg ? b33Thumb(key, svg) : ""; }
+atBlockHTML = (f => function(b, i, day){
+  let h = f.apply(this, arguments);
+  try { const th = b33BlockCover(b, day); if (th) h = h.replace(/<span class="at-num num">([\s\S]*?)<\/span>/, (m, n) => '<span class="b33-cov">' + th + '<span class="at-num num">' + n + '</span></span>'); } catch(e){}
+  return h;
+})(atBlockHTML);
+// Idag: rutan Näst på tur visar övningens bild (tryck = Teknikbladet)
+let b33Nx = null;
+rgPass = (f => function(){ b33Nx = null; return f.apply(this, arguments); })(rgPass);
+btNextSet = (f => function(){
+  const r = f.apply(this, arguments);
+  try { b33Nx = null; if (r && draft){ let order; try { order = passOrder(); } catch(e){ order = PROGRAM[draft.type].ex; } b33Nx = order.find(ex => (draft.sets[ex.k] || []).some(x => !x.done)) || null; } } catch(e){}
+  return r;
+})(btNextSet);
+btTile = (f => function(o){
+  try {
+    if (o && o.l === "Näst på tur" && !o.extra && b33Nx){
+      const th = b33ExThumb(b33Nx);
+      if (th) o = Object.assign({}, o, {cls: (o.cls ? o.cls + " " : "") + "b33-nx", extra: '<button type="button" class="b33-nt" data-t32="open" data-k="' + b33Nx.k + '" style="--c:' + fkSecColor(fkGuide(b33Nx.k)) +
+        '" aria-label="Teknik, bild och video för ' + esc(b33Nx.alt || b33Nx.n) + '">' + th + '</button>'});
+    } else if (o && o.l === "Näst på tur" && !o.extra && !b33Nx && !(typeof START !== "undefined" && today() < START)){   // vilodag: nästa block i Atlet
+      const day = atDay(today()), nb = day ? btAtNext(day) : null;
+      if (nb && esc(nb.name) === o.v){ const th = b33BlockCover(nb, day);
+        if (th) o = Object.assign({}, o, {cls: (o.cls ? o.cls + " " : "") + "b33-nx", extra: '<span class="b33-nt" style="--c:var(--at-' + nb.cat + ')" aria-hidden="true">' + th + '</span>'}); }
+    }
+  } catch(e){}
+  return f.call(this, o);
+})(btTile);
+// Kör passet, vilan: rutan Nästa har en liten bild även när övningen är bytt eller en sida i taget
+fkRestHTML = (f => function(steps, at){
+  let h = f.apply(this, arguments);
+  try {
+    const s = steps[at], ex = s ? exByK(s.k) : null;
+    if (ex && ex.alt && h.indexOf('class="fk-mini"') < 0){ const th = b33ExThumb(ex);
+      if (th) h = h.replace('<div class="fk-nx">', '<div class="fk-nx"><div class="fk-mini b33-mini" style="--c:' + fkSecColor(fkGuide(ex.k)) + '">' + th + '</div>'); }
+  } catch(e){}
+  return h;
+})(fkRestHTML);
+// Kör passet, sidan före uppvärmningen: en liten bild framför varje del i listan
+fkWarmHTML = (f => function(){
+  let h = f.apply(this, arguments);
+  try {
+    const r = ROUTINES[RFOR[draft.type].w]; let i = 0;
+    h = h.replace('<ol class="fk-wl">', '<ol class="fk-wl b33-wl" style="--c:' + RCOL.w + '">').replace(/<li><b>/g, () => { const st = r.steps[i++], f = st ? m31Fig(st) : "";
+      return '<li><span class="b33-wt" aria-hidden="true">' + b33Mini(f) + '</span><b>'; });
+  } catch(e){}
+  return h;
+})(fkWarmHTML);
+/* ---------- Passet i bilder ---------- */
+// En rad överst i passet med en bild per del, i samma ordning som korten under: uppvärmningen, varje övning, magen och stretchen. Det som
+// är klart får en bock, det som står på tur en ram, och strecket under bilden fylls set för set. Ett tryck hoppar dit i listan. Bilderna
+// är kortens egna, så ett byte, hemmapasset och En sida i taget syns här också.
+function b33RadItems(){
+  const v = $("v-pass"); if (!v || !draft || justSaved || !PROGRAM[draft.type]) return [];
+  return Array.from(v.querySelectorAll("article.ex[data-k], section.rcard")).map(el => {
+    if (el.matches("section.rcard")){
+      const b = el.querySelector("[data-rdone]"), kind = b ? b.dataset.rdone : "", key = kind && RFOR[draft.type] ? RFOR[draft.type][kind] : "", r = key ? ROUTINES[key] : null; if (!r) return null;
+      const done = !!draft[RFLAG[kind]];
+      return {t: "r", id: kind, n: r.name, c: RCOL[kind] || "#2E6BFF", p: done ? 1 : 0, sub: done ? "klar" : "ca " + r.min + " min", th: () => { const st = (r.steps || []).find(x => m31Fig(x)); return st ? b33Mini(m31Fig(st)) : ""; }};
+    }
+    const ex = exByK(el.dataset.k); if (!ex) return null;
+    const ss = draft.sets[ex.k] || [], d = ss.filter(x => x.done).length;
+    return {t: "e", id: ex.k, n: ex.alt || ex.n, c: fkSecColor(fkGuide(ex.k)), p: ss.length ? d / ss.length : 0, sub: d + " av " + ss.length + " set", th: () => b33ExThumb(ex)};
+  }).filter(Boolean);
+}
+const b33RadLab = (x, cur) => x.n + " – " + x.sub + (cur ? ", på tur" : "");
+function b33RadHTML(items, cur){
+  return '<nav class="b33-rad" id="b33Rad" aria-label="Passet i bilder">' + items.map((x, i) =>
+    '<button type="button" class="b33-ri' + (x.p >= 1 ? ' full' : '') + (i === cur ? ' cur' : '') + '" data-b33go="' + x.t + ':' + esc(x.id) + '" style="--c:' + x.c + ';--p:' + x.p.toFixed(3) + '" aria-label="' + esc(b33RadLab(x, i === cur)) + '"' + (i === cur ? ' aria-current="step"' : '') + '>' +
+    '<span class="b33-rp">' + x.th() + '</span><span class="b33-rb"><i></i></span></button>').join("") + '</nav>';
+}
+function b33RadSync(){
+  const v = $("v-pass"); if (!v) return;
+  const head = v.querySelector(".sess-head"), items = head && head.parentElement === v ? b33RadItems() : []; let el = $("b33Rad");
+  if (items.length < 2){ if (el) el.remove(); return; }
+  const st = items.map(x => x.t + ":" + x.id + ":" + x.n).join("|"), cur = items.findIndex(x => x.p < 1);
+  if (!el || !el.isConnected || el.previousElementSibling !== head || el.dataset.st !== st){
+    if (el) el.remove();
+    head.insertAdjacentHTML("afterend", b33RadHTML(items, cur)); el = $("b33Rad"); el.dataset.st = st;
+    const c = el.querySelector(".cur"); if (c) el.scrollLeft = Math.max(0, c.offsetLeft - 92);
+  } else Array.from(el.children).forEach((b, i) => { const x = items[i]; b.classList.toggle("full", x.p >= 1); b.classList.toggle("cur", i === cur); b.style.setProperty("--p", x.p.toFixed(3));
+    b.setAttribute("aria-label", b33RadLab(x, i === cur)); if (i === cur) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+  if (head.dataset.nyg != null) el.dataset.nyg = head.dataset.nyg;
+  el.classList.toggle("ny-off", head.classList.contains("ny-off"));
+}
+renderPass = rgAfter(renderPass, () => { try { b33RadSync(); } catch(e){} });
+updateSummary = (f => function(){ const r = f.apply(this, arguments); try { b33RadSync(); } catch(e){} return r; })(updateSummary);
+document.addEventListener("click", e => {
+  const t = e.target && e.target.closest ? e.target : null; if (!t) return;
+  const b = t.closest("[data-b33go]");
+  if (b){
+    const at = b.dataset.b33go.indexOf(":"), kind = b.dataset.b33go.slice(0, at), id = b.dataset.b33go.slice(at + 1), v = $("v-pass"); let tg = null;
+    if (kind === "r"){ const x = v.querySelector('section.rcard [data-rdone="' + id + '"]'); tg = x ? x.closest("section.rcard") : null; }
+    else tg = Array.from(v.querySelectorAll("article.ex[data-k]")).find(c => c.dataset.k === id) || null;
+    if (tg){
+      tg.scrollIntoView({behavior: window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"});
+      tg.classList.remove("b33-hit"); void tg.offsetWidth; tg.classList.add("b33-hit"); setTimeout(() => tg.classList.remove("b33-hit"), 1400);
+    }
+    return;
+  }
+  if (t.closest("#v-pass")) setTimeout(() => { try { b33RadSync(); } catch(err){} }, 0);
+});
+// Program: en liten bild i varje rad i listan (stängt kort, Bildläge av – med Bildläge på visas hela teckningen som förut)
+function b33ProgPaint(){
+  const v = $("v-program"); if (!v) return;
+  v.querySelectorAll('details.gcard[id^="g-"] > summary').forEach(sm => {
+    if (sm.querySelector(".b33-pt")) return;
+    const d = sm.parentElement, id = d.id.slice(2); let th = "";
+    if (/^r-/.test(id)){ const r = ROUTINES[id.slice(2)], st = r && r.steps.find(x => x.key && /^m31-/.test(x.key) && M31_FIG[x.key.slice(4)]); if (st) th = b33Thumb(st.key.slice(4), M31_FIG[st.key.slice(4)]); }
+    else { const g = GUIDE.find(x => x.key === id); if (g && g.svg) th = b33Thumb(g.key, g.svg); }
+    if (!th) return;
+    const sp = document.createElement("span"); sp.className = "b33-pt"; sp.setAttribute("aria-hidden", "true"); sp.innerHTML = th;
+    const ch = sm.querySelector(".gchev"); if (ch) sm.insertBefore(sp, ch); else sm.appendChild(sp);
+    d.classList.add("b33-has");
+  });
+}
+renderProgram = rgAfter(renderProgram, () => { try { b33ProgPaint(); } catch(e){} });
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {b33Tv: () => B33_TV, b33Next: () => b33Nx ? b33Nx.k : null, b33Cov: () => B33_COV, b33Figs: () => Object.keys(B33_FIG), b33Blocks: () => Object.keys(AT.block), b33BlockKey: (id, d) => b33BlockKey(AT.block[id] ? Object.assign({id}, AT.block[id]) : {id}, d ? {date: d} : null), b33Has: key => !!b33FigSrc(key),
+  b33Rad: () => b33RadItems().map(x => ({t: x.t, id: x.id, n: x.n, p: x.p, sub: x.sub}))});
+
 /* ---------- Versioner (natten 24–25 nov 2026, omgång lr7) ---------- */
 // Filip: "lägg till en stor knapp i en egen flik där jag kan återställa till tidigare versioner av appen" – hela appen som den var
 // det datumet, och datan följer med. De senaste byggena ligger i v/<id>.html (samma fil som index.html i den committen) och listan
@@ -22651,7 +22935,7 @@ if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window._
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611262246, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611271321, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -22683,7 +22967,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "26 nov 22.46", BUILD_NOTE = "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag";
+const BUILD = "27 nov 13.21", BUILD_NOTE = "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;

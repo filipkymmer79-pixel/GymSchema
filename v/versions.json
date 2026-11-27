@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "d3ad3fc",
+   "ts": 202611262246,
+   "build": "26 nov 22.46",
+   "date": "26 nov 23.09",
+   "title": "Teknikbladet, bild och video på alla byten, Ångra för uppvärmningen"
+  },
+  {
    "id": "18fa9ef",
    "ts": 202611261641,
    "build": "26 nov 16.41",
@@ -76,13 +83,6 @@
    "build": "23 nov 17.12",
    "date": "23 nov 17.26",
    "title": "Mina regler till nyår, fliken Mat med shaken, och en mindre shake"
-  },
-  {
-   "id": "bbc07bf",
-   "ts": 202611231520,
-   "build": "23 nov 15.20",
-   "date": "23 nov 15.33",
-   "title": "Sug-knappen, onyttigt i skannern, ord under vilan, tomma gymmet och du om ett år"
   }
  ]
 }
