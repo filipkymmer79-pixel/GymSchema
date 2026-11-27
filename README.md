@@ -544,11 +544,14 @@ Allt sparas bara på telefonen.
 
 ## Jobbmotorn
 
-Jobbmotorn som app: https://filipkymmer79-pixel.github.io/GymSchema/jobb/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*.
+Jobbmotorn som app: https://filipkymmer79-pixel.github.io/GymSchema/jobb/ – öppna i Safari och välj *Dela → Lägg till på hemskärmen*. Har du den gamla ikonen, ta bort den först så får du den nya (ett vitt pappersflygplan på solnedgångsorange).
 
-Appen öppnar Jobbmotorn i Claude. Där letar den upp dagens jobb på Indeed, skriver ett personligt brev till varje med dina egna ord och sparar jobben du har skickat, så att listan är klar för aktivitetsrapporten. Själva motorn körs i Claude, eftersom den använder ditt Claude-konto och din Indeed-koppling.
+Själva motorn körs i Claude, eftersom den använder ditt Claude-konto, din Gmail och din Indeed-koppling. Den här sidan är dörren dit och sparar ingenting om dig:
 
-Appen visar också vad som gäller för aktivitetsrapporten just nu. Mellan den 1 och 14 i månaden lyser rutan gult och visar hur många dagar som är kvar att skicka in förra månadens rapport.
+- **Nästa morgonkörning** visar klockslaget 07:17 och hur länge det är kvar. Varje morgon, även lördag och söndag, letar Claude nya jobb och skickar ansökningarna som står på tur från din Gmail, med ditt eget CV som PDF. Knappen *Öppna Jobbmotorn* öppnar appen i Claude, där du ser kön och kan stoppa en ansökan innan den går.
+- **Jobb som söks på hemsidan** har knappen *Låt Claude söka dem åt mig*. Den öppnar en Claude-chatt som söker upp till 10 sådana jobb i Chrome på datorn. Datorn ska vara på med Chrome öppet och Claude-tillägget inloggat; inloggning, BankID och robotkontroller gör du själv.
+- **Rapporterna** följer datumet. Den 1–7 visas Försäkringskassan (ansök för förra månaden senast den 7:e så kommer pengarna den 26:e) och aktivitetsrapporten (senast den 14:e). Efter den 14:e visas när nästa rapporter är dags. *Be Claude rapportera* öppnar en Claude-chatt som fyller i aktivitetsrapporten åt dig i Chrome.
+- Utseendet följer klockan (gryning, dag, kväll) och telefonens ljusa eller mörka läge.
 
 ## Idag
 

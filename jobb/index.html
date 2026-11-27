@@ -1,126 +1,374 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv" data-theme="light" data-phase="day">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Jobbmotorn</title>
-<meta name="description" content="Öppnar Jobbmotorn i Claude och påminner om aktivitetsrapporten.">
+<meta name="description" content="Öppnar Jobbmotorn i Claude, visar nästa morgonkörning och påminner om rapporterna till Försäkringskassan och Arbetsförmedlingen.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Jobbmotorn">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0d1020" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#e8f0ff">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Nunito:wght@800;900&amp;display=swap">
 <style>
+/* The phone door to Jobbmotorn in Claude. Same sky, glass and sunrise coral as the app itself:
+   the morning run is the big thing on the page, the monthly reports come next, then how it works. */
 :root {
-  /* Same look as Jobbmotorn in Claude: one phone column, a big blue button, gold for what is urgent. */
-  --paper: #f3f5f9;
-  --card: #ffffff;
-  --ink: #121a30;
-  --muted: #566078;
-  --line: #dde2ec;
-  --accent: #1d4ed8;
-  --accent-ink: #ffffff;
-  --gold: #f4c20d;
-  --gold-soft: #fff6d4;
-  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
-  --body: "Atkinson Hyperlegible", system-ui, -apple-system, sans-serif;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --round: ui-rounded, "SF Pro Rounded", "Nunito", -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  --accent: #ff5a3c; --accent2: #ff9442; --accent-soft: rgba(255, 90, 60, 0.13); --accent-line: rgba(255, 90, 60, 0.45);
+  --warn-soft: rgba(245, 159, 0, 0.16); --warn: #c2410c;
+  --ink: #0c1322; --ink2: rgba(12, 19, 34, 0.64); --ink3: rgba(12, 19, 34, 0.42);
+  --hair: rgba(12, 19, 34, 0.07); --hair2: rgba(12, 19, 34, 0.13);
+  --glass: rgba(255, 255, 255, 0.6); --glass2: rgba(255, 255, 255, 0.84);
+  --edge: rgba(255, 255, 255, 0.75);
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset, 0 12px 32px -14px rgba(20, 30, 60, 0.28);
+  --blur: saturate(170%) blur(22px);
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #0d1020; --card: #161a2e; --ink: #eef1f8; --muted: #a3abc2; --line: #2a3150;
-    --accent: #8099ff; --accent-ink: #0d1020; --gold: #f6cd3a; --gold-soft: #332b0c;
-    color-scheme: dark;
-  }
+:root[data-theme="dark"] {
+  --ink: #f2f4fb; --ink2: rgba(242, 244, 251, 0.7); --ink3: rgba(242, 244, 251, 0.45);
+  --hair: rgba(255, 255, 255, 0.08); --hair2: rgba(255, 255, 255, 0.15);
+  --glass: rgba(24, 28, 52, 0.55); --glass2: rgba(30, 35, 64, 0.86);
+  --edge: rgba(255, 255, 255, 0.1);
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+  --accent-soft: rgba(255, 110, 80, 0.18); --warn: #ffb057;
+  color-scheme: dark;
 }
-* { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; }
-body {
-  background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.45;
-  -webkit-text-size-adjust: 100%;
-  padding: calc(env(safe-area-inset-top) + 20px) calc(env(safe-area-inset-right) + 16px) calc(env(safe-area-inset-bottom) + 24px) calc(env(safe-area-inset-left) + 16px);
-}
-main { max-width: 560px; margin: 0 auto; display: grid; gap: 16px; }
-header { display: flex; align-items: center; gap: 14px; }
-header img { width: 56px; height: 56px; border-radius: 14px; flex: none; }
-h1 { font-family: var(--display); font-weight: 800; font-size: 30px; letter-spacing: -0.02em; margin: 0; line-height: 1.05; }
-h1 span { color: var(--accent); }
-.tag { margin: 2px 0 0; color: var(--muted); font-size: 15px; }
-.open {
-  display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 64px; border-radius: 16px;
-  background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 20px; text-decoration: none;
-}
-.open:active { transform: scale(.99); }
-a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
-.hint { margin: -6px 0 0; color: var(--muted); font-size: 14.5px; text-align: center; }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 8px; }
-.card.urgent { background: var(--gold-soft); border-color: var(--gold); }
-.card h2 { font-family: var(--display); font-weight: 700; font-size: 19px; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
-.card p { margin: 0; }
-.link { color: var(--accent); font-weight: 700; text-decoration: none; }
-.badge { justify-self: start; font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--gold); color: #2e2400; }
-ol { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+:root[data-phase="dawn"] { --sky0: #fde9e2; --sky1: #ffc3a8; --sky2: #f8b6d2; --sky3: #d6cbff; }
+:root[data-phase="day"] { --sky0: #e8f0ff; --sky1: #b9dcff; --sky2: #c6f0ea; --sky3: #e4d8ff; }
+:root[data-phase="eve"] { --sky0: #eee6ff; --sky1: #ffc6b4; --sky2: #d4c2ff; --sky3: #ffd6e5; }
+:root[data-theme="dark"] { --sky0: #070b1d; --sky1: #1b2a6e; --sky2: #3a1c62; --sky3: #4f2348; }
+:root[data-theme="dark"][data-phase="dawn"] { --sky3: #7a3526; }
+
+* { box-sizing: border-box; min-width: 0; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; }
+body { font: 400 16px/1.45 var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; overflow-x: clip; background: var(--sky0); }
 [hidden] { display: none !important; }
-@media (prefers-reduced-motion: reduce) { .open:active { transform: none; } }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 2px; border-radius: 12px; }
+.ic { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+.sky { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--sky0); transition: background 1.5s; }
+.sky i { position: absolute; width: 90vmax; height: 90vmax; border-radius: 50%; will-change: transform; }
+.sky .b1 { background: radial-gradient(closest-side, var(--sky1), transparent 72%); top: -38vmax; left: -30vmax; animation: d1 36s ease-in-out infinite alternate; }
+.sky .b2 { background: radial-gradient(closest-side, var(--sky2), transparent 72%); top: -12vmax; right: -44vmax; animation: d2 44s ease-in-out infinite alternate; }
+.sky .b3 { background: radial-gradient(closest-side, var(--sky3), transparent 72%); bottom: -48vmax; left: -18vmax; animation: d3 50s ease-in-out infinite alternate; }
+.sky .stars { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s;
+  background-image: radial-gradient(1.2px 1.2px at 12% 18%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 28% 42%, #fff 50%, transparent 52%), radial-gradient(1.4px 1.4px at 46% 12%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 63% 30%, #fff 50%, transparent 52%), radial-gradient(1.2px 1.2px at 81% 16%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 90% 48%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 7% 62%, #fff 50%, transparent 52%), radial-gradient(1.3px 1.3px at 36% 74%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 72% 66%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 54% 88%, #fff 50%, transparent 52%); }
+:root[data-theme="dark"] .sky .stars { opacity: 0.55; }
+@keyframes d1 { to { transform: translate(14vmax, 10vmax) scale(1.12); } }
+@keyframes d2 { to { transform: translate(-16vmax, 12vmax) scale(1.08); } }
+@keyframes d3 { to { transform: translate(18vmax, -12vmax) scale(1.15); } }
+
+main { max-width: 560px; margin: 0 auto; display: grid; gap: 18px; padding: calc(env(safe-area-inset-top) + 22px) max(16px, env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 30px) max(16px, env(safe-area-inset-left)); }
+.head { display: flex; align-items: center; gap: 14px; padding: 0 2px; }
+.head img { width: 62px; height: 62px; border-radius: 15px; flex: none; box-shadow: 0 10px 22px -10px rgba(227, 53, 79, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.35) inset; }
+.datel { font: 650 15px/1.2 var(--font); color: var(--ink2); margin: 0 0 3px; }
+h1 { font: 800 34px/1.04 var(--font); letter-spacing: -0.028em; margin: 0; }
+.h3 { font: 700 18px/1.25 var(--font); letter-spacing: -0.012em; margin: 0; }
+.sub { color: var(--ink2); font-size: 15px; margin: 0; }
+.cap { color: var(--ink3); font-size: 13.5px; font-weight: 600; margin: 0; }
+.num { font-family: var(--round); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+.card { background: var(--glass); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); border: 1px solid var(--edge); border-radius: 28px; box-shadow: var(--shadow); padding: 18px; display: grid; gap: 14px; }
+
+.hero { position: relative; overflow: hidden; padding: 20px; isolation: isolate; gap: 16px; }
+.hero::before { content: ""; position: absolute; z-index: -1; left: -30%; right: -30%; bottom: -95%; height: 150%; background: radial-gradient(closest-side, rgba(255, 148, 66, 0.42), rgba(255, 90, 60, 0.12) 55%, transparent 75%); pointer-events: none; }
+:root[data-theme="dark"] .hero::before { background: radial-gradient(closest-side, rgba(255, 120, 70, 0.32), rgba(255, 90, 60, 0.08) 55%, transparent 75%); }
+.hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.lbl { font: 600 15px/1.2 var(--font); color: var(--ink2); display: inline-flex; align-items: center; gap: 8px; }
+.lbl .ic { width: 19px; height: 19px; color: var(--accent); }
+.chip { font: 700 13px/1 var(--font); padding: 7px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+:root[data-theme="dark"] .chip { color: #ff9a80; }
+.time { font-size: 84px; line-height: 0.86; letter-spacing: -0.045em; margin: 2px 0 0; }
+.when { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.when b { font: 650 17px/1.25 var(--font); }
+.when span { font: 600 15px/1.25 var(--font); color: var(--ink2); font-variant-numeric: tabular-nums; }
+
+.btn { appearance: none; border: 1px solid var(--edge); background: var(--glass2); color: var(--ink); font: 600 16px/1 var(--font); min-height: 50px; padding: 0 18px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; text-decoration: none; white-space: nowrap; transition: transform 0.18s var(--ease), opacity 0.2s; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset; }
+.btn:active { transform: scale(0.97); }
+.btn .ic { width: 20px; height: 20px; }
+.btn.pri { color: #fff; border-color: transparent; background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: 0 12px 24px -12px rgba(255, 90, 60, 0.8), 0 1px 0 rgba(255, 255, 255, 0.35) inset; }
+.btn.big { min-height: 60px; font-size: 18px; border-radius: 18px; width: 100%; }
+.btn.sm { min-height: 42px; padding: 0 14px; font-size: 15px; border-radius: 13px; }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.btns > .btn { flex: 1 1 auto; }
+
+.rows { display: grid; gap: 10px; }
+.row { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; padding: 14px; border-radius: 20px; background: var(--hair); }
+.row.due { background: var(--accent-soft); box-shadow: 0 0 0 1.5px var(--accent-line) inset; }
+.row.late { background: var(--warn-soft); }
+.row .ri { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #7c8cff, #4f46e5); }
+.row .ri.fk { background: linear-gradient(135deg, #3fb7c7, #0f7f95); }
+.row .ri.af { background: linear-gradient(135deg, var(--accent2), var(--accent)); }
+.row .ri.ai { background: linear-gradient(135deg, #7c8cff, #4f46e5); }
+.row .rt { font: 700 16px/1.25 var(--font); letter-spacing: -0.01em; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.row .rs { color: var(--ink2); font-size: 15px; margin-top: 4px; }
+.row .btns { margin-top: 12px; }
+.row .cap { margin-top: 8px; }
+.tag { font: 700 12.5px/1 var(--font); padding: 5px 8px; border-radius: 999px; background: var(--hair2); color: var(--ink2); white-space: nowrap; }
+.tag.hot { background: var(--accent); color: #fff; }
+.tag.late { background: rgba(245, 159, 0, 0.28); color: var(--warn); }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.steps li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; font-size: 15.5px; }
+.steps .si { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+.steps .si .ic { width: 19px; height: 19px; }
+.steps li > span:last-child { padding-top: 6px; }
+
+.install { grid-template-columns: 44px 1fr; display: grid; gap: 12px; align-items: start; }
+.install .ri { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: var(--hair); color: var(--ink2); }
+.inl { display: inline-block; vertical-align: -4px; width: 18px; height: 18px; }
+
+.foot { text-align: center; color: var(--ink3); font-size: 13px; font-weight: 600; margin: 4px 12px 0; }
+
+.toast { position: fixed; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: calc(100% - 32px); top: calc(env(safe-area-inset-top) + 10px); z-index: 50; padding: 12px 18px; border-radius: 999px; background: rgba(12, 14, 24, 0.92); color: #fff; font: 600 15px/1.2 var(--font); box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.5); opacity: 0; transform: translateY(-14px) scale(0.96); transition: opacity 0.3s, transform 0.45s var(--ease); pointer-events: none; }
+.toast.show { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sky i { animation: none; }
+  .btn, .toast { transition: none; }
+  .btn:active { transform: none; }
+}
 </style>
 </head>
 <body>
+<div class="sky" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="stars"></span></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <main>
-  <header>
-    <img src="icon-180.png" alt="" width="56" height="56">
+  <header class="head">
+    <img src="icon-180.png" alt="" width="62" height="62">
     <div>
-      <h1>Jobb<span>motorn</span></h1>
-      <p class="tag">4 jobb om dagen, med brev som låter som du.</p>
+      <p class="datel" id="date"></p>
+      <h1>Jobbmotorn</h1>
     </div>
   </header>
 
-  <a class="open" href="https://claude.ai/artifact/8tuPdqq1A4iHd8CLcqs3hx" target="_blank" rel="noopener">Öppna Jobbmotorn ↗</a>
-  <p class="hint">Öppnas i Claude. Där letar den upp jobben på Indeed, skriver breven och sparar det du skickat. Första gången kan du behöva logga in.</p>
-
-  <section class="card" id="report" aria-live="polite">
-    <span class="badge" id="reportBadge" hidden></span>
-    <h2 id="reportTitle">Aktivitetsrapporten</h2>
-    <p id="reportText">Rapporten skickas in mellan den 1 och 14 varje månad.</p>
-    <p><a class="link" href="https://arbetsformedlingen.se/for-arbetssokande/arbetslos---vad-hander-nu/aktivitetsrapportera" target="_blank" rel="noopener">Till Arbetsförmedlingen ↗</a></p>
-    <p class="tag">Listan att lägga in finns i Jobbmotorn under Skickade.</p>
+  <section class="card hero" aria-labelledby="runLbl">
+    <div class="hero-top">
+      <span class="lbl" id="runLbl"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Nästa morgonkörning</span>
+      <span class="chip">Varje dag</span>
+    </div>
+    <div>
+      <p class="time num">07:17</p>
+    </div>
+    <div class="when"><b id="runDay"></b><span id="runLeft"></span></div>
+    <p class="sub">Claude letar nya jobb och skickar ansökningarna som står på tur i kön, även lördag och söndag.</p>
+    <a class="btn pri big" href="https://claude.ai/artifact/8tuPdqq1A4iHd8CLcqs3hx" target="_blank" rel="noopener">Öppna Jobbmotorn</a>
+    <p class="cap">Öppnas i Claude. Där ser du kön och kan läsa, ändra eller stoppa en ansökan innan den går.</p>
   </section>
 
-  <section class="card">
-    <h2>Så gör du varje dag</h2>
-    <ol>
-      <li>Tryck på <b>Hitta dagens 4 jobb</b>.</li>
-      <li>Tryck på <b>Kopiera brevet och öppna annonsen</b> och skicka ansökan.</li>
-      <li>Tryck på <b>Jag har skickat ✓</b>.</li>
+  <section class="card" aria-labelledby="webTitle">
+    <div class="row" style="background:none;padding:0">
+      <span class="ri ai"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18.2l-1.8-5.6L4.5 10.8 10.2 9Z"/><path d="M19 3v3M17.5 4.5h3"/></svg></span>
+      <div>
+        <h2 class="h3" id="webTitle">Jobb som söks på hemsidan</h2>
+        <p class="sub" style="margin-top:4px">Claude öppnar annonserna i Chrome, fyller i ansökan med ditt CV och brevet och skickar den. Upp till 10 åt gången.</p>
+      </div>
+    </div>
+    <button class="btn pri" type="button" id="applyWeb">Låt Claude söka dem åt mig</button>
+    <p class="cap">Datorn ska vara på med Chrome öppet och Claude-tillägget inloggat. Inloggning, BankID och robotkontroller gör du själv.</p>
+  </section>
+
+  <section class="card" aria-labelledby="repTitle">
+    <h2 class="h3" id="repTitle">Rapporterna</h2>
+    <div class="rows" id="rep"></div>
+  </section>
+
+  <section class="card install" id="install" hidden>
+    <span class="ri"><svg class="ic" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18.5h2"/></svg></span>
+    <div>
+      <div class="h3">Lägg den på hemskärmen</div>
+      <p class="sub" id="installText" style="margin-top:4px"></p>
+      <div class="btns" style="margin-top:12px" id="installBtns" hidden><button class="btn sm pri" type="button" id="installBtn">Installera</button></div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="howTitle">
+    <h2 class="h3" id="howTitle">Så funkar det</h2>
+    <ol class="steps">
+      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></span><span>Varje morgon kl. 07:17 letar Claude nya jobb som passar dig och skriver breven med dina egna ord.</span></li>
+      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></span><span>Jobb som söks via mejl hamnar i kön. I appen väljer du hur många som går om dagen.</span></li>
+      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5v5M14.5 9.5v5"/></svg></span><span>Fram till avgången kan du läsa, ändra eller stoppa varje ansökan.</span></li>
+      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><path d="M21 3 10 14"/><path d="m21 3-7 18-4-7-7-4 18-7Z"/></svg></span><span>På morgonen skickas den från din Gmail, med ditt eget CV som PDF. Allt som skickas sparas till aktivitetsrapporten.</span></li>
+      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span>Jobb som söks på en hemsida eller via Indeed låter du Claude söka med knappen Sök jobbet åt mig. Claude fyller i och skickar, du loggar bara in.</span></li>
     </ol>
   </section>
+
+  <p class="foot">Den här sidan sparar inget om dig. Jobben, breven och CV:t finns i ditt Claude-konto.</p>
 </main>
 <script>
 (function () {
+  "use strict";
+  var REPORT_PROMPT = "Rapportera mina jobb från Jobbmotorn till Arbetsförmedlingen";
+  var APPLY_PROMPT = [
+    "Sök jobben i min app Jobbmotorn (https://claude.ai/artifact/8tuPdqq1A4iHd8CLcqs3hx) som söks via annonsen eller en hemsida åt mig i Chrome, ett i taget, hela vägen tills varje ansökan är skickad.",
+    "Vilka jobb: de i databasens jobs-samling som har status \"new\", ingen mejladress för ansökan och en länk till annonsen, och där sista ansökningsdagen inte har passerat. Ta de med tidigast sista dag först, högst 10.",
+    "Mina uppgifter: CV-texten och mina egna ord i settings/profile, mitt CV som PDF med bild i settings/cvpdf och brevet till varje jobb i jobs/<id>. Saknas brevet, skriv ett med mina egna ord från settings/profile.",
+    "Så här:",
+    "1. Använd Claude i Chrome och öppna annonsen. Fyll i ansökan med uppgifter från mitt CV och klistra in brevet där de vill ha ett personligt brev. Ladda upp CV-PDF:en om de vill ha en fil. Går det inte, be mig bifoga den.",
+    "2. Svara bara med sådant som står i mina uppgifter. Frågor du inte kan svara på därifrån frågar du mig om. Skapa inget konto utan att fråga mig först.",
+    "3. Inloggning, BankID och robotkontroller gör jag själv. Säg till när det behövs.",
+    "4. Jag har själv bett dig söka dem, så du får skicka in varje ansökan när allt är ifyllt och stämmer med mina uppgifter.",
+    "5. Efter varje skickad ansökan: uppdatera jobs/<id> med status \"sent\", sentDate dagens datum (ÅÅÅÅ-MM-DD), sentAt nu i millisekunder och sentVia \"claude\", så kommer den med i aktivitetsrapporten.",
+    "6. Går ett jobb inte att söka (annonsen är borta, eller de vill ha något jag inte har), hoppa över det och säg vilket."
+  ].join("\n");
+  var FK_URL = "https://www.forsakringskassan.se/";
+  var AF_URL = "https://arbetsformedlingen.se/for-arbetssokande/arbetslos---vad-hander-nu/aktivitetsrapportera";
   var M = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
-  var now = new Date(), d = now.getDate(), m = now.getMonth(), y = now.getFullYear();
-  var title = document.getElementById("reportTitle"), text = document.getElementById("reportText");
-  var card = document.getElementById("report"), badge = document.getElementById("reportBadge");
-  if (d <= 14) {
-    var left = 14 - d;
-    title.textContent = "Skicka in rapporten för " + M[(m + 11) % 12];
-    text.textContent = left === 0
-      ? "Sista dagen är i dag, den 14 " + M[m] + "."
-      : "Sista dagen är den 14 " + M[m] + ", om " + left + (left === 1 ? " dag." : " dagar.");
-    card.classList.add("urgent");
-    if (left <= 3) { badge.hidden = false; badge.textContent = left === 0 ? "Sista dagen i dag" : "Snart sista dagen"; }
-  } else {
-    var days = Math.round((new Date(y, m + 1, 1) - new Date(y, m, d)) / 86400000);
-    title.textContent = "Lägg in jobben för " + M[m] + " löpande";
-    text.textContent = "Rapporten för " + M[m] + " skickas in mellan den 1 och 14 " + M[(m + 1) % 12] + ". Det är " + days + (days === 1 ? " dag" : " dagar") + " kvar till den 1:a.";
+  var D = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
+  var $ = function (id) { return document.getElementById(id); };
+  var root = document.documentElement;
+  var darkMq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+
+  function svg(paths) { return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + paths + "</svg>"; }
+  var IC = {
+    fk: svg('<path d="M4 10h16M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20.5h18M12 3l8.5 4.5h-17Z"/>'),
+    af: svg('<rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 13h18"/>'),
+    cal: svg('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
+    spark: svg('<path d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18.2l-1.8-5.6L4.5 10.8 10.2 9Z"/><path d="M19 3v3M17.5 4.5h3"/>'),
+    ext: svg('<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/>'),
+    share: '<svg class="inl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-label="Dela"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M7 11H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1"/></svg>'
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  function applyTheme(now) {
+    var h = now.getHours();
+    var phase = h >= 5 && h < 10 ? "dawn" : h >= 10 && h < 17 ? "day" : "eve";
+    var dark = !!(darkMq && darkMq.matches);
+    root.dataset.theme = dark ? "dark" : "light";
+    root.dataset.phase = phase;
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", dark ? "#070b1d" : phase === "dawn" ? "#fde9e2" : phase === "day" ? "#e8f0ff" : "#eee6ff");
   }
+
+  function midnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function daysBetween(a, b) { return Math.round((midnight(b) - midnight(a)) / 86400000); }
+  function inDays(n) { return n === 0 ? "i dag" : n === 1 ? "i morgon" : "om " + n + " dagar"; }
+  function left(ms) {
+    var mins = Math.max(0, Math.ceil(ms / 60000));
+    var h = Math.floor(mins / 60), m = mins % 60;
+    if (mins === 0) return "nu";
+    if (h === 0) return "om " + m + " min";
+    return m ? "om " + h + " tim " + m + " min" : "om " + h + " tim";
+  }
+
+  function renderRun(now) {
+    $("date").textContent = D[now.getDay()] + " " + now.getDate() + " " + M[now.getMonth()];
+    var run = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 17, 0, 0);
+    if (now >= run) run = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 7, 17, 0, 0);
+    var today = daysBetween(now, run) === 0;
+    $("runDay").textContent = (today ? "I dag, " : "I morgon, ") + D[run.getDay()] + " " + run.getDate() + " " + M[run.getMonth()];
+    $("runLeft").textContent = left(run - now);
+  }
+
+  function row(kind, icon, title, tag, tagKind, text, extra) {
+    return '<div class="row' + (kind ? " " + kind : "") + '"><span class="ri ' + icon + '">' + IC[icon] + "</span><div>" +
+      '<div class="rt">' + esc(title) + (tag ? ' <span class="tag' + (tagKind ? " " + tagKind : "") + '">' + esc(tag) + "</span>" : "") + "</div>" +
+      '<div class="rs">' + esc(text) + "</div>" + (extra || "") + "</div></div>";
+  }
+
+  function renderReports(now) {
+    var day = now.getDate(), m = now.getMonth(), y = now.getFullYear();
+    var prev = M[(m + 11) % 12], cur = M[m];
+    var html = "";
+    if (day <= 14) {
+      $("repTitle").textContent = "Rapporterna för " + prev;
+      if (day <= 7) {
+        var fkLeft = 7 - day;
+        html += row(fkLeft <= 2 ? "due" : "", "fk", "Försäkringskassan", fkLeft === 0 ? "Sista dagen i dag" : "Senast 7 " + cur, fkLeft <= 2 ? "hot" : "",
+          "Ansök om ersättning för " + prev + " " + (fkLeft === 0 ? "i dag" : "senast den 7 " + cur + ", " + inDays(fkLeft)) + ", så kommer pengarna den 26:e. Du loggar in med BankID.",
+          '<div class="btns"><a class="btn sm" href="' + FK_URL + '" target="_blank" rel="noopener">Till Försäkringskassan' + IC.ext + "</a></div>");
+      } else {
+        html += row("late", "fk", "Försäkringskassan", "Efter den 7:e", "late",
+          "Har du inte ansökt för " + prev + " än? Gör det före månadens slut, annars kan du bli utan ersättning. Pengarna kommer då senare än den 26:e.",
+          '<div class="btns"><a class="btn sm" href="' + FK_URL + '" target="_blank" rel="noopener">Till Försäkringskassan' + IC.ext + "</a></div>");
+      }
+      var afLeft = 14 - day;
+      html += row(afLeft <= 2 ? "due" : "", "af", "Aktivitetsrapporten", afLeft === 0 ? "Sista dagen i dag" : "Senast 14 " + cur, afLeft <= 2 ? "hot" : "",
+        "Rapportera jobben du sökte i " + prev + " till Arbetsförmedlingen " + (afLeft === 0 ? "i dag." : "senast den 14 " + cur + ", " + inDays(afLeft) + ".") + " Listan finns i Jobbmotorn under Skickat.",
+        '<div class="btns"><button class="btn sm pri" type="button" id="askClaude">' + IC.spark + 'Be Claude rapportera</button><a class="btn sm" href="' + AF_URL + '" target="_blank" rel="noopener">Arbetsförmedlingen' + IC.ext + "</a></div>" +
+        '<p class="cap">Sitt vid datorn med Chrome öppet. Claude fyller i rapporten, och du loggar in med BankID och trycker Skicka in. Bocka av i Jobbmotorn när det är klart.</p>');
+    } else {
+      $("repTitle").textContent = "Nästa rapporter";
+      var first = new Date(y, m + 1, 1);
+      var n = daysBetween(now, first);
+      html += row("", "cal", "Den 1 " + M[first.getMonth()], inDays(n), "",
+        "Då ansöker du hos Försäkringskassan för " + cur + " och skickar aktivitetsrapporten till Arbetsförmedlingen. Jobbmotorn sparar varje ansökan, så listan är klar när det är dags.", "");
+    }
+    $("rep").innerHTML = html;
+    var ask = $("askClaude");
+    if (ask) ask.addEventListener("click", askClaude);
+  }
+
+  var toastTimer = 0;
+  function toast(text) {
+    var t = $("toast");
+    t.textContent = text; t.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2600);
+  }
+  function copy(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return false; });
+    try {
+      var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); var ok = document.execCommand("copy"); document.body.removeChild(ta);
+      return Promise.resolve(ok);
+    } catch (e) { return Promise.resolve(false); }
+  }
+  function askClaude() {
+    window.open("https://claude.ai/new?q=" + encodeURIComponent(REPORT_PROMPT), "_blank", "noopener");
+    copy(REPORT_PROMPT).then(function (ok) { if (ok) toast("Meningen är kopierad"); });
+  }
+  $("applyWeb").addEventListener("click", function () {
+    window.open("https://claude.ai/new?q=" + encodeURIComponent(APPLY_PROMPT), "_blank", "noopener");
+    copy(APPLY_PROMPT).then(function (ok) { if (ok) toast("Instruktionen är kopierad"); });
+  });
+
+  function renderInstall() {
+    var ua = navigator.userAgent || "";
+    var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    var standalone = navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    if (standalone) { $("install").hidden = true; return; }
+    if (ios) {
+      $("installText").innerHTML = "Tryck på Dela " + IC.share + " i Safari och välj <b>Lägg till på hemskärmen</b>. Har du en gammal Jobbmotorn-ikon, ta bort den först så får du den nya.";
+      $("install").hidden = false;
+    }
+  }
+  var deferred = null;
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); deferred = e;
+    $("installText").textContent = "Installera Jobbmotorn som en app, så ligger den bland dina andra appar.";
+    $("installBtns").hidden = false; $("install").hidden = false;
+  });
+  $("installBtn").addEventListener("click", function () {
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function () { deferred = null; $("install").hidden = true; }, function () {});
+  });
+  window.addEventListener("appinstalled", function () { $("install").hidden = true; });
+
+  var lastDay = -1;
+  function tick() {
+    var now = new Date();
+    applyTheme(now);
+    renderRun(now);
+    if (now.getDate() !== lastDay) { lastDay = now.getDate(); renderReports(now); }
+  }
+  tick();
+  renderInstall();
+  setInterval(tick, 30000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) tick(); });
+  if (darkMq && darkMq.addEventListener) darkMq.addEventListener("change", function () { applyTheme(new Date()); });
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
 })();
 </script>

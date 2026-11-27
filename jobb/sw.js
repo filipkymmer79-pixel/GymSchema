@@ -1,7 +1,7 @@
 // Jobbmotorn: offline-skal för startsidan. Själva Jobbmotorn körs i Claude. Bara den här appens egna cacher städas, eftersom de andra apparna ligger på samma webbplats och har egna.
 const PREFIX = "jobbmotorn-";
-const CACHE = PREFIX + "v202611140035";
-const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
+const CACHE = PREFIX + "v202611272045";
+const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./icon-180.png", "./icon-192.png", "./icon-512.png", "./icon-512-maskable.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith(PREFIX) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {
