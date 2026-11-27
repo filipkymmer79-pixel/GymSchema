@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "c7fbc36",
+   "ts": 202611271819,
+   "build": "27 nov 18.19",
+   "date": "27 nov 18.52",
+   "title": "GymSchema: den tunnare shaken ger 40 g protein per glas"
+  },
+  {
    "id": "69097ff",
    "ts": 202611271737,
    "build": "27 nov 17.37",
@@ -76,13 +83,6 @@
    "build": "26 nov 13.35",
    "date": "26 nov 13.49",
    "title": "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag"
-  },
-  {
-   "id": "5007345",
-   "ts": 202611251354,
-   "build": "25 nov 13.54",
-   "date": "25 nov 14.16",
-   "title": "Sjukgymnastens uppdaterade upplägg: 2–3 set × 8–12, hopp och mage, bål och hållning"
   }
  ]
 }
