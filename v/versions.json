@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "5a55748",
+   "ts": 202611271521,
+   "build": "27 nov 15.21",
+   "date": "27 nov 15.48",
+   "title": "Atletövningarna har bilder även utan klippen"
+  },
+  {
    "id": "e286be2",
    "ts": 202611271506,
    "build": "27 nov 15.06",
@@ -76,13 +83,6 @@
    "build": "24 nov 21.42",
    "date": "24 nov 22.13",
    "title": "Tisdag blir aktiv vila: ingen löpning de närmaste tre månaderna"
-  },
-  {
-   "id": "907d3e0",
-   "ts": 202611241506,
-   "build": "24 nov 15.06",
-   "date": "24 nov 15.33",
-   "title": "Magen fyra dagar i veckan: Dirty thirty, Mage och västen efter varje pass"
   }
  ]
 }
