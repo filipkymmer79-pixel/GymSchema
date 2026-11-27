@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "abacd33",
+   "ts": 202611271432,
+   "build": "27 nov 14.32",
+   "date": "27 nov 14.36",
+   "title": "Videon som bild, en ikon på varje vana, det sparade passet i bilder"
+  },
+  {
    "id": "f06bcab",
    "ts": 202611271321,
    "build": "27 nov 13.21",
@@ -76,13 +83,6 @@
    "build": "24 nov 13.33",
    "date": "24 nov 13.58",
    "title": "Program 4.0: Över och Ben fyra dagar i veckan"
-  },
-  {
-   "id": "f36321b",
-   "ts": 202611232101,
-   "build": "23 nov 21.01",
-   "date": "23 nov 21.38",
-   "title": "Mage och rygg med viktväst på måndagar"
   }
  ]
 }
