@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "69097ff",
+   "ts": 202611271737,
+   "build": "27 nov 17.37",
+   "date": "27 nov 18.03",
+   "title": "Hållningen rör sig också"
+  },
+  {
    "id": "3520498",
    "ts": 202611271705,
    "build": "27 nov 17.05",
@@ -76,13 +83,6 @@
    "build": "25 nov 13.54",
    "date": "25 nov 14.16",
    "title": "Sjukgymnastens uppdaterade upplägg: 2–3 set × 8–12, hopp och mage, bål och hållning"
-  },
-  {
-   "id": "70c6db9",
-   "ts": 202611250124,
-   "build": "25 nov 01.24",
-   "date": "25 nov 01.27",
-   "title": "En sida i taget: slå på det själv i Program → Över eller Ben"
   }
  ]
 }

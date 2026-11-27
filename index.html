@@ -7090,7 +7090,7 @@ let foodLog = store(FOOD_KEY) || {}, shakeGl = store(SHAKE_GL) || {};
 let foodSet = Object.assign({size: 2500, glasses: 3}, store(FOOD_SET) || {});
 let foodDate = iso(today()), foodPick = null, foodMsg = "", foodManual = false;
 // 16 nov 2026: proteinet följer shake-appens nya recept (keso och juice i, banan ut, 15 nov): 2 000 → 100 g, 2 500 → 125 g, 2 700 → 133 g, 3 000 → 146 g
-const SHAKE_P = {2000: 103, 2500: 124, 2700: 132, 3000: 145};
+const SHAKE_P = {2000: 121, 2500: 124, 2700: 132, 3000: 145};
 const shakePer = () => { const kcal = foodSet.size / foodSet.glasses, p = (SHAKE_P[foodSet.size] || 133 * foodSet.size / 2700) / foodSet.glasses; return {kcal: Math.round(kcal), p: Math.round(p)}; };
 function foodTotals(date){
   const items = foodLog[date] || [], g = shakeGl[date] || 0, sp = shakePer();
@@ -9778,7 +9778,7 @@ function sjLoad(){
   // Första gången. Schemat sköts fram en dag lördag 21 nov 2026. Den som redan körde programmet då (appen uppdateras från en äldre
   // version) får med den dagen. En ny installation börjar på grundschemat.
   let prev = null; try { prev = localStorage.getItem("gymschema.build"); } catch(e){}
-  sjL = prev && prev !== "27 nov 17.37" ? ["2026-11-21"] : [];
+  sjL = prev && prev !== "27 nov 18.19" ? ["2026-11-21"] : [];
   sjFresh = sjL.length > 0;
   sjStore();
   return sjL;
@@ -19302,6 +19302,7 @@ atCoachLines = (f => function(){
 /* ===== 87: Nytt i appen ===== */
 // [datum, rubrik, [sakernas namn i Allt …]] – nyast först. Namnen ska finnas i guiden; ett som saknas visas utan knapp.
 const Q17_NYTT = [
+  ["27 nov", "Shaken är tunnare – mer mjölk, mindre keso och havremjöl, samma 2 000 kcal och 40 g protein per glas", ["Shaken i glas"]],
   ["27 nov", "Hållningen rör sig också – kort fot och bröstryggsextensionen över rullen", ["Hållningen varje dag"]],
   ["27 nov", "Fler teckningar rör sig – sidolyften, höftmaskinerna, vadpressen, marklyftet, tricepspressen och wall angels", ["Kör passet – ett set i taget"]],
   ["27 nov", "Kör blocket visar teckningen när klippet saknas – stor och rörlig, med Importera klipp under", ["Atlet idag"]],
@@ -23226,7 +23227,7 @@ if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window._
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611271737, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611271819, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -23258,7 +23259,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "27 nov 17.37", BUILD_NOTE = "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag";
+const BUILD = "27 nov 18.19", BUILD_NOTE = "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
