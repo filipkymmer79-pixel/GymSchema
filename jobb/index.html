@@ -275,7 +275,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
       <div class="rt">Påminnelser om rapporterna<span class="state" id="pushState">Av</span></div>
       <p class="rs">Från den 1:a varje månad påminner appen dig om Försäkringskassan (senast den 7:e) och aktivitetsrapporten (senast den 14:e), oftare ju närmare sista dagen. Det slutar när du bockar av rapporten under Skickat.</p>
       <div id="pushSetup">
-        <div class="set-step"><span class="sn">1</span><div><div class="rt">Uppdatera din Cloudflare-worker</div><p class="rs">Det är samma worker som sköter GymSchemas påminnelser. Kopiera koden, öppna workern i Cloudflare, välj Edit code, markera allt, klistra in och tryck Deploy.</p><div class="btns"><button class="btn" type="button" id="copyWorker">Kopiera koden</button><a class="btn" href="https://dash.cloudflare.com/" target="_blank" rel="noopener">Öppna Cloudflare</a></div></div></div>
+        <div class="set-step"><span class="sn">1</span><div><div class="rt">Uppdatera din Cloudflare-worker</div><p class="rs">Det är samma worker som sköter GymSchemas påminnelser. Kopiera koden, öppna workern i Cloudflare, välj Edit code, markera allt, klistra in och tryck Deploy.</p><div class="btns"><button class="btn copyWorker" type="button">Kopiera koden</button><a class="btn" href="https://dash.cloudflare.com/" target="_blank" rel="noopener">Öppna Cloudflare</a></div></div></div>
         <div class="set-step"><span class="sn">2</span><div style="flex:1;min-width:0"><div class="rt">Workerns adress</div><p class="rs">Den är redan ifylld. Det är samma adress som önskelistan använder.</p><input class="field" id="workerUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://….workers.dev" aria-label="Workerns adress"></div></div>
         <div class="set-step"><span class="sn">3</span><div style="flex:1"><button class="btn pri wide" type="button" id="pushOn">Slå på påminnelser</button></div></div>
       </div>
@@ -288,6 +288,17 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
         <div class="pref col"><span>Hur ofta</span><div class="seg" id="freqSeg"><button type="button" data-freq="lugnt">Lugnt</button><button type="button" data-freq="normalt">Normalt</button><button type="button" data-freq="ofta">Ofta</button></div><p class="cap" id="freqText" style="margin-top:4px"></p></div>
         <div class="pref"><span>Påminn mellan</span><span><select class="sel" id="fromH" aria-label="Från klockan"></select> – <select class="sel" id="toH" aria-label="Till klockan"></select></span></div>
       </div>
+    </section>
+    <section class="card" id="fireCard">
+      <div class="rt">Sök nu automatiskt<span class="state" id="fireState">Inte klart</span></div>
+      <p class="rs">Då skickar knappen Sök jobb nu ansökningarna direkt från din Gmail, utan chatt. Det sköts av den schemalagda uppgiften "Jobbmotorn: Sök nu" i ditt Claude-konto.</p>
+      <div id="fireSetup">
+        <div class="set-step"><span class="sn">1</span><div><div class="rt">Uppdatera workern en gång till</div><p class="rs">Kopiera koden, klistra in den i workern i Cloudflare och tryck Deploy, som förra gången.</p><div class="btns"><button class="btn copyWorker" type="button">Kopiera koden</button><a class="btn" href="https://dash.cloudflare.com/" target="_blank" rel="noopener">Öppna Cloudflare</a></div></div></div>
+        <div class="set-step"><span class="sn">2</span><div><div class="rt">Skapa en token</div><p class="rs">Öppna dina schemalagda uppgifter och välj "Jobbmotorn: Sök nu". Lägg till en utlösare av typen API och tryck Generate token. Kopiera den direkt, den visas bara en gång.</p><div class="btns"><a class="btn" href="https://claude.ai/code/routines" target="_blank" rel="noopener">Öppna schemalagda uppgifter</a></div></div></div>
+        <div class="set-step"><span class="sn">3</span><div style="flex:1;min-width:0"><div class="rt">Klistra in token</div><input class="field" id="fireToken" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-ant-oat01-…" aria-label="Token"><div class="btns"><button class="btn pri wide" type="button" id="fireSave">Spara</button></div></div></div>
+      </div>
+      <div id="fireOkBox" hidden><p class="rs" style="margin-top:12px">Klart. Sök jobb nu startar Claude direkt, och du får en notis när ansökningarna har gått.</p><div class="btns"><button class="btn" type="button" id="fireReset">Byt token</button></div></div>
+      <p class="msg" id="fireMsg" hidden></p>
     </section>
     <section class="card">
       <div class="rt">Autopiloten<span class="state" id="apState"></span></div>
@@ -318,8 +329,9 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 <div class="sheet-bg" id="nowSheet" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="nowTitle">
     <h3 id="nowTitle">Hur många jobb ska sökas nu?</h3>
-    <p class="rs">Claude tar först det som redan ligger i kön, letar sedan upp fler, skriver breven med dina ord och skickar dem direkt från din Gmail med ditt CV.</p>
+    <p class="rs">Claude tar först det som redan ligger i kön och letar sedan upp fler. Breven skrivs med dina ord och går direkt från din Gmail med ditt CV. Du får en notis när de har gått.</p>
     <div class="nums" id="nums"></div>
+    <p class="msg" id="nowMsg" hidden></p>
     <div class="btns"><button class="btn pri wide" type="button" id="nowGo">Sök 6 jobb nu</button></div>
     <div class="btns" style="margin-top:6px"><button class="btn wide" type="button" id="nowCancel" style="background:none;border:0;color:var(--ink2)">Avbryt</button></div>
   </div>
@@ -473,7 +485,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     var pend = prunePending(data);
     var nowKey = Object.keys(pend).filter(function (k) { return k.indexOf("now:") === 0; })[0];
     $("nowNote").hidden = !nowKey;
-    if (nowKey) $("nowNote").textContent = "Claude söker " + nowKey.slice(4) + " jobb åt dig sedan kl " + hhmm(new Date(pend[nowKey])) + ". De syns här när Claude är klar och har uppdaterat appen.";
+    if (nowKey) $("nowNote").textContent = "Claude söker " + nowKey.slice(4) + " jobb åt dig sedan kl " + hhmm(new Date(pend[nowKey])) + ". Du får en notis när de har gått, och sedan syns de här.";
     var queue = (data.queue || []).slice().sort(function (a, b) { return (a.sendAt || 0) - (b.sendAt || 0) || short(a.company).localeCompare(short(b.company), "sv"); });
     $("qChip").textContent = queue.length + " i kön";
     $("qChip").className = "chip" + (queue.length ? "" : " warn");
@@ -621,9 +633,11 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
   }
   function err(code) { var e = new Error(code); e.code = code; return e; }
   function api(c, path, body) {
-    if (!/^https:\/\/[^/]+\.[^/]+/.test(c.url || "")) return Promise.reject(err("url"));
-    return pushKey(c).then(function (key) { return fetch(c.url.replace(/\/+$/, "") + path, body ? { method: "POST", headers: { "Content-Type": "application/json", "X-GS-Key": key }, body: JSON.stringify(body), cache: "no-store" } : { cache: "no-store" }); })
+    var base = c.url || WORKER;
+    if (!/^https:\/\/[^/]+\.[^/]+/.test(base)) return Promise.reject(err("url"));
+    return pushKey(c).then(function (key) { return fetch(base.replace(/\/+$/, "") + path, body ? { method: "POST", headers: { "Content-Type": "application/json", "X-GS-Key": key }, body: JSON.stringify(body), cache: "no-store" } : { cache: "no-store" }); })
       .then(function (r) { return r.json().catch(function () { return null; }).then(function (j) {
+        if (j && ["setup", "wait", "limit", "token", "id", "fire"].indexOf(j.error) >= 0) { var e2 = err(j.error); e2.wait = j.wait; throw e2; }
         if (r.status === 409) throw err("taken"); if (r.status === 404 && j && j.error === "off") throw err("off"); if (r.status === 403 || (r.status === 404 && j && j.error === "path")) throw err("old"); if (!r.ok || !j) throw err("worker"); return j; }); },
         function (e) { if (e && e.code) throw e; throw err("net"); });
   }
@@ -723,27 +737,49 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
   $("refresh2").addEventListener("click", function () { load(); toast("Hämtar…"); });
   $("pushTest").addEventListener("click", function () { showPushMsg(""); api(pushCfg(), "/push/jm/test", {}).then(function (j) { toast(j.ok ? "Testnotisen är skickad" : "Apple svarade " + j.status + "."); }, function (e) { showPushMsg(e.code); }); });
   $("pushOff").addEventListener("click", function () { var c = pushCfg(); api(c, "/push/jm/off", {}).catch(function () {}).then(function () { c.on = false; savePush(c); paintPush(); toast("Påminnelserna är av"); }); });
-  $("copyWorker").addEventListener("click", function () {
+  document.querySelectorAll(".copyWorker").forEach(function (b) { b.addEventListener("click", function () {
     if (!workerCode) { loadWorkerCode(); toast("Hämtar koden, tryck igen om en sekund."); return; }
     copy(workerCode).then(function (ok) { toast(ok ? "Koden är kopierad. Klistra in den i Cloudflare." : "Det gick inte att kopiera. Tryck igen."); });
+  }); });
+  /* ---------- Sök nu automatiskt (workern startar Claudes uppgift "Jobbmotorn: Sök nu") ---------- */
+  var FIRE_ID = "trig_01Fd8VTZu67Z85rX9b3aP4FY";
+  var FIRE_MSG = { setup: "Sök nu är inte inställt än. Gör stegen under Inställningar.", token: "Token stämmer inte. Skapa en ny under Inställningar och klistra in den.", id: "Uppgiften hittades inte. Säg till Claude.",
+    wait: "Du tryckte nyss. Vänta två minuter och tryck igen.", limit: "Gränsen för körningar den här timmen är nådd. Försök om en stund.", fire: "Claude gick inte att starta just nu. Försök igen om en stund.",
+    old: "Workern har inte den nya koden än. Gör steg 1 och försök igen.", net: "Fick ingen kontakt med workern. Kolla nätet.", taken: "Workern är kopplad till en annan installation.", worker: "Workern svarade konstigt. Har du klistrat in hela koden och tryckt Deploy?" };
+  function showFireMsg(code) { var m = $("fireMsg"); m.textContent = code ? (FIRE_MSG[code] || "Något gick fel (" + code + ").") : ""; m.hidden = !code; }
+  function paintFire() { var ok = !!pushCfg().fireOk; $("fireState").textContent = ok ? "Klart" : "Inte klart"; $("fireState").className = "state" + (ok ? " on" : ""); $("fireSetup").hidden = ok; $("fireOkBox").hidden = !ok; }
+  function checkFire() { var c = pushCfg(); api(c, "/push/jm/fire/status", {}).then(function (j) { var c2 = pushCfg(); c2.fireOk = !!j.set; savePush(c2); paintFire(); }, function () {}); }
+  $("fireSave").addEventListener("click", function () {
+    var t = $("fireToken").value.trim(); showFireMsg("");
+    if (!t) { showFireMsg("token"); return; }
+    var c = pushCfg(); $("fireSave").disabled = true;
+    api(c, "/push/key").then(function (j) { if (!(j.v >= 4)) throw err("old"); return api(c, "/push/jm/fire/setup", { id: FIRE_ID, token: t }); })
+      .then(function () { var c2 = pushCfg(); c2.fireOk = true; savePush(c2); $("fireToken").value = ""; paintFire(); toast("Sök nu är klart ✓"); }, function (e) { showFireMsg(e.code || "worker"); })
+      .then(function () { $("fireSave").disabled = false; });
   });
+  $("fireReset").addEventListener("click", function () { var c = pushCfg(); c.fireOk = false; savePush(c); paintFire(); $("fireToken").focus(); });
   function loadWorkerCode() { if (workerCode) return; fetch("../gymschema-worker.js", { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) { workerCode = t; }, function () {}); }
   $("forgetKey").addEventListener("click", function () { try { localStorage.removeItem(KEY_LS); localStorage.removeItem(DATA_LS); } catch (e) {} data = null; showLock(); });
 
   /* ---------- Sök nu ---------- */
   var NUMS = [1, 3, 6, 10, 15], nowN = 6;
-  function nowPrompt(n) { return "Sök " + n + " jobb åt mig nu med min app Jobbmotorn (" + APP_URL + ") och skicka ansökningarna direkt från min Gmail med mitt CV. Följ instruktionen i settings/soknu i Jobbmotorns databas, steg för steg. Jag har själv valt " + n + " i appen och godkänner att du skickar dem."; }
   function paintNums() { $("nums").innerHTML = NUMS.map(function (n) { return '<button class="num-b" type="button" data-n="' + n + '" aria-pressed="' + (n === nowN) + '">' + n + "</button>"; }).join(""); $("nowGo").textContent = "Sök " + nowN + " jobb nu"; }
-  $("searchNow").addEventListener("click", function () { var p = data && data.auto && data.auto.perDay; nowN = NUMS.indexOf(p) >= 0 ? p : 6; paintNums(); $("nowSheet").hidden = false; });
+  $("searchNow").addEventListener("click", function () { var p = data && data.auto && data.auto.perDay; nowN = NUMS.indexOf(p) >= 0 ? p : 6; paintNums(); $("nowMsg").hidden = true; $("nowSheet").hidden = false; });
   $("nums").addEventListener("click", function (e) { var b = e.target.closest("[data-n]"); if (b) { nowN = +b.getAttribute("data-n"); paintNums(); } });
   $("nowCancel").addEventListener("click", function () { $("nowSheet").hidden = true; });
   $("nowSheet").addEventListener("click", function (e) { if (e.target === $("nowSheet")) $("nowSheet").hidden = true; });
   $("nowGo").addEventListener("click", function () {
-    $("nowSheet").hidden = true;
-    var p = pending(); Object.keys(p).forEach(function (k) { if (k.indexOf("now:") === 0) delete p[k]; }); p["now:" + nowN] = Date.now();
-    try { localStorage.setItem(PEND_LS, JSON.stringify(p)); } catch (e) {}
-    openClaude(nowPrompt(nowN), "Texten är kopierad. Skicka den i Claude, så söker den " + nowN + " jobb.");
-    render();
+    $("nowMsg").hidden = true;
+    if (!pushCfg().fireOk) { $("nowSheet").hidden = true; go("installningar"); setTimeout(function () { $("fireCard").scrollIntoView({ block: "start" }); }, 80); toast("Ställ in Sök nu automatiskt först, det görs en gång."); return; }
+    $("nowGo").disabled = true; $("nowGo").textContent = "Startar…";
+    api(pushCfg(), "/push/jm/fire", { n: nowN }).then(function (j) {
+      $("nowSheet").hidden = true;
+      var p = pending(); Object.keys(p).forEach(function (k) { if (k.indexOf("now:") === 0) delete p[k]; }); p["now:" + (j.n || nowN)] = Date.now();
+      try { localStorage.setItem(PEND_LS, JSON.stringify(p)); } catch (e) {}
+      toast("Claude söker " + (j.n || nowN) + " jobb nu. Du får en notis när de har gått.");
+      render();
+    }, function (e) { var m = $("nowMsg"); m.textContent = FIRE_MSG[e.code] || "Något gick fel (" + (e.code || "") + ")."; m.hidden = false; if (e.code === "setup" || e.code === "token") { var c = pushCfg(); c.fireOk = false; savePush(c); paintFire(); } })
+      .then(function () { $("nowGo").disabled = false; paintNums(); });
   });
 
   /* ---------- flikar och knappar ---------- */
@@ -757,7 +793,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     document.querySelectorAll("[data-tab]").forEach(function (s) { s.hidden = s.getAttribute("data-tab") !== tab; });
     document.querySelectorAll(".tab").forEach(function (b) { b.setAttribute("aria-selected", b.getAttribute("data-go") === tab ? "true" : "false"); });
     window.scrollTo(0, 0);
-    if (tab === "installningar") { loadWorkerCode(); paintPush(); }
+    if (tab === "installningar") { loadWorkerCode(); paintPush(); paintFire(); checkFire(); }
   }
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-go],[data-q],[data-stop],[data-web]");

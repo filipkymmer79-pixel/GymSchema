@@ -9,7 +9,9 @@
 // 4) Önskelistan: vem som köper vad, sakerna Filip lägger till, chatten och notiserna (KV-nycklarna ol:mamma, ol:pappa, ol:annan, ol:filip och ol:push).
 // 5) Jobbmotorn (version 3): påminner om Försäkringskassan och aktivitetsrapporten tills Filip bockar av dem i appen.
 //    Egen prenumeration och egna nycklar (jm:cfg och jm:sent), så GymSchemas påminnelser påverkas inte.
-const V = 3;
+// 6) Sök nu (version 4): knappen i Jobbmotorn startar Claudes schemalagda uppgift "Jobbmotorn: Sök nu" via dess API.
+//    Uppgiftens token sparas bara här i KV (jm:fire), aldrig i appen eller på GitHub.
+const V = 4;
 const SLOT = 10e3, REST_MAX = 12 * 60e3;
 const sleep = ms => new Promise(r => setTimeout(r, Math.max(0, ms)));
 const APP = "https://filipkymmer79-pixel.github.io";
@@ -372,6 +374,7 @@ async function jmApi(request, env, path, json){
   let b = {}; try { b = JSON.parse(await request.text()) || {}; } catch(e){}
   const key = request.headers.get("X-GS-Key") || "";
   if (key.length < 20) return json({error: "key"}, 400);
+  if (path.startsWith("/push/jm/fire")) return jmFire(env, path, b, await sha(key), json);
   const kh = await sha(key), cfg = await env.GS.get("jm:cfg", "json");
   const sub = b && b.sub && typeof b.sub.endpoint === "string" && /^https:\/\//.test(b.sub.endpoint) && b.sub.keys && b.sub.keys.p256dh && b.sub.keys.auth ? b.sub : null;
   if (cfg && cfg.kh !== kh && !(sub && cfg.sub && sub.endpoint === cfg.sub.endpoint)) return json({error: "taken"}, 409);
@@ -389,6 +392,40 @@ async function jmApi(request, env, path, json){
     return json({ok: st >= 200 && st < 300, status: st});
   }
   if (path === "/push/jm/off"){ if (cfg) await env.GS.delete("jm:cfg"); return json({ok: true}); }
+  return json({error: "path"}, 404);
+}
+// Sök nu: sparar uppgiftens id och token (setup), säger om det är klart (status) och startar en körning (fire).
+async function jmFire(env, path, b, kh, json){
+  const f = await env.GS.get("jm:fire", "json");
+  if (f && f.kh !== kh) return json({error: "taken"}, 409);
+  if (path === "/push/jm/fire/setup"){
+    const id = String(b.id || ""), token = String(b.token || "").trim();
+    if (!/^trig_[A-Za-z0-9]{8,60}$/.test(id)) return json({error: "id"}, 400);
+    if (!/^sk-ant-[A-Za-z0-9_-]{20,300}$/.test(token)) return json({error: "token"}, 400);
+    await env.GS.put("jm:fire", JSON.stringify({kh, id, token, last: f ? f.last || 0 : 0}));
+    return json({ok: true, v: V});
+  }
+  if (path === "/push/jm/fire/status") return json({ok: true, set: !!(f && f.token), last: f ? f.last || 0 : 0, v: V});
+  if (path === "/push/jm/fire/off"){ if (f) await env.GS.delete("jm:fire"); return json({ok: true}); }
+  if (path === "/push/jm/fire"){
+    if (!f || !f.token) return json({error: "setup"}, 404);
+    const now = Date.now();
+    if (now - (f.last || 0) < 120e3) return json({error: "wait", wait: Math.ceil((120e3 - (now - f.last)) / 1000)}, 429);
+    const n = Math.max(1, Math.min(15, Math.round(Number(b.n) || 6)));
+    const when = new Date(now).toLocaleTimeString("sv-SE", {timeZone: "Europe/Stockholm", hour: "2-digit", minute: "2-digit"});
+    f.last = now; await env.GS.put("jm:fire", JSON.stringify(f));
+    let r;
+    try {
+      r = await fetch("https://api.anthropic.com/v1/claude_code/routines/" + f.id + "/fire", {method: "POST", headers: {"Authorization": "Bearer " + f.token, "anthropic-version": "2026-10-21", "Content-Type": "application/json"},
+        body: JSON.stringify({text: "antal: " + n + "\nStartad med knappen Sök jobb nu i Jobbmotorn kl " + when + "."})});
+    } catch(e){ f.last = 0; await env.GS.put("jm:fire", JSON.stringify(f)); return json({error: "net"}, 502); }
+    let j = null; try { j = await r.json(); } catch(e){}
+    if (r.ok) return json({ok: true, n, url: j && j.claude_code_session_url || ""});
+    f.last = 0; await env.GS.put("jm:fire", JSON.stringify(f));
+    if (r.status === 401) return json({error: "token"}, 401);
+    if (r.status === 429) return json({error: "limit"}, 429);
+    return json({error: "fire", status: r.status, msg: j && j.error && j.error.message || ""}, 502);
+  }
   return json({error: "path"}, 404);
 }
 async function jmTick(env){
