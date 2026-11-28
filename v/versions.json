@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "d19a01a",
+   "ts": 202611280535,
+   "build": "28 nov 05.35",
+   "date": "28 nov 05.46",
+   "title": "GymSchema: ny kropp i teckningarna – siluetter som rör sig"
+  },
+  {
    "id": "309a60a",
    "ts": 202611280200,
    "build": "28 nov 02.00",
@@ -76,13 +83,6 @@
    "build": "27 nov 15.06",
    "date": "27 nov 15.12",
    "title": "Teckningarna rör sig: från startläget till slutläget"
-  },
-  {
-   "id": "abacd33",
-   "ts": 202611271432,
-   "build": "27 nov 14.32",
-   "date": "27 nov 14.36",
-   "title": "Videon som bild, en ikon på varje vana, det sparade passet i bilder"
   }
  ]
 }
