@@ -25,7 +25,7 @@
   --sky1: #0b1026; --sky2: #1b1546; --sky3: #3a1c4f;
   --ink: #f4f6ff; --ink2: #c3c9e6; --mute: #8e97c0;
   --glass: rgba(255, 255, 255, 0.06); --glass2: rgba(255, 255, 255, 0.1); --edge: rgba(255, 255, 255, 0.12);
-  --green: #34d399; --coral: #ff6b4a; --amber: #ffb547; --hot: #ff6b81;
+  --green: #34d399; --mint: #6ff3dc; --cyan: #22d3ee; --coral: #ff6b4a; --amber: #ffb547; --hot: #ff6b81;
   --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --round: "Nunito", "Inter", -apple-system, sans-serif;
   --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px);
@@ -62,7 +62,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 
 .card { position: relative; border-radius: 26px; border: 1px solid var(--edge); background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); padding: 18px; margin-bottom: 14px; }
 .h2 { display: flex; align-items: center; justify-content: space-between; margin: 22px 4px 10px; font: 800 19px/1.2 var(--font); }
-.h2 .more { font-size: 14px; font-weight: 700; color: var(--coral); background: none; border: 0; padding: 0; cursor: pointer; }
+.h2 .more { font-size: 14px; font-weight: 700; color: var(--mint); background: none; border: 0; padding: 0; cursor: pointer; }
 .sub { margin: 4px 0 0; color: var(--ink2); font-size: 15px; }
 .cap { margin: 10px 0 0; color: var(--mute); font-size: 13px; }
 
@@ -98,7 +98,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 .q .tag { display: inline-block; margin-left: 6px; font-size: 11.5px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: rgba(0, 0, 0, 0.25); vertical-align: 2px; }
 .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .btn { appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid var(--edge); background: var(--glass2); color: var(--ink); font-weight: 700; font-size: 15px; text-decoration: none; cursor: pointer; }
-.btn.pri { border: 0; color: #fff; background: linear-gradient(135deg, #ff5a3c, #ff9f43); box-shadow: 0 12px 24px -12px rgba(255, 90, 60, 0.8); }
+.btn.pri { border: 0; color: #0b1026; background: linear-gradient(135deg, var(--mint), var(--cyan)); box-shadow: 0 12px 24px -12px rgba(34, 211, 238, 0.7); }
 .btn.light { background: rgba(255, 255, 255, 0.92); color: #1b1546; border: 0; }
 .btn.ghost { background: rgba(0, 0, 0, 0.18); border: 0; color: #fff; }
 .btn.wide { width: 100%; height: 52px; font-size: 16px; }
@@ -110,8 +110,8 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 .bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 6px; }
 .bar .n { font-size: 12.5px; font-weight: 800; color: var(--ink2); min-height: 16px; }
 .bar .col { width: 100%; max-width: 30px; border-radius: 10px; background: rgba(255, 255, 255, 0.07); position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
-.bar .s { background: linear-gradient(180deg, #ff9f43, #ff5a3c); border-radius: 10px; }
-.bar .k { background: repeating-linear-gradient(135deg, rgba(255, 107, 74, 0.7) 0 4px, rgba(255, 107, 74, 0.25) 4px 8px); border-radius: 10px; }
+.bar .s { background: linear-gradient(180deg, var(--mint), var(--cyan)); border-radius: 10px; }
+.bar .k { background: repeating-linear-gradient(135deg, rgba(111, 243, 220, 0.75) 0 4px, rgba(111, 243, 220, 0.22) 4px 8px); border-radius: 10px; }
 .bar .d { font-size: 12px; color: var(--mute); font-weight: 700; }
 .bar.today .d { color: var(--ink); }
 .legend { display: flex; gap: 14px; margin-top: 12px; font-size: 13px; color: var(--ink2); }
@@ -141,7 +141,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 .foot button { background: none; border: 0; color: var(--ink2); font-weight: 700; text-decoration: underline; cursor: pointer; padding: 6px; font-size: 12.5px; }
 
 .lock { text-align: center; padding-top: 6vh; }
-.lock img { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 18px 40px -18px rgba(255, 90, 60, 0.9); }
+.lock img { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 18px 40px -18px rgba(34, 211, 238, 0.7); }
 .lock h1 { margin-top: 18px; }
 .lock .card { text-align: left; margin-top: 22px; }
 .field { width: 100%; height: 52px; border-radius: 14px; border: 1px solid var(--edge); background: rgba(0, 0, 0, 0.25); color: var(--ink); padding: 0 14px; font: 600 16px var(--font); margin-top: 12px; }
@@ -149,8 +149,8 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 
 .tabs { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--safe-b) + 12px); display: flex; gap: 4px; padding: 6px; border-radius: 999px; background: rgba(20, 18, 50, 0.78); border: 1px solid var(--edge); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 14px 34px -12px rgba(0, 0, 0, 0.6); z-index: 5; }
 .tab { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 86px; padding: 8px 12px; border-radius: 999px; background: none; border: 0; color: var(--mute); font-size: 12px; font-weight: 700; cursor: pointer; position: relative; }
-.tab[aria-selected="true"] { color: #ff8a65; background: rgba(255, 107, 74, 0.16); }
-.tab .badge { position: absolute; top: 3px; right: 18px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--coral); color: #fff; font-size: 11px; line-height: 18px; padding: 0 5px; }
+.tab[aria-selected="true"] { color: var(--mint); background: rgba(111, 243, 220, 0.14); }
+.tab .badge { position: absolute; top: 3px; right: 12px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--hot); color: #fff; font-size: 11px; line-height: 18px; padding: 0 5px; }
 
 .toast { position: fixed; left: 50%; bottom: calc(var(--safe-b) + 96px); transform: translate(-50%, 20px); opacity: 0; transition: 0.25s; background: #fff; color: #1b1546; font-weight: 700; padding: 12px 16px; border-radius: 14px; z-index: 9; max-width: 90vw; text-align: center; pointer-events: none; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
@@ -160,7 +160,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 .sheet h3 { margin: 0 0 6px; font: 800 21px/1.2 var(--font); }
 .nums { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 16px; }
 .num-b { height: 56px; border-radius: 16px; border: 1px solid var(--edge); background: var(--glass2); color: var(--ink); font: 900 22px var(--round); cursor: pointer; }
-.num-b[aria-pressed="true"] { background: linear-gradient(135deg, #ff5a3c, #ff9f43); border-color: transparent; color: #fff; }
+.num-b[aria-pressed="true"] { background: linear-gradient(135deg, var(--mint), var(--cyan)); border-color: transparent; color: #0b1026; }
 .btn.ok { background: rgba(52, 211, 153, 0.16); color: var(--green); border-color: transparent; }
 .rtag.ok { background: rgba(52, 211, 153, 0.18); color: var(--green); }
 .row.done { background: rgba(52, 211, 153, 0.07); }
@@ -170,6 +170,21 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 .state.on { background: rgba(52, 211, 153, 0.16); color: var(--green); }
 .msg { margin: 12px 0 0; font-size: 14px; color: var(--amber); }
 .nownote { margin: 12px 0 0; padding: 10px 12px; border-radius: 14px; background: rgba(255, 181, 71, 0.12); color: var(--amber); font-size: 14px; font-weight: 600; }
+.prefs { margin-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.pref { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); font-weight: 600; font-size: 15px; }
+.pref.col { flex-direction: column; align-items: stretch; }
+.pref:last-child { border-bottom: 0; }
+.sw { width: 52px; height: 32px; border-radius: 16px; border: 0; background: rgba(255, 255, 255, 0.16); position: relative; cursor: pointer; flex: none; transition: background 0.2s; }
+.sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 26px; height: 26px; border-radius: 50%; background: #fff; transition: transform 0.2s; }
+.sw[aria-checked="true"] { background: var(--green); }
+.sw[aria-checked="true"]::after { transform: translateX(20px); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 14px; background: rgba(0, 0, 0, 0.25); }
+.seg button { height: 38px; border: 0; border-radius: 11px; background: none; color: var(--ink2); font-weight: 700; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--glass2); color: var(--ink); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset; }
+.sel { height: 38px; border-radius: 11px; border: 1px solid var(--edge); background: rgba(0, 0, 0, 0.25); color: var(--ink); font: 700 15px var(--font); padding: 0 8px; }
+.stepper { display: inline-flex; align-items: center; gap: 4px; padding: 4px; border-radius: 14px; background: rgba(0, 0, 0, 0.25); }
+.stepper button { width: 38px; height: 34px; border-radius: 10px; border: 0; background: var(--glass2); color: var(--ink); font-size: 20px; font-weight: 700; cursor: pointer; }
+.stepper b { min-width: 34px; text-align: center; font: 900 20px var(--round); }
 :focus-visible { outline: 2.5px solid #ffb547; outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
@@ -223,7 +238,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     </section>
 
     <div class="tiles">
-      <a class="tile" id="tileClaude" target="_blank" rel="noopener"><span class="ti" style="background:linear-gradient(135deg,#ff5a3c,#ff9f43)"><svg class="ic" viewBox="0 0 24 24"><path d="M4.5 19.5h3.8L18.9 8.9a2.7 2.7 0 0 0-3.8-3.8L4.5 15.7z"/></svg></span>Ändra brev och jobb</a>
+      <a class="tile" id="tileClaude" target="_blank" rel="noopener"><span class="ti" style="background:linear-gradient(135deg,#f472b6,#db2777)"><svg class="ic" viewBox="0 0 24 24"><path d="M4.5 19.5h3.8L18.9 8.9a2.7 2.7 0 0 0-3.8-3.8L4.5 15.7z"/></svg></span>Ändra brev och jobb</a>
       <button class="tile" type="button" data-go="hemsidor"><span class="ti" style="background:linear-gradient(135deg,#7c6bff,#5b8cff)"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18.2l-1.8-5.6L4.5 10.8 10.2 9Z"/></svg></span><span id="tileWeb">Söks på hemsidan</span></button>
       <button class="tile" type="button" data-go="skickat"><span class="ti" style="background:linear-gradient(135deg,#1fbf75,#0e9b5e)"><svg class="ic" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>Rapporter</button>
     </div>
@@ -234,7 +249,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     <div class="h2"><span>Den här veckan</span><span class="ls" id="weekSum" style="font-size:13px;color:var(--mute);font-weight:700"></span></div>
     <section class="card">
       <div class="week" id="week"></div>
-      <div class="legend"><span><i style="background:linear-gradient(180deg,#ff9f43,#ff5a3c)"></i>Skickade</span><span><i style="background:repeating-linear-gradient(135deg,rgba(255,107,74,.7) 0 3px,rgba(255,107,74,.25) 3px 6px)"></i>I kön</span></div>
+      <div class="legend"><span><i style="background:linear-gradient(180deg,#6ff3dc,#22d3ee)"></i>Skickade</span><span><i style="background:repeating-linear-gradient(135deg,rgba(111,243,220,.75) 0 3px,rgba(111,243,220,.22) 3px 6px)"></i>I kön</span></div>
     </section>
   </section>
 
@@ -258,7 +273,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     <div class="h2"><span>Inställningar</span></div>
     <section class="card">
       <div class="rt">Påminnelser om rapporterna<span class="state" id="pushState">Av</span></div>
-      <p class="rs">Från den 1:a varje månad påminner appen dig om Försäkringskassan (senast den 7:e) och aktivitetsrapporten (senast den 14:e). Först två gånger om dagen, varannan timme de två sista dagarna och varje timme sista dagen. Det slutar när du bockar av rapporten under Skickat.</p>
+      <p class="rs">Från den 1:a varje månad påminner appen dig om Försäkringskassan (senast den 7:e) och aktivitetsrapporten (senast den 14:e), oftare ju närmare sista dagen. Det slutar när du bockar av rapporten under Skickat.</p>
       <div id="pushSetup">
         <div class="set-step"><span class="sn">1</span><div><div class="rt">Uppdatera din Cloudflare-worker</div><p class="rs">Det är samma worker som sköter GymSchemas påminnelser. Kopiera koden, öppna workern i Cloudflare, välj Edit code, markera allt, klistra in och tryck Deploy.</p><div class="btns"><button class="btn" type="button" id="copyWorker">Kopiera koden</button><a class="btn" href="https://dash.cloudflare.com/" target="_blank" rel="noopener">Öppna Cloudflare</a></div></div></div>
         <div class="set-step"><span class="sn">2</span><div style="flex:1;min-width:0"><div class="rt">Workerns adress</div><p class="rs">Den är redan ifylld. Det är samma adress som önskelistan använder.</p><input class="field" id="workerUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://….workers.dev" aria-label="Workerns adress"></div></div>
@@ -266,11 +281,27 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
       </div>
       <div id="pushOnBox" hidden><p class="rs" id="pushInfo" style="margin-top:12px"></p><div class="btns"><button class="btn" type="button" id="pushTest">Skicka en testnotis</button><button class="btn" type="button" id="pushOff">Stäng av</button></div></div>
       <p class="msg" id="pushMsg" hidden></p>
+      <div class="prefs">
+        <div class="pref"><span>Försäkringskassan</span><button class="sw" type="button" role="switch" aria-checked="true" data-pref="fk" aria-label="Påminn om Försäkringskassan"></button></div>
+        <div class="pref"><span>Aktivitetsrapporten</span><button class="sw" type="button" role="switch" aria-checked="true" data-pref="af" aria-label="Påminn om aktivitetsrapporten"></button></div>
+        <div class="pref"><span>Hemsidejobb dagen innan sista ansökningsdag</span><button class="sw" type="button" role="switch" aria-checked="true" data-pref="web" aria-label="Påminn om hemsidejobb"></button></div>
+        <div class="pref col"><span>Hur ofta</span><div class="seg" id="freqSeg"><button type="button" data-freq="lugnt">Lugnt</button><button type="button" data-freq="normalt">Normalt</button><button type="button" data-freq="ofta">Ofta</button></div><p class="cap" id="freqText" style="margin-top:4px"></p></div>
+        <div class="pref"><span>Påminn mellan</span><span><select class="sel" id="fromH" aria-label="Från klockan"></select> – <select class="sel" id="toH" aria-label="Till klockan"></select></span></div>
+      </div>
     </section>
     <section class="card">
-      <div class="rt">Nyckeln</div>
-      <p class="rs">Appen är upplåst i den här telefonen. Trycker du här låses den, och då behövs nyckeln från Claude igen.</p>
-      <div class="btns"><button class="btn" type="button" id="forgetKey">Lås appen</button></div>
+      <div class="rt">Autopiloten<span class="state" id="apState"></span></div>
+      <p class="rs">Autopiloten körs av Claude, så ändringarna här öppnar en Claude-chatt med texten klar. De syns i appen efter nästa uppdatering.</p>
+      <div class="prefs">
+        <div class="pref"><span>Ansökningar per dag</span><span class="stepper"><button type="button" id="apMinus" aria-label="Färre">−</button><b id="apN">6</b><button type="button" id="apPlus" aria-label="Fler">+</button></span></div>
+      </div>
+      <div class="btns"><button class="btn pri" type="button" id="apSave">Spara antalet</button><button class="btn" type="button" id="apToggle">Stäng av autopiloten</button></div>
+    </section>
+    <section class="card">
+      <div class="rt">Appen</div>
+      <p class="rs" id="appInfo"></p>
+      <div class="btns"><button class="btn" type="button" id="refresh2">Hämta det senaste</button><button class="btn" type="button" id="forgetKey">Lås appen</button></div>
+      <p class="cap">Låser du appen behövs nyckeln från Claude igen för att öppna den.</p>
     </section>
   </section>
 
@@ -422,8 +453,8 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
       navDone = true;
       var h = location.hash.replace("#", "");
       if (h && !/nyckel=/.test(h)) navTo(h);
-      var c = pushCfg(); if (c.on && (!c.synced || Date.now() - c.synced > 5 * 864e5)) pushSync(true);
     }
+    var c = pushCfg(); if (c.on && (!c.synced || c.lastAt !== d.at || Date.now() - c.synced > 5 * 864e5)) pushSync(true);
   }
   function render() {
     if (!data) return;
@@ -590,20 +621,28 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
         if (r.status === 409) throw err("taken"); if (r.status === 404 && j && j.error === "off") throw err("off"); if (r.status === 403 || (r.status === 404 && j && j.error === "path")) throw err("old"); if (!r.ok || !j) throw err("worker"); return j; }); },
         function (e) { if (e && e.code) throw e; throw err("net"); });
   }
+  var FREQ_TEXT = { lugnt: "En gång om dagen, två gånger dagen före sista dagen och var tredje timme sista dagen.", normalt: "Två gånger om dagen, varannan timme de två sista dagarna och varje timme sista dagen.", ofta: "Var tredje timme, varje timme de två sista dagarna och varje halvtimme sista dagen." };
+  function prefs(c) { c = c || pushCfg(); return { fk: c.fk !== false, af: c.af !== false, web: c.web !== false, freq: FREQ_TEXT[c.freq] ? c.freq : "normalt", from: c.from == null ? 8 : +c.from, to: c.to == null ? 22 : +c.to }; }
+  function slots(pr, d, last) {
+    var step = function (mins) { var out = []; for (var t = pr.from * 60; t <= pr.to * 60; t += mins) out.push(t); return out; };
+    var fixed = function (list) { var seen = {}; return list.map(function (t) { return Math.min(Math.max(t, pr.from * 60), pr.to * 60); }).filter(function (t) { if (seen[t]) return false; seen[t] = 1; return true; }); };
+    if (pr.freq === "lugnt") return d === last ? step(180) : d === last - 1 ? fixed([600, 1080]) : fixed([600]);
+    if (pr.freq === "ofta") return d === last ? step(30) : d >= last - 2 ? step(60) : step(180);
+    return d === last ? step(60) : d >= last - 2 ? step(120) : fixed([600, 1140]);
+  }
   function reminderEvents() {
-    var out = [], now = Date.now(), base = new Date(), done = reportsDone();
+    var out = [], now = Date.now(), base = new Date(), done = reportsDone(), pr = prefs();
     for (var k = 0; k < 3; k++) {
       var m0 = new Date(base.getFullYear(), base.getMonth() + k, 1), rk = repKey(m0), rd = done[rk] || {}, prev = M[(m0.getMonth() + 11) % 12], cur = M[m0.getMonth()];
       [["fk", 7], ["af", 14]].forEach(function (x) {
         var kind = x[0], last = x[1];
-        if (rd[kind]) return;
+        if (rd[kind] || !pr[kind]) return;
         for (var d = 1; d <= last; d++) {
-          var hours = d === last ? [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] : d >= last - 2 ? [8, 10, 12, 14, 16, 18, 20, 22] : [10, 19];
-          hours.forEach(function (h) {
-            var at = new Date(m0.getFullYear(), m0.getMonth(), d, h, 0, 0).getTime();
+          slots(pr, d, last).forEach(function (t) {
+            var at = new Date(m0.getFullYear(), m0.getMonth(), d, Math.floor(t / 60), t % 60, 0).getTime();
             if (at <= now + 60000) return;
             var lastDay = d === last;
-            out.push({ id: "jm-" + kind + "-" + rk + "-" + d + "-" + h, at: at, tag: "jm-" + kind + "-" + rk, url: "./#rapporter",
+            out.push({ id: "jm-" + kind + "-" + rk + "-" + d + "-" + t, at: at, tag: "jm-" + kind + "-" + rk, url: "./#rapporter",
               title: kind === "fk" ? "Försäkringskassan: ansök för " + prev : "Aktivitetsrapporten för " + prev,
               body: kind === "fk" ? (lastDay ? "Sista dagen i dag! Ansök i dag så kommer pengarna den 26:e. Bocka av i Jobbmotorn när du är klar." : "Senast den 7 " + cur + ", så kommer pengarna den 26:e. Bocka av i Jobbmotorn när du är klar.")
                 : (lastDay ? "Sista dagen i dag! Skicka in den och bocka av i Jobbmotorn." : "Senast den 14 " + cur + ". Skicka in den och bocka av i Jobbmotorn när du är klar.") });
@@ -611,11 +650,21 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
         }
       });
     }
+    if (pr.web && data && data.web) data.web.forEach(function (j) {
+      if (!j.deadline) return;
+      var dl = parseYmd(j.deadline);
+      [[-1, 18], [0, 10]].forEach(function (x) {
+        var h = Math.min(Math.max(x[1], pr.from), pr.to), at = new Date(dl.getFullYear(), dl.getMonth(), dl.getDate() + x[0], h, 0, 0).getTime();
+        if (at <= now + 60000) return;
+        out.push({ id: ("jm-w" + x[0] + "-" + j.id).slice(0, 60), at: at, tag: ("jm-w-" + j.id).slice(0, 40), url: "./#hemsidor",
+          title: (x[0] ? "Sista dag i morgon: " : "Sista dag i dag: ") + short(j.company), body: j.title + ". Tryck på jobbet under Hemsidor, så söker Claude det åt dig." });
+      });
+    });
     return out.sort(function (a, b) { return a.at - b.at; }).slice(0, 400);
   }
   function pushSync(quiet) {
     var c = pushCfg(); if (!c.on || !c.sub) return Promise.resolve();
-    return api(c, "/push/jm/save", { sub: c.sub, events: reminderEvents() }).then(function (j) { c.n = j.n; c.synced = Date.now(); savePush(c); paintPush(); },
+    return api(c, "/push/jm/save", { sub: c.sub, events: reminderEvents() }).then(function (j) { var c2 = pushCfg(); c2.n = j.n; c2.synced = Date.now(); c2.lastAt = data && data.at; savePush(c2); paintPush(); },
       function (e) { if (!quiet) throw e; });
   }
   function showPushMsg(code) { var m = $("pushMsg"); m.textContent = code ? (PUSH_MSG[code] || "Något gick fel (" + code + ").") : ""; m.hidden = !code; }
@@ -624,6 +673,17 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     $("pushState").textContent = on ? "På" : "Av"; $("pushState").className = "state" + (on ? " on" : "");
     $("pushSetup").hidden = on; $("pushOnBox").hidden = !on;
     if (!$("workerUrl").value) $("workerUrl").value = c.url || WORKER;
+    var pr = prefs(c);
+    document.querySelectorAll("[data-pref]").forEach(function (b) { b.setAttribute("aria-checked", String(!!pr[b.getAttribute("data-pref")])); });
+    document.querySelectorAll("[data-freq]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-freq") === pr.freq)); });
+    $("freqText").textContent = FREQ_TEXT[pr.freq];
+    if (!$("fromH").options.length) { for (var h = 5; h <= 13; h++) $("fromH").add(new Option(String(h).padStart(2, "0") + ":00", h)); for (var h2 = 17; h2 <= 23; h2++) $("toH").add(new Option(String(h2).padStart(2, "0") + ":00", h2)); }
+    $("fromH").value = String(pr.from); $("toH").value = String(pr.to);
+    var apOn = !!(data && data.auto && data.auto.on);
+    $("apState").textContent = apOn ? "På" : "Av"; $("apState").className = "state" + (apOn ? " on" : "");
+    if (apN == null) apN = (data && data.auto && data.auto.perDay) || 6;
+    $("apN").textContent = apN; $("apToggle").textContent = apOn ? "Stäng av autopiloten" : "Slå på autopiloten";
+    $("appInfo").textContent = data && data.at ? "Senast uppdaterad " + dayLabel(new Date(data.at), new Date()).toLowerCase() + " kl " + hhmm(new Date(data.at)) + ". Morgonkörningen uppdaterar appen varje dag efter 07:17." : "";
     if (on) { var ev = reminderEvents()[0]; $("pushInfo").textContent = ev ? "Nästa påminnelse: " + dayLabel(new Date(ev.at), new Date()).toLowerCase() + " kl " + hhmm(new Date(ev.at)) + "." : "Inga påminnelser kvar just nu. Allt är avbockat."; }
   }
   function pushOn() {
@@ -644,6 +704,17 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
       .then(function () { $("pushOn").disabled = false; $("pushOn").textContent = "Slå på påminnelser"; paintPush(); });
   }
   $("pushOn").addEventListener("click", pushOn);
+  var apN = null;
+  function setPref(k, v) { var c = pushCfg(); c[k] = v; savePush(c); paintPush(); if (c.on) pushSync(false).then(function () { toast("Sparat"); }, function (e) { showPushMsg(e.code); }); }
+  document.querySelectorAll("[data-pref]").forEach(function (b) { b.addEventListener("click", function () { var k = b.getAttribute("data-pref"); setPref(k, !prefs()[k]); }); });
+  document.querySelectorAll("[data-freq]").forEach(function (b) { b.addEventListener("click", function () { setPref("freq", b.getAttribute("data-freq")); }); });
+  $("fromH").addEventListener("change", function () { setPref("from", +$("fromH").value); });
+  $("toH").addEventListener("change", function () { setPref("to", +$("toH").value); });
+  $("apMinus").addEventListener("click", function () { apN = Math.max(1, (apN || 6) - 1); $("apN").textContent = apN; });
+  $("apPlus").addEventListener("click", function () { apN = Math.min(15, (apN || 6) + 1); $("apN").textContent = apN; });
+  $("apSave").addEventListener("click", function () { openClaude("Ändra antalet ansökningar per dag i min app Jobbmotorn (" + APP_URL + ") till " + apN + ": sätt auto.perDay till " + apN + " och auto.perWeek till " + (apN * 7) + " i settings/profile.", "Texten är kopierad. Skicka den i Claude."); });
+  $("apToggle").addEventListener("click", function () { var on = !!(data && data.auto && data.auto.on); openClaude(autoText(!on), "Texten är kopierad. Skicka den i Claude."); });
+  $("refresh2").addEventListener("click", function () { load(); toast("Hämtar…"); });
   $("pushTest").addEventListener("click", function () { showPushMsg(""); api(pushCfg(), "/push/jm/test", {}).then(function (j) { toast(j.ok ? "Testnotisen är skickad" : "Apple svarade " + j.status + "."); }, function (e) { showPushMsg(e.code); }); });
   $("pushOff").addEventListener("click", function () { var c = pushCfg(); api(c, "/push/jm/off", {}).catch(function () {}).then(function () { c.on = false; savePush(c); paintPush(); toast("Påminnelserna är av"); }); });
   $("copyWorker").addEventListener("click", function () {
