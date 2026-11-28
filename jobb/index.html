@@ -173,7 +173,7 @@ h1 { font: 800 34px/1.04 var(--font); letter-spacing: -0.028em; margin: 0; }
     <div class="when"><b id="runDay"></b><span id="runLeft"></span></div>
     <p class="sub">Claude letar nya jobb och skickar ansökningarna som står på tur i kön, även lördag och söndag.</p>
     <a class="btn pri big" href="https://claude.ai/artifact/8tuPdqq1A4iHd8CLcqs3hx" target="_blank" rel="noopener">Öppna Jobbmotorn</a>
-    <p class="cap">Öppnas i Claude. Där ser du kön och kan läsa, ändra eller stoppa en ansökan innan den går.</p>
+    <p class="cap">Öppnas i Claude. Där finns autopiloten och kön, och du kan läsa, ändra eller stoppa en ansökan innan den går.</p>
   </section>
 
   <section class="card" aria-labelledby="webTitle">
@@ -342,21 +342,23 @@ h1 { font: 800 34px/1.04 var(--font); letter-spacing: -0.028em; margin: 0; }
     copy(APPLY_PROMPT).then(function (ok) { if (ok) toast("Instruktionen är kopierad"); });
   });
 
+  // I webbläsaren är det första man ska göra att lägga appen på hemskärmen, så rutan flyttas upp under rubriken
+  function showInstall() { var box = $("install"), head = document.querySelector("main > .head"); if (head && head.nextElementSibling !== box) head.after(box); box.hidden = false; }
   function renderInstall() {
     var ua = navigator.userAgent || "";
     var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     var standalone = navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
     if (standalone) { $("install").hidden = true; return; }
     if (ios) {
-      $("installText").innerHTML = "Tryck på Dela " + IC.share + " i Safari och välj <b>Lägg till på hemskärmen</b>. Har du en gammal Jobbmotorn-ikon, ta bort den först så får du den nya.";
-      $("install").hidden = false;
+      $("installText").innerHTML = "Ikonen öppnar Jobbmotorn med autopiloten direkt. Tryck på Dela " + IC.share + " här i Safari och välj <b>Lägg till på hemskärmen</b>. Har du en gammal Jobbmotorn-ikon, ta bort den först.";
+      showInstall();
     }
   }
   var deferred = null;
   window.addEventListener("beforeinstallprompt", function (e) {
     e.preventDefault(); deferred = e;
-    $("installText").textContent = "Installera Jobbmotorn som en app, så ligger den bland dina andra appar.";
-    $("installBtns").hidden = false; $("install").hidden = false;
+    $("installText").textContent = "Installera Jobbmotorn som en app. Ikonen öppnar autopiloten direkt.";
+    $("installBtns").hidden = false; showInstall();
   });
   $("installBtn").addEventListener("click", function () {
     if (!deferred) return;
