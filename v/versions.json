@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "f1ed6cf",
+   "ts": 202611272338,
+   "build": "27 nov 23.38",
+   "date": "27 nov 23.41",
+   "title": "GymSchema: AI-coachen – chatta med Claude i appen"
+  },
+  {
    "id": "d96c2e8",
    "ts": 202611272230,
    "build": "27 nov 22.30",
@@ -76,13 +83,6 @@
    "build": "27 nov 13.21",
    "date": "27 nov 13.48",
    "title": "Bild på varje övning och varje block, och Passet i bilder"
-  },
-  {
-   "id": "d3ad3fc",
-   "ts": 202611262246,
-   "build": "26 nov 22.46",
-   "date": "26 nov 23.09",
-   "title": "Teknikbladet, bild och video på alla byten, Ångra för uppvärmningen"
   }
  ]
 }

@@ -5327,6 +5327,86 @@ p.ai-fine{font-size:13.5px}
 :root[data-theme="dark"] .ai-send.stop{background:#FF5348;color:#fff}
 :root[data-theme="dark"] .ai-menu{background:#121419}
 :root[data-theme="dark"] .ai-err{background:#3A1D1F;color:#FFB4AE}
+
+/* ---------- Igår (lr25): knappen i veckorutan och dagvyn – i båda stilarna (A ljust, B mörkt) ---------- */
+#strip{position:relative}
+#strip .dg-btn{position:absolute;top:8px;right:10px;z-index:1;height:32px;padding:0 13px 0 11px;border:0;border-radius:999px;display:inline-flex;align-items:center;gap:4px;font:inherit;font-size:13.5px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer;background:var(--card,#fff);color:var(--ink)}
+#strip .dg-btn::before{content:"";position:absolute;inset:-6px -4px}   /* 44 px att träffa */
+#strip .dg-btn > span[aria-hidden]{font-size:19px;font-weight:700;margin-top:-2px}
+#strip .dg-btn .dg-bn{font-weight:700}
+:root[data-theme="light"] #strip .dg-btn{background:#fff;color:#111214;box-shadow:0 0 0 2px #111214}
+:root[data-theme="light"] #strip .dg-btn.night{background:var(--yellow,#FFC83D);box-shadow:0 0 0 2px #111214,2px 2px 0 2px #111214}
+:root[data-theme="dark"] #strip .dg-btn{background:#262A33;color:#F3F4F6;box-shadow:inset 0 0 0 1px #3A404B}
+:root[data-theme="dark"] #strip .dg-btn.night{background:var(--day,#FFC93E);color:#0B0C0F;box-shadow:0 0 14px color-mix(in srgb,var(--day,#FFC93E) 35%,transparent)}
+@media (max-width:359px){#strip .dg-btn{padding:0 10px 0 9px;font-size:12.5px}}
+
+/* dagvyn */
+.dg-ov .sh-in{display:flex;flex-direction:column;gap:12px;max-width:640px;margin:0 auto}
+.dg-ov .sh-top b{font-size:15px}
+.dg-nav{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:8px}
+.dg-nt{text-align:center;min-width:0}
+.dg-nt .h2{margin:0;font-size:26px;line-height:1.1}
+.dg-nt .lead{margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dg-ar{width:44px;height:44px;border:0;border-radius:50%;display:grid;place-items:center;font:inherit;font-size:26px;font-weight:700;line-height:1;cursor:pointer;background:var(--card,#fff);color:var(--ink);padding:0 0 3px}
+.dg-ar:disabled{opacity:.3;cursor:default}
+.dg-sum{display:flex;flex-direction:column;gap:7px}
+.dg-sum .num{font-size:15px}
+.dg-sum .num b{font-size:20px}
+.dg-sum .at-bar{display:block;height:8px;border-radius:999px;overflow:hidden;background:color-mix(in srgb,var(--ink) 12%,transparent)}
+.dg-sum .at-bar i{display:block;height:100%;border-radius:inherit;background:var(--green,#1DB954)}
+.dg-gym{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:14px;margin:0}
+.dg-ab{flex:0 0 44px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:15px;background:var(--c);color:var(--onc,#111214)}
+.dg-gt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;text-align:left}
+.dg-gt b{font-size:16.5px;line-height:1.2}
+.dg-gt small{font-size:13.5px;color:var(--muted)}
+.dg-gym.ok .dg-gt small{color:var(--green,#1DB954);font-weight:700}
+.dg-gb{flex:1 1 100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.dg-lnk{border:0;background:none;padding:10px 0;font:inherit;font-size:14px;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-align:left}
+.dg-other{align-self:flex-start;color:var(--muted)}
+.dg-card{margin:0}
+.dg-hab,.dg-efrow{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;margin:0;border:0;font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.dg-chev{font-size:26px;line-height:1;color:var(--muted)}
+.dg-foot{margin:0;text-align:center;color:var(--muted)}
+.dg-back{align-self:stretch}
+:root[data-theme="light"] .dg-ar{box-shadow:0 0 0 2px #111214}
+:root[data-theme="light"] .dg-gym,:root[data-theme="light"] .dg-hab,:root[data-theme="light"] .dg-efrow{background:#fff}
+:root[data-theme="dark"] .dg-ar{background:#1B1E24;box-shadow:inset 0 0 0 1px #2C313A}
+:root[data-theme="dark"] .dg-gym,:root[data-theme="dark"] .dg-hab,:root[data-theme="dark"] .dg-efrow{background:#1B1E24}
+.sheet .dg-efrow{margin:12px 0 4px}
+
+/* Ta med till i dag (i vyn) */
+.dg-take{display:flex;flex-direction:column;gap:12px;padding:16px;margin:0}
+.dg-take .dg-gt b{font-size:18px}
+.dg-chips{display:flex;flex-wrap:wrap;gap:8px}
+.dg-chip{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 14px 0 8px;border:0;border-radius:999px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;color:var(--ink);background:color-mix(in srgb,var(--ink) 7%,transparent)}
+.dg-chip small{font-weight:600;color:var(--muted)}
+.dg-ck{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:900;box-shadow:inset 0 0 0 2px var(--c,var(--ink));color:#fff}
+.dg-chip[aria-pressed="true"] .dg-ck{background:var(--c,var(--ink));box-shadow:none}
+.dg-chip[aria-pressed="false"]{opacity:.62}
+.dg-tb{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.dg-tb .btn{flex:1 1 auto}
+.dg-tnote{margin:0;color:var(--muted)}
+:root[data-theme="light"] .dg-take{background:#fff}
+:root[data-theme="light"] .dg-take.on{box-shadow:0 0 0 2.5px #111214,4px 4px 0 2.5px var(--yellow,#FFC83D)}
+:root[data-theme="dark"] .dg-take{background:#1B1E24}
+:root[data-theme="dark"] .dg-take.on{box-shadow:inset 0 0 0 1.5px var(--day,#FFC93E)}
+
+/* Extra i dag (överst i Atlet idag) – stort, bara den dagen */
+.dg-ex{margin:14px 0 16px;padding:16px 14px 8px;border-radius:22px}
+.dg-exh{display:flex;flex-direction:column;gap:3px;margin-bottom:4px}
+.dg-exl{align-self:flex-start;font-size:12.5px;font-weight:900;letter-spacing:.02em;padding:4px 10px;border-radius:999px;margin-bottom:4px}
+.dg-exh b{font-size:25px;line-height:1.1;font-weight:900;letter-spacing:-.01em}
+.dg-exh small{font-size:14px;color:var(--muted)}
+.dg-exh .at-bar{display:block;height:8px;border-radius:999px;overflow:hidden;margin-top:8px;background:color-mix(in srgb,var(--ink) 12%,transparent)}
+.dg-exh .at-bar i{display:block;height:100%;border-radius:inherit;background:var(--green,#1DB954)}
+.dg-ex .at-blocks{margin-top:6px}
+.dg-exf{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px}
+.dg-exdel{color:var(--muted)}
+:root[data-theme="light"] .dg-ex{background:#FFF6DA;box-shadow:0 0 0 2.5px #111214,4px 4px 0 2.5px #111214}
+:root[data-theme="light"] .dg-exl{background:#111214;color:var(--yellow,#FFC83D)}
+:root[data-theme="dark"] .dg-ex{background:#20242C;box-shadow:inset 0 0 0 1.5px var(--day,#FFC93E),0 0 22px color-mix(in srgb,var(--day,#FFC93E) 18%,transparent)}
+:root[data-theme="dark"] .dg-exl{background:var(--day,#FFC93E);color:#0B0C0F}
+.dg-ex.alldone .dg-exh b{color:var(--green,#1DB954)}
 </style>
 
 <div class="app">
@@ -10150,7 +10230,7 @@ function sjLoad(){
   // Första gången. Schemat sköts fram en dag lördag 21 nov 2026. Den som redan körde programmet då (appen uppdateras från en äldre
   // version) får med den dagen. En ny installation börjar på grundschemat.
   let prev = null; try { prev = localStorage.getItem("gymschema.build"); } catch(e){}
-  sjL = prev && prev !== "27 nov 23.38" ? ["2026-11-21"] : [];
+  sjL = prev && prev !== "28 nov 02.00" ? ["2026-11-21"] : [];
   sjFresh = sjL.length > 0;
   sjStore();
   return sjL;
@@ -11321,6 +11401,7 @@ document.addEventListener("input", e => { const f = e.target && e.target.dataset
 const GU = [
   ["Pass", [
     ["✦", "AI-coachen", "Fråga om passet, tekniken, maten eller sömnen – och be den byta en övning, fylla i set, ändra set och reps eller flytta ett pass. Varje ändring visas först, och du trycker Gör det. Kräver en Claude API-nyckel, som bara sparas på telefonen.", "pass", "#aiCmd", "", "Tryck Fråga coachen i appen under Framsteg → Coachen."],
+    ["‹", "Igår", "Se hela gårdagen igen – gympasset, alla block med övningarna och vanorna – och bocka av det du gör i efterhand; det räknas på den dagen. Ta med till i dag lägger blocken överst på Idag som ett stort extra-block, bara den dagen. Pilarna bläddrar bakåt en vecka.", "pass", "#strip .dg-btn", "", "Knappen ‹ Igår sitter i veckorutan på Idag."],
     ["🎯", "Rutorna högst upp", "Den stora rutan är dagens pass i passets färg, och den runda knappen startar Kör passet. Under den: hur mycket som är klart, nästa set, Atlet i dag och hur länge passet tar. Varje flik har sina egna rutor.", "pass", "#rgHero"],
     ["🧭", "Kapitelraden", "De långa flikarna – Pass, Vanor och Framsteg – har en rad med kapitel under rutorna. Den följer med överst när du rullar och visar var du är. Ett tryck hoppar dit. Trycker du på fliken du redan står i åker du högst upp.", "pass", "#kapBar"],
     ["✎", "Anteckna", "Tryck på datumet högst upp, i vilken flik som helst, och skriv en rad till dig själv. Den sparas med tid och flik, följer med i backupen och i texten till Coachen.", "pass", "#rgDate"],
@@ -19703,6 +19784,7 @@ atCoachLines = (f => function(){
 /* ===== 87: Nytt i appen ===== */
 // [datum, rubrik, [sakernas namn i Allt …]] – nyast först. Namnen ska finnas i guiden; ett som saknas visas utan knapp.
 const Q17_NYTT = [
+  ["28 nov", "Igår: se hela gårdagen igen och bocka av det du missade – eller ta med det till i dag som ett stort extra-block. Knappen ‹ Igår sitter i veckorutan på Idag", ["Igår"]],
   ["27 nov", "AI-coachen: fråga om passet, tekniken eller maten – och be den byta en övning, fylla i set eller flytta ett pass. Du godkänner varje ändring", ["AI-coachen"]],
   ["27 nov", "Sittande lårcurl i stället för rumänska marklyften i benpasset. Marklyften står som pausad under Ändra programmet", ["Ändra programmet"]],
   ["27 nov", "Ny look: Gymaffisch på dagen och Kvällspass på kvällen – en viktskiva överst på varje flik", ["Mörkt läge"]],
@@ -23830,6 +23912,8 @@ function aiContext(){
   try {
     const day = atDay(t);
     if (day && day.blocks.length) L.push("", "ATLET I DAG (" + day.label + "; block-id: namn – minuter – klart): " + day.blocks.map(b => { const c = atBlkCount(b, td); return b.id + ": " + b.name + " – " + (b.min || 0) + " min – " + (c[1] && c[0] >= c[1] ? "klart" : c[0] ? c[0] + " av " + c[1] : "inte gjort"); }).join("; ") + ".");
+    const yd = addDays(t, -1), yds = iso(yd), yday = yd >= START ? atDay(yd) : null;
+    if (yday && yday.blocks.length) L.push("ATLET IGÅR (" + yds + ", " + yday.label + "; bocka med mark_block och date " + yds + "): " + yday.blocks.map(b => { const c = atBlkCount(b, yds); return b.id + ": " + b.name + " – " + (c[1] && c[0] >= c[1] ? "klart" : c[0] ? c[0] + " av " + c[1] : "inte gjort"); }).join("; ") + ".");
   } catch(e){}
   try {
     L.push("VANOR I DAG (nyckel: namn – klar): " + HABITS.filter(hb => hb.ai !== 0 && habitOn(td, hb)).map(hb => hb.k + ": " + (hb.auto ? "Dagens träning" : hb.n) + " – " + (habitDone(td, hb) ? "ja" : "nej")).join("; ") + ".");
@@ -24478,6 +24562,192 @@ if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window._
   aiRun: (n, a) => AI_TOOLS[n].run(a), aiOpen: t => aiOpen(t), aiMd: t => aiMd(t)
 });
 
+/* ---------- Igår: hela dagen igen (28 nov 2026, lr25) ----------
+   Filip 28 nov 01.37: "Ja vill kunna se hela dagen igår igen för missade göra övningar ska göra de nu … man måste kunna gå bak och kolla
+   förut, i alla fall en dag". Dagvyn visar en dag som varit – igår, och bakåt en vecka: gympasset (sparat, eller Logga i efterhand),
+   alla Atlet-block med övningarna (det du bockar räknas på den dagen) och vanorna den dagen.
+   Ingångar: ‹ Igår i veckorutan på Idag (efter midnatt med hur mycket som är klart), och Se hela dagen överst i Logga i efterhand.
+   Filip 01.53: "D tar jag missade måste vara med idag lördag som extra stort bara just denna dag" – Ta med till i dag: blocken du väljer
+   ligger överst i Atlet idag som ett stort extra-block, bara den dagen. Bockarna räknas på dagen de hörde till.
+   01.57: "ja kanske inte alltid kryssar in det ja missade … ja vill att allt ska synas" – alla block är med från början (inte bara de
+   obockade, han bockar inte alltid), och i vyn och extran är blocken utfällda så att varje övning syns direkt. */
+const DG_MAX = 6;   // så många dagar bakåt
+let dgDate = null;
+const dgYest = () => iso(addDays(today(), -1));
+const dgMin = () => { const m = iso(addDays(today(), -DG_MAX)), s = iso(START); return m > s ? m : s; };
+const dgCan = ds => !!ds && /^\d{4}-\d{2}-\d{2}$/.test(ds) && ds < iso(today()) && ds >= dgMin();
+const dgTitle = ds => ds === dgYest() ? "Igår" : rgCap(efWhen(ds));   // "I torsdags"
+// Det som går att bocka den dagen: Atlet-blocken (gympasset räknas i blocket med passet)
+function dgCount(ds){
+  try { const c = atDayCount(atDay(ds)); return {a: c[0], n: c[1]}; } catch(e){ return {a: 0, n: 0}; }
+}
+const dgGymSaved = ds => sessions.filter(s => s.date === ds);
+const dgGymMissed = ds => { const k = gymOn(parseIso(ds)); return k && PROGRAM[k] && !dgGymSaved(ds).length ? k : null; };
+// Efter midnatt (före kl 5) är gårdagen ofta inte slut för dig – då står det på knappen hur mycket som är klart
+const dgNight = () => new Date().getHours() < 5;
+function dgGymHTML(ds){
+  const saved = dgGymSaved(ds), k = gymOn(parseIso(ds)), lateNow = !!(draft && draft.late && draft.date === ds);
+  if (saved.length) return saved.map(s => { const p = PROGRAM[s.type]; return p ? '<div class="card dg-gym ok" style="' + sessColor(s.type) + '"><span class="dg-ab" aria-hidden="true">' + esc(p.ab) + '</span><span class="dg-gt"><b>' + esc(p.name) + '</b><small>' + (s.bare ? "Sparat som kört, utan set" : "Passet är sparat") + ' ✓</small></span><a class="exlink" href="#historik">Historik →</a></div>' : ''; }).join("");
+  if (lateNow && PROGRAM[draft.type]) return '<div class="card dg-gym" style="' + sessColor(draft.type) + '"><span class="dg-ab" aria-hidden="true">' + esc(PROGRAM[draft.type].ab) + '</span><span class="dg-gt"><b>' + esc(PROGRAM[draft.type].name) + '</b><small>Du loggar det i efterhand just nu</small></span><button type="button" class="btn sm" data-dg="topass">Till passet</button></div>';
+  if (k && PROGRAM[k]) return '<div class="card dg-gym miss" style="' + sessColor(k) + '"><span class="dg-ab" aria-hidden="true">' + esc(PROGRAM[k].ab) + '</span><span class="dg-gt"><b>' + esc(PROGRAM[k].name) + '</b><small>Gympasset är inte sparat</small></span>' +
+    '<div class="dg-gb"><button type="button" class="btn sm" data-dg="late" data-k="' + k + '">Logga passet i efterhand</button><button type="button" class="dg-lnk" data-dg="ef">Annat pass, eller bara Kört →</button></div></div>';
+  return '<button type="button" class="dg-lnk dg-other" data-dg="ef">Körde du ett gympass ' + efWhen(ds) + '? Logga det i efterhand →</button>';
+}
+// Blocken för en dag som varit. "Öppna passet →" i ett gymblock går till dagens pass – en dag som varit loggas i efterhand i stället.
+function dgBlocksHTML(day){
+  const miss = dgGymMissed(day.date);
+  // allt ska synas: blocken är utfällda tills du själv fäller ihop dem
+  day.blocks.forEach(b => { const k = day.date + "|" + b.id; if (atOpen[k] == null) atOpen[k] = true; });
+  return atBlocksHTML(day, "dag").replace(/<a class="exlink" href="#pass">[^<]*<\/a>/g, () => miss ? '<button type="button" class="at-bcheck" data-dg="late" data-k="' + miss + '" data-d="' + day.date + '">Logga passet i efterhand</button>' : '');
+}
+/* ----- Ta med till i dag: ett extra-block överst i Atlet idag, bara den dagen ----- */
+const DG_EX_KEY = "gymschema.dgextra.v1";
+const DG_NOEX = ["uppv_ben"].concat(AT_GYMB);   // gympasset och uppvärmningen inför det loggas i efterhand, inte som extra
+// Extran gäller bara dagen den lades: i morgon är den borta av sig själv
+function dgEx(){
+  const x = store(DG_EX_KEY);
+  return x && typeof x === "object" && x.d === iso(today()) && typeof x.from === "string" && Array.isArray(x.b) && x.b.length && x.from < x.d ? x : null;
+}
+// Alla dagens block kan tas med (utom gympasset) – och alla är valda från början: det som inte är bockat är inte alltid ogjort, men allt ska synas
+const dgTakeBlocks = ds => atDay(ds).blocks.filter(b => DG_NOEX.indexOf(b.id) < 0);
+let dgPick = null, dgPickFor = null;   // valda block i vyn (id:n) och för vilken dag
+function dgPickInit(ds){
+  if (dgPickFor === ds && dgPick) return;
+  const x = dgEx();
+  dgPick = x && x.from === ds ? x.b.slice() : dgTakeBlocks(ds).map(b => b.id); dgPickFor = ds;
+}
+function dgTakeHTML(ds){
+  const x = dgEx(), mine = !!(x && x.from === ds), list = dgTakeBlocks(ds);
+  if (!list.length) return '';
+  dgPickInit(ds);
+  const n = dgPick.filter(id => list.some(b => b.id === id)).length;
+  const chips = list.map(b => { const c = atBlkCount(b, ds), on = dgPick.indexOf(b.id) >= 0; return '<button type="button" class="dg-chip" data-dg="pick" data-b="' + b.id + '" aria-pressed="' + on + '" style="--c:var(--at-' + b.cat + ')"><span class="dg-ck" aria-hidden="true">' + (on ? "✓" : "") + '</span>' + esc(b.name) + ' <small class="num">' + c[0] + '/' + c[1] + '</small></button>'; }).join("");
+  const other = x && !mine ? '<p class="small dg-tnote">I dag ligger redan ' + esc(efDagen(x.from)) + 's block som extra – tar du med de här byts de ut.</p>' : '';
+  return '<div class="card dg-take' + (mine ? ' on' : '') + '"><div class="dg-gt"><b>' + (mine ? 'Ligger överst på Idag i dag ✓' : 'Ta med till i dag') + '</b><small>' +
+    (mine ? 'Blocken du valt står som extra överst i Atlet idag – bara i dag. Bockarna räknas på ' + esc(efDagen(ds)) + '.' : 'Hela dagen hamnar överst på Idag som ett extra-block – bara i dag. Tryck bort det du inte vill ha med. Bockarna räknas på ' + esc(efDagen(ds)) + '.') + '</small></div>' +
+    '<div class="dg-chips">' + chips + '</div>' + other +
+    '<div class="dg-tb"><button type="button" class="btn" data-dg="take"' + (n ? '' : ' disabled') + '>' + (mine ? 'Spara ändringen' : 'Lägg ' + n + ' block överst i dag') + '</button>' +
+    (mine ? '<button type="button" class="dg-lnk" data-dg="exdel">Ta bort från i dag</button>' : '') + '</div></div>';
+}
+function dgExHTML(){
+  const x = dgEx(); if (!x) return "";
+  const day = atDay(x.from), bl = day.blocks.filter(b => x.b.indexOf(b.id) >= 0); if (!bl.length) return "";
+  let a = 0, n = 0; bl.forEach(b => { const c = atBlkCount(b, x.from); a += c[0]; n += c[1]; });
+  const done = n > 0 && a >= n, pct = n ? Math.round(a / n * 100) : 0;
+  return '<div class="dg-ex' + (done ? ' alldone' : '') + '" id="dgEx"><div class="dg-exh"><span class="dg-exl">Extra i dag</span>' +
+    '<b>' + (done ? esc(rgCap(efDagen(x.from))) + ' är ikapp ✓' : 'Det du missade ' + esc(efWhen(x.from))) + '</b>' +
+    '<small>' + esc(efDay(x.from)) + ' · <span class="num">' + a + ' av ' + n + '</span> klart · bockarna räknas på ' + esc(efDagen(x.from)) + '</small>' +
+    '<span class="at-bar"><i style="width:' + pct + '%"></i></span></div>' +
+    dgBlocksHTML({key: day.key, date: day.date, wd: day.wd, label: day.label, blocks: bl}) +
+    '<div class="dg-exf"><button type="button" class="dg-lnk" data-dg="open" data-d="' + x.from + '">Hela ' + esc(efDagen(x.from)) + ' →</button><button type="button" class="dg-lnk dg-exdel" data-dg="exdel">Ta bort extran</button></div></div>';
+}
+atCardHTML = (f => function(){
+  let h = f.apply(this, arguments);
+  try { const x = dgExHTML(); if (x){ const i = h.indexOf('<ol class="at-blocks">'); h = i >= 0 ? h.slice(0, i) + x + h.slice(i) : h.replace(/<\/section>$/, () => x + '</section>'); } } catch(e){}
+  return h;
+})(atCardHTML);
+function dgHTML(ds){
+  const d = parseIso(ds), day = atDay(d), m = atHeadMeta(day), prev = iso(addDays(d, -1)), next = iso(addDays(d, 1));
+  const blocks = day.blocks.length ? dgBlocksHTML(day) : '<p class="lead">Inga block den dagen.</p>';
+  const sc = dayScore(ds), tot = dayTotal(ds);
+  return '<div class="sh-top"><b>' + esc(dgTitle(ds)) + '</b><button type="button" class="sh-x" data-dg="close" aria-label="Stäng – tillbaka till idag">×</button></div>' +
+    '<div class="dg-nav"><button type="button" class="dg-ar" data-dg="prev" aria-label="Dagen före"' + (dgCan(prev) ? '' : ' disabled') + '>‹</button>' +
+      '<div class="dg-nt"><h2 class="h2" id="dgName">' + esc(efDay(ds)) + '</h2><div class="lead">' + esc(day.label) + (day.blocks.length ? ' · ca ' + atDayMin(day) + ' min' : '') + '</div></div>' +
+      '<button type="button" class="dg-ar" data-dg="next" aria-label="Dagen efter"' + (dgCan(next) ? '' : ' disabled') + '>›</button></div>' +
+    (m.c[1] ? '<div class="dg-sum"><span class="num"><b>' + m.c[0] + '</b> av ' + m.c[1] + ' klart</span><span class="at-bar"><i style="width:' + m.pct + '%"></i></span></div>' : '') +
+    dgGymHTML(ds) + dgTakeHTML(ds) +
+    (day.blocks.length ? '<div class="card at-card at-daycard dg-card">' + blocks + '</div>' : blocks) +
+    '<button type="button" class="card dg-hab" data-dg="vanor"><span class="dg-gt"><b>Vanorna ' + efWhen(ds) + '</b><small>' + sc + ' av ' + tot + ' bockade</small></span><span class="dg-chev" aria-hidden="true">›</span></button>' +
+    '<p class="small dg-foot">Det du bockar här räknas på ' + esc(efDayL(ds)) + '.</p>' +
+    '<button type="button" class="btn ghost dg-back" data-dg="close">Tillbaka till idag</button>';
+}
+function dgOpen(ds){
+  ds = ds || dgYest(); if (!dgCan(ds)) return false;
+  dgDate = ds; dgPick = null; dgPickFor = null;
+  let o = $("dgOv");
+  if (!o){ o = document.createElement("div"); o.id = "dgOv"; o.className = "sheet dg-ov"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-labelledby", "dgName"); document.body.appendChild(o); }
+  o.innerHTML = '<div class="sh-in">' + dgHTML(ds) + '</div>'; o.hidden = false; o.scrollTop = 0; document.documentElement.classList.add("noscroll");
+  try { atPaint(); } catch(e){}
+  return true;
+}
+function dgPaint(){
+  const o = $("dgOv"); if (!o || o.hidden || !dgDate) return;
+  if (!dgCan(dgDate)){ dgClose(); return; }   // midnatt passerade medan vyn var öppen
+  const y = o.scrollTop; o.innerHTML = '<div class="sh-in">' + dgHTML(dgDate) + '</div>'; o.scrollTop = y;
+  try { atPaint(); } catch(e){}
+}
+function dgClose(){
+  const o = $("dgOv"); if (!o || o.hidden) return;
+  o.hidden = true; o.innerHTML = ""; dgDate = null;
+  if (!Array.from(document.querySelectorAll(".sheet,.scan,.guide")).some(x => !x.hidden)) document.documentElement.classList.remove("noscroll");
+}
+// Knappen i veckorutan
+function dgStrip(){
+  const st = $("strip"); if (!st) return;
+  let b = st.querySelector(".dg-btn");
+  const ds = dgYest();
+  if (!dgCan(ds)){ if (b) b.remove(); return; }
+  const c = dgCount(ds), open = c.n && c.a < c.n, night = dgNight() && (open || !!dgGymMissed(ds));
+  if (!b){ b = document.createElement("button"); b.type = "button"; b.className = "dg-btn"; b.dataset.dg = "open"; st.appendChild(b); }
+  const h = '<span aria-hidden="true">‹</span> Igår' + (night && c.n ? '<span class="dg-bn num"> · ' + c.a + '/' + c.n + '</span>' : '');
+  if (b.innerHTML !== h) b.innerHTML = h;
+  b.classList.toggle("night", night);
+  b.setAttribute("aria-label", "Igår, " + efDayL(ds) + " – se hela dagen" + (c.n ? ", " + c.a + " av " + c.n + " klart" : ""));
+}
+renderStrip = (f => function(){ const r = f.apply(this, arguments); try { dgStrip(); } catch(e){} return r; })(renderStrip);
+rgStrip = (f => function(){ const r = f.apply(this, arguments); try { dgStrip(); } catch(e){} return r; })(rgStrip);
+// Bockar i vyn (Atlet-blocken) ritar om vyn
+atRefresh = (f => function(){ const r = f.apply(this, arguments); try { dgPaint(); } catch(e){} return r; })(atRefresh);
+// Logga i efterhand: överst en rad till hela dagen
+efSheetHTML = (f => function(ds){
+  let h = f.apply(this, arguments);
+  try {
+    if (!dgCan(ds)) return h;
+    const c = dgCount(ds), row = '<button type="button" class="card dg-efrow" data-dg="open" data-d="' + ds + '"><span class="dg-gt"><b>Se hela dagen</b><small>' + (c.n ? "Atlet " + c.a + " av " + c.n + " klart · " : "") + "vanorna " + dayScore(ds) + " av " + dayTotal(ds) + '</small></span><span class="dg-chev" aria-hidden="true">›</span></button>';
+    h = h.replace(/(<h2 class="h2">[^<]*<\/h2><\/div>)/, (m0, m1) => m1 + row);
+  } catch(e){}
+  return h;
+})(efSheetHTML);
+document.addEventListener("click", e => {
+  // Hållningens övningar i vyn: tekniken öppnas ovanpå i stället för att lämna vyn
+  const hv = e.target.closest('#dgOv [data-at="hview"]');
+  if (hv){ e.preventDefault(); e.stopPropagation(); try { t32Sheet(hv.dataset.k, undefined, hv.dataset.k); } catch(e2){} return; }
+}, true);
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-dg]"); if (!b) return;
+  const a = b.dataset.dg;
+  if (a === "open"){ e.preventDefault(); const ds = b.dataset.d || dgYest(); efClose(); dgOpen(ds); return; }
+  if (a === "close"){ dgClose(); return; }
+  if (a === "prev" || a === "next"){ if (!dgDate) return; const ds = iso(addDays(parseIso(dgDate), a === "next" ? 1 : -1)); if (dgCan(ds)){ dgDate = ds; dgPaint(); const o = $("dgOv"); if (o) o.scrollTop = 0; } return; }
+  if (a === "late"){
+    const k = b.dataset.k, ds = dgDate || b.dataset.d; if (!k || !ds) return;
+    if (draft && efDone(draft) && !(draft.late && draft.date === ds && draft.type === k)){ toast(efBusyMsg()); return; }
+    dgClose(); efStart(k, ds); return;
+  }
+  if (a === "ef"){ const ds = dgDate; dgClose(); efSheet(ds); return; }
+  if (a === "pick"){ if (!dgDate) return; dgPickInit(dgDate); const id = b.dataset.b, i = dgPick.indexOf(id); if (i >= 0) dgPick.splice(i, 1); else dgPick.push(id); dgPaint(); return; }
+  if (a === "take"){
+    if (!dgDate || !dgPick) return;
+    const ds = dgDate, ids = atDay(ds).blocks.map(x => x.id).filter(id => dgPick.indexOf(id) >= 0); if (!ids.length) return;
+    store(DG_EX_KEY, {d: iso(today()), from: ds, b: ids});
+    dgClose(); if (view !== "pass") go("pass"); else { atRefresh(); window.scrollTo({top: 0}); }
+    setTimeout(() => { const ex = $("dgEx"); if (ex) jumpTo(ex); }, 60);
+    toast(ids.length + (ids.length === 1 ? " block" : " block") + " från " + efDagen(ds) + " ligger överst i dag ✓");
+    return;
+  }
+  if (a === "exdel"){ store(DG_EX_KEY, null); dgPick = null; dgPickFor = null; atRefresh(); dgPaint(); toast("Extran är borttagen"); return; }
+  if (a === "vanor"){ const ds = dgDate; dgClose(); habitDate = ds; if (view === "vanor") renderVanor(); else go("vanor"); return; }
+  if (a === "topass"){ dgClose(); if (view !== "pass") go("pass"); else window.scrollTo({top: 0}); return; }
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape" || e.defaultPrevented) return;
+  const o = $("dgOv"); if (!o || o.hidden) return;
+  if (atV || Array.from(document.querySelectorAll(".t32-ov, #aiOv")).some(x => !x.hidden)) return;   // något ligger ovanpå
+  e.preventDefault(); dgClose();
+});
+window.addEventListener("hashchange", () => dgClose());
+if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window.__gs || {}, {dgOpen, dgClose, dgState: () => ({open: !!($("dgOv") && !$("dgOv").hidden), date: dgDate, pick: dgPick ? dgPick.slice() : null}), dgCount, dgEx});
+
 /* ---------- Versioner (natten 24–25 nov 2026, omgång lr7) ---------- */
 // Filip: "lägg till en stor knapp i en egen flik där jag kan återställa till tidigare versioner av appen" – hela appen som den var
 // det datumet, och datan följer med. De senaste byggena ligger i v/<id>.html (samma fil som index.html i den committen) och listan
@@ -24587,7 +24857,7 @@ if (/[?&]selftest\b/.test(location.search)) window.__gs = Object.assign(window._
 // En iPhone tar ofta fram appen ur minnet utan att ladda om den, och då syns inte en ny version förrän appen stängts helt.
 // När appen blir synlig frågar den servern efter version.json. Finns en nyare laddas sidan om – men bara just när appen tas fram
 // och inget pågår (vilotimer, öppet blad, guide, boxning, kamera, skrivande), och högst en gång per version, så det kan aldrig bli en slinga.
-const UPD_TS = 202611272338, UPD_KEY = "gymschema.upd";
+const UPD_TS = 202611280200, UPD_KEY = "gymschema.upd";
 let updAt = 0, updWant = 0, updTouch = 0;
 function updBusy(){
   if (document.body.classList.contains("timer-on") || document.documentElement.classList.contains("noscroll")) return true;
@@ -24619,7 +24889,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) updCheck(); });
 setTimeout(updCheck, 4000);
 
 /* ---------- Start ---------- */
-const BUILD = "27 nov 23.38", BUILD_NOTE = "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag";
+const BUILD = "28 nov 02.00", BUILD_NOTE = "Hoppen tillbaka: Spänst på tisdagar och Hopp varje dag";
 dlApply();
 draft = restoreDraft();
 if (draft) selType = draft.type;
