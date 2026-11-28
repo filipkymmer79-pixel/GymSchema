@@ -7,7 +7,9 @@
 //    Cron-körningen stannar kvar den minut den äger, hittar notisen och skickar den precis när vilan är slut.
 //    Varje nyckel som används för det läses bara en gång – då kan KV aldrig svara med ett gammalt värde.
 // 4) Önskelistan: vem som köper vad, sakerna Filip lägger till, chatten och notiserna (KV-nycklarna ol:mamma, ol:pappa, ol:annan, ol:filip och ol:push).
-const V = 2;
+// 5) Jobbmotorn (version 3): påminner om Försäkringskassan och aktivitetsrapporten tills Filip bockar av dem i appen.
+//    Egen prenumeration och egna nycklar (jm:cfg och jm:sent), så GymSchemas påminnelser påverkas inte.
+const V = 3;
 const SLOT = 10e3, REST_MAX = 12 * 60e3;
 const sleep = ms => new Promise(r => setTimeout(r, Math.max(0, ms)));
 const APP = "https://filipkymmer79-pixel.github.io";
@@ -362,6 +364,49 @@ async function wishApi(request, env, ctx, url, json){
   }
   return fel("path", 404);
 }
+// 5) Jobbmotorn (GymSchema/jobb/): appen räknar ut när den ska påminna och lämnar listan här. Bockar Filip av en
+//    rapport skickar appen en ny lista utan den. Samma web push och samma VAPID-nyckel som GymSchemas påminnelser.
+async function jmApi(request, env, path, json){
+  if (!env.GS) return json({error: "kv"}, 503);
+  if (request.method !== "POST") return json({error: "method"}, 405);
+  let b = {}; try { b = JSON.parse(await request.text()) || {}; } catch(e){}
+  const key = request.headers.get("X-GS-Key") || "";
+  if (key.length < 20) return json({error: "key"}, 400);
+  const kh = await sha(key), cfg = await env.GS.get("jm:cfg", "json");
+  const sub = b && b.sub && typeof b.sub.endpoint === "string" && /^https:\/\//.test(b.sub.endpoint) && b.sub.keys && b.sub.keys.p256dh && b.sub.keys.auth ? b.sub : null;
+  if (cfg && cfg.kh !== kh && !(sub && cfg.sub && sub.endpoint === cfg.sub.endpoint)) return json({error: "taken"}, 409);
+  if (path === "/push/jm/save"){
+    if (!sub) return json({error: "sub"}, 400);
+    const events = (Array.isArray(b.events) ? b.events : []).filter(e => e && typeof e.at === "number" && e.title).slice(0, 400)
+      .map(e => ({id: String(e.id || e.at).slice(0, 60), at: e.at, title: String(e.title).slice(0, 90), body: String(e.body || "").slice(0, 300), url: String(e.url || "./").slice(0, 80), tag: String(e.tag || "").slice(0, 40)}));
+    await env.GS.put("jm:cfg", JSON.stringify({kh, sub: {endpoint: sub.endpoint, keys: {p256dh: String(sub.keys.p256dh), auth: String(sub.keys.auth)}}, events}));
+    return json({ok: true, n: events.length, cron: Number(await env.GS.get("cron")) || 0, v: V});
+  }
+  if (path === "/push/jm/test"){
+    if (!cfg) return json({error: "off"}, 404);
+    const st = await push(env, cfg.sub, {title: "Påminnelserna funkar ✓", body: "Så här påminner Jobbmotorn dig om rapporterna.", url: "./#rapporter", tag: "jm-test"});
+    if (st === 404 || st === 410) await env.GS.delete("jm:cfg");
+    return json({ok: st >= 200 && st < 300, status: st});
+  }
+  if (path === "/push/jm/off"){ if (cfg) await env.GS.delete("jm:cfg"); return json({ok: true}); }
+  return json({error: "path"}, 404);
+}
+async function jmTick(env){
+  if (!env.GS) return;
+  const cfg = await env.GS.get("jm:cfg", "json");
+  if (!cfg || !cfg.sub || !Array.isArray(cfg.events)) return;
+  const now = Date.now(), due = cfg.events.filter(e => e.at <= now + 20e3 && now - e.at < 15 * 60e3);
+  if (!due.length) return;
+  const sent = (await env.GS.get("jm:sent", "json")) || {}, todo = due.filter(e => !sent[e.id]);
+  if (!todo.length) return;
+  for (const e of todo){
+    const st = await push(env, cfg.sub, {title: e.title, body: e.body, url: e.url, tag: e.tag || e.id});
+    if (st === 404 || st === 410){ await env.GS.delete("jm:cfg"); return; }
+    sent[e.id] = now;
+  }
+  for (const k in sent) if (now - sent[k] > 3 * 864e5) delete sent[k];
+  await env.GS.put("jm:sent", JSON.stringify(sent));
+}
 export default {
   async fetch(request, env, ctx){
     const cors = {
@@ -375,6 +420,7 @@ export default {
     if (request.method === "OPTIONS") return new Response(null, {status: 204, headers: cors});
     const url = new URL(request.url);
     if (request.headers.get("Origin") !== APP) return json({message: "not allowed"}, 403);
+    if (url.pathname.startsWith("/push/jm/")) return jmApi(request, env, url.pathname, json);
     if (url.pathname.startsWith("/push/")) return pushApi(request, env, url.pathname, json);
     if (url.pathname === "/onskelista" || url.pathname.startsWith("/onskelista/")) return wishApi(request, env, ctx, url, json).catch(() => json({error: "fel"}, 500));
     if (!/^\/v1\.1\/devices(\/[A-Za-z0-9_-]+\/(commands|status))?$/.test(url.pathname)) return json({message: "not allowed"}, 403);
@@ -390,5 +436,5 @@ export default {
     });
     return new Response(await res.text(), {status: res.status, headers: {...cors, "Content-Type": "application/json; charset=utf-8"}});
   },
-  async scheduled(event, env, ctx){ const t = Number(event && event.scheduledTime) || Date.now(); const p = Promise.all([tick(env, t), olLucka(env, t).catch(() => {})]); ctx.waitUntil(p); await p; }
+  async scheduled(event, env, ctx){ const t = Number(event && event.scheduledTime) || Date.now(); const p = Promise.all([tick(env, t), olLucka(env, t).catch(() => {}), jmTick(env).catch(() => {})]); ctx.waitUntil(p); await p; }
 };

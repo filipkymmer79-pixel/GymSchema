@@ -134,7 +134,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 .ri { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; flex: none; background: var(--glass2); }
 .rt { font-weight: 800; }
 .rs { color: var(--ink2); font-size: 14.5px; margin-top: 2px; }
-.rtag { font-size: 11.5px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--glass2); margin-left: 6px; vertical-align: 1px; }
+.rtag { white-space: nowrap; display: inline-block; font-size: 11.5px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--glass2); margin-left: 6px; vertical-align: 1px; }
 .rtag.hot { background: rgba(255, 107, 129, 0.2); color: var(--hot); }
 
 .foot { text-align: center; color: var(--mute); font-size: 12.5px; margin-top: 18px; }
@@ -154,6 +154,22 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
 
 .toast { position: fixed; left: 50%; bottom: calc(var(--safe-b) + 96px); transform: translate(-50%, 20px); opacity: 0; transition: 0.25s; background: #fff; color: #1b1546; font-weight: 700; padding: 12px 16px; border-radius: 14px; z-index: 9; max-width: 90vw; text-align: center; pointer-events: none; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
+.tab { min-width: 70px; padding: 8px 8px; }
+.sheet-bg { position: fixed; inset: 0; background: rgba(5, 6, 20, 0.6); z-index: 20; display: flex; align-items: flex-end; justify-content: center; }
+.sheet { width: 100%; max-width: 560px; background: #1d1849; border: 1px solid var(--edge); border-bottom: 0; border-radius: 28px 28px 0 0; padding: 22px 18px calc(var(--safe-b) + 14px); box-shadow: 0 -20px 40px -20px rgba(0, 0, 0, 0.6); }
+.sheet h3 { margin: 0 0 6px; font: 800 21px/1.2 var(--font); }
+.nums { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 16px; }
+.num-b { height: 56px; border-radius: 16px; border: 1px solid var(--edge); background: var(--glass2); color: var(--ink); font: 900 22px var(--round); cursor: pointer; }
+.num-b[aria-pressed="true"] { background: linear-gradient(135deg, #ff5a3c, #ff9f43); border-color: transparent; color: #fff; }
+.btn.ok { background: rgba(52, 211, 153, 0.16); color: var(--green); border-color: transparent; }
+.rtag.ok { background: rgba(52, 211, 153, 0.18); color: var(--green); }
+.row.done { background: rgba(52, 211, 153, 0.07); }
+.set-step { display: flex; gap: 12px; margin-top: 16px; }
+.set-step .sn { width: 26px; height: 26px; border-radius: 50%; background: var(--glass2); display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none; margin-top: 1px; }
+.state { display: inline-block; font-size: 12px; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: var(--glass2); color: var(--ink2); margin-left: 6px; vertical-align: 2px; }
+.state.on { background: rgba(52, 211, 153, 0.16); color: var(--green); }
+.msg { margin: 12px 0 0; font-size: 14px; color: var(--amber); }
+.nownote { margin: 12px 0 0; padding: 10px 12px; border-radius: 14px; background: rgba(255, 181, 71, 0.12); color: var(--amber); font-size: 14px; font-weight: 600; }
 :focus-visible { outline: 2.5px solid #ffb547; outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
@@ -202,6 +218,8 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
       <p class="time num" id="nextTime">07:17</p>
       <div class="when" id="nextDay"></div>
       <div class="who" id="nextWho"></div>
+      <p class="nownote" id="nowNote" hidden></p>
+      <div class="btns"><button class="btn pri wide" type="button" id="searchNow">Sök jobb nu</button></div>
     </section>
 
     <div class="tiles">
@@ -236,6 +254,26 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     <section class="card"><div class="rows" id="rep"></div></section>
   </section>
 
+  <section data-tab="installningar" hidden>
+    <div class="h2"><span>Inställningar</span></div>
+    <section class="card">
+      <div class="rt">Påminnelser om rapporterna<span class="state" id="pushState">Av</span></div>
+      <p class="rs">Från den 1:a varje månad påminner appen dig om Försäkringskassan (senast den 7:e) och aktivitetsrapporten (senast den 14:e). Först två gånger om dagen, varannan timme de två sista dagarna och varje timme sista dagen. Det slutar när du bockar av rapporten under Skickat.</p>
+      <div id="pushSetup">
+        <div class="set-step"><span class="sn">1</span><div><div class="rt">Uppdatera din Cloudflare-worker</div><p class="rs">Det är samma worker som sköter GymSchemas påminnelser. Kopiera koden, öppna workern i Cloudflare, välj Edit code, markera allt, klistra in och tryck Deploy.</p><div class="btns"><button class="btn" type="button" id="copyWorker">Kopiera koden</button><a class="btn" href="https://dash.cloudflare.com/" target="_blank" rel="noopener">Öppna Cloudflare</a></div></div></div>
+        <div class="set-step"><span class="sn">2</span><div style="flex:1;min-width:0"><div class="rt">Workerns adress</div><p class="rs">Den slutar på .workers.dev och står i GymSchema under påminnelserna.</p><input class="field" id="workerUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://….workers.dev" aria-label="Workerns adress"></div></div>
+        <div class="set-step"><span class="sn">3</span><div style="flex:1"><button class="btn pri wide" type="button" id="pushOn">Slå på påminnelser</button></div></div>
+      </div>
+      <div id="pushOnBox" hidden><p class="rs" id="pushInfo" style="margin-top:12px"></p><div class="btns"><button class="btn" type="button" id="pushTest">Skicka en testnotis</button><button class="btn" type="button" id="pushOff">Stäng av</button></div></div>
+      <p class="msg" id="pushMsg" hidden></p>
+    </section>
+    <section class="card">
+      <div class="rt">Nyckeln</div>
+      <p class="rs">Appen är upplåst i den här telefonen. Trycker du här låses den, och då behövs nyckeln från Claude igen.</p>
+      <div class="btns"><button class="btn" type="button" id="forgetKey">Lås appen</button></div>
+    </section>
+  </section>
+
   <p class="foot"><span id="updated"></span><br><button type="button" id="refresh">Hämta igen</button></p>
 </main>
 
@@ -243,7 +281,18 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
   <button class="tab" type="button" role="tab" data-go="hem" aria-selected="true"><svg class="ic" viewBox="0 0 24 24"><path d="M4 10.4 12 4l8 6.4V19a1 1 0 0 1-1 1h-4.6v-5.4H9.6V20H5a1 1 0 0 1-1-1z"/></svg>Hem</button>
   <button class="tab" type="button" role="tab" data-go="hemsidor" aria-selected="false"><svg class="ic" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="2.6"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5"/></svg>Hemsidor<span class="badge" id="webBadge" hidden></span></button>
   <button class="tab" type="button" role="tab" data-go="skickat" aria-selected="false"><svg class="ic" viewBox="0 0 24 24"><path d="M20.5 3.5 10.6 13.4"/><path d="M20.5 3.5 14.2 20.5l-3.6-7.1-7.1-3.6z"/></svg>Skickat</button>
+  <button class="tab" type="button" role="tab" data-go="installningar" aria-selected="false"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg>Inställningar</button>
 </nav>
+
+<div class="sheet-bg" id="nowSheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="nowTitle">
+    <h3 id="nowTitle">Hur många jobb ska sökas nu?</h3>
+    <p class="rs">Claude tar först det som redan ligger i kön, letar sedan upp fler, skriver breven med dina ord och skickar dem direkt från din Gmail med ditt CV.</p>
+    <div class="nums" id="nums"></div>
+    <div class="btns"><button class="btn pri wide" type="button" id="nowGo">Sök 6 jobb nu</button></div>
+    <div class="btns" style="margin-top:6px"><button class="btn wide" type="button" id="nowCancel" style="background:none;border:0;color:var(--ink2)">Avbryt</button></div>
+  </div>
+</div>
 
 <script>
 (function () {
@@ -271,7 +320,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     return D[d.getDay()].charAt(0).toUpperCase() + D[d.getDay()].slice(1) + " " + d.getDate() + " " + M[d.getMonth()];
   }
   function hhmm(d) { return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
-  function short(name) { return String(name || "").replace(/\s*\([^)]*\)/g, "").replace(/\b(AB|Aktiebolag|Vby AB|Sverige|Sweden)\b/g, "").replace(/\s{2,}/g, " ").trim() || name; }
+  function short(name) { return String(name || "").replace(/\s*\([^)]*\)/g, "").replace(/\s+(of\s+)?(Sverige|Sweden)\s*$/i, "").replace(/\b(Vby AB|Aktiebolag|AB)\b/g, "").replace(/\s{2,}/g, " ").trim() || name; }
   function initial(name) { var s = short(name); return (s.match(/[A-Za-zÅÄÖåäö0-9]/) || ["?"])[0].toUpperCase(); }
 
   var toastTimer = 0;
@@ -364,10 +413,17 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
   }
 
   /* ---------- appen ---------- */
+  var navDone = false;
   function show(d) {
     data = d;
     $("lockView").hidden = true; $("appView").hidden = false; $("tabs").hidden = false;
     render();
+    if (!navDone) {
+      navDone = true;
+      var h = location.hash.replace("#", "");
+      if (h && !/nyckel=/.test(h)) navTo(h);
+      var c = pushCfg(); if (c.on && (!c.synced || Date.now() - c.synced > 5 * 864e5)) pushSync(true);
+    }
   }
   function render() {
     if (!data) return;
@@ -384,6 +440,9 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     $("tileClaude").href = APP_URL;
 
     var pend = prunePending(data);
+    var nowKey = Object.keys(pend).filter(function (k) { return k.indexOf("now:") === 0; })[0];
+    $("nowNote").hidden = !nowKey;
+    if (nowKey) $("nowNote").textContent = "Claude söker " + nowKey.slice(4) + " jobb åt dig sedan kl " + hhmm(new Date(pend[nowKey])) + ". De syns här när Claude är klar och har uppdaterat appen.";
     var queue = (data.queue || []).slice().sort(function (a, b) { return (a.sendAt || 0) - (b.sendAt || 0) || short(a.company).localeCompare(short(b.company), "sv"); });
     $("qChip").textContent = queue.length + " i kön";
     $("qChip").className = "chip" + (queue.length ? "" : " warn");
@@ -469,20 +528,36 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     return '<div class="row' + (kind ? " " + kind : "") + '"><div><div class="rt">' + esc(title) + (tag ? '<span class="rtag' + (hot ? " hot" : "") + '">' + esc(tag) + "</span>" : "") + '</div><div class="rs">' + esc(text) + "</div>" + (extra || "") + "</div></div>";
   }
   function inDays(n) { return n === 0 ? "i dag" : n === 1 ? "i morgon" : "om " + n + " dagar"; }
+  var REP_LS = "jm-reports";
+  function reportsDone() { try { return JSON.parse(localStorage.getItem(REP_LS) || "{}"); } catch (e) { return {}; } }
+  function repKey(d) { var p = new Date(d.getFullYear(), d.getMonth() - 1, 1); return p.getFullYear() + "-" + String(p.getMonth() + 1).padStart(2, "0"); }
+  function setDone(kind, on) {
+    var all = reportsDone(), k = repKey(new Date()); all[k] = all[k] || {};
+    if (on) all[k][kind] = Date.now(); else delete all[k][kind];
+    try { localStorage.setItem(REP_LS, JSON.stringify(all)); } catch (e) {}
+    renderReports(new Date());
+    pushSync(true).catch(function () {});
+    toast(on ? "Avbockat. Påminnelserna om den slutar." : "Ångrat. Påminnelserna kommer igen.");
+  }
   function renderReports(now) {
     var day = now.getDate(), m = now.getMonth(), y = now.getFullYear(), prev = M[(m + 11) % 12], cur = M[m], html = "";
+    var done = reportsDone()[repKey(now)] || {};
     if (day <= 14) {
       $("repTitle").textContent = "Rapporterna för " + prev;
-      if (day <= 7) {
-        var fk = 7 - day;
-        html += row(fk <= 2 ? "due" : "", "Försäkringskassan", fk === 0 ? "Sista dagen i dag" : "Senast 7 " + cur, fk <= 2,
-          "Ansök om ersättning för " + prev + " " + (fk === 0 ? "i dag" : "senast den 7 " + cur + ", " + inDays(fk)) + ", så kommer pengarna den 26:e.",
-          '<div class="btns"><a class="btn" href="' + FK_URL + '" target="_blank" rel="noopener">Till Försäkringskassan</a></div>');
+      if (done.fk) html += row("done", "Försäkringskassan", "Klar", false, "Du har ansökt för " + prev + ". Pengarna kommer den 26:e.", '<div class="btns"><button class="btn" type="button" data-undo="fk">Ångra</button></div>').replace('class="rtag"', 'class="rtag ok"');
+      else {
+        var fk = 7 - day, late = fk < 0;
+        html += row(late || fk <= 2 ? "due" : "", "Försäkringskassan", late ? "Efter den 7:e" : fk === 0 ? "Sista dagen i dag" : "Senast 7 " + cur, late || fk <= 2,
+          late ? "Har du inte ansökt för " + prev + " än? Gör det så snart du kan. Pengarna kommer då senare än den 26:e." : "Ansök om ersättning för " + prev + " " + (fk === 0 ? "i dag" : "senast den 7 " + cur + ", " + inDays(fk)) + ", så kommer pengarna den 26:e.",
+          '<div class="btns"><button class="btn ok" type="button" data-done="fk">Jag har ansökt</button><a class="btn" href="' + FK_URL + '" target="_blank" rel="noopener">Försäkringskassan</a></div>');
       }
-      var af = 14 - day;
-      html += row(af <= 2 ? "due" : "", "Aktivitetsrapporten", af === 0 ? "Sista dagen i dag" : "Senast 14 " + cur, af <= 2,
-        "Rapportera jobben du sökte i " + prev + " till Arbetsförmedlingen " + (af === 0 ? "i dag." : "senast den 14 " + cur + ", " + inDays(af) + "."),
-        '<div class="btns"><button class="btn pri" type="button" id="askClaude">Be Claude rapportera</button><a class="btn" href="' + AF_URL + '" target="_blank" rel="noopener">Arbetsförmedlingen</a></div><p class="cap">Sitt vid datorn med Chrome öppet. Claude fyller i rapporten, du loggar in och trycker Skicka in.</p>');
+      if (done.af) html += row("done", "Aktivitetsrapporten", "Klar", false, "Du har skickat in rapporten för " + prev + ".", '<div class="btns"><button class="btn" type="button" data-undo="af">Ångra</button></div>').replace('class="rtag"', 'class="rtag ok"');
+      else {
+        var af = 14 - day;
+        html += row(af <= 2 ? "due" : "", "Aktivitetsrapporten", af === 0 ? "Sista dagen i dag" : "Senast 14 " + cur, af <= 2,
+          "Rapportera jobben du sökte i " + prev + " till Arbetsförmedlingen " + (af === 0 ? "i dag." : "senast den 14 " + cur + ", " + inDays(af) + "."),
+          '<div class="btns"><button class="btn pri" type="button" id="askClaude">Be Claude rapportera</button><button class="btn ok" type="button" data-done="af">Jag har skickat den</button></div><p class="cap">Sitt vid datorn med Chrome öppet. Claude fyller i rapporten, du loggar in och trycker Skicka in. Bocka sedan av här.</p>');
+      }
     } else {
       $("repTitle").textContent = "Nästa rapporter";
       var first = new Date(y, m + 1, 1);
@@ -493,12 +568,119 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     var ask = $("askClaude");
     if (ask) ask.addEventListener("click", function () { openClaude(REPORT_PROMPT, "Meningen är kopierad. Skicka den i Claude."); });
   }
+  $("rep").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-done],[data-undo]"); if (!b) return;
+    if (b.hasAttribute("data-done")) setDone(b.getAttribute("data-done"), true); else setDone(b.getAttribute("data-undo"), false);
+  });
+
+  /* ---------- påminnelserna (web push via Cloudflare-workern) ---------- */
+  var PUSH_LS = "jm-push", workerCode = "";
+  var PUSH_MSG = { url: "Klistra in workerns adress först (steg 2).", net: "Fick ingen kontakt med workern. Stämmer adressen?", worker: "Workern svarade konstigt. Har du klistrat in hela koden och tryckt Deploy?",
+    old: "Workern har inte den nya koden än. Gör steg 1 och tryck Slå på igen.", perm: "Notiser är avstängda för Jobbmotorn. Slå på dem i telefonens Inställningar → Notiser → Jobbmotorn och tryck igen.",
+    sub: "Telefonen gick inte att koppla till notiser. Öppna Jobbmotorn från ikonen på hemskärmen och försök igen.", taken: "Workern är redan kopplad till en annan telefon. Stäng av påminnelserna där först.",
+    nosupport: "Notiser fungerar bara när Jobbmotorn är öppnad från ikonen på hemskärmen.", off: "Påminnelserna är inte på i workern. Tryck Slå på igen." };
+  function pushCfg() { try { return JSON.parse(localStorage.getItem(PUSH_LS) || "{}"); } catch (e) { return {}; } }
+  function savePush(c) { try { localStorage.setItem(PUSH_LS, JSON.stringify(c)); } catch (e) {} }
+  function pushKey(c) { if (!c.key) { var u = crypto.getRandomValues(new Uint8Array(24)); c.key = btoa(String.fromCharCode.apply(null, u)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); savePush(c); } return c.key; }
+  function err(code) { var e = new Error(code); e.code = code; return e; }
+  function api(c, path, body) {
+    if (!/^https:\/\/[^/]+\.[^/]+/.test(c.url || "")) return Promise.reject(err("url"));
+    return fetch(c.url.replace(/\/+$/, "") + path, body ? { method: "POST", headers: { "Content-Type": "application/json", "X-GS-Key": pushKey(c) }, body: JSON.stringify(body), cache: "no-store" } : { cache: "no-store" })
+      .then(function (r) { return r.json().catch(function () { return null; }).then(function (j) {
+        if (r.status === 409) throw err("taken"); if (r.status === 404 && j && j.error === "off") throw err("off"); if (r.status === 403 || (r.status === 404 && j && j.error === "path")) throw err("old"); if (!r.ok || !j) throw err("worker"); return j; }); },
+        function (e) { if (e && e.code) throw e; throw err("net"); });
+  }
+  function reminderEvents() {
+    var out = [], now = Date.now(), base = new Date(), done = reportsDone();
+    for (var k = 0; k < 3; k++) {
+      var m0 = new Date(base.getFullYear(), base.getMonth() + k, 1), rk = repKey(m0), rd = done[rk] || {}, prev = M[(m0.getMonth() + 11) % 12], cur = M[m0.getMonth()];
+      [["fk", 7], ["af", 14]].forEach(function (x) {
+        var kind = x[0], last = x[1];
+        if (rd[kind]) return;
+        for (var d = 1; d <= last; d++) {
+          var hours = d === last ? [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] : d >= last - 2 ? [8, 10, 12, 14, 16, 18, 20, 22] : [10, 19];
+          hours.forEach(function (h) {
+            var at = new Date(m0.getFullYear(), m0.getMonth(), d, h, 0, 0).getTime();
+            if (at <= now + 60000) return;
+            var lastDay = d === last;
+            out.push({ id: "jm-" + kind + "-" + rk + "-" + d + "-" + h, at: at, tag: "jm-" + kind + "-" + rk, url: "./#rapporter",
+              title: kind === "fk" ? "Försäkringskassan: ansök för " + prev : "Aktivitetsrapporten för " + prev,
+              body: kind === "fk" ? (lastDay ? "Sista dagen i dag! Ansök i dag så kommer pengarna den 26:e. Bocka av i Jobbmotorn när du är klar." : "Senast den 7 " + cur + ", så kommer pengarna den 26:e. Bocka av i Jobbmotorn när du är klar.")
+                : (lastDay ? "Sista dagen i dag! Skicka in den och bocka av i Jobbmotorn." : "Senast den 14 " + cur + ". Skicka in den och bocka av i Jobbmotorn när du är klar.") });
+          });
+        }
+      });
+    }
+    return out.sort(function (a, b) { return a.at - b.at; }).slice(0, 400);
+  }
+  function pushSync(quiet) {
+    var c = pushCfg(); if (!c.on || !c.sub) return Promise.resolve();
+    return api(c, "/push/jm/save", { sub: c.sub, events: reminderEvents() }).then(function (j) { c.n = j.n; c.synced = Date.now(); savePush(c); paintPush(); },
+      function (e) { if (!quiet) throw e; });
+  }
+  function showPushMsg(code) { var m = $("pushMsg"); m.textContent = code ? (PUSH_MSG[code] || "Något gick fel (" + code + ").") : ""; m.hidden = !code; }
+  function paintPush() {
+    var c = pushCfg(), on = !!c.on;
+    $("pushState").textContent = on ? "På" : "Av"; $("pushState").className = "state" + (on ? " on" : "");
+    $("pushSetup").hidden = on; $("pushOnBox").hidden = !on;
+    if (!$("workerUrl").value && c.url) $("workerUrl").value = c.url;
+    if (on) { var ev = reminderEvents()[0]; $("pushInfo").textContent = ev ? "Nästa påminnelse: " + dayLabel(new Date(ev.at), new Date()).toLowerCase() + " kl " + hhmm(new Date(ev.at)) + "." : "Inga påminnelser kvar just nu. Allt är avbockat."; }
+  }
+  function pushOn() {
+    showPushMsg("");
+    var c = pushCfg(); c.url = $("workerUrl").value.trim(); savePush(c);
+    if (!/^https:\/\/[^/]+\.[^/]+/.test(c.url)) { showPushMsg("url"); return; }
+    if (!("serviceWorker" in navigator) || !("PushManager" in window) || !window.Notification) { showPushMsg("nosupport"); return; }
+    var ask = Notification.requestPermission();   // måste anropas direkt i trycket på iPhone
+    $("pushOn").disabled = true; $("pushOn").textContent = "Slår på…";
+    Promise.resolve(ask).then(function (p) { if (p !== "granted") throw err("perm"); return api(c, "/push/key"); }).then(function (j) {
+      if (!(j.v >= 3)) throw err("old");
+      return navigator.serviceWorker.ready.then(function (reg) {
+        return reg.pushManager.getSubscription().then(function (sub) { return sub && c.vk && c.vk !== j.key ? sub.unsubscribe().then(function () { return null; }) : sub; })
+          .then(function (sub) { return sub || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: unb64u(j.key) }); })
+          .then(function (sub) { c.vk = j.key; c.sub = sub.toJSON(); c.on = true; savePush(c); return pushSync(false); });
+      });
+    }).then(function () { toast("Påminnelserna är på ✓"); }, function (e) { var c2 = pushCfg(); c2.on = false; savePush(c2); showPushMsg(e.code || (e.name === "NotAllowedError" ? "perm" : "sub")); })
+      .then(function () { $("pushOn").disabled = false; $("pushOn").textContent = "Slå på påminnelser"; paintPush(); });
+  }
+  $("pushOn").addEventListener("click", pushOn);
+  $("pushTest").addEventListener("click", function () { showPushMsg(""); api(pushCfg(), "/push/jm/test", {}).then(function (j) { toast(j.ok ? "Testnotisen är skickad" : "Apple svarade " + j.status + "."); }, function (e) { showPushMsg(e.code); }); });
+  $("pushOff").addEventListener("click", function () { var c = pushCfg(); api(c, "/push/jm/off", {}).catch(function () {}).then(function () { c.on = false; savePush(c); paintPush(); toast("Påminnelserna är av"); }); });
+  $("copyWorker").addEventListener("click", function () {
+    if (!workerCode) { loadWorkerCode(); toast("Hämtar koden, tryck igen om en sekund."); return; }
+    copy(workerCode).then(function (ok) { toast(ok ? "Koden är kopierad. Klistra in den i Cloudflare." : "Det gick inte att kopiera. Tryck igen."); });
+  });
+  function loadWorkerCode() { if (workerCode) return; fetch("../gymschema-worker.js", { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) { workerCode = t; }, function () {}); }
+  $("forgetKey").addEventListener("click", function () { try { localStorage.removeItem(KEY_LS); localStorage.removeItem(DATA_LS); } catch (e) {} data = null; showLock(); });
+
+  /* ---------- Sök nu ---------- */
+  var NUMS = [1, 3, 6, 10, 15], nowN = 6;
+  function nowPrompt(n) { return "Sök " + n + " jobb åt mig nu med min app Jobbmotorn (" + APP_URL + ") och skicka ansökningarna direkt från min Gmail med mitt CV. Följ instruktionen i settings/soknu i Jobbmotorns databas, steg för steg. Jag har själv valt " + n + " i appen och godkänner att du skickar dem."; }
+  function paintNums() { $("nums").innerHTML = NUMS.map(function (n) { return '<button class="num-b" type="button" data-n="' + n + '" aria-pressed="' + (n === nowN) + '">' + n + "</button>"; }).join(""); $("nowGo").textContent = "Sök " + nowN + " jobb nu"; }
+  $("searchNow").addEventListener("click", function () { var p = data && data.auto && data.auto.perDay; nowN = NUMS.indexOf(p) >= 0 ? p : 6; paintNums(); $("nowSheet").hidden = false; });
+  $("nums").addEventListener("click", function (e) { var b = e.target.closest("[data-n]"); if (b) { nowN = +b.getAttribute("data-n"); paintNums(); } });
+  $("nowCancel").addEventListener("click", function () { $("nowSheet").hidden = true; });
+  $("nowSheet").addEventListener("click", function (e) { if (e.target === $("nowSheet")) $("nowSheet").hidden = true; });
+  $("nowGo").addEventListener("click", function () {
+    $("nowSheet").hidden = true;
+    var p = pending(); Object.keys(p).forEach(function (k) { if (k.indexOf("now:") === 0) delete p[k]; }); p["now:" + nowN] = Date.now();
+    try { localStorage.setItem(PEND_LS, JSON.stringify(p)); } catch (e) {}
+    openClaude(nowPrompt(nowN), "Texten är kopierad. Skicka den i Claude, så söker den " + nowN + " jobb.");
+    render();
+  });
 
   /* ---------- flikar och knappar ---------- */
+  function navTo(h) {
+    if (!data) return;
+    if (h === "rapporter") { go("skickat"); setTimeout(function () { var r = $("rep"); if (r) r.scrollIntoView({ block: "center" }); }, 60); }
+    else if (h === "installningar" || h === "hemsidor" || h === "skickat" || h === "hem") go(h);
+  }
+  if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", function (e) { if (e.data && e.data.nav) navTo(e.data.nav); });
   function go(tab) {
     document.querySelectorAll("[data-tab]").forEach(function (s) { s.hidden = s.getAttribute("data-tab") !== tab; });
     document.querySelectorAll(".tab").forEach(function (b) { b.setAttribute("aria-selected", b.getAttribute("data-go") === tab ? "true" : "false"); });
     window.scrollTo(0, 0);
+    if (tab === "installningar") { loadWorkerCode(); paintPush(); }
   }
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-go],[data-q],[data-stop],[data-web]");
