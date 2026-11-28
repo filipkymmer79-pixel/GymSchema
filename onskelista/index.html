@@ -723,6 +723,23 @@ fieldset.falt{border:0;padding:0;margin-left:0;margin-right:0;min-width:0}
 .lank.blanda svg{width:20px;height:20px;flex:none}
 @keyframes kort-in{from{opacity:0;transform:translateX(24px)}}
 .lucka-in .sak.liten.ny{animation:kort-in .42s cubic-bezier(.3,1.2,.5,1) both;animation-delay:var(--d,0ms)}
+/* AI-luckorna: medan tomten letar, och det som AI har visat förut */
+.lucka-in .tomtenletar{display:grid;gap:12px;margin:14px 0 12px}
+.lucka-in .tomtenletar i{display:block;height:92px;border-radius:14px;background:linear-gradient(100deg,rgba(16,37,68,.07) 30%,rgba(16,37,68,.16) 50%,rgba(16,37,68,.07) 70%);background-size:220% 100%;animation:skimra 1.3s linear infinite}
+.lucka-in .tomtenletar i+i{animation-delay:-.45s}
+@keyframes skimra{from{background-position:120% 0}to{background-position:-100% 0}}
+@media (prefers-reduced-motion:reduce){.lucka-in .tomtenletar i{animation:none}}
+.lucka-in .tidigare{margin:6px 0 2px;border-top:1.5px dashed rgba(16,37,68,.25)}
+.lucka-in .tidigare>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:9px;padding:13px 0;font-weight:700;color:var(--natt)}
+.lucka-in .tidigare>summary::-webkit-details-marker{display:none}
+.lucka-in .tidigare>summary::before{content:"";width:7px;height:7px;margin:0 3px 3px 2px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .2s}
+.lucka-in .tidigare[open]>summary::before{transform:rotate(45deg);margin-bottom:6px}
+.lucka-in .tidigare>summary span{font-size:13px;line-height:1;padding:4px 8px;border-radius:99px;background:rgba(16,37,68,.1)}
+.lucka-in .tidigare>summary:focus-visible{outline:2px solid var(--natt);outline-offset:2px;border-radius:6px}
+.lucka-in .tidigare>summary+.sak.liten{border-top:0}
+.lucka-in .lank.blanda[disabled]{opacity:.5;cursor:default}
+/* AI-idéerna får bara teckningen: inga mått eller vikter som hör till en annan sak */
+.sak.ai .matt{display:none}
 </style>
 </head>
 <body>
@@ -1152,14 +1169,14 @@ var BILDNAMN={paket:'Ett paket',matta:'Yogamatta',shorts:'Shorts',airpods:'Hörl
 function toffel(dx,dy,cls){return '<g class="'+cls+'"><g transform="translate('+dx+' '+dy+')"><rect class="fi o" x="4" y="64" width="174" height="16" rx="8"/><path class="fn o" d="M10 66V50a10 10 0 0 1 16-8a10 10 0 0 1 18 2a12 12 0 0 1 20-12a13 13 0 0 1 24-6a14 14 0 0 1 26 2a14 14 0 0 1 24 8a13 13 0 0 1 20 10a12 12 0 0 1 14 20Z"/><ellipse class="fs o" cx="34" cy="43" rx="17" ry="6"/><path d="M60 52q5-5 10 0M88 44q5-5 10 0M116 48q5-5 10 0M76 60q5-5 10 0M106 60q5-5 10 0M136 56q5-5 10 0M152 62q4-4 8 0" fill="none" stroke="#A9C7E3" stroke-width="2.5" stroke-linecap="round"/></g></g>';}
 function skivor(){var s='';for(var k=0;k<5;k++){s+='<rect class="h-p" data-k="'+k+'" x="'+(104-k*15)+'" y="58" width="12" height="84" rx="4"/><rect class="h-p" data-k="'+k+'" x="'+(204+k*15)+'" y="58" width="12" height="84" rx="4"/>';}return s;}
 var KONST={
- matta:'<path class="l t" d="M20 152H300" opacity=".3"/><g class="m-mark"><path class="l t" d="M40 178v-12M280 178v-12M40 172H280"/><text x="160" y="194" text-anchor="middle" font-size="14">den långa, 215 cm</text><path class="l t" d="M40 78v12M241 78v12M40 84H241"/><text x="140" y="70" text-anchor="middle" font-size="14">den vanliga, 180 cm</text></g><g class="m-plan"><rect class="fr o" x="40" y="136" width="150" height="14" rx="4"/></g><g class="m-rulle"><g transform="translate(204 122)"><g class="m-r2"><circle class="fr o" r="28"/><path class="l t" d="M0 0A3 3 0 0 1-6 0A7 7 0 0 1 8 0A10 10 0 0 1-12 0A14 14 0 0 1 16 0A18 18 0 0 1-20 0A22 22 0 0 1 24 0"/></g></g></g>',
+ matta:'<path class="l t" d="M20 152H300" opacity=".3"/><g class="m-mark matt"><path class="l t" d="M40 178v-12M280 178v-12M40 172H280"/><text x="160" y="194" text-anchor="middle" font-size="14">den långa, 215 cm</text><path class="l t" d="M40 78v12M241 78v12M40 84H241"/><text x="140" y="70" text-anchor="middle" font-size="14">den vanliga, 180 cm</text></g><g class="m-plan"><rect class="fr o" x="40" y="136" width="150" height="14" rx="4"/></g><g class="m-rulle"><g transform="translate(204 122)"><g class="m-r2"><circle class="fr o" r="28"/><path class="l t" d="M0 0A3 3 0 0 1-6 0A7 7 0 0 1 8 0A10 10 0 0 1-12 0A14 14 0 0 1 16 0A18 18 0 0 1-20 0A22 22 0 0 1 24 0"/></g></g></g>',
  shorts:'<g class="s-fart"><path class="l t" d="M30 84h32M22 104h36M34 124h28"/></g><g class="s-v"><rect class="fn o" x="90" y="128" width="58" height="30" rx="6"/><path class="fi o" d="M96 60H162V100L152 142H82Z"/><path class="l t" d="M104 76q6 16 3 36"/></g><g class="s-h"><rect class="fn o" x="172" y="128" width="58" height="30" rx="6"/><path class="fi o" d="M158 60H224L238 142H168L158 100Z"/><path class="l t" d="M216 76q-6 16-3 36"/><rect class="fy" x="200" y="126" width="24" height="7" rx="3.5"/></g><rect class="fi o" x="94" y="46" width="132" height="16" rx="6"/><path class="l t" d="M154 62q-5 12-3 24M166 62q5 12 3 24"/>',
- airpods:'<g class="a-brus"><path class="l t" d="M62 62q-16 34 0 68M46 50q-24 46 0 92M30 40q-30 56 0 112"/><path class="l t" d="M258 62q16 34 0 68M274 50q24 46 0 92M290 40q30 56 0 112"/></g><rect class="fs o" x="112" y="92" width="18" height="74" rx="9"/><ellipse class="fi o" cx="98" cy="92" rx="13" ry="16" transform="rotate(-20 98 92)"/><ellipse class="fs o" cx="120" cy="82" rx="26" ry="30"/><ellipse class="fn" cx="127" cy="72" rx="5" ry="8" transform="rotate(20 127 72)"/><rect class="fs o" x="190" y="92" width="18" height="74" rx="9"/><ellipse class="fi o" cx="222" cy="92" rx="13" ry="16" transform="rotate(20 222 92)"/><ellipse class="fs o" cx="200" cy="82" rx="26" ry="30"/><ellipse class="fn" cx="193" cy="72" rx="5" ry="8" transform="rotate(-20 193 72)"/><text class="a-txt" x="160" y="191" text-anchor="middle" font-size="14">Brusreducering: av</text>',
+ airpods:'<g class="a-brus"><path class="l t" d="M62 62q-16 34 0 68M46 50q-24 46 0 92M30 40q-30 56 0 112"/><path class="l t" d="M258 62q16 34 0 68M274 50q24 46 0 92M290 40q30 56 0 112"/></g><rect class="fs o" x="112" y="92" width="18" height="74" rx="9"/><ellipse class="fi o" cx="98" cy="92" rx="13" ry="16" transform="rotate(-20 98 92)"/><ellipse class="fs o" cx="120" cy="82" rx="26" ry="30"/><ellipse class="fn" cx="127" cy="72" rx="5" ry="8" transform="rotate(20 127 72)"/><rect class="fs o" x="190" y="92" width="18" height="74" rx="9"/><ellipse class="fi o" cx="222" cy="92" rx="13" ry="16" transform="rotate(20 222 92)"/><ellipse class="fs o" cx="200" cy="82" rx="26" ry="30"/><ellipse class="fn" cx="193" cy="72" rx="5" ry="8" transform="rotate(-20 193 72)"/><text class="a-txt matt" x="160" y="191" text-anchor="middle" font-size="14">Brusreducering: av</text>',
  tofflor:toffel(36,30,'t-v')+toffel(104,84,'t-h'),
  satoro:'<path class="fi o" d="M140 42L118 54L60 148L84 162L114 104L116 174H204L206 104L236 162L260 148L202 54L180 42Z"/><path class="l t" d="M68 136l24 14M252 136l-24 14M118 164h84"/><path class="fi o" d="M138 44q22-12 44 0v-16q-22-10-44 0Z"/><g class="z-v"><path class="fs o" d="M151 28H169L160 100Z"/></g><path class="l t" d="M160 26V102" stroke-dasharray="3 5"/><g class="z-drag"><rect class="fr o" x="155" y="26" width="10" height="17" rx="4"/></g>',
  panna:'<defs><clipPath id="lupp"><circle cx="66" cy="56" r="30"/></clipPath></defs><g clip-path="url(#lupp)"><rect class="fs" x="30" y="20" width="80" height="80"/><rect class="fi" x="30" y="35" width="80" height="6"/><rect class="fs" x="30" y="41" width="80" height="6"/><rect class="fi" x="30" y="47" width="80" height="6"/><rect class="fy" x="30" y="53" width="80" height="6"/><rect class="fi" x="30" y="59" width="80" height="6"/><rect class="fs" x="30" y="65" width="80" height="6"/><rect class="fi" x="30" y="71" width="80" height="6"/><path d="M30 35h80M30 41h80M30 47h80M30 53h80M30 59h80M30 65h80M30 71h80M30 77h80" stroke="#102544" stroke-width="1.5"/></g><circle class="l" cx="66" cy="56" r="30"/><path class="l t" d="M88 77Q102 96 104 124" stroke-dasharray="1 7"/><text x="66" y="108" text-anchor="middle" font-size="14">7 lager</text><path class="l t" d="M138 90q-6-8 0-16t0-16M184 90q-6-8 0-16t0-16" opacity=".3"/><path class="fs o" d="M224 122L292 96q8-2 9 5t-6 9L226 134Z"/><path class="fs o" d="M96 118H226q-3 30-26 30H122q-23 0-26-30Z"/><path class="l t" d="M108 128H214" opacity=".3"/><g class="p-agg"><ellipse class="fs o" cx="160" cy="113" rx="34" ry="8"/><ellipse class="fy o" cx="160" cy="107" rx="12" ry="8"/></g>',
  stekspade:'<path class="fy k-st" d="M250 40l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path class="fy k-st" d="M62 150l3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/><g transform="rotate(-22 160 100)"><g class="sp"><rect class="fs o" x="34" y="92" width="120" height="16" rx="8"/><circle class="fn" cx="48" cy="100" r="3"/><path class="l" d="M154 100H182"/><path class="fs o" d="M180 100L198 70H274q10 0 10 10V120q0 10-10 10H198Z"/><g class="fn"><rect x="208" y="80" width="12" height="15" rx="4"/><rect x="230" y="80" width="12" height="15" rx="4"/><rect x="252" y="80" width="12" height="15" rx="4"/><rect x="208" y="105" width="12" height="15" rx="4"/><rect x="230" y="105" width="12" height="15" rx="4"/><rect x="252" y="105" width="12" height="15" rx="4"/></g></g></g>',
- hantel:'<path class="l t" d="M30 152H290" opacity=".3"/><rect class="fs o" x="116" y="92" width="88" height="16" rx="4"/><path class="l t" d="M140 95v10M150 95v10M160 95v10M170 95v10M180 95v10" opacity=".45"/>'+skivor()+'<g class="h-tal"><rect class="fy o" x="112" y="14" width="96" height="32" rx="16"/><text class="h-txt" x="160" y="36" text-anchor="middle" font-size="17">12,5 kg</text></g>',
+ hantel:'<path class="l t" d="M30 152H290" opacity=".3"/><rect class="fs o" x="116" y="92" width="88" height="16" rx="4"/><path class="l t" d="M140 95v10M150 95v10M160 95v10M170 95v10M180 95v10" opacity=".45"/>'+skivor()+'<g class="h-tal matt"><rect class="fy o" x="112" y="14" width="96" height="32" rx="16"/><text class="h-txt" x="160" y="36" text-anchor="middle" font-size="17">12,5 kg</text></g>',
  italki:'<rect class="fp o" x="70" y="36" width="180" height="116" rx="10"/><rect class="fi" x="204" y="110" width="36" height="32" rx="6"/><circle class="fn" cx="222" cy="122" r="5"/><path class="fn" d="M212 142q10-14 20 0Z"/><path class="fr o" d="M88 150q30-46 60 0Z"/><circle class="fy o" cx="118" cy="96" r="17"/><g class="i-bubbla"><path class="fs o" d="M158 50H228Q238 50 238 60V82Q238 92 228 92H170L154 104V92Q148 92 148 82V60Q148 50 158 50Z"/><text class="i-txt" x="193" y="77" text-anchor="middle" font-size="15">Bonjour !</text></g><path class="fs o" d="M48 152H272L262 168H58Z"/>',
  vinyl:'<rect class="fy o" x="34" y="34" width="132" height="132" rx="4"/><path class="l t" d="M48 150h60M48 138h36" opacity=".4"/><g class="v-skiva"><circle class="fn o" cx="196" cy="100" r="64"/><circle cx="196" cy="100" r="52" fill="none" stroke="#A9C7E3" stroke-width="1.5" opacity=".45"/><circle cx="196" cy="100" r="43" fill="none" stroke="#A9C7E3" stroke-width="1.5" opacity=".45"/><circle cx="196" cy="100" r="34" fill="none" stroke="#A9C7E3" stroke-width="1.5" opacity=".45"/><path d="M196 44a56 56 0 0 1 40 17" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".5"/><circle class="fr" cx="196" cy="100" r="23"/><path d="M183 91h16M183 99h25" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".85"/><circle class="fs" cx="196" cy="100" r="3.5"/></g><g class="v-arm"><path class="l" d="M286 40L246 92"/><rect class="fs o" x="232" y="87" width="22" height="12" rx="3" transform="rotate(-52 243 93)"/><circle class="fs o" cx="286" cy="40" r="9"/></g>',
  tungskrapa:'<path class="fy k-st" d="M258 96l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/><path class="fy k-st" d="M56 124l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><path d="M96 56V104a64 64 0 0 0 128 0V56" fill="none" stroke="#102544" stroke-width="18" stroke-linecap="round"/><path d="M96 56V104a64 64 0 0 0 128 0V56" fill="none" stroke="#F5B942" stroke-width="10" stroke-linecap="round"/><path class="k-glans" d="M96 56V104a64 64 0 0 0 128 0V56" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-dasharray="26 600" stroke-dashoffset="40" opacity=".9"/><circle class="fy o" cx="96" cy="46" r="13"/><circle class="fy o" cx="224" cy="46" r="13"/>',
@@ -1217,9 +1234,9 @@ KONST.balans='<path class="l t" d="M30 176H290" opacity=".3"/>'+
   '<rect class="o" x="34" y="114" width="252" height="16" rx="7" fill="#E2AE73"/><path class="l t" d="M58 120h44M120 124h60M198 119h62" opacity=".3"/>'+
   '<path class="fn o" d="M78 114v-7q0-13 22-13t22 13v7Z"/><path d="M82 111H118" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M93 99l14 4M93 104l14-4" stroke="#A9C7E3" stroke-width="2" stroke-linecap="round"/>'+
   '<path class="fn o" d="M198 114v-7q0-13 22-13t22 13v7Z"/><path d="M202 111H238" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M213 99l14 4M213 104l14-4" stroke="#A9C7E3" stroke-width="2" stroke-linecap="round"/></g>'+
-  '<text x="160" y="196" text-anchor="middle" font-size="14">75 × 30 cm</text>';
+  '<text class="matt" x="160" y="196" text-anchor="middle" font-size="14">75 × 30 cm</text>';
 KONST.foamroller='<path class="l t" d="M30 176H290" opacity=".3"/>'+
-  '<path class="l t" d="M46 88v12M278 88v12M46 94H278"/><text x="162" y="80" text-anchor="middle" font-size="14">90 cm</text>'+
+  '<path class="l t matt" d="M46 88v12M278 88v12M46 94H278"/><text class="matt" x="162" y="80" text-anchor="middle" font-size="14">90 cm</text>'+
   '<g class="rl-fart"><path class="l t" d="M14 140h18M8 152h24M14 164h18"/></g>'+
   '<g class="rl-rulle"><rect class="fn o" x="46" y="128" width="232" height="46" rx="6"/>'+
   '<g class="rl-rand"><path d="M78 133v36M108 133v36M138 133v36M168 133v36M198 133v36M228 133v36" stroke="#2B4A75" stroke-width="3.5" stroke-linecap="round"/></g>'+
@@ -1228,7 +1245,7 @@ KONST.foamroller='<path class="l t" d="M30 176H290" opacity=".3"/>'+
 KONST.hantelset='<path class="l t" d="M24 178H296" opacity=".3"/>'+
   '<path class="fs o" d="M42 150L32 176H52L60 150Z"/><path class="fs o" d="M278 150L288 176H268L260 150Z"/><path class="fs o" d="M152 150h16v26h-16Z"/>'+
   '<rect class="fs o" x="24" y="140" width="272" height="11" rx="3"/>'+hantlar()+
-  '<g class="hs-tal"><rect class="fy o" x="92" y="26" width="136" height="30" rx="15"/><text x="160" y="47" text-anchor="middle" font-size="15">7 par, 5–25 kg</text></g>';
+  '<g class="hs-tal matt"><rect class="fy o" x="92" y="26" width="136" height="30" rx="15"/><text x="160" y="47" text-anchor="middle" font-size="15">7 par, 5–25 kg</text></g>';
 KONST.massagebollar='<path class="l t" d="M30 178H290" opacity=".3"/>'+
   '<path class="fy k-st" d="M206 56l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><path class="fy k-st" d="M112 70l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5Z"/>'+
   '<g class="mb" style="--i:0"><ellipse class="fn o" cx="78" cy="152" rx="42" ry="24"/><path d="M52 141q26-12 52 0" stroke="#A9C7E3" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/></g>'+
@@ -1241,7 +1258,7 @@ KONST.gymgolv='<path class="l t" d="M40 178H280" opacity=".3"/>'+
   '<path d="M199.8 93L120.2 139M120.2 93L199.8 139M120.2 139V149M199.8 139V149" stroke="#A9C7E3" stroke-width="2.5" stroke-linecap="round" opacity=".55"/></g>'+
   '<g class="gg-smack"><path class="l t" d="M106 100l-14-7M104 113h-16M214 100l14-7M216 113h16"/></g>'+
   '<g class="gg-hantel"><rect class="fs o" x="138" y="98" width="44" height="9" rx="3"/><rect class="fn o" x="116" y="88" width="24" height="28" rx="5"/><rect class="fn o" x="180" y="88" width="24" height="28" rx="5"/></g>'+
-  '<text x="160" y="196" text-anchor="middle" font-size="14">fyra plattor, 1 × 1 m</text>';
+  '<text class="matt" x="160" y="196" text-anchor="middle" font-size="14">fyra plattor, 1 × 1 m</text>';
 KONST.boxer='<path class="l t" d="M40 182H280" opacity=".3"/>'+
   '<g class="bx-vind"><path class="l t" d="M10 84q16-8 32 0t32 0M4 112q18-8 36 0t36 0M14 140q14-7 28 0t28 0"/></g>'+
   '<g class="bx"><path class="fn o" d="M104 70H216L230 156L178 162L160 122L142 162L90 156Z"/>'+
@@ -1398,6 +1415,32 @@ var gen=0;                    // räknas upp när mobilen byter mellan Filips l�
 var K={},C=[],SAK={},HUVUD=[],ILUCKA={1:[],2:[],3:[],4:[]};   // sammanräknat: köpen, chatten, alla saker, listan och luckorna
 var filter='alla',ordning='min';
 function molnOk(){return lage==='ok';}
+
+/* ---------- AI-luckorna: idéer som mellanhanden har låtit Claude leta fram i svenska webbutiker ----------
+   AIS är alla som har visats för någon, AISETT det den här mobilen själv har fått (skickas med, så att de aldrig kommer igen). */
+function aiStad(a){                // bara sådant som ser ut som en idé, med https-länk, i den ordning de visades
+  var ut=[],har={};
+  (Array.isArray(a)?a:[]).forEach(function(x){
+    if(!x||typeof x!=='object'||typeof x.id!=='string'||!/^ai-[a-z0-9]{4,20}$/.test(x.id)||har[x.id])return;
+    var l=+x.lucka;if(!(l>=1&&l<=4)||typeof x.url!=='string'||!/^https:\/\//.test(x.url))return;
+    har[x.id]=1;
+    var pris=typeof x.pris==='number'&&isFinite(x.pris)?x.pris:null;
+    ut.push({id:x.id,lucka:l,t:Math.abs(+x.t||0)%4,bild:String(x.bild||'paket'),namn:String(x.namn||'').slice(0,80),hos:String(x.hos||'').slice(0,90),
+      butik:String(x.butik||'butiken').slice(0,40),pris:pris,utanPris:pris==null,var:typeof x.var==='number'&&pris!=null&&x.var>pris?x.var:undefined,
+      url:x.url,fakta:String(x.fakta||'').slice(0,260),rim:String(x.rim||'').slice(0,150),v:+x.v||0});
+  });
+  return ut.sort(function(a,b){return a.v-b.v;});
+}
+var AIS=aiStad(las('ais',[])),AIREV=String(las('airev','')||''),AIPA=!!las('aipa',false),AISTATUS=null,AISETT=las('aisett',[]);
+if(!Array.isArray(AISETT))AISETT=[];
+function aiLagg(nya){              // idéer som den här mobilen just har fått
+  AIS=aiStad(AIS.concat(nya));spara('ais',AIS);
+  nya.forEach(function(s){if(AISETT.indexOf(s.id)<0)AISETT.push(s.id);});
+  if(AISETT.length>300)AISETT=AISETT.slice(-300);
+  spara('aisett',AISETT);
+  byggModell();
+}
+function aiLage(){return !agare&&AIPA&&molnOk();}
 function nuS(){return Date.now()+skev;}
 function slot(k){return moln.slots[k]||{};}
 function listan(){var l=slot('filip').lista||{};return {egna:Array.isArray(l.egna)?l.egna:[],lappar:l.lappar||{},dolda:l.dolda||{}};}
@@ -1477,6 +1520,7 @@ function byggModell(){
   HUVUD.forEach(function(s,i){s.nr=i+1;});
   FORSLAG.forEach(function(s){var o=SAK[s.id];if(syns(o))ILUCKA[o.lucka].push(o);});
   L.egna.forEach(function(e){var o=e&&SAK[e.id];if(o&&o.egen&&o.lucka)ILUCKA[o.lucka].push(o);});
+  AIS.forEach(function(s){if(SAK[s.id])return;var o=ta(s,false);o.ai=true;ILUCKA[o.lucka].push(o);});   // AI-idéerna sist: de lottas aldrig, de hämtas
   sparaNamn();
 }
 function valda(){
@@ -1548,6 +1592,7 @@ function doltKarta(){                    // dolt id → sakens id, för allt som
   var k={};if(!hmacK)return k;
   SAKER.forEach(function(s){k[dolt(s.id)]=s.id;});FORSLAG.forEach(function(s){k[dolt(s.id)]=s.id;});
   listan().egna.forEach(function(e){if(e&&e.id)k[dolt(e.id)]=e.id;});
+  AIS.forEach(function(s){k[dolt(s.id)]=s.id;});
   return k;
 }
 function anvandNyckel(raw){
@@ -1707,7 +1752,7 @@ $('#lasForm').addEventListener('submit',function(e){
   lasJobbar=true;knapp.disabled=true;fel.textContent='Kollar …';
   harleda(losen).then(function(r){
     raw=r;
-    return api('GET','/onskelista?r='+revStr()).then(lasSvar);         // det senaste: har någon hunnit välja ett lösenord?
+    return api('GET','/onskelista?r='+revStr()+'&a='+encodeURIComponent(AIREV)).then(lasSvar);         // det senaste: har någon hunnit välja ett lösenord?
   }).then(function(u){
     if(u!=='ok')return 'natfel';
     var id=lasIdAv(raw.slice(32,64));
@@ -1746,7 +1791,7 @@ function agarKnappar(s){
 }
 function sakHtml(s,i,liten){
   var dold=s.dold?(agare?'Dold. De andra ser den inte.':'Filip har tagit bort den här från listan.'):'';
-  return '<article class="sak'+(liten?' liten':'')+(s.dold?' dold':'')+'" id="sak-'+s.id+'" data-id="'+s.id+'" style="--tint:'+TINTER[(s.t||0)%4]+'">'+
+  return '<article class="sak'+(liten?' liten':'')+(s.dold?' dold':'')+(s.ai?' ai':'')+'" id="sak-'+s.id+'" data-id="'+s.id+'" style="--tint:'+TINTER[(s.t||0)%4]+'">'+
    '<div class="scen">'+(liten?'':'<span class="nr" aria-hidden="true">'+s.nr+'</span>')+
    '<button class="spela" type="button" data-spela="'+s.id+'"><svg class="bild" viewBox="0 0 320 200" aria-hidden="true" focusable="false">'+KONST[s.bild]+'</svg></button>'+
    (!liten&&i===0&&!las('tips',0)?'<span class="tips" id="tips">Tryck på bilden</span>':'')+
@@ -1818,21 +1863,23 @@ function ljusSvg(i){
   return s+'</svg>';
 }
 function luckaHtml(L,i){
-  var d=ADVENT[i],pa=aktiv===L.nr,antal=ILUCKA[L.nr].length;
+  var d=ADVENT[i],pa=aktiv===L.nr,antal=ILUCKA[L.nr].filter(function(s){return !s.ai;}).length;
   return '<div class="luckplats">'+ljusSvg(i)+
    '<button class="lucka l'+L.nr+(pa?' aktiv':'')+'" type="button" data-lucka="'+L.nr+'" aria-expanded="'+(pa?'true':'false')+'" aria-controls="luckaIn" aria-label="Lucka '+L.nr+', '+L.ord.toLowerCase()+' advent, '+d.getDate()+' '+MAN[d.getMonth()]+'">'+
-   '<span class="hal" aria-hidden="true">'+(antal===1?'1 idé':antal+' idéer')+'</span>'+
+   '<span class="hal" aria-hidden="true">'+(aiLage()?'Nya idéer':antal===1?'1 idé':antal+' idéer')+'</span>'+
    '<span class="blad" aria-hidden="true"><span class="fram"><span class="siffra">'+L.nr+'</span><span class="datum">'+d.getDate()+' '+MAN[d.getMonth()].slice(0,3)+'</span><i class="knopp"></i></span><span class="bak"></span></span></button></div>';
 }
-/* Varje gång en lucka öppnas lottas två av idéerna fram. Det man själv har valt, och det de andra redan köper,
-   ligger alltid kvar. Filip ser alla, eftersom det är han som bestämmer vad som ligger där. */
+/* Varje gång en lucka öppnas kommer två idéer fram. Med AI-luckorna (mellanhanden har en nyckel till Claude) hämtas
+   två som ingen har sett förut; annars, eller om det inte går, lottas två av de inbyggda. Det man själv har valt, och
+   det de andra redan köper, ligger alltid kvar. Filip ser alla inbyggda, eftersom det är han som bestämmer över dem. */
 var VISA=2,URVAL={nr:0,ids:[],ny:false};
 var FORRA=las('forra',{});if(!FORRA||typeof FORRA!=='object')FORRA={};   // förra lottningen per lucka, så att nästa blir en annan
+var aiNr=0,tidOppen=false;                    // aiNr: räknas upp per hämtning, så att ett sent svar inte skriver över ett nyare
 function blanda(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),x=a[i];a[i]=a[j];a[j]=x;}return a;}
 function fastISak(s){return !!(val[s.id]||koptAv(s.id));}
 function lotta(nr,andra){
   var pool=ILUCKA[nr]||[],fasta=[],fria=[],valt,forra,i=0;
-  pool.forEach(function(s){(fastISak(s)?fasta:fria).push(s.id);});
+  pool.forEach(function(s){if(fastISak(s))fasta.push(s.id);else if(!s.ai)fria.push(s.id);});   // AI-idéer lottas aldrig: de kommer bara en gång
   var n=Math.min(VISA,fria.length);
   if(andra){                                   // "Visa andra idéer": först det som inte syns just nu
     var syns=URVAL.nr===nr?URVAL.ids:[];
@@ -1844,10 +1891,30 @@ function lotta(nr,andra){
   URVAL={nr:nr,ids:fasta.concat(valt),ny:!!andra};
   FORRA[nr]=valt;spara('forra',FORRA);
 }
+function hamtaNya(nr,andra){                   // två idéer som ingen har sett, från mellanhanden
+  var mitt=++aiNr,fasta=(ILUCKA[nr]||[]).filter(fastISak).map(function(s){return s.id;});
+  URVAL={nr:nr,ids:fasta,ny:false,laddar:true,ai:true,fokus:!!andra};
+  function klar(varfor,nya){
+    if(mitt!==aiNr||URVAL.nr!==nr)return;      // luckan har stängts eller öppnats igen under tiden
+    var fokus=URVAL.fokus;
+    if(nya&&nya.length){
+      nya.forEach(function(s){if(URVAL.ids.indexOf(s.id)<0)URVAL.ids.push(s.id);});
+      URVAL.laddar=false;URVAL.ny=true;
+    }else{lotta(nr,andra);URVAL.reserv=varfor;}
+    if(aktiv!==nr)return;
+    ritaLuckaIn();uppdatera();
+    if(fokus){var b=$('#luckaIn [data-blanda]');if(b)b.focus({preventScroll:true});}
+  }
+  api('POST','/onskelista/ai',{nr:nr,d:enhet.d,vem:vem||undefined,namn:vem==='annan'&&namn?namn:undefined,sett:AISETT.slice(-120)}).then(function(j){
+    var nya=j&&j._s===200&&j.ol===1?aiStad(j.nya):[];
+    if(nya.length)aiLagg(nya);                 // sedda nu, även om luckan hann stängas
+    klar(j&&j.tom?'tom':'fel',nya);
+  },function(){klar('fel',null);});
+}
 function iLuckan(nr){                          // det som visas i luckan just nu
   var pool=ILUCKA[nr]||[];
-  if(agare)return pool.slice();
-  if(URVAL.nr!==nr)lotta(nr,false);
+  if(agare)return pool.filter(function(s){return !s.ai;});
+  if(URVAL.nr!==nr){if(aiLage())hamtaNya(nr,false);else lotta(nr,false);}
   var finns={},ut=[];
   pool.forEach(function(s){finns[s.id]=s;});
   URVAL.ids.forEach(function(id){if(finns[id]){ut.push(finns[id]);delete finns[id];}});
@@ -1859,20 +1926,34 @@ function ritaLuckaIn(){
   Object.keys(noder).forEach(function(id){if(!SAK[id]||SAK[id].lucka)delete noder[id];});
   if(!aktiv){p.hidden=true;p.innerHTML='';URVAL.nr=0;return;}
   var L=LUCKOR[aktiv-1],d=ADVENT[aktiv-1],pool=ILUCKA[aktiv],saker=iLuckan(aktiv),ny=URVAL.ny;URVAL.ny=false;
-  var fler=!agare&&pool.length>saker.length;
+  var egna=pool.filter(function(s){return !s.ai;}),visasEgna=saker.filter(function(s){return !s.ai;}).length;
+  var laddar=!agare&&!!URVAL.laddar,ai=!agare&&(!!URVAL.ai||aiLage());
+  var fler=!agare&&(ai||egna.length>visasEgna);
+  var tidigare=pool.filter(function(s){return s.ai&&saker.indexOf(s)<0;}).reverse();   // det AI har visat förut, nyast först
+  var nyaAi=saker.filter(function(s){return s.ai&&!fastISak(s);}).length;
   var h='<h3 class="lr" id="luckaRubrik" tabindex="-1">Lucka '+aktiv+': '+esc(L.tema)+'</h3><p class="nar">'+L.ord+' advent, '+DAG[d.getDay()]+' '+d.getDate()+' '+MAN[d.getMonth()]+'</p>';
-  if(agare&&pool.length>VISA)h+='<p class="slump">Mamma och pappa ser '+ORD[VISA]+' av '+(ORD[pool.length]||pool.length)+' åt gången, och andra varje gång de öppnar luckan. Du ser alla.</p>';
-  else if(fler)h+='<p class="slump">'+stor(ORD[saker.length]||String(saker.length))+' av '+(ORD[pool.length]||pool.length)+' idéer. Andra kommer fram varje gång du öppnar luckan.</p>';
-  if(!saker.length)h+='<p class="tomt">'+(agare?'Här ligger inget just nu.':'Den här luckan är tom just nu.')+'</p>';
+  if(agare){
+    if(AIPA&&molnOk())h+='<p class="slump">Mamma och pappa får två helt nya idéer varje gång de öppnar luckan. AI letar fram dem i svenska webbutiker, och samma idé kommer aldrig två gånger. Går det inte får de några av de här i stället.</p>';
+    else if(egna.length>VISA)h+='<p class="slump">Mamma och pappa ser '+ORD[VISA]+' av '+(ORD[egna.length]||egna.length)+' åt gången, och andra varje gång de öppnar luckan. Du ser alla.</p>';
+  }
+  else if(laddar)h+='<p class="slump" role="status">Tomten letar fram två nya idéer …</p>';
+  else if(URVAL.reserv&&ai)h+='<p class="slump">'+(URVAL.reserv==='tom'?'Tomten letar efter fler nya idéer. Så länge kommer några av de vanliga.':'Det gick inte att hämta nya idéer just nu. Här är några av de vanliga.')+'</p>';
+  else if(URVAL.ai)h+='<p class="slump">'+(nyaAi===1?'En helt ny idé som ingen har sett förut.':'Två helt nya idéer som ingen har sett förut.')+' Nästa gång du öppnar luckan kommer två andra.</p>';
+  else if(fler)h+='<p class="slump">'+stor(ORD[visasEgna]||String(visasEgna))+' av '+(ORD[egna.length]||egna.length)+' idéer. Andra kommer fram varje gång du öppnar luckan.</p>';
+  if(!saker.length&&!laddar)h+='<p class="tomt">'+(agare?'Här ligger inget just nu.':'Den här luckan är tom just nu.')+'</p>';
   h+=saker.map(function(s,i){return sakHtml(s,i+aktiv,true);}).join('');
-  h+='<p class="lucka-fot">'+(fler?'<button class="lank blanda" type="button" data-blanda><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h3.5c2 0 3.2.9 4.3 2.6l2.4 3.8c1.1 1.7 2.3 2.6 4.3 2.6H20M4 17h3.5c1.6 0 2.7-.6 3.6-1.7M14.4 8.7C15.3 7.6 16.4 7 18 7h2M17.5 4.5 20 7l-2.5 2.5M17.5 14.5 20 17l-2.5 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Visa andra idéer</button>':'')+
+  if(laddar)h+='<div class="tomtenletar" aria-hidden="true"><i></i><i></i></div>';
+  if(tidigare.length)h+='<details class="tidigare"'+(tidOppen?' open':'')+'><summary>'+(agare?'Idéer som AI har visat':'Tidigare idéer')+' <span>'+tidigare.length+'</span></summary>'+
+    tidigare.map(function(s,i){return sakHtml(s,i+aktiv+saker.length,true);}).join('')+'</details>';
+  h+='<p class="lucka-fot">'+(fler?'<button class="lank blanda" type="button" data-blanda'+(laddar?' disabled':'')+'><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h3.5c2 0 3.2.9 4.3 2.6l2.4 3.8c1.1 1.7 2.3 2.6 4.3 2.6H20M4 17h3.5c1.6 0 2.7-.6 3.6-1.7M14.4 8.7C15.3 7.6 16.4 7 18 7h2M17.5 4.5 20 7l-2.5 2.5M17.5 14.5 20 17l-2.5 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+(ai?'Visa två nya idéer':'Visa andra idéer')+'</button>':'')+
    (agare?'<button class="lank" type="button" data-nysak="'+aktiv+'">Lägg en egen sak i luckan</button>':'')+'<button class="lank" type="button" data-stanglucka>Stäng luckan</button></p>';
   p.innerHTML=h;p.hidden=false;
-  saker.forEach(function(s,i){
+  saker.concat(tidigare).forEach(function(s,i){
     var n=document.getElementById('sak-'+s.id);noder[s.id]=n;
-    if(ny&&n&&!fastISak(s)){n.classList.add('ny');n.style.setProperty('--d',(i*90)+'ms');}
+    if(ny&&n&&i<saker.length&&!fastISak(s)){n.classList.add('ny');n.style.setProperty('--d',(i*90)+'ms');}
   });
 }
+document.addEventListener('toggle',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('tidigare'))tidOppen=t.open;},true);
 function ritaLuckor(){
   $('#luckrad').innerHTML=LUCKOR.map(luckaHtml).join('');
   ritaLuckaIn();
@@ -1885,8 +1966,9 @@ function valjLucka(nr,rulla){
 }
 function blandaLucka(){
   if(!aktiv||agare)return;
-  lotta(aktiv,true);ritaLuckaIn();uppdatera();
-  var b=$('#luckaIn [data-blanda]');if(b)b.focus({preventScroll:true});
+  if(aiLage())hamtaNya(aktiv,true);else lotta(aktiv,true);
+  ritaLuckaIn();uppdatera();
+  var b=$('#luckaIn [data-blanda]');if(b&&!b.disabled)b.focus({preventScroll:true});
 }
 function taMed(id){                            // en sak som någon pekar på i chatten ska synas i luckan
   if(agare||!aktiv||URVAL.nr!==aktiv||URVAL.ids.indexOf(id)>=0)return;
@@ -2010,11 +2092,12 @@ function lasSvar(j){
 function chattNyckel(){return C.map(function(m){return m.id;}).join(',');}
 function taEmot(j){
   var nu=Date.now(),foreL=JSON.stringify(listan()),foreC=chattNyckel(),andrat=false,nv=+j.nv||0;
-  if(j.ol&&nv!==moln.nv){                       // nv: mellanhandens version (2: fler notiser och val)
+  if(j.ol&&nv!==moln.nv){                       // nv: mellanhandens version (2: fler notiser och val, 3: AI-luckorna)
     var forut=moln.nv;moln.nv=nv;spara('moln',moln);
-    if(agare&&forut!==undefined&&forut<2&&nv>=2)toast('Mellanhanden är uppdaterad. Nu finns alla notiser.');
+    if(agare&&forut!==undefined&&forut<nv&&nv>=2)toast(nv>=3?'Mellanhanden är uppdaterad. Nu kan luckorna få AI-idéer.':'Mellanhanden är uppdaterad. Nu finns alla notiser.');
     setTimeout(function(){ritaAgare(true);ritaInstall();},0);
   }
+  var aiAndrat=taEmotAi(j.ai);
   if(j.slots)SLOTS.forEach(function(k){
     var s=j.slots[k];if(!s)return;
     var r=s.r||0,g=sett[k];
@@ -2023,13 +2106,30 @@ function taEmot(j){
     moln.slots[k]=s;moln.rev[k]=r;andrat=true;
   });
   var nyLista=false;
-  if(andrat){spara('moln',moln);raknaOm();nyLista=JSON.stringify(listan())!==foreL;if(nyLista)byggModell();}
+  if(andrat||aiAndrat){spara('moln',moln);raknaOm();nyLista=aiAndrat||JSON.stringify(listan())!==foreL;if(nyLista)byggModell();}
   stam();
-  if(andrat){
+  if(andrat||aiAndrat){
     if(nyLista)bygg();else uppdatera();
     if(chattNyckel()!==foreC)chattAndrad();
   }
   stamChatt();
+}
+// AI-historiken: allt som någon har fått se. Den växer bara, så det nya läggs ihop med det mobilen redan har
+// (KV kan svara med en lite äldre version än den mobilen själv nyss fick).
+function taEmotAi(a){
+  if(!a||typeof a!=='object')return false;
+  var andrat=false,pa=!!a.pa;
+  if(pa!==AIPA){AIPA=pa;spara('aipa',AIPA);andrat=true;}
+  if(Array.isArray(a.saker)){
+    var fore=AIS.length,nya=aiStad(AIS.concat(a.saker));
+    if(nya.length!==fore){AIS=nya;spara('ais',AIS);andrat=true;}
+    if(typeof a.rev==='string'){AIREV=a.rev;spara('airev',AIREV);}
+  }
+  if(agare){
+    var st=a.status&&typeof a.status==='object'?a.status:null;
+    if(JSON.stringify(st)!==JSON.stringify(AISTATUS)){AISTATUS=st;setTimeout(function(){ritaAgare(true);ritaInstall();},0);}
+  }
+  return andrat;
 }
 // En skrivning i taget med drygt en sekund emellan: KV tar emot en skrivning i sekunden per nyckel
 var ko=Promise.resolve();
@@ -2108,7 +2208,7 @@ function hamta(){
   if(hamtar)return Promise.resolve();
   hamtar=true;
   var g=gen;
-  return api('GET','/onskelista?r='+revStr()).then(function(j){
+  return api('GET','/onskelista?r='+revStr()+'&a='+encodeURIComponent(AIREV)).then(function(j){
     if(g!==gen)return;                 // mobilen bytte läge under tiden: en ny hämtning är redan på väg
     hamtar=false;lasSvar(j);
     if(g!==gen)return;                 // svaret fick mobilen att lämna Filips läge: den nya hämtningen sköter resten
@@ -2640,7 +2740,8 @@ function ritaInstall(tvinga){
   h+=instDel('Hemskärmen',fristaende()?'<p>Listan ligger på hemskärmen och öppnas som en app.</p>':
     '<p>Lägg listan på hemskärmen, så öppnas den som en vanlig app'+(arIos()?' och kan ge notiser':'')+'.</p>'+knapp('guide','Visa hur man gör'));
   // mellanhanden, bara för Filip
-  if(agare)h+=instDel('Mellanhanden',lage==='ok'?(nv>=2?'<p>Igång, med den senaste koden.</p>':'<p>Igång, men det finns en nyare kod med fler notiser.</p>'+knapp('uppd','Visa hur du uppdaterar',true)):
+  if(agare)h+=instDel('Mellanhanden',lage==='ok'?(nv>=3?'<p>Igång, med den senaste koden.</p>'+(AIPA?'<p>AI-luckorna är igång.</p>':'<p>AI-luckorna väntar på nyckeln.</p>'+knapp('uppd','Visa hur du lägger in den',true)):
+      '<p>Igång, men det finns en nyare kod med AI-luckorna.</p>'+knapp('uppd','Visa hur du uppdaterar',true)):
     '<p>Inte igång än.</p>'+knapp('uppd','Visa vad som saknas',true));
   // länken
   h+=instDel('Länken','<p>'+(agare?'Länken utan ditt eget läge, att skicka till mamma, pappa och andra.':'Samma länk till alla som ska kunna se listan.')+'</p>'+knapp('lank','Kopiera länken')+'<p class="fin" id="instLank" role="status"></p>');
@@ -2725,7 +2826,7 @@ function uppdSteg(){
        '<textarea id="kodText" readonly hidden aria-label="Den nya koden" style="width:100%;min-height:120px;margin-top:12px;border-radius:10px;border:2px solid var(--is);background:transparent;color:var(--sno);font:13px/1.4 ui-monospace,Menlo,monospace;padding:10px"></textarea>';
 }
 function ritaAgare(tvinga){
-  var k=$('#agarkort'),r=$('#agarRuta'),h,nyckel=lage+'|'+(moln.nv||0);
+  var k=$('#agarkort'),r=$('#agarRuta'),h,nyckel=lage+'|'+(moln.nv||0)+'|'+AIPA+'|'+JSON.stringify(AISTATUS);
   if(!agare){k.hidden=true;agarRitat='';return;}
   k.hidden=false;
   if(agarRitat===nyckel&&!tvinga)return;
@@ -2737,11 +2838,23 @@ function ritaAgare(tvinga){
        '<p>Det de köper och skriver till varandra låser de med ett eget lösenord. Utan det går det inte att se, varken här eller i Cloudflare.</p>'+
        '<div class="knappar"><button class="knapp" type="button" data-nysak="0">Lägg till en sak</button><button class="knapp rand" type="button" id="delaLank">Kopiera länken till listan</button></div>'+
        '<p class="fin" id="delaStatus" role="status"></p>';
-    if((moln.nv||0)<2){
-      // mellanhanden har koden från före notisvalen: allt fungerar, men det finns mer att få
-      h+='<div class="uppd" id="uppd"><p><strong>Ny version av mellanhanden.</strong> Med den får mamma och pappa notiser när någon ångrar ett köp, när du ändrar något och när en adventslucka öppnas, och de kan välja vilka notiser de vill ha. Allt annat fungerar som vanligt tills dess.</p>'+uppdSteg()+
-         '<p class="fin">Adventsluckornas notiser skickas av en Cron Trigger. Kolla under Settings, Trigger events i Cloudflare att det finns en som körs varje minut (* * * * *). Finns den inte, lägg till den.</p></div>';
+    if((moln.nv||0)<3){
+      // mellanhanden har en äldre kod: allt fungerar, men det finns mer att få
+      h+='<div class="uppd" id="uppd"><p><strong>Ny version av mellanhanden.</strong> Med den får mamma och pappa två helt nya idéer varje gång de öppnar en lucka, som AI letar fram i svenska webbutiker. Allt annat fungerar som vanligt tills dess.</p>'+uppdSteg()+
+         '<p class="fin">AI-luckorna fylls på av samma Cron Trigger som notiserna, den som körs varje minut under Settings, Trigger events.</p></div>';
       hamtaKod();
+    }else if(!AIPA){
+      h+='<div class="uppd" id="uppd"><p><strong>Sista steget: nyckeln till AI-luckorna.</strong> Med den letar Claude fram nya idéer till luckorna. Tills dess visas de vanliga.</p><ol class="steglista">'+
+         '<li><b>Skapa en nyckel</b><span>Logga in i Claude Console, tryck på Create key och kopiera nyckeln. Den börjar med sk-ant-.</span><a class="knapp rand" target="_blank" rel="noopener" href="https://platform.claude.com/settings/keys">Öppna Claude Console</a></li>'+
+         '<li><b>Lägg in den i Cloudflare</b><span>Öppna gymschema-switchbot och gå till Settings. Tryck på + Add vid Variables and secrets och välj Secret. Skriv namnet här nedanför, klistra in nyckeln som Value och tryck på Deploy.</span><button class="knapp" type="button" id="kopieraNamn">Kopiera namnet ANTHROPIC_API_KEY</button><span id="namnStatus" role="status"></span><a class="knapp rand" target="_blank" rel="noopener" href="https://dash.cloudflare.com/?to=/:account/workers-and-pages">Öppna Cloudflare</a></li>'+
+         '<li><b>Kom tillbaka hit</b><button class="knapp rand" type="button" id="kollaIgen">Kolla om det är igång</button><span id="kollStatus" role="status"></span></li></ol>'+
+         '<p class="fin">Varje idé kostar ungefär 50 öre. Mellanhanden letar fram högst 48 idéer om dygnet, så det blir aldrig mer än runt 30 kr per dygn. Under Billing i Claude Console kan du sätta ett tak.</p></div>';
+    }else{
+      var st=AISTATUS||{},v=Array.isArray(st.vantar)?st.vantar:null;
+      h+='<div class="uppd" id="uppd"><p><strong>AI-luckorna är igång.</strong> '+(v?'Nya idéer som väntar: '+v.map(function(n,i){return 'lucka '+(i+1)+': '+n;}).join(', ')+'.':'')+
+         (typeof st.visade==='number'?' '+(st.visade===1?'En idé har':stor(ORD[st.visade]||String(st.visade))+' idéer har')+' visats hittills.':'')+
+         (typeof st.kr==='number'?' Det har kostat ungefär '+st.kr+' kr.':'')+'</p>'+
+         (st.fel?'<p class="fin">Senaste felet: '+esc(st.fel)+'</p>':'')+'</div>';
     }
   }else if(lage==='kv'){
     h+='<p>Mellanhanden på Cloudflare saknar sin lagring (bindningen GS). Skriv det till Claude, så löser vi det.</p>'+
@@ -2765,12 +2878,16 @@ $('#agarRuta').addEventListener('click',function(e){
     kopiera(workerKod,function(){st.textContent='Koden är kopierad.';},function(){
       var ta=$('#kodText');ta.value=workerKod;ta.hidden=false;ta.focus();ta.select();st.textContent='Markera allt i rutan här nedanför och kopiera det själv.';
     });
+  }else if(b.id==='kopieraNamn'){
+    st=$('#namnStatus');
+    kopiera('ANTHROPIC_API_KEY',function(){st.textContent='Namnet är kopierat.';},function(){st.textContent='ANTHROPIC_API_KEY';});
   }else if(b.id==='kollaIgen'){
     st=$('#kollStatus');st.textContent='Kollar …';
     hamta().then(function(){
       var s2=$('#kollStatus');
       if(s2&&lage!=='ok')s2.textContent=lage==='kv'?'Lagringen saknas fortfarande.':'Inte än. Mellanhanden har kvar den gamla koden.';
-      else if(s2&&(moln.nv||0)<2)s2.textContent='Inte än. Mellanhanden har kvar den förra koden.';
+      else if(s2&&(moln.nv||0)<3)s2.textContent='Inte än. Mellanhanden har kvar den förra koden.';
+      else if(s2&&!AIPA)s2.textContent='Inte än. Mellanhanden hittar ingen nyckel. Kolla att namnet är exakt ANTHROPIC_API_KEY och att du tryckte på Deploy.';
       schema();
     });
   }else if(b.id==='lamna'){
