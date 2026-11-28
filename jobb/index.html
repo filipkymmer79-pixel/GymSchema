@@ -612,11 +612,17 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     nosupport: "Notiser fungerar bara när Jobbmotorn är öppnad från ikonen på hemskärmen.", off: "Påminnelserna är inte på i workern. Tryck Slå på igen." };
   function pushCfg() { try { return JSON.parse(localStorage.getItem(PUSH_LS) || "{}"); } catch (e) { return {}; } }
   function savePush(c) { try { localStorage.setItem(PUSH_LS, JSON.stringify(c)); } catch (e) {} }
-  function pushKey(c) { if (!c.key) { var u = crypto.getRandomValues(new Uint8Array(24)); c.key = btoa(String.fromCharCode.apply(null, u)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); savePush(c); } return c.key; }
+  // Påminnelsernas nyckel räknas fram ur appens nyckel, så en ny ikon på hemskärmen med samma nyckel tar över påminnelserna
+  function pushKey(c) {
+    if (c.key) return Promise.resolve(c.key);   // äldre installation med slumpad nyckel
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode("jobbmotorn-push:" + getKey())).then(function (h) {
+      return btoa(String.fromCharCode.apply(null, new Uint8Array(h))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    });
+  }
   function err(code) { var e = new Error(code); e.code = code; return e; }
   function api(c, path, body) {
     if (!/^https:\/\/[^/]+\.[^/]+/.test(c.url || "")) return Promise.reject(err("url"));
-    return fetch(c.url.replace(/\/+$/, "") + path, body ? { method: "POST", headers: { "Content-Type": "application/json", "X-GS-Key": pushKey(c) }, body: JSON.stringify(body), cache: "no-store" } : { cache: "no-store" })
+    return pushKey(c).then(function (key) { return fetch(c.url.replace(/\/+$/, "") + path, body ? { method: "POST", headers: { "Content-Type": "application/json", "X-GS-Key": key }, body: JSON.stringify(body), cache: "no-store" } : { cache: "no-store" }); })
       .then(function (r) { return r.json().catch(function () { return null; }).then(function (j) {
         if (r.status === 409) throw err("taken"); if (r.status === 404 && j && j.error === "off") throw err("off"); if (r.status === 403 || (r.status === 404 && j && j.error === "path")) throw err("old"); if (!r.ok || !j) throw err("worker"); return j; }); },
         function (e) { if (e && e.code) throw e; throw err("net"); });
