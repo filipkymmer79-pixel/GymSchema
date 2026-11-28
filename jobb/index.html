@@ -1,23 +1,15 @@
 <!DOCTYPE html>
-<html lang="sv" data-theme="light" data-phase="day">
+<html lang="sv">
 <head>
-<script>
-  // 28 nov 2026: appen på hemskärmen går rakt in i Jobbmotorn i Claude, där jobben, kön, breven och CV:t finns.
-  // I Safari visas startsidan som vanligt, så att den går att lägga på hemskärmen. ?start visar startsidan även i appen.
-  (function () {
-    var standalone = navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
-    if (standalone && !/[?&]start\b/.test(location.search)) location.replace("https://claude.ai/artifact/8tuPdqq1A4iHd8CLcqs3hx");
-  })();
-</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Jobbmotorn</title>
-<meta name="description" content="Öppnar Jobbmotorn i Claude, visar nästa morgonkörning och påminner om rapporterna till Försäkringskassan och Arbetsförmedlingen.">
+<meta name="description" content="Jobbmotorn med autopiloten: kön, det som skickats och jobben som söks på hemsidor.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Jobbmotorn">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#e8f0ff">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0b1026">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
@@ -27,358 +19,533 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Nunito:wght@800;900&amp;display=swap">
 <style>
-/* The phone door to Jobbmotorn in Claude. Same sky, glass and sunrise coral as the app itself:
-   the morning run is the big thing on the page, the monthly reports come next, then how it works. */
+/* Jobbmotorn på telefonen (28 nov 2026): samma natthimmel och kort som appen i Claude.
+   Datan kommer krypterad från morgonkörningen (data.enc) och låses upp med nyckeln, som bara finns i telefonen. */
 :root {
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --round: ui-rounded, "SF Pro Rounded", "Nunito", -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-  --accent: #ff5a3c; --accent2: #ff9442; --accent-soft: rgba(255, 90, 60, 0.13); --accent-line: rgba(255, 90, 60, 0.45);
-  --warn-soft: rgba(245, 159, 0, 0.16); --warn: #c2410c;
-  --ink: #0c1322; --ink2: rgba(12, 19, 34, 0.64); --ink3: rgba(12, 19, 34, 0.42);
-  --hair: rgba(12, 19, 34, 0.07); --hair2: rgba(12, 19, 34, 0.13);
-  --glass: rgba(255, 255, 255, 0.6); --glass2: rgba(255, 255, 255, 0.84);
-  --edge: rgba(255, 255, 255, 0.75);
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset, 0 12px 32px -14px rgba(20, 30, 60, 0.28);
-  --blur: saturate(170%) blur(22px);
-  --ease: cubic-bezier(0.32, 0.72, 0, 1);
-  color-scheme: light;
+  --sky1: #0b1026; --sky2: #1b1546; --sky3: #3a1c4f;
+  --ink: #f4f6ff; --ink2: #c3c9e6; --mute: #8e97c0;
+  --glass: rgba(255, 255, 255, 0.06); --glass2: rgba(255, 255, 255, 0.1); --edge: rgba(255, 255, 255, 0.12);
+  --green: #34d399; --coral: #ff6b4a; --amber: #ffb547; --hot: #ff6b81;
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --round: "Nunito", "Inter", -apple-system, sans-serif;
+  --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px);
 }
-:root[data-theme="dark"] {
-  --ink: #f2f4fb; --ink2: rgba(242, 244, 251, 0.7); --ink3: rgba(242, 244, 251, 0.45);
-  --hair: rgba(255, 255, 255, 0.08); --hair2: rgba(255, 255, 255, 0.15);
-  --glass: rgba(24, 28, 52, 0.55); --glass2: rgba(30, 35, 64, 0.86);
-  --edge: rgba(255, 255, 255, 0.1);
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 18px 40px -18px rgba(0, 0, 0, 0.7);
-  --accent-soft: rgba(255, 110, 80, 0.18); --warn: #ffb057;
-  color-scheme: dark;
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; min-height: 100%; }
+html { background: #15123a; }
+body { font: 400 16px/1.45 var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; background: #15123a; }
+/* Himlen ligger i ett fast lager bakom allt, så den täcker hela skärmen även på iPhone (som inte kan fasta bakgrunder) */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.7), transparent), radial-gradient(1px 1px at 78% 12%, rgba(255,255,255,.7), transparent),
+    radial-gradient(1.5px 1.5px at 64% 32%, rgba(255,255,255,.6), transparent), radial-gradient(1px 1px at 30% 44%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1px 1px at 88% 58%, rgba(255,255,255,.6), transparent), radial-gradient(1.2px 1.2px at 8% 72%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1px 1px at 46% 86%, rgba(255,255,255,.6), transparent), radial-gradient(1px 1px at 92% 90%, rgba(255,255,255,.6), transparent),
+    radial-gradient(120% 70% at 85% 105%, rgba(170, 60, 140, 0.45), transparent 60%),
+    radial-gradient(90% 60% at 10% 0%, rgba(60, 80, 200, 0.35), transparent 60%),
+    linear-gradient(175deg, var(--sky1) 0%, var(--sky2) 55%, var(--sky3) 100%);
 }
-:root[data-phase="dawn"] { --sky0: #fde9e2; --sky1: #ffc3a8; --sky2: #f8b6d2; --sky3: #d6cbff; }
-:root[data-phase="day"] { --sky0: #e8f0ff; --sky1: #b9dcff; --sky2: #c6f0ea; --sky3: #e4d8ff; }
-:root[data-phase="eve"] { --sky0: #eee6ff; --sky1: #ffc6b4; --sky2: #d4c2ff; --sky3: #ffd6e5; }
-:root[data-theme="dark"] { --sky0: #070b1d; --sky1: #1b2a6e; --sky2: #3a1c62; --sky3: #4f2348; }
-:root[data-theme="dark"][data-phase="dawn"] { --sky3: #7a3526; }
-
-* { box-sizing: border-box; min-width: 0; -webkit-tap-highlight-color: transparent; }
-html, body { margin: 0; }
-body { font: 400 16px/1.45 var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; overflow-x: clip; background: var(--sky0); }
-[hidden] { display: none !important; }
+main { position: relative; max-width: 560px; margin: 0 auto; padding: calc(var(--safe-t) + 18px) 18px calc(var(--safe-b) + 110px); }
+.ic { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.inl { width: 17px; height: 17px; vertical-align: -3px; }
 button { font: inherit; color: inherit; }
-:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 2px; border-radius: 12px; }
-.ic { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+a { color: inherit; }
+[hidden] { display: none !important; }
 
-.sky { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--sky0); transition: background 1.5s; }
-.sky i { position: absolute; width: 90vmax; height: 90vmax; border-radius: 50%; will-change: transform; }
-.sky .b1 { background: radial-gradient(closest-side, var(--sky1), transparent 72%); top: -38vmax; left: -30vmax; animation: d1 36s ease-in-out infinite alternate; }
-.sky .b2 { background: radial-gradient(closest-side, var(--sky2), transparent 72%); top: -12vmax; right: -44vmax; animation: d2 44s ease-in-out infinite alternate; }
-.sky .b3 { background: radial-gradient(closest-side, var(--sky3), transparent 72%); bottom: -48vmax; left: -18vmax; animation: d3 50s ease-in-out infinite alternate; }
-.sky .stars { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s;
-  background-image: radial-gradient(1.2px 1.2px at 12% 18%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 28% 42%, #fff 50%, transparent 52%), radial-gradient(1.4px 1.4px at 46% 12%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 63% 30%, #fff 50%, transparent 52%), radial-gradient(1.2px 1.2px at 81% 16%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 90% 48%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 7% 62%, #fff 50%, transparent 52%), radial-gradient(1.3px 1.3px at 36% 74%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 72% 66%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 54% 88%, #fff 50%, transparent 52%); }
-:root[data-theme="dark"] .sky .stars { opacity: 0.55; }
-@keyframes d1 { to { transform: translate(14vmax, 10vmax) scale(1.12); } }
-@keyframes d2 { to { transform: translate(-16vmax, 12vmax) scale(1.08); } }
-@keyframes d3 { to { transform: translate(18vmax, -12vmax) scale(1.15); } }
+.top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin: 6px 2px 18px; }
+.datel { margin: 0; color: var(--mute); font-weight: 600; font-size: 15px; }
+h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; }
+.pill { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--edge); background: var(--glass2); font-weight: 700; font-size: 14.5px; cursor: pointer; white-space: nowrap; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--mute); }
+.pill.on .dot { background: var(--green); box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.18); }
+.autobox { margin: -6px 0 16px; }
 
-main { max-width: 560px; margin: 0 auto; display: grid; gap: 18px; padding: calc(env(safe-area-inset-top) + 22px) max(16px, env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 30px) max(16px, env(safe-area-inset-left)); }
-.head { display: flex; align-items: center; gap: 14px; padding: 0 2px; }
-.head img { width: 62px; height: 62px; border-radius: 15px; flex: none; box-shadow: 0 10px 22px -10px rgba(227, 53, 79, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.35) inset; }
-.datel { font: 650 15px/1.2 var(--font); color: var(--ink2); margin: 0 0 3px; }
-h1 { font: 800 34px/1.04 var(--font); letter-spacing: -0.028em; margin: 0; }
-.h3 { font: 700 18px/1.25 var(--font); letter-spacing: -0.012em; margin: 0; }
-.sub { color: var(--ink2); font-size: 15px; margin: 0; }
-.cap { color: var(--ink3); font-size: 13.5px; font-weight: 600; margin: 0; }
-.num { font-family: var(--round); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.card { position: relative; border-radius: 26px; border: 1px solid var(--edge); background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); padding: 18px; margin-bottom: 14px; }
+.h2 { display: flex; align-items: center; justify-content: space-between; margin: 22px 4px 10px; font: 800 19px/1.2 var(--font); }
+.h2 .more { font-size: 14px; font-weight: 700; color: var(--coral); background: none; border: 0; padding: 0; cursor: pointer; }
+.sub { margin: 4px 0 0; color: var(--ink2); font-size: 15px; }
+.cap { margin: 10px 0 0; color: var(--mute); font-size: 13px; }
 
-.card { background: var(--glass); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); border: 1px solid var(--edge); border-radius: 28px; box-shadow: var(--shadow); padding: 18px; display: grid; gap: 14px; }
+.hero-top { display: flex; align-items: center; justify-content: space-between; }
+.lbl { display: inline-flex; align-items: center; gap: 8px; color: var(--ink2); font-weight: 700; font-size: 15px; }
+.chip { font-size: 13px; font-weight: 800; color: var(--green); background: rgba(52, 211, 153, 0.14); padding: 5px 10px; border-radius: 999px; }
+.chip.warn { color: var(--amber); background: rgba(255, 181, 71, 0.14); }
+.time { margin: 6px 0 0; font: 900 76px/0.95 var(--round); letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+.when { margin-top: 6px; font-weight: 700; font-size: 18px; }
+.who { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.avs { display: flex; flex: none; }
+.av { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font: 800 14px/1 var(--font); color: #fff; border: 2px solid #1b1546; margin-left: -8px; }
+.av:first-child { margin-left: 0; }
+.who b { display: block; font-size: 16px; }
+.who span { color: var(--ink2); font-size: 14px; }
 
-.hero { position: relative; overflow: hidden; padding: 20px; isolation: isolate; gap: 16px; }
-.hero::before { content: ""; position: absolute; z-index: -1; left: -30%; right: -30%; bottom: -95%; height: 150%; background: radial-gradient(closest-side, rgba(255, 148, 66, 0.42), rgba(255, 90, 60, 0.12) 55%, transparent 75%); pointer-events: none; }
-:root[data-theme="dark"] .hero::before { background: radial-gradient(closest-side, rgba(255, 120, 70, 0.32), rgba(255, 90, 60, 0.08) 55%, transparent 75%); }
-.hero-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.lbl { font: 600 15px/1.2 var(--font); color: var(--ink2); display: inline-flex; align-items: center; gap: 8px; }
-.lbl .ic { width: 19px; height: 19px; color: var(--accent); }
-.chip { font: 700 13px/1 var(--font); padding: 7px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
-:root[data-theme="dark"] .chip { color: #ff9a80; }
-.time { font-size: 84px; line-height: 0.86; letter-spacing: -0.045em; margin: 2px 0 0; }
-.when { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
-.when b { font: 650 17px/1.25 var(--font); }
-.when span { font: 600 15px/1.25 var(--font); color: var(--ink2); font-variant-numeric: tabular-nums; }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 4px; }
+.tile { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px; min-height: 92px; border-radius: 20px; border: 1px solid var(--edge); background: var(--glass); text-decoration: none; cursor: pointer; text-align: left; font-weight: 700; font-size: 14.5px; line-height: 1.2; }
+.tile .ti { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; color: #fff; }
 
-.btn { appearance: none; border: 1px solid var(--edge); background: var(--glass2); color: var(--ink); font: 600 16px/1 var(--font); min-height: 50px; padding: 0 18px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; text-decoration: none; white-space: nowrap; transition: transform 0.18s var(--ease), opacity 0.2s; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset; }
-.btn:active { transform: scale(0.97); }
-.btn .ic { width: 20px; height: 20px; }
-.btn.pri { color: #fff; border-color: transparent; background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: 0 12px 24px -12px rgba(255, 90, 60, 0.8), 0 1px 0 rgba(255, 255, 255, 0.35) inset; }
-.btn.big { min-height: 60px; font-size: 18px; border-radius: 18px; width: 100%; }
-.btn.sm { min-height: 42px; padding: 0 14px; font-size: 15px; border-radius: 13px; }
-.btns { display: flex; flex-wrap: wrap; gap: 8px; }
-.btns > .btn { flex: 1 1 auto; }
+.q { border-radius: 22px; color: #fff; overflow: hidden; margin-bottom: -14px; box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.22); position: relative; }
+.q:last-child { margin-bottom: 0; }
+.q > button { width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px 16px 30px; background: none; border: 0; cursor: pointer; text-align: left; }
+.q:last-child > button { padding-bottom: 16px; }
+.q .qi { width: 34px; height: 34px; border-radius: 11px; background: rgba(255, 255, 255, 0.25); display: grid; place-items: center; font-weight: 800; flex: none; }
+.q .qn { flex: 1; min-width: 0; font-weight: 800; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.q .qt { text-align: right; line-height: 1.05; flex: none; }
+.q .qt small { display: block; font-size: 12px; font-weight: 700; opacity: 0.85; }
+.q .qt b { font: 900 20px/1 var(--round); }
+.q .qd { padding: 0 16px 30px; margin-top: -18px; }
+.q:last-child .qd { padding-bottom: 16px; }
+.q .qd p { margin: 0 0 4px; font-size: 14.5px; opacity: 0.95; }
+.q .tag { display: inline-block; margin-left: 6px; font-size: 11.5px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: rgba(0, 0, 0, 0.25); vertical-align: 2px; }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.btn { appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid var(--edge); background: var(--glass2); color: var(--ink); font-weight: 700; font-size: 15px; text-decoration: none; cursor: pointer; }
+.btn.pri { border: 0; color: #fff; background: linear-gradient(135deg, #ff5a3c, #ff9f43); box-shadow: 0 12px 24px -12px rgba(255, 90, 60, 0.8); }
+.btn.light { background: rgba(255, 255, 255, 0.92); color: #1b1546; border: 0; }
+.btn.ghost { background: rgba(0, 0, 0, 0.18); border: 0; color: #fff; }
+.btn.wide { width: 100%; height: 52px; font-size: 16px; }
+.empty { text-align: center; color: var(--ink2); padding: 22px 12px; }
+
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; align-items: end; height: 150px; position: relative; margin-top: 6px; }
+.goal { position: absolute; left: 0; right: 0; border-top: 1.5px dashed rgba(255, 255, 255, 0.28); }
+.goal span { position: absolute; right: 0; top: -22px; font-size: 11.5px; font-weight: 800; color: var(--ink2); background: rgba(255, 255, 255, 0.1); padding: 2px 7px; border-radius: 999px; }
+.bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 6px; }
+.bar .n { font-size: 12.5px; font-weight: 800; color: var(--ink2); min-height: 16px; }
+.bar .col { width: 100%; max-width: 30px; border-radius: 10px; background: rgba(255, 255, 255, 0.07); position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+.bar .s { background: linear-gradient(180deg, #ff9f43, #ff5a3c); border-radius: 10px; }
+.bar .k { background: repeating-linear-gradient(135deg, rgba(255, 107, 74, 0.7) 0 4px, rgba(255, 107, 74, 0.25) 4px 8px); border-radius: 10px; }
+.bar .d { font-size: 12px; color: var(--mute); font-weight: 700; }
+.bar.today .d { color: var(--ink); }
+.legend { display: flex; gap: 14px; margin-top: 12px; font-size: 13px; color: var(--ink2); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+.list { padding: 6px 4px; }
+.li { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; width: 100%; background: none; border: 0; text-align: left; cursor: pointer; text-decoration: none; }
+.li + .li { border-top: 1px solid rgba(255, 255, 255, 0.06); border-radius: 0; }
+.li .lb { flex: 1; min-width: 0; }
+.li .lt { font-weight: 700; font-size: 15.5px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.li .ls { color: var(--mute); font-size: 13.5px; margin-top: 2px; }
+.li .lr { flex: none; font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: var(--glass2); color: var(--ink2); }
+.li .lr.hot { background: rgba(255, 107, 129, 0.18); color: var(--hot); }
+.li .lr.auto { background: rgba(52, 211, 153, 0.14); color: var(--green); }
+.mhead { margin: 18px 6px 4px; font-size: 13px; font-weight: 800; color: var(--mute); text-transform: none; }
 
 .rows { display: grid; gap: 10px; }
-.row { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; padding: 14px; border-radius: 20px; background: var(--hair); }
-.row.due { background: var(--accent-soft); box-shadow: 0 0 0 1.5px var(--accent-line) inset; }
-.row.late { background: var(--warn-soft); }
-.row .ri { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #7c8cff, #4f46e5); }
-.row .ri.fk { background: linear-gradient(135deg, #3fb7c7, #0f7f95); }
-.row .ri.af { background: linear-gradient(135deg, var(--accent2), var(--accent)); }
-.row .ri.ai { background: linear-gradient(135deg, #7c8cff, #4f46e5); }
-.row .rt { font: 700 16px/1.25 var(--font); letter-spacing: -0.01em; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
-.row .rs { color: var(--ink2); font-size: 15px; margin-top: 4px; }
-.row .btns { margin-top: 12px; }
-.row .cap { margin-top: 8px; }
-.tag { font: 700 12.5px/1 var(--font); padding: 5px 8px; border-radius: 999px; background: var(--hair2); color: var(--ink2); white-space: nowrap; }
-.tag.hot { background: var(--accent); color: #fff; }
-.tag.late { background: rgba(245, 159, 0, 0.28); color: var(--warn); }
+.row { display: flex; gap: 12px; padding: 14px; border-radius: 18px; background: rgba(255, 255, 255, 0.05); }
+.row.due { background: rgba(255, 107, 129, 0.1); }
+.ri { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; flex: none; background: var(--glass2); }
+.rt { font-weight: 800; }
+.rs { color: var(--ink2); font-size: 14.5px; margin-top: 2px; }
+.rtag { font-size: 11.5px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--glass2); margin-left: 6px; vertical-align: 1px; }
+.rtag.hot { background: rgba(255, 107, 129, 0.2); color: var(--hot); }
 
-.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-.steps li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; font-size: 15.5px; }
-.steps .si { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
-.steps .si .ic { width: 19px; height: 19px; }
-.steps li > span:last-child { padding-top: 6px; }
+.foot { text-align: center; color: var(--mute); font-size: 12.5px; margin-top: 18px; }
+.foot button { background: none; border: 0; color: var(--ink2); font-weight: 700; text-decoration: underline; cursor: pointer; padding: 6px; font-size: 12.5px; }
 
-.install { grid-template-columns: 44px 1fr; display: grid; gap: 12px; align-items: start; }
-.install .ri { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: var(--hair); color: var(--ink2); }
-.inl { display: inline-block; vertical-align: -4px; width: 18px; height: 18px; }
+.lock { text-align: center; padding-top: 6vh; }
+.lock img { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 18px 40px -18px rgba(255, 90, 60, 0.9); }
+.lock h1 { margin-top: 18px; }
+.lock .card { text-align: left; margin-top: 22px; }
+.field { width: 100%; height: 52px; border-radius: 14px; border: 1px solid var(--edge); background: rgba(0, 0, 0, 0.25); color: var(--ink); padding: 0 14px; font: 600 16px var(--font); margin-top: 12px; }
+.err { color: var(--hot); font-size: 14px; margin: 8px 2px 0; }
 
-.foot { text-align: center; color: var(--ink3); font-size: 13px; font-weight: 600; margin: 4px 12px 0; }
+.tabs { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--safe-b) + 12px); display: flex; gap: 4px; padding: 6px; border-radius: 999px; background: rgba(20, 18, 50, 0.78); border: 1px solid var(--edge); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 14px 34px -12px rgba(0, 0, 0, 0.6); z-index: 5; }
+.tab { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 86px; padding: 8px 12px; border-radius: 999px; background: none; border: 0; color: var(--mute); font-size: 12px; font-weight: 700; cursor: pointer; position: relative; }
+.tab[aria-selected="true"] { color: #ff8a65; background: rgba(255, 107, 74, 0.16); }
+.tab .badge { position: absolute; top: 3px; right: 18px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--coral); color: #fff; font-size: 11px; line-height: 18px; padding: 0 5px; }
 
-.toast { position: fixed; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: calc(100% - 32px); top: calc(env(safe-area-inset-top) + 10px); z-index: 50; padding: 12px 18px; border-radius: 999px; background: rgba(12, 14, 24, 0.92); color: #fff; font: 600 15px/1.2 var(--font); box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.5); opacity: 0; transform: translateY(-14px) scale(0.96); transition: opacity 0.3s, transform 0.45s var(--ease); pointer-events: none; }
-.toast.show { opacity: 1; transform: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  .sky i { animation: none; }
-  .btn, .toast { transition: none; }
-  .btn:active { transform: none; }
-}
+.toast { position: fixed; left: 50%; bottom: calc(var(--safe-b) + 96px); transform: translate(-50%, 20px); opacity: 0; transition: 0.25s; background: #fff; color: #1b1546; font-weight: 700; padding: 12px 16px; border-radius: 14px; z-index: 9; max-width: 90vw; text-align: center; pointer-events: none; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+:focus-visible { outline: 2.5px solid #ffb547; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
-<div class="sky" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="stars"></span></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<main>
-  <header class="head">
-    <img src="icon-180.png" alt="" width="62" height="62">
+
+<main id="lockView" class="lock" hidden>
+  <img src="icon-180.png" alt="">
+  <h1>Jobbmotorn</h1>
+  <p class="sub">Autopiloten, kön och allt du har sökt.</p>
+  <section class="card" id="installCard" hidden>
+    <div class="rt">Lägg den på hemskärmen</div>
+    <p class="rs" id="installText"></p>
+    <div class="btns" id="installBtns" hidden><button class="btn pri" type="button" id="installBtn">Installera</button></div>
+  </section>
+  <section class="card">
+    <div class="rt">Lås upp appen</div>
+    <p class="rs">Klistra in nyckeln du fick av Claude i chatten. Den sparas bara i den här telefonen, och utan den går dina jobb inte att läsa.</p>
+    <input class="field" id="keyInput" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Nyckeln" aria-label="Nyckeln">
+    <p class="err" id="keyErr" hidden></p>
+    <div class="btns"><button class="btn pri wide" type="button" id="unlockBtn">Lås upp</button></div>
+  </section>
+</main>
+
+<main id="appView" hidden>
+  <header class="top">
     <div>
       <p class="datel" id="date"></p>
-      <h1>Jobbmotorn</h1>
+      <h1 id="hello">Hej</h1>
     </div>
+    <button class="pill" type="button" id="autoPill" aria-expanded="false"><span class="dot"></span><span id="autoText">Autopilot</span></button>
   </header>
-
-  <section class="card hero" aria-labelledby="runLbl">
-    <div class="hero-top">
-      <span class="lbl" id="runLbl"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Nästa morgonkörning</span>
-      <span class="chip">Varje dag</span>
-    </div>
-    <div>
-      <p class="time num">07:17</p>
-    </div>
-    <div class="when"><b id="runDay"></b><span id="runLeft"></span></div>
-    <p class="sub">Claude letar nya jobb och skickar ansökningarna som står på tur i kön, även lördag och söndag.</p>
-    <a class="btn pri big" href="https://claude.ai/artifact/8tuPdqq1A4iHd8CLcqs3hx" target="_blank" rel="noopener">Öppna Jobbmotorn</a>
-    <p class="cap">Öppnas i Claude. Där finns autopiloten och kön, och du kan läsa, ändra eller stoppa en ansökan innan den går.</p>
+  <section class="card autobox" id="autoBox" hidden>
+    <div class="rt" id="autoTitle"></div>
+    <p class="rs" id="autoSub"></p>
+    <div class="btns"><button class="btn pri" type="button" id="autoBtn"></button></div>
   </section>
 
-  <section class="card" aria-labelledby="webTitle">
-    <div class="row" style="background:none;padding:0">
-      <span class="ri ai"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18.2l-1.8-5.6L4.5 10.8 10.2 9Z"/><path d="M19 3v3M17.5 4.5h3"/></svg></span>
-      <div>
-        <h2 class="h3" id="webTitle">Jobb som söks på hemsidan</h2>
-        <p class="sub" style="margin-top:4px">Claude öppnar annonserna i Chrome, fyller i ansökan med ditt CV och brevet och skickar den. Upp till 10 åt gången.</p>
+  <section data-tab="hem">
+    <section class="card" aria-labelledby="nextLbl">
+      <div class="hero-top">
+        <span class="lbl" id="nextLbl"><svg class="ic" viewBox="0 0 24 24"><path d="M20.5 3.5 10.6 13.4"/><path d="M20.5 3.5 14.2 20.5l-3.6-7.1-7.1-3.6z"/></svg>Nästa utskick</span>
+        <span class="chip" id="qChip"></span>
       </div>
+      <p class="time num" id="nextTime">07:17</p>
+      <div class="when" id="nextDay"></div>
+      <div class="who" id="nextWho"></div>
+    </section>
+
+    <div class="tiles">
+      <a class="tile" id="tileClaude" target="_blank" rel="noopener"><span class="ti" style="background:linear-gradient(135deg,#ff5a3c,#ff9f43)"><svg class="ic" viewBox="0 0 24 24"><path d="M4.5 19.5h3.8L18.9 8.9a2.7 2.7 0 0 0-3.8-3.8L4.5 15.7z"/></svg></span>Ändra brev och jobb</a>
+      <button class="tile" type="button" data-go="hemsidor"><span class="ti" style="background:linear-gradient(135deg,#7c6bff,#5b8cff)"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18.2l-1.8-5.6L4.5 10.8 10.2 9Z"/></svg></span><span id="tileWeb">Söks på hemsidan</span></button>
+      <button class="tile" type="button" data-go="skickat"><span class="ti" style="background:linear-gradient(135deg,#1fbf75,#0e9b5e)"><svg class="ic" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>Rapporter</button>
     </div>
-    <button class="btn pri" type="button" id="applyWeb">Låt Claude söka dem åt mig</button>
-    <p class="cap">Claude gör det i Chrome på din dator, så datorn ska vara på med Claude-tillägget i Chrome. Vill en sida att du loggar in gör du det, resten gör Claude.</p>
+
+    <div class="h2"><span>I kön <span class="rtag" id="qCount">0</span></span><button class="more" type="button" id="qMore" hidden></button></div>
+    <div id="queue"></div>
+
+    <div class="h2"><span>Den här veckan</span><span class="ls" id="weekSum" style="font-size:13px;color:var(--mute);font-weight:700"></span></div>
+    <section class="card">
+      <div class="week" id="week"></div>
+      <div class="legend"><span><i style="background:linear-gradient(180deg,#ff9f43,#ff5a3c)"></i>Skickade</span><span><i style="background:repeating-linear-gradient(135deg,rgba(255,107,74,.7) 0 3px,rgba(255,107,74,.25) 3px 6px)"></i>I kön</span></div>
+    </section>
   </section>
 
-  <section class="card" aria-labelledby="repTitle">
-    <h2 class="h3" id="repTitle">Rapporterna</h2>
-    <div class="rows" id="rep"></div>
+  <section data-tab="hemsidor" hidden>
+    <div class="h2"><span>Söks på hemsidan</span></div>
+    <section class="card">
+      <p class="sub" style="margin-top:0">De här jobben söks i ett formulär på en hemsida. Claude fyller i dem åt dig i Chrome på datorn. Inloggningar och robotkontroller gör du själv.</p>
+      <div class="btns"><button class="btn pri wide" type="button" id="applyAll">Låt Claude söka dem</button></div>
+    </section>
+    <section class="card list" id="webList"></section>
   </section>
 
-  <section class="card install" id="install" hidden>
-    <span class="ri"><svg class="ic" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18.5h2"/></svg></span>
-    <div>
-      <div class="h3">Lägg den på hemskärmen</div>
-      <p class="sub" id="installText" style="margin-top:4px"></p>
-      <div class="btns" style="margin-top:12px" id="installBtns" hidden><button class="btn sm pri" type="button" id="installBtn">Installera</button></div>
-    </div>
+  <section data-tab="skickat" hidden>
+    <div class="h2"><span>Skickat</span><span class="ls" id="sentSum" style="font-size:13px;color:var(--mute);font-weight:700"></span></div>
+    <section class="card list" id="sentList"></section>
+    <div class="h2"><span id="repTitle">Rapporterna</span></div>
+    <section class="card"><div class="rows" id="rep"></div></section>
   </section>
 
-  <section class="card" aria-labelledby="howTitle">
-    <h2 class="h3" id="howTitle">Så funkar det</h2>
-    <ol class="steps">
-      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></span><span>Varje morgon kl. 07:17 letar Claude nya jobb som passar dig och skriver breven med dina egna ord.</span></li>
-      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></span><span>Jobb som söks via mejl hamnar i kön. I appen väljer du hur många som går om dagen.</span></li>
-      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5v5M14.5 9.5v5"/></svg></span><span>Fram till avgången kan du läsa, ändra eller stoppa varje ansökan.</span></li>
-      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><path d="M21 3 10 14"/><path d="m21 3-7 18-4-7-7-4 18-7Z"/></svg></span><span>På morgonen skickas den från din Gmail, med ditt eget CV som PDF. Allt som skickas sparas till aktivitetsrapporten.</span></li>
-      <li><span class="si"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span>Jobb som söks på en hemsida eller via Indeed låter du Claude söka med knappen Sök jobbet åt mig. Claude fyller i och skickar.</span></li>
-    </ol>
-  </section>
-
-  <p class="foot">Den här sidan sparar inget om dig. Jobben, breven och CV:t finns i ditt Claude-konto.</p>
+  <p class="foot"><span id="updated"></span><br><button type="button" id="refresh">Hämta igen</button></p>
 </main>
+
+<nav class="tabs" id="tabs" role="tablist" hidden>
+  <button class="tab" type="button" role="tab" data-go="hem" aria-selected="true"><svg class="ic" viewBox="0 0 24 24"><path d="M4 10.4 12 4l8 6.4V19a1 1 0 0 1-1 1h-4.6v-5.4H9.6V20H5a1 1 0 0 1-1-1z"/></svg>Hem</button>
+  <button class="tab" type="button" role="tab" data-go="hemsidor" aria-selected="false"><svg class="ic" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="2.6"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5"/></svg>Hemsidor<span class="badge" id="webBadge" hidden></span></button>
+  <button class="tab" type="button" role="tab" data-go="skickat" aria-selected="false"><svg class="ic" viewBox="0 0 24 24"><path d="M20.5 3.5 10.6 13.4"/><path d="M20.5 3.5 14.2 20.5l-3.6-7.1-7.1-3.6z"/></svg>Skickat</button>
+</nav>
+
 <script>
 (function () {
   "use strict";
+  var APP_URL = "https://claude.ai/artifact/8tuPdqq1A4iHd8CLcqs3hx";
+  var KEY_LS = "jm-key", DATA_LS = "jm-data", PEND_LS = "jm-pending";
+  var M = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
+  var D = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
+  var DS = ["sön", "mån", "tis", "ons", "tor", "fre", "lör"];
+  var GRADS = [["#f472b6", "#db2777"], ["#fb7185", "#f97316"], ["#34d399", "#059669"], ["#a78bfa", "#7c3aed"], ["#60a5fa", "#2563eb"], ["#fbbf24", "#ea580c"]];
+  var FK_URL = "https://www.forsakringskassan.se/";
+  var AF_URL = "https://arbetsformedlingen.se/for-arbetssokande/arbetslos---vad-hander-nu/aktivitetsrapportera";
   var REPORT_PROMPT = "Rapportera mina jobb från Jobbmotorn till Arbetsförmedlingen";
-  var APPLY_PROMPT = [
-    "Sök jobben i min app Jobbmotorn (https://claude.ai/artifact/8tuPdqq1A4iHd8CLcqs3hx) som söks via annonsen eller en hemsida åt mig i Chrome, ett i taget, hela vägen tills varje ansökan är skickad.",
-    "Vilka jobb: de i databasens jobs-samling som har status \"new\", ingen mejladress för ansökan och en länk till annonsen, och där sista ansökningsdagen inte har passerat. Ta de med tidigast sista dag först, högst 10.",
-    "Mina uppgifter: CV-texten och mina egna ord i settings/profile, mitt CV som PDF med bild i settings/cvpdf och brevet till varje jobb i jobs/<id>. Saknas brevet, skriv ett med mina egna ord från settings/profile.",
+  var $ = function (id) { return document.getElementById(id); };
+  var data = null, open = {}, showAll = false;
+
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function ymd(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function parseYmd(s) { var p = String(s || "").split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function midnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function daysBetween(a, b) { return Math.round((midnight(b) - midnight(a)) / 86400000); }
+  function dayLabel(d, now) {
+    var n = daysBetween(now, d);
+    if (n === 0) return "I dag"; if (n === 1) return "I morgon"; if (n === -1) return "I går";
+    return D[d.getDay()].charAt(0).toUpperCase() + D[d.getDay()].slice(1) + " " + d.getDate() + " " + M[d.getMonth()];
+  }
+  function hhmm(d) { return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+  function short(name) { return String(name || "").replace(/\s*\([^)]*\)/g, "").replace(/\b(AB|Aktiebolag|Vby AB|Sverige|Sweden)\b/g, "").replace(/\s{2,}/g, " ").trim() || name; }
+  function initial(name) { var s = short(name); return (s.match(/[A-Za-zÅÄÖåäö0-9]/) || ["?"])[0].toUpperCase(); }
+
+  var toastTimer = 0;
+  function toast(text) { var t = $("toast"); t.textContent = text; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2800); }
+  function copy(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return false; });
+    return Promise.resolve(false);
+  }
+  function openClaude(text, msg) {
+    window.open("https://claude.ai/new?q=" + encodeURIComponent(text), "_blank", "noopener");
+    copy(text).then(function (ok) { toast(ok ? (msg || "Texten är kopierad. Skicka den i Claude.") : "Skicka texten i Claude-chatten som öppnas."); });
+  }
+
+  /* ---------- nyckeln och den krypterade datan ---------- */
+  function unb64u(s) { s = String(s).trim().replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; var bin = atob(s), u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; }
+  function decrypt(env, keyStr) {
+    var raw; try { raw = unb64u(keyStr); } catch (e) { return Promise.reject(new Error("badkey")); }
+    if (raw.length !== 32) return Promise.reject(new Error("badkey"));
+    return crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]).then(function (k) {
+      return crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64u(env.iv), additionalData: new TextEncoder().encode("jobbmotorn-v1") }, k, unb64u(env.ct));
+    }).then(function (pt) { return JSON.parse(new TextDecoder().decode(pt)); }, function () { throw new Error("badkey"); });
+  }
+  function fetchEnv() { return fetch("data.enc?t=" + Date.now(), { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); }); }
+  function getKey() { try { return localStorage.getItem(KEY_LS) || ""; } catch (e) { return ""; } }
+  function setKey(k) { try { localStorage.setItem(KEY_LS, k); } catch (e) {} }
+  function cached() { try { return JSON.parse(localStorage.getItem(DATA_LS) || "null"); } catch (e) { return null; } }
+
+  function load() {
+    var key = getKey();
+    if (!key) { showLock(); return; }
+    fetchEnv().then(function (env) { return decrypt(env, key); }).then(function (d) {
+      try { localStorage.setItem(DATA_LS, JSON.stringify(d)); } catch (e) {}
+      show(d);
+    }).catch(function (e) {
+      var c = cached();
+      if (e.message === "badkey" && !c) { showLock("Nyckeln stämmer inte. Kopiera den igen från Claude."); return; }
+      if (c) { show(c); toast("Visar det som hämtades senast."); }
+      else { showLock(); toast("Det gick inte att hämta datan. Kolla nätet och försök igen."); }
+    });
+  }
+  function unlock() {
+    var k = $("keyInput").value.replace(/\s+/g, "");
+    $("keyErr").hidden = true;
+    if (!k) return;
+    $("unlockBtn").disabled = true;
+    fetchEnv().then(function (env) { return decrypt(env, k); }).then(function (d) {
+      setKey(k); try { localStorage.setItem(DATA_LS, JSON.stringify(d)); } catch (e) {}
+      show(d); toast("Upplåst");
+    }).catch(function (e) {
+      $("keyErr").textContent = e.message === "badkey" ? "Nyckeln stämmer inte. Kopiera hela nyckeln från Claude och försök igen." : "Det gick inte att hämta datan. Kolla nätet och försök igen.";
+      $("keyErr").hidden = false;
+    }).then(function () { $("unlockBtn").disabled = false; });
+  }
+
+  function showLock(err) {
+    $("appView").hidden = true; $("tabs").hidden = true; $("lockView").hidden = false;
+    if (err) { $("keyErr").textContent = err; $("keyErr").hidden = false; }
+    renderInstall();
+  }
+
+  /* ---------- väntande ändringar som Claude gör ---------- */
+  function pending() { try { return JSON.parse(localStorage.getItem(PEND_LS) || "{}"); } catch (e) { return {}; } }
+  function setPending(id) { var p = pending(); p[id] = Date.now(); try { localStorage.setItem(PEND_LS, JSON.stringify(p)); } catch (e) {} }
+  function prunePending(d) { var p = pending(), out = {}; Object.keys(p).forEach(function (k) { if (p[k] > (d.at || 0)) out[k] = p[k]; }); try { localStorage.setItem(PEND_LS, JSON.stringify(out)); } catch (e) {} return out; }
+
+  /* ---------- texterna till Claude ---------- */
+  var APPLY_RULES = [
     "Så här:",
     "1. Använd Claude i Chrome och öppna annonsen. Fyll i ansökan med uppgifter från mitt CV och klistra in brevet där de vill ha ett personligt brev. Ladda upp CV-PDF:en om de vill ha en fil. Går det inte, be mig bifoga den.",
     "2. Svara bara med sådant som står i mina uppgifter. Frågor du inte kan svara på därifrån frågar du mig om. Skapa inget konto utan att fråga mig först.",
     "3. Om en sida vill att jag loggar in eller visar en robotkontroll, säg till så gör jag det.",
-    "4. Jag har själv bett dig söka dem, så du får skicka in varje ansökan när allt är ifyllt och stämmer med mina uppgifter.",
-    "5. Efter varje skickad ansökan: uppdatera jobs/<id> med status \"sent\", sentDate dagens datum (ÅÅÅÅ-MM-DD), sentAt nu i millisekunder och sentVia \"claude\", så kommer den med i aktivitetsrapporten.",
-    "6. Går ett jobb inte att söka (annonsen är borta, eller de vill ha något jag inte har), hoppa över det och säg vilket."
-  ].join("\n");
-  var FK_URL = "https://www.forsakringskassan.se/";
-  var AF_URL = "https://arbetsformedlingen.se/for-arbetssokande/arbetslos---vad-hander-nu/aktivitetsrapportera";
-  var M = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
-  var D = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
-  var $ = function (id) { return document.getElementById(id); };
-  var root = document.documentElement;
-  var darkMq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
-
-  function svg(paths) { return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + paths + "</svg>"; }
-  var IC = {
-    fk: svg('<path d="M4 10h16M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20.5h18M12 3l8.5 4.5h-17Z"/>'),
-    af: svg('<rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 13h18"/>'),
-    cal: svg('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
-    spark: svg('<path d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18.2l-1.8-5.6L4.5 10.8 10.2 9Z"/><path d="M19 3v3M17.5 4.5h3"/>'),
-    ext: svg('<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/>'),
-    share: '<svg class="inl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-label="Dela"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M7 11H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1"/></svg>'
-  };
-  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-
-  function applyTheme(now) {
-    var h = now.getHours();
-    var phase = h >= 5 && h < 10 ? "dawn" : h >= 10 && h < 17 ? "day" : "eve";
-    var dark = !!(darkMq && darkMq.matches);
-    root.dataset.theme = dark ? "dark" : "light";
-    root.dataset.phase = phase;
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", dark ? "#070b1d" : phase === "dawn" ? "#fde9e2" : phase === "day" ? "#e8f0ff" : "#eee6ff");
+    "4. Jag har själv bett dig söka dem, så du får skicka in ansökan när allt är ifyllt och stämmer med mina uppgifter.",
+    "5. Står det en annan mejladress än den i mitt CV i brevet, använd den i CV:t."
+  ];
+  var MINE = "Mina uppgifter finns i min app Jobbmotorn (" + APP_URL + "): CV-texten och mina egna ord i settings/profile, mitt CV som PDF med bild i min Gmail (settings/cvpdf säger i vilket mejl) och brevet till varje jobb i jobs/<id>. Saknas brevet, skriv ett med mina egna ord från settings/profile.";
+  function markLine(id) { return "uppdatera jobs/" + id + " i Jobbmotorns databas med status \"sent\", sentDate dagens datum (ÅÅÅÅ-MM-DD), sentAt nu i millisekunder och sentVia \"claude\", så kommer den med i aktivitetsrapporten."; }
+  function applyOne(j) {
+    return ["Sök jobbet \"" + j.title + "\" hos " + short(j.company) + " åt mig i Chrome, hela vägen tills ansökan är skickad.", "Annonsen: " + j.url,
+      MINE.replace("varje jobb i jobs/<id>", "det här jobbet i jobs/" + j.id)].concat(APPLY_RULES, ["6. När den är skickad: " + markLine(j.id)]).join("\n");
+  }
+  function applyAll(list) {
+    return ["Sök de här " + list.length + " jobben åt mig i Chrome, ett i taget, hela vägen tills varje ansökan är skickad:"]
+      .concat(list.map(function (j) { return "- " + j.title + " hos " + short(j.company) + ": " + j.url + " (jobs/" + j.id + ")"; }),
+        [MINE], APPLY_RULES, ["6. Efter varje skickad ansökan: " + markLine("<id>"), "7. Går ett jobb inte att söka (annonsen är borta, eller de vill ha något jag inte har), hoppa över det och säg vilket."]).join("\n");
+  }
+  function stopText(j) { return "Stoppa ansökan till " + short(j.company) + " (" + j.title + ") i min app Jobbmotorn (" + APP_URL + "): uppdatera jobs/" + j.id + " med status \"new\", autoBlock true, queuedAt null, sendAt null och sendDay null, så att den inte skickas."; }
+  function autoText(on) {
+    return on ? "Slå på autopiloten i min app Jobbmotorn (" + APP_URL + "): sätt auto.on och auto.confirmed till true i settings/profile. Jag bekräftar att jag tar de jobb som autopiloten söker åt mig."
+      : "Stäng av autopiloten i min app Jobbmotorn (" + APP_URL + "): sätt auto.on till false i settings/profile. Ansökningarna i kön ska inte skickas.";
   }
 
-  function midnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
-  function daysBetween(a, b) { return Math.round((midnight(b) - midnight(a)) / 86400000); }
+  /* ---------- appen ---------- */
+  function show(d) {
+    data = d;
+    $("lockView").hidden = true; $("appView").hidden = false; $("tabs").hidden = false;
+    render();
+  }
+  function render() {
+    if (!data) return;
+    var now = new Date(), h = now.getHours();
+    var name = data.name || "";
+    $("date").textContent = D[now.getDay()].charAt(0).toUpperCase() + D[now.getDay()].slice(1) + " " + now.getDate() + " " + M[now.getMonth()];
+    $("hello").textContent = (h >= 5 && h < 10 ? "God morgon" : h >= 10 && h < 17 ? "Hej" : h >= 17 && h < 23 ? "God kväll" : "God natt") + (name ? ", " + name : "");
+    var on = !!(data.auto && data.auto.on), perDay = (data.auto && data.auto.perDay) || 6;
+    $("autoPill").classList.toggle("on", on);
+    $("autoText").textContent = on ? "Autopilot på" : "Autopilot av";
+    $("autoTitle").textContent = on ? "Autopiloten är på" : "Autopiloten är av";
+    $("autoSub").textContent = on ? "Varje morgon kl 07:17 skickar den " + perDay + " ansökningar från din Gmail och lägger nya på kön." : "Inget skickas förrän du slår på den.";
+    $("autoBtn").textContent = on ? "Stäng av autopiloten" : "Slå på autopiloten";
+    $("tileClaude").href = APP_URL;
+
+    var pend = prunePending(data);
+    var queue = (data.queue || []).slice().sort(function (a, b) { return (a.sendAt || 0) - (b.sendAt || 0) || short(a.company).localeCompare(short(b.company), "sv"); });
+    $("qChip").textContent = queue.length + " i kön";
+    $("qChip").className = "chip" + (queue.length ? "" : " warn");
+    $("qCount").textContent = queue.length;
+
+    // nästa utskick
+    if (queue.length) {
+      var first = new Date(queue[0].sendAt), day = ymd(first);
+      var batch = queue.filter(function (j) { return ymd(new Date(j.sendAt)) === day; });
+      $("nextTime").textContent = hhmm(first);
+      $("nextDay").textContent = dayLabel(first, now) + (daysBetween(now, first) <= 1 ? ", " + D[first.getDay()] + " " + first.getDate() + " " + M[first.getMonth()] : "");
+      var names = batch.slice(0, 3).map(function (j) { return short(j.company); }).join(", ") + (batch.length > 3 ? " med flera" : "");
+      $("nextWho").innerHTML = '<div class="avs">' + batch.slice(0, 5).map(function (j, i) { var g = GRADS[i % GRADS.length]; return '<span class="av" style="background:linear-gradient(135deg,' + g[0] + "," + g[1] + ')">' + esc(initial(j.company)) + "</span>"; }).join("") +
+        "</div><div><b>" + batch.length + (batch.length === 1 ? " ansökan" : " ansökningar") + "</b><span>" + esc(names) + "</span></div>";
+    } else {
+      var run = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 17);
+      if (now >= run) run = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 7, 17);
+      $("nextTime").textContent = "07:17";
+      $("nextDay").textContent = dayLabel(run, now);
+      $("nextWho").innerHTML = '<span style="color:var(--ink2)">Kön är tom. Morgonkörningen letar nya jobb och fyller på.</span>';
+    }
+
+    // kön
+    var list = showAll ? queue : queue.slice(0, 4);
+    $("qMore").hidden = queue.length <= 4;
+    $("qMore").textContent = showAll ? "Visa färre" : "Visa alla " + queue.length;
+    $("queue").innerHTML = queue.length ? list.map(function (j, i) {
+      var g = GRADS[i % GRADS.length], t = new Date(j.sendAt), isOpen = !!open[j.id], stopped = !!pend["stop:" + j.id];
+      return '<div class="q" style="background:linear-gradient(120deg,' + g[0] + "," + g[1] + ');z-index:' + (i + 1) + '">' +
+        '<button type="button" data-q="' + esc(j.id) + '" aria-expanded="' + isOpen + '"><span class="qi">' + esc(initial(j.company)) + '</span><span class="qn">' + esc(short(j.company)) + (stopped ? '<span class="tag">Stoppas</span>' : "") + "</span>" +
+        '<span class="qt"><small>' + esc(dayLabel(t, now)) + "</small><b>" + hhmm(t) + "</b></span></button>" +
+        (isOpen ? '<div class="qd"><p>' + esc(j.title) + "</p>" + (j.to ? "<p>till " + esc(j.to) + "</p>" : "") +
+          '<div class="btns"><button class="btn light" type="button" data-stop="' + esc(j.id) + '">Stoppa</button><a class="btn ghost" href="' + APP_URL + '" target="_blank" rel="noopener">Läs brevet</a></div></div>' : "") +
+        "</div>";
+    }).join("") : '<section class="card empty">Inget i kön just nu.</section>';
+
+    // veckan
+    var mon = midnight(now); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));
+    var sentBy = {}, queuedBy = {}, sentWeek = 0, queuedWeek = 0;
+    (data.sent || []).forEach(function (j) { sentBy[j.date] = (sentBy[j.date] || 0) + 1; });
+    queue.forEach(function (j) { var k = ymd(new Date(j.sendAt)); queuedBy[k] = (queuedBy[k] || 0) + 1; });
+    var days = [], max = perDay;
+    for (var i = 0; i < 7; i++) { var dd = new Date(mon); dd.setDate(mon.getDate() + i); var k = ymd(dd), s = sentBy[k] || 0, q = queuedBy[k] || 0; sentWeek += s; queuedWeek += q; max = Math.max(max, s + q); days.push({ d: dd, s: s, q: q }); }
+    var top = Math.ceil(max * 1.15);
+    $("week").innerHTML = '<div class="goal" style="bottom:calc(' + (perDay / top * 100).toFixed(1) + '% * 0.78 + 22px)"><span>mål ' + perDay + "</span></div>" + days.map(function (x) {
+      var today = ymd(x.d) === ymd(now);
+      return '<div class="bar' + (today ? " today" : "") + '"><span class="n">' + (x.s + x.q || "") + '</span><div class="col" style="height:78%">' +
+        (x.q ? '<div class="k" style="height:' + (x.q / top * 100) + '%"></div>' : "") + (x.s ? '<div class="s" style="height:' + (x.s / top * 100) + '%"></div>' : "") +
+        '</div><span class="d">' + DS[x.d.getDay()] + "</span></div>";
+    }).join("");
+    $("weekSum").textContent = sentWeek + " skickade · " + queuedWeek + " i kön";
+
+    // hemsidejobben
+    var web = (data.web || []).filter(function (j) { return !j.deadline || j.deadline >= ymd(now); }).sort(function (a, b) { return (a.deadline || "9999").localeCompare(b.deadline || "9999"); });
+    $("tileWeb").textContent = "Söks på hemsidan (" + web.length + ")";
+    $("webBadge").hidden = !web.length; $("webBadge").textContent = web.length;
+    $("applyAll").textContent = web.length ? "Låt Claude söka " + (web.length > 10 ? "de 10 första" : web.length === 1 ? "det" : "alla " + web.length) : "Inga jobb just nu";
+    $("applyAll").disabled = !web.length;
+    $("webList").innerHTML = web.length ? web.map(function (j) {
+      var tag = "", hot = false;
+      if (j.deadline) { var n = daysBetween(now, parseYmd(j.deadline)); hot = n <= 2; tag = n === 0 ? "Sista dag i dag" : n === 1 ? "Sista dag i morgon" : "Sista dag " + parseYmd(j.deadline).getDate() + " " + M[parseYmd(j.deadline).getMonth()].slice(0, 3); }
+      return '<button class="li" type="button" data-web="' + esc(j.id) + '"><div class="lb"><div class="lt">' + esc(j.title) + '</div><div class="ls">' + esc(short(j.company)) + "</div></div>" + (tag ? '<span class="lr' + (hot ? " hot" : "") + '">' + esc(tag) + "</span>" : "") + "</button>";
+    }).join("") : '<div class="empty">Inga jobb som söks på hemsidan just nu.</div>';
+
+    // skickat
+    var sent = (data.sent || []).slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+    var month = "", html = "";
+    sent.forEach(function (j) {
+      var d = parseYmd(j.date), mk = M[d.getMonth()] + " " + d.getFullYear();
+      if (mk !== month) { month = mk; var cnt = sent.filter(function (x) { var y = parseYmd(x.date); return y.getMonth() === d.getMonth() && y.getFullYear() === d.getFullYear(); }).length; html += '<div class="mhead">' + esc(mk.charAt(0).toUpperCase() + mk.slice(1)) + " · " + cnt + (cnt === 1 ? " ansökan" : " ansökningar") + "</div>"; }
+      var via = j.via === "autopilot" ? '<span class="lr auto">Autopilot</span>' : j.via === "claude" ? '<span class="lr">Claude</span>' : "";
+      html += '<div class="li"><div class="lb"><div class="lt">' + esc(short(j.company)) + '</div><div class="ls">' + d.getDate() + " " + M[d.getMonth()].slice(0, 3) + " · " + esc(j.title) + "</div></div>" + via + "</div>";
+    });
+    $("sentList").innerHTML = html || '<div class="empty">Inget skickat än.</div>';
+    $("sentSum").textContent = ((data.stats && data.stats.sentTotal) || sent.length) + " totalt";
+    renderReports(now);
+
+    var at = new Date(data.at || 0);
+    $("updated").textContent = data.at ? "Uppdaterad " + dayLabel(at, now).toLowerCase() + " kl " + hhmm(at) + ". Nästa gång efter morgonkörningen 07:17." : "";
+  }
+
+  function row(kind, title, tag, hot, text, extra) {
+    return '<div class="row' + (kind ? " " + kind : "") + '"><div><div class="rt">' + esc(title) + (tag ? '<span class="rtag' + (hot ? " hot" : "") + '">' + esc(tag) + "</span>" : "") + '</div><div class="rs">' + esc(text) + "</div>" + (extra || "") + "</div></div>";
+  }
   function inDays(n) { return n === 0 ? "i dag" : n === 1 ? "i morgon" : "om " + n + " dagar"; }
-  function left(ms) {
-    var mins = Math.max(0, Math.ceil(ms / 60000));
-    var h = Math.floor(mins / 60), m = mins % 60;
-    if (mins === 0) return "nu";
-    if (h === 0) return "om " + m + " min";
-    return m ? "om " + h + " tim " + m + " min" : "om " + h + " tim";
-  }
-
-  function renderRun(now) {
-    $("date").textContent = D[now.getDay()] + " " + now.getDate() + " " + M[now.getMonth()];
-    var run = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 17, 0, 0);
-    if (now >= run) run = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 7, 17, 0, 0);
-    var today = daysBetween(now, run) === 0;
-    $("runDay").textContent = (today ? "I dag, " : "I morgon, ") + D[run.getDay()] + " " + run.getDate() + " " + M[run.getMonth()];
-    $("runLeft").textContent = left(run - now);
-  }
-
-  function row(kind, icon, title, tag, tagKind, text, extra) {
-    return '<div class="row' + (kind ? " " + kind : "") + '"><span class="ri ' + icon + '">' + IC[icon] + "</span><div>" +
-      '<div class="rt">' + esc(title) + (tag ? ' <span class="tag' + (tagKind ? " " + tagKind : "") + '">' + esc(tag) + "</span>" : "") + "</div>" +
-      '<div class="rs">' + esc(text) + "</div>" + (extra || "") + "</div></div>";
-  }
-
   function renderReports(now) {
-    var day = now.getDate(), m = now.getMonth(), y = now.getFullYear();
-    var prev = M[(m + 11) % 12], cur = M[m];
-    var html = "";
+    var day = now.getDate(), m = now.getMonth(), y = now.getFullYear(), prev = M[(m + 11) % 12], cur = M[m], html = "";
     if (day <= 14) {
       $("repTitle").textContent = "Rapporterna för " + prev;
       if (day <= 7) {
-        var fkLeft = 7 - day;
-        html += row(fkLeft <= 2 ? "due" : "", "fk", "Försäkringskassan", fkLeft === 0 ? "Sista dagen i dag" : "Senast 7 " + cur, fkLeft <= 2 ? "hot" : "",
-          "Ansök om ersättning för " + prev + " " + (fkLeft === 0 ? "i dag" : "senast den 7 " + cur + ", " + inDays(fkLeft)) + ", så kommer pengarna den 26:e. Du loggar in med BankID.",
-          '<div class="btns"><a class="btn sm" href="' + FK_URL + '" target="_blank" rel="noopener">Till Försäkringskassan' + IC.ext + "</a></div>");
-      } else {
-        html += row("late", "fk", "Försäkringskassan", "Efter den 7:e", "late",
-          "Har du inte ansökt för " + prev + " än? Gör det före månadens slut, annars kan du bli utan ersättning. Pengarna kommer då senare än den 26:e.",
-          '<div class="btns"><a class="btn sm" href="' + FK_URL + '" target="_blank" rel="noopener">Till Försäkringskassan' + IC.ext + "</a></div>");
+        var fk = 7 - day;
+        html += row(fk <= 2 ? "due" : "", "Försäkringskassan", fk === 0 ? "Sista dagen i dag" : "Senast 7 " + cur, fk <= 2,
+          "Ansök om ersättning för " + prev + " " + (fk === 0 ? "i dag" : "senast den 7 " + cur + ", " + inDays(fk)) + ", så kommer pengarna den 26:e.",
+          '<div class="btns"><a class="btn" href="' + FK_URL + '" target="_blank" rel="noopener">Till Försäkringskassan</a></div>');
       }
-      var afLeft = 14 - day;
-      html += row(afLeft <= 2 ? "due" : "", "af", "Aktivitetsrapporten", afLeft === 0 ? "Sista dagen i dag" : "Senast 14 " + cur, afLeft <= 2 ? "hot" : "",
-        "Rapportera jobben du sökte i " + prev + " till Arbetsförmedlingen " + (afLeft === 0 ? "i dag." : "senast den 14 " + cur + ", " + inDays(afLeft) + ".") + " Listan finns i Jobbmotorn under Skickat.",
-        '<div class="btns"><button class="btn sm pri" type="button" id="askClaude">' + IC.spark + 'Be Claude rapportera</button><a class="btn sm" href="' + AF_URL + '" target="_blank" rel="noopener">Arbetsförmedlingen' + IC.ext + "</a></div>" +
-        '<p class="cap">Sitt vid datorn med Chrome öppet. Claude fyller i rapporten, och du loggar in med BankID och trycker Skicka in. Bocka av i Jobbmotorn när det är klart.</p>');
+      var af = 14 - day;
+      html += row(af <= 2 ? "due" : "", "Aktivitetsrapporten", af === 0 ? "Sista dagen i dag" : "Senast 14 " + cur, af <= 2,
+        "Rapportera jobben du sökte i " + prev + " till Arbetsförmedlingen " + (af === 0 ? "i dag." : "senast den 14 " + cur + ", " + inDays(af) + "."),
+        '<div class="btns"><button class="btn pri" type="button" id="askClaude">Be Claude rapportera</button><a class="btn" href="' + AF_URL + '" target="_blank" rel="noopener">Arbetsförmedlingen</a></div><p class="cap">Sitt vid datorn med Chrome öppet. Claude fyller i rapporten, du loggar in och trycker Skicka in.</p>');
     } else {
       $("repTitle").textContent = "Nästa rapporter";
       var first = new Date(y, m + 1, 1);
-      var n = daysBetween(now, first);
-      html += row("", "cal", "Den 1 " + M[first.getMonth()], inDays(n), "",
-        "Då ansöker du hos Försäkringskassan för " + cur + " och skickar aktivitetsrapporten till Arbetsförmedlingen. Jobbmotorn sparar varje ansökan, så listan är klar när det är dags.", "");
+      html += row("", "Den 1 " + M[first.getMonth()], inDays(daysBetween(now, first)), false,
+        "Då ansöker du hos Försäkringskassan för " + cur + " och skickar aktivitetsrapporten till Arbetsförmedlingen. Allt du söker sparas, så listan är klar.", "");
     }
     $("rep").innerHTML = html;
     var ask = $("askClaude");
-    if (ask) ask.addEventListener("click", askClaude);
+    if (ask) ask.addEventListener("click", function () { openClaude(REPORT_PROMPT, "Meningen är kopierad. Skicka den i Claude."); });
   }
 
-  var toastTimer = 0;
-  function toast(text) {
-    var t = $("toast");
-    t.textContent = text; t.classList.add("show");
-    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2600);
+  /* ---------- flikar och knappar ---------- */
+  function go(tab) {
+    document.querySelectorAll("[data-tab]").forEach(function (s) { s.hidden = s.getAttribute("data-tab") !== tab; });
+    document.querySelectorAll(".tab").forEach(function (b) { b.setAttribute("aria-selected", b.getAttribute("data-go") === tab ? "true" : "false"); });
+    window.scrollTo(0, 0);
   }
-  function copy(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return false; });
-    try {
-      var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
-      document.body.appendChild(ta); ta.select(); var ok = document.execCommand("copy"); document.body.removeChild(ta);
-      return Promise.resolve(ok);
-    } catch (e) { return Promise.resolve(false); }
-  }
-  function askClaude() {
-    window.open("https://claude.ai/new?q=" + encodeURIComponent(REPORT_PROMPT), "_blank", "noopener");
-    copy(REPORT_PROMPT).then(function (ok) { if (ok) toast("Meningen är kopierad"); });
-  }
-  $("applyWeb").addEventListener("click", function () {
-    window.open("https://claude.ai/new?q=" + encodeURIComponent(APPLY_PROMPT), "_blank", "noopener");
-    copy(APPLY_PROMPT).then(function (ok) { if (ok) toast("Instruktionen är kopierad"); });
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-go],[data-q],[data-stop],[data-web]");
+    if (!t || !data) return;
+    if (t.hasAttribute("data-go")) { go(t.getAttribute("data-go")); return; }
+    if (t.hasAttribute("data-q")) { var id = t.getAttribute("data-q"); open[id] = !open[id]; render(); return; }
+    if (t.hasAttribute("data-stop")) {
+      var j = (data.queue || []).filter(function (x) { return x.id === t.getAttribute("data-stop"); })[0];
+      if (j) { setPending("stop:" + j.id); render(); openClaude(stopText(j), "Texten är kopierad. Skicka den i Claude, så stoppas ansökan."); }
+      return;
+    }
+    if (t.hasAttribute("data-web")) {
+      var w = (data.web || []).filter(function (x) { return x.id === t.getAttribute("data-web"); })[0];
+      if (w) openClaude(applyOne(w), "Instruktionen är kopierad. Skicka den i Claude på datorn.");
+    }
   });
+  $("qMore").addEventListener("click", function () { showAll = !showAll; render(); });
+  $("autoPill").addEventListener("click", function () { var box = $("autoBox"); box.hidden = !box.hidden; $("autoPill").setAttribute("aria-expanded", String(!box.hidden)); });
+  $("autoBtn").addEventListener("click", function () { var on = !!(data && data.auto && data.auto.on); $("autoBox").hidden = true; openClaude(autoText(!on), "Texten är kopierad. Skicka den i Claude."); });
+  $("applyAll").addEventListener("click", function () {
+    var now = ymd(new Date());
+    var web = (data.web || []).filter(function (j) { return !j.deadline || j.deadline >= now; }).sort(function (a, b) { return (a.deadline || "9999").localeCompare(b.deadline || "9999"); }).slice(0, 10);
+    if (web.length) openClaude(applyAll(web), "Instruktionen är kopierad. Skicka den i Claude på datorn.");
+  });
+  $("unlockBtn").addEventListener("click", unlock);
+  $("keyInput").addEventListener("keydown", function (e) { if (e.key === "Enter") unlock(); });
+  $("refresh").addEventListener("click", function () { load(); toast("Hämtar…"); });
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible" && getKey()) load(); });
+  setInterval(function () { if (data && document.visibilityState === "visible") render(); }, 60000);
 
-  // I webbläsaren är det första man ska göra att lägga appen på hemskärmen, så rutan flyttas upp under rubriken
-  function showInstall() { var box = $("install"), head = document.querySelector("main > .head"); if (head && head.nextElementSibling !== box) head.after(box); box.hidden = false; }
+  /* ---------- hemskärmen ---------- */
   function renderInstall() {
     var ua = navigator.userAgent || "";
     var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     var standalone = navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
-    if (standalone) { $("install").hidden = true; return; }
-    if (ios) {
-      $("installText").innerHTML = "Ikonen öppnar Jobbmotorn med autopiloten direkt. Tryck på Dela " + IC.share + " här i Safari och välj <b>Lägg till på hemskärmen</b>. Har du en gammal Jobbmotorn-ikon, ta bort den först.";
-      showInstall();
-    }
+    if (standalone) { $("installCard").hidden = true; return; }
+    if (ios) { $("installText").innerHTML = "Tryck på Dela här i Safari och välj <b>Lägg till på hemskärmen</b>. Lås sedan upp appen från ikonen. Har du en gammal Jobbmotorn-ikon, ta bort den först."; $("installCard").hidden = false; }
   }
   var deferred = null;
-  window.addEventListener("beforeinstallprompt", function (e) {
-    e.preventDefault(); deferred = e;
-    $("installText").textContent = "Installera Jobbmotorn som en app. Ikonen öppnar autopiloten direkt.";
-    $("installBtns").hidden = false; showInstall();
-  });
-  $("installBtn").addEventListener("click", function () {
-    if (!deferred) return;
-    deferred.prompt();
-    deferred.userChoice.then(function () { deferred = null; $("install").hidden = true; }, function () {});
-  });
-  window.addEventListener("appinstalled", function () { $("install").hidden = true; });
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferred = e; $("installText").textContent = "Installera Jobbmotorn som en app, så ligger den bland dina andra appar."; $("installBtns").hidden = false; $("installCard").hidden = false; });
+  $("installBtn").addEventListener("click", function () { if (deferred) { deferred.prompt(); deferred = null; } });
 
-  var lastDay = -1;
-  function tick() {
-    var now = new Date();
-    applyTheme(now);
-    renderRun(now);
-    if (now.getDate() !== lastDay) { lastDay = now.getDate(); renderReports(now); }
-  }
-  tick();
-  renderInstall();
-  setInterval(tick, 30000);
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) tick(); });
-  if (darkMq && darkMq.addEventListener) darkMq.addEventListener("change", function () { applyTheme(new Date()); });
+  // En länk med nyckeln (#nyckel=...) låser upp direkt och tas sedan bort ur adressen
+  var m = /[#&]nyckel=([A-Za-z0-9_-]{40,})/.exec(location.hash);
+  if (m) { setKey(m[1]); history.replaceState(null, "", location.pathname + location.search); }
+  var c = cached(); if (c && getKey()) show(c);
+  load();
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
 })();
 </script>

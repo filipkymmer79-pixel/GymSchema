@@ -1,12 +1,12 @@
 {
  "name": "Jobbmotorn",
  "short_name": "Jobbmotorn",
- "description": "Öppnar Jobbmotorn i Claude, visar nästa morgonkörning och påminner om rapporterna",
+ "description": "Jobbmotorn med autopiloten: kön, det som skickats och jobben som söks på hemsidor",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
- "background_color": "#E8F0FF",
- "theme_color": "#E8F0FF",
+ "background_color": "#0B1026",
+ "theme_color": "#0B1026",
  "lang": "sv",
  "icons": [
   {
