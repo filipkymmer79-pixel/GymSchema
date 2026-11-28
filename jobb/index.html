@@ -261,7 +261,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
       <p class="rs">Från den 1:a varje månad påminner appen dig om Försäkringskassan (senast den 7:e) och aktivitetsrapporten (senast den 14:e). Först två gånger om dagen, varannan timme de två sista dagarna och varje timme sista dagen. Det slutar när du bockar av rapporten under Skickat.</p>
       <div id="pushSetup">
         <div class="set-step"><span class="sn">1</span><div><div class="rt">Uppdatera din Cloudflare-worker</div><p class="rs">Det är samma worker som sköter GymSchemas påminnelser. Kopiera koden, öppna workern i Cloudflare, välj Edit code, markera allt, klistra in och tryck Deploy.</p><div class="btns"><button class="btn" type="button" id="copyWorker">Kopiera koden</button><a class="btn" href="https://dash.cloudflare.com/" target="_blank" rel="noopener">Öppna Cloudflare</a></div></div></div>
-        <div class="set-step"><span class="sn">2</span><div style="flex:1;min-width:0"><div class="rt">Workerns adress</div><p class="rs">Den slutar på .workers.dev och står i GymSchema under påminnelserna.</p><input class="field" id="workerUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://….workers.dev" aria-label="Workerns adress"></div></div>
+        <div class="set-step"><span class="sn">2</span><div style="flex:1;min-width:0"><div class="rt">Workerns adress</div><p class="rs">Den är redan ifylld. Det är samma adress som önskelistan använder.</p><input class="field" id="workerUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://….workers.dev" aria-label="Workerns adress"></div></div>
         <div class="set-step"><span class="sn">3</span><div style="flex:1"><button class="btn pri wide" type="button" id="pushOn">Slå på påminnelser</button></div></div>
       </div>
       <div id="pushOnBox" hidden><p class="rs" id="pushInfo" style="margin-top:12px"></p><div class="btns"><button class="btn" type="button" id="pushTest">Skicka en testnotis</button><button class="btn" type="button" id="pushOff">Stäng av</button></div></div>
@@ -574,7 +574,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
   });
 
   /* ---------- påminnelserna (web push via Cloudflare-workern) ---------- */
-  var PUSH_LS = "jm-push", workerCode = "";
+  var PUSH_LS = "jm-push", workerCode = "", WORKER = "https://gymschema-switchbot.filipkymmer79.workers.dev";   // samma mellanhand som önskelistan
   var PUSH_MSG = { url: "Klistra in workerns adress först (steg 2).", net: "Fick ingen kontakt med workern. Stämmer adressen?", worker: "Workern svarade konstigt. Har du klistrat in hela koden och tryckt Deploy?",
     old: "Workern har inte den nya koden än. Gör steg 1 och tryck Slå på igen.", perm: "Notiser är avstängda för Jobbmotorn. Slå på dem i telefonens Inställningar → Notiser → Jobbmotorn och tryck igen.",
     sub: "Telefonen gick inte att koppla till notiser. Öppna Jobbmotorn från ikonen på hemskärmen och försök igen.", taken: "Workern är redan kopplad till en annan telefon. Stäng av påminnelserna där först.",
@@ -623,7 +623,7 @@ h1 { margin: 2px 0 0; font: 900 34px/1.05 var(--round); letter-spacing: -0.5px; 
     var c = pushCfg(), on = !!c.on;
     $("pushState").textContent = on ? "På" : "Av"; $("pushState").className = "state" + (on ? " on" : "");
     $("pushSetup").hidden = on; $("pushOnBox").hidden = !on;
-    if (!$("workerUrl").value && c.url) $("workerUrl").value = c.url;
+    if (!$("workerUrl").value) $("workerUrl").value = c.url || WORKER;
     if (on) { var ev = reminderEvents()[0]; $("pushInfo").textContent = ev ? "Nästa påminnelse: " + dayLabel(new Date(ev.at), new Date()).toLowerCase() + " kl " + hhmm(new Date(ev.at)) + "." : "Inga påminnelser kvar just nu. Allt är avbockat."; }
   }
   function pushOn() {
