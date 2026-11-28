@@ -151,10 +151,11 @@ async function pushApi(request, env, path, json){
 //    och får bara tillbaka det som har ändrats.
 //    Varje mobil har en hemlig kod (d). Utåt syns bara kodens avtryck (p).
 const OL_AGARE = "emaASCYKnJPGyni8n0VtBXXTizQfEV7IKdoSN8JAz7Q";
+const OL_V = 2;                                                   // 2: notiser om ångrade köp, Filips ändringar och adventsluckorna, val av notiser och testnotis
 const OL_SLOTS = ["mamma", "pappa", "annan", "filip"];
-const OL_TAK = {mamma: 200, pappa: 200, annan: 150, filip: 120, push: 20};   // skrivningar per dygn och nyckel (KV-kvoten är 1 000 om dagen)
+const OL_TAK = {mamma: 200, pappa: 200, annan: 150, filip: 120, push: 40, lucka: 8};   // skrivningar per dygn och nyckel (KV-kvoten är 1 000 om dagen)
 const OL_MAX_KOP = 60, OL_MAX_EGNA = 40, OL_MAX_CHATT = 60, OL_MAX_PUSH = 12, OL_DYGN = 864e5;
-const OL_BILDER = ["paket", "matta", "shorts", "airpods", "tofflor", "satoro", "panna", "stekspade", "hantel", "italki", "vinyl", "tungskrapa", "icebug", "hoodie", "dorr", "hopprep", "shaker", "tang", "glas", "borste", "bio", "ljuslist", "halsduk"];
+const OL_BILDER = ["paket", "matta", "shorts", "airpods", "tofflor", "satoro", "panna", "stekspade", "hantel", "italki", "vinyl", "tungskrapa", "icebug", "hoodie", "dorr", "hopprep", "shaker", "tang", "glas", "borste", "bio", "ljuslist", "halsduk", "balans", "foamroller", "hantelset", "massagebollar", "gymgolv", "boxer"];
 const OL_PUSHVARD = /^https:\/\/[a-z0-9.-]+\.(push\.apple\.com|googleapis\.com|notify\.windows\.com|mozilla\.com|mozaws\.net)\//;
 const olText = (x, n) => String(x == null ? "" : x).replace(/[\u0000-\u001f\u007f]+/g, " ").replace(/ {2,}/g, " ").trim().slice(0, n);
 const olId = x => typeof x === "string" && /^[a-z0-9-]{1,32}$/.test(x) ? x : "";
@@ -180,13 +181,28 @@ function olVy(k, s, agare){
   if (k === "filip") return {r: s.r || 0, lista: {egna: Array.isArray(s.egna) ? s.egna : [], lappar: s.lappar || {}, dolda: s.dolda || {}}, m};
   return agare ? {r: s.r || 0, m} : {r: s.r || 0, kopt: s.kopt || {}, borta: s.borta || {}, m};
 }
-// Notiser till dem som har slagit på dem. till väljer mottagare. Prenumerationer som push-tjänsten har glömt städas bort.
-async function olNotis(env, till, msg){
-  const P = await olLas(env, "push"), subs = Array.isArray(P.subs) ? P.subs : [], mot = subs.filter(till);
+// Notiser till dem som har slagit på dem. till väljer mottagare, typ är vad det gäller (kop, angra, chatt, filip, lucka, fraga, test),
+// och den som har stängt av en typ i inställningarna slipper den. Prenumerationer som push-tjänsten har glömt städas bort.
+const OL_TYPER = ["kop", "angra", "chatt", "filip", "lucka"];
+const OL_LUCKOR = [["2026-11-29", "Första advent"], ["2026-12-06", "Andra advent"], ["2026-12-13", "Tredje advent"], ["2026-12-20", "Fjärde advent"]];
+async function olNotis(env, till, msg, typ){
+  const P = await olLas(env, "push"), subs = Array.isArray(P.subs) ? P.subs : [];
+  const mot = subs.filter(x => till(x) && !(typ && Array.isArray(x.nej) && x.nej.indexOf(typ) >= 0));
   if (!mot.length) return;
   const st = await Promise.all(mot.map(x => push(env, {endpoint: x.e, keys: {p256dh: x.k, auth: x.a}}, msg, 12 * 3600).catch(() => 0)));
   const dod = mot.filter((x, i) => st[i] === 404 || st[i] === 410);
   if (dod.length){ P.subs = subs.filter(x => dod.indexOf(x) < 0); await olSpara(env, "push", P); }
+}
+async function olLucka(env, nu){
+  if (!env.GS) return;
+  const lok = new Date(nu + 3600e3), dag = lok.toISOString().slice(0, 10), tim = lok.getUTCHours();   // svensk vintertid
+  const i = OL_LUCKOR.findIndex(x => x[0] === dag);
+  if (i < 0 || tim < 9 || tim >= 21) return;
+  const L = await olLas(env, "lucka");
+  if ((L.sist || 0) > i) return;                                        // redan skickad
+  L.sist = i + 1;
+  if (await olSpara(env, "lucka", L)) return;
+  await olNotis(env, x => !x.ag, {title: OL_LUCKOR[i][1] + ": lucka " + (i + 1) + " är öppen", body: "Bakom den ligger ett par små idéer för ett par hundralappar, om du vill.", url: "./#lucka-" + (i + 1), tag: "ol-lucka-" + (i + 1)}, "lucka");
 }
 async function wishApi(request, env, ctx, url, json){
   if (!env.GS) return json({error: "kv"}, 503);
@@ -211,7 +227,7 @@ async function wishApi(request, env, ctx, url, json){
   const svar = (extra, status) => {
     const rev = {}, slots = {};
     OL_SLOTS.forEach((k, i) => { rev[k] = S[k].r || 0; if (!kand || kand[i] !== rev[k]) slots[k] = olVy(k, S[k], agare); });
-    return json(Object.assign({ol: 1, rev, slots, t: Date.now()}, agare ? {agare: true} : null, extra || null), status);
+    return json(Object.assign({ol: 1, nv: OL_V, rev, slots, t: Date.now()}, agare ? {agare: true} : null, extra || null), status);
   };
   if (GET) return path === "/onskelista" ? svar() : fel("path", 404);
   const d = typeof b.d === "string" && /^[A-Za-z0-9_-]{16,40}$/.test(b.d) ? b.d : "";
@@ -226,9 +242,11 @@ async function wishApi(request, env, ctx, url, json){
 
   if (path === "/onskelista/kop"){
     if (agare || !id || !p || !vem) return fel("in");
+    let angrat = false;
     const s = S[vem], kopt = s.kopt || (s.kopt = {}), borta = s.borta || (s.borta = {}), har = kopt[id];
     if (b.av){
       if (!har || !min(har)) return svar({ok: true, du: p});              // inte din markering: inget att ta bort
+      if (!b.tyst) angrat = true;                                          // tyst: appen städar själv, ingen har ångrat något
       delete kopt[id]; borta[id] = Date.now();                             // borta: så att personens andra mobil förstår att det var meningen
     } else {
       if (har && !min(har)) return svar({error: "tagen", du: p}, 409);    // någon annan hann före
@@ -240,7 +258,9 @@ async function wishApi(request, env, ctx, url, json){
     }
     for (const k in borta) if (Date.now() - borta[k] > 14 * OL_DYGN) delete borta[k];
     const f = await skriv(vem); if (f) return f;
-    if (!b.av) efter(olNotis(env, x => !x.ag && x.p !== p, {title: olNamn(vem, namn) + " köper en sak", body: olText(b.sak, 80) || "Öppna listan och se vilken.", url: "./#sak-" + id, tag: "ol-k-" + id}));
+    // sak: sakens id, låst med köparnas lösenord, så att bara deras mobiler kan skriva ut vilken sak det är
+    if (!b.av && !b.tyst) efter(olNotis(env, x => !x.ag && x.p !== p, {title: olNamn(vem, namn) + " köper en sak", body: olText(b.sak, 80) || "Öppna listan och se vilken.", url: "./#sak-" + id, tag: "ol-k-" + id}, "kop"));
+    if (angrat) efter(olNotis(env, x => !x.ag && x.p !== p, {title: olNamn(vem, namn) + " köper inte en sak längre", body: olText(b.sak, 80) || "Den är ledig igen. Öppna listan och se vilken.", url: "./#sak-" + id, tag: "ol-k-" + id}, "angra"));
     return svar({ok: true, du: p});
   }
 
@@ -274,8 +294,8 @@ async function wishApi(request, env, ctx, url, json){
     if (nya.length){
       const sist = nya[nya.length - 1], tillF = agare ? null : nya.filter(y => y.f).pop();
       const text = y => y.x.slice(0, 140) + (nya.length > 1 ? " (" + nya.length + " meddelanden)" : "");
-      efter(olNotis(env, x => !x.ag && x.p !== p, {title: agare ? "Filip svarar" : olNamn(vem, namn) + (sist.f ? " frågar Filip" : " skriver"), body: text(sist), url: "./#chatt", tag: "ol-c"}));
-      if (tillF) efter(olNotis(env, x => !!x.ag && x.p !== p, {title: olNamn(vem, namn) + " frågar dig", body: text(tillF), url: "./#chatt", tag: "ol-c"}));
+      efter(olNotis(env, x => !x.ag && x.p !== p, {title: agare ? "Filip svarar" : olNamn(vem, namn) + (sist.f ? " frågar Filip" : " skriver"), body: text(sist), url: "./#chatt", tag: "ol-c"}, "chatt"));
+      if (tillF) efter(olNotis(env, x => !!x.ag && x.p !== p, {title: olNamn(vem, namn) + " frågar dig", body: text(tillF), url: "./#chatt", tag: "ol-c"}, "fraga"));
     }
     return svar({ok: true, du: p});
   }
@@ -284,7 +304,8 @@ async function wishApi(request, env, ctx, url, json){
     if (!agare) return fel("agare", 403);
     if (b.op === "hej") return svar({ok: true});
     const s = S.filip, egna = Array.isArray(s.egna) ? s.egna : (s.egna = []), lappar = s.lappar || (s.lappar = {}), dolda = s.dolda || (s.dolda = {});
-    let ny = null, extra = null;
+    let ny = null, extra = null, andrat = null;
+    const rubrik = olText(b.rubrik, 80), egenNamn = x => (egna.find(e => e.id === x) || {}).namn || rubrik;
     if (b.op === "ny" || b.op === "andra"){
       const i = b.op === "andra" ? egna.findIndex(e => e.id === id) : -1, k = b.sak && typeof b.sak === "object" ? b.sak : {};
       const sakNamn = olText(k.namn, 80), lank = olText(k.url, 400), pris = Number(k.pris), lucka = Number(k.lucka);
@@ -294,33 +315,50 @@ async function wishApi(request, env, ctx, url, json){
         pris: k.pris != null && k.pris !== "" && Number.isFinite(pris) && pris > 0 && pris < 1e7 ? Math.round(pris) : null,
         butik: olText(k.butik, 40), lapp: olText(k.lapp, 160), bild: OL_BILDER.indexOf(k.bild) >= 0 ? k.bild : "paket",
         lucka: lucka >= 1 && lucka <= 4 ? Math.floor(lucka) : 0, t: i < 0 ? Date.now() : egna[i].t};
-      if (i < 0){ egna.push(e); ny = e; } else egna[i] = e;
+      if (i < 0){ egna.push(e); ny = e; } else { egna[i] = e; andrat = {title: "Filip har ändrat en önskning", body: e.namn}; }
       extra = {id: e.id};
     } else if (!id) return fel("in");
-    else if (b.op === "bort"){ s.egna = egna.filter(e => e.id !== id); delete lappar[id]; delete dolda[id]; }
+    else if (b.op === "bort"){ andrat = {title: "Filip har tagit bort en önskning", body: egenNamn(id)}; s.egna = egna.filter(e => e.id !== id); delete lappar[id]; delete dolda[id]; }
     else if (b.op === "lapp"){
       if (typeof b.text === "string") lappar[id] = olText(b.text, 160); else delete lappar[id];     // tom text: ingen lapp alls
+      andrat = lappar[id] ? {title: "Filip har skrivit en lapp", body: (egenNamn(id) ? egenNamn(id) + ": " : "") + lappar[id]} : {title: "Filip har tagit bort en lapp", body: egenNamn(id)};
       if (Object.keys(lappar).length > 120) return fel("full");
     } else if (b.op === "dolj"){
       if (b.dold) dolda[id] = 1; else delete dolda[id];
+      andrat = {title: b.dold ? "Filip har tagit bort en önskning" : "Filip har lagt tillbaka en önskning", body: egenNamn(id)};
       if (Object.keys(dolda).length > 120) return fel("full");
     } else return fel("op");
     const f = await skriv("filip"); if (f) return f;
-    if (ny) efter(olNotis(env, x => !x.ag, {title: "Filip har lagt till en önskning", body: ny.namn, url: "./#sak-" + ny.id, tag: "ol-ny"}));
+    if (ny) efter(olNotis(env, x => !x.ag, {title: "Filip har lagt till en önskning", body: ny.namn, url: "./#sak-" + ny.id, tag: "ol-ny"}, "filip"));
+    if (andrat && !b.tyst) efter(olNotis(env, x => !x.ag, {title: andrat.title, body: olText(andrat.body, 140) || "Öppna listan och se vad.", url: "./#sak-" + id, tag: "ol-a-" + id}, "filip"));
     return svar(Object.assign({ok: true}, extra));
   }
 
   if (path === "/onskelista/push"){
     if (!p) return fel("in");
     const P = await olLas(env, "push"), subs = Array.isArray(P.subs) ? P.subs : [], u = b.sub, ag = agare ? 1 : 0;
+    const nej = Array.isArray(b.nej) ? OL_TYPER.filter(t => b.nej.indexOf(t) >= 0) : null;
+    if (b.test){                                                           // en notis till den här mobilen, för att se att det fungerar
+      const mina = subs.filter(x => x.p === p);
+      if (!mina.length) return fel("ingen", 404);
+      await olNotis(env, x => x.p === p, {title: "Det fungerar", body: "Så här ser notiserna från önskelistan ut.", url: "./", tag: "ol-test"});
+      return json({ol: 1, nv: OL_V, ok: true});
+    }
+    if (nej && !u && !b.av){                                               // bara valen ändras
+      if (!subs.some(x => x.p === p)) return fel("ingen", 404);
+      P.subs = subs.map(x => { if (x.p !== p) return x; const y = Object.assign({}, x); if (nej.length) y.nej = nej; else delete y.nej; return y; });
+      const f = await olSpara(env, "push", P); if (f) return fel(f, 429);
+      return json({ol: 1, nv: OL_V, ok: true});
+    }
     const ok = u && typeof u.endpoint === "string" && u.endpoint.length < 600 && OL_PUSHVARD.test(u.endpoint) && u.keys
       && typeof u.keys.p256dh === "string" && u.keys.p256dh.length < 200 && typeof u.keys.auth === "string" && u.keys.auth.length < 80;
     if (!b.av && !ok) return fel("in");
-    if (b.av ? !subs.some(x => x.p === p) : subs.some(x => x.p === p && x.e === u.endpoint && x.k === u.keys.p256dh && x.a === u.keys.auth && x.ag === ag)) return json({ol: 1, ok: true});
+    const gammal = subs.find(x => x.p === p), valen = nej || (gammal && gammal.nej) || [];
+    if (b.av ? !gammal : subs.some(x => x.p === p && x.e === u.endpoint && x.k === u.keys.p256dh && x.a === u.keys.auth && x.ag === ag && (x.nej || []).join() === valen.join())) return json({ol: 1, nv: OL_V, ok: true});
     P.subs = subs.filter(x => x.p !== p && (b.av || x.e !== u.endpoint));
-    if (!b.av){ P.subs.push({e: u.endpoint, k: u.keys.p256dh, a: u.keys.auth, p, ag, t: Date.now()}); while (P.subs.length > OL_MAX_PUSH) P.subs.shift(); }
+    if (!b.av){ P.subs.push(Object.assign({e: u.endpoint, k: u.keys.p256dh, a: u.keys.auth, p, ag, t: Date.now()}, valen.length ? {nej: valen} : null)); while (P.subs.length > OL_MAX_PUSH) P.subs.shift(); }
     const f = await olSpara(env, "push", P); if (f) return fel(f, 429);
-    return json({ol: 1, ok: true});
+    return json({ol: 1, nv: OL_V, ok: true});
   }
   return fel("path", 404);
 }
@@ -352,5 +390,5 @@ export default {
     });
     return new Response(await res.text(), {status: res.status, headers: {...cors, "Content-Type": "application/json; charset=utf-8"}});
   },
-  async scheduled(event, env, ctx){ const p = tick(env, Number(event && event.scheduledTime) || Date.now()); ctx.waitUntil(p); await p; }
+  async scheduled(event, env, ctx){ const t = Number(event && event.scheduledTime) || Date.now(); const p = Promise.all([tick(env, t), olLucka(env, t).catch(() => {})]); ctx.waitUntil(p); await p; }
 };
