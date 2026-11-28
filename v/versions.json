@@ -1,6 +1,13 @@
 {
  "versions": [
   {
+   "id": "309a60a",
+   "ts": 202611280200,
+   "build": "28 nov 02.00",
+   "date": "28 nov 02.30",
+   "title": "GymSchema: Igår – hela gårdagen igen, och ta med det till i dag"
+  },
+  {
    "id": "f1ed6cf",
    "ts": 202611272338,
    "build": "27 nov 23.38",
@@ -76,13 +83,6 @@
    "build": "27 nov 14.32",
    "date": "27 nov 14.36",
    "title": "Videon som bild, en ikon på varje vana, det sparade passet i bilder"
-  },
-  {
-   "id": "f06bcab",
-   "ts": 202611271321,
-   "build": "27 nov 13.21",
-   "date": "27 nov 13.48",
-   "title": "Bild på varje övning och varje block, och Passet i bilder"
   }
  ]
 }
